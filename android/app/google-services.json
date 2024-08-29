@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "996712058212",
+    "project_id": "anecdotalhq",
+    "storage_bucket": "anecdotalhq.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996712058212:android:ec5416e21a9ab729d9fe71",
+        "android_client_info": {
+          "package_name": "com.anecdotal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO4h1QGKJ12oLyJ-MSJCFuDUTr-R6z0KY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996712058212:android:384fc1442de79b09d9fe71",
+        "android_client_info": {
+          "package_name": "com.increasedw"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO4h1QGKJ12oLyJ-MSJCFuDUTr-R6z0KY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
