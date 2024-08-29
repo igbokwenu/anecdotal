@@ -1,4 +1,4 @@
-import 'package:anecdotal/providers.dart';
+import 'package:anecdotal/providers/theme_provider.dart';
 import 'package:anecdotal/utils/themes.dart';
 import 'package:anecdotal/views/home_page.dart';
 import 'package:flutter/material.dart';

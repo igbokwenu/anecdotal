@@ -1,6 +1,6 @@
 // lib/core/widgets/theme_toggle.dart
 
-import 'package:anecdotal/providers.dart';
+import 'package:anecdotal/providers/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
