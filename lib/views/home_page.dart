@@ -33,7 +33,7 @@ class AnecdotalAppHome extends StatelessWidget {
               buildCard(
                 'Symptom Checker',
                 Icons.health_and_safety,
-                'Explain your symptoms',
+                'Tell us your symptoms to enable us check if you might have Mold illness,',
                 () {
                   // TODO: Implement symptom checker functionality
                 },
