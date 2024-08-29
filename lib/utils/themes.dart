@@ -39,6 +39,10 @@ class AppTheme {
         backgroundColor: Colors.tealAccent[700],
         foregroundColor: Colors.white,
       ),
+      iconTheme: IconThemeData(
+        color: Colors.teal[600],
+        // size: 24.0,
+      ),
     );
   }
 
@@ -63,7 +67,7 @@ class AppTheme {
         titleMedium: TextStyle(color: Colors.teal[100]),
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.teal[800],
+        backgroundColor: Colors.teal[900],
         foregroundColor: Colors.white,
       ),
       cardTheme: CardTheme(
@@ -79,6 +83,10 @@ class AppTheme {
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: Colors.tealAccent[400],
         foregroundColor: Colors.black,
+      ),
+      iconTheme: IconThemeData(
+        color: Colors.teal[200],
+        // size: 24.0,
       ),
     );
   }
