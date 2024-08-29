@@ -8,7 +8,8 @@ class AnecdotalAppHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Anecdotal'),
+        title: const Center(child: Text('Anecdotal')),
+        backgroundColor: Theme.of(context).primaryColor,
         actions: const [
           ThemeToggle(),
           SizedBox(width: 10), // Add some padding
