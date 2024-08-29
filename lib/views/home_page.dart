@@ -1,4 +1,3 @@
-import 'package:anecdotal/widgets/custom_card_home.dart';
 import 'package:anecdotal/widgets/theme_toggle_button.dart';
 import 'package:flutter/material.dart';
 
