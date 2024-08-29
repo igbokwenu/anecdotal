@@ -88,6 +88,7 @@ class AppTheme {
         color: Colors.teal[200],
         // size: 24.0,
       ),
+      
     );
   }
 }
