@@ -8,34 +8,42 @@ class AnimatedText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          "Talk To Us - We Understand 🤍",
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
         DefaultTextStyle(
           style: Theme.of(context).textTheme.bodyMedium!,
           child: AnimatedTextKit(
             animatedTexts: [
-              RotateAnimatedText(
+              TyperAnimatedText(
+                'Talk To Us',
+              ),
+              TyperAnimatedText(
+                "We Understand 🤍",
+              ),
+              TyperAnimatedText(
+                'Here Are Questions You Can Ask',
+              ),
+              FadeAnimatedText(
                 'I am having muscle spasms and twitches.',
               ),
-              RotateAnimatedText(
+              FadeAnimatedText(
                 "My family does not believe that I am sick.",
               ),
-              RotateAnimatedText(
+              FadeAnimatedText(
                 'I am having food intolerance.',
               ),
-              RotateAnimatedText(
+              FadeAnimatedText(
                 "How do I start treating CIRS/Mold Illness?",
               ),
-              RotateAnimatedText(
+              FadeAnimatedText(
                 "I can't afford a doctor, what can I do?",
               ),
-              RotateAnimatedText(
+              FadeAnimatedText(
                 "Could my house be making me sick?",
               ),
-              RotateAnimatedText(
+              FadeAnimatedText(
                 "Doctors are saying it's all in my head.",
+              ),
+              ScaleAnimatedText(
+                'Will I ever get better?',
               ),
             ],
             repeatForever: true,

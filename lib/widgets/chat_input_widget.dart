@@ -62,7 +62,7 @@ class ChatInputWidgetState extends State<ChatInputWidget> {
           BoxShadow(
             offset: const Offset(0, -2),
             blurRadius: 4,
-            color: Colors.black.withOpacity(0.1),
+            color: Theme.of(context).shadowColor.withOpacity(0.4),
           ),
         ],
       ),

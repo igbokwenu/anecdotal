@@ -157,7 +157,7 @@ class AnecdotalAppHome extends StatelessWidget {
                       ),
                     ),
                     // Add some bottom padding to ensure content isn't covered by the stack
-                    SizedBox(height: 180),
+                    const SizedBox(height: 180),
                   ],
                 ),
               ),
@@ -168,8 +168,8 @@ class AnecdotalAppHome extends StatelessWidget {
             right: 0,
             bottom: 0,
             child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: kIsWeb ? 80 : 60, vertical: 10.0),
               decoration: BoxDecoration(
                 color: Theme.of(context).scaffoldBackgroundColor,
                 boxShadow: [
@@ -177,16 +177,30 @@ class AnecdotalAppHome extends StatelessWidget {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(
-                    height: 75,
-                    child: AnimatedText(),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.auto_awesome,
+                      ),
+                      SizedBox(width: 12),
+                      SizedBox(
+                        height: 25,
+                        width: 300,
+                        child: AnimatedText(),
+                      ),
+                      SizedBox(width: 12),
+                      Icon(
+                        Icons.auto_awesome,
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 2.0),

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {
@@ -19,8 +22,8 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 180,
-      height: 180,
+      width: kIsWeb ? 220 : 180,
+      height: kIsWeb ? 150 : 180,
       child: Card(
         elevation: 4,
         shape: RoundedRectangleBorder(
