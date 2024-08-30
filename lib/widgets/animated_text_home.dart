@@ -6,6 +6,9 @@ class AnimatedText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Duration duration = const Duration(milliseconds: 3000);
+    Duration typerDuration = const Duration(milliseconds: 70);
+
     return Column(
       children: [
         DefaultTextStyle(
@@ -14,36 +17,44 @@ class AnimatedText extends StatelessWidget {
             animatedTexts: [
               TyperAnimatedText(
                 'Talk To Us',
+                speed: typerDuration,
               ),
               TyperAnimatedText(
                 "We Understand 🤍",
+                speed: typerDuration,
               ),
               TyperAnimatedText(
-                'Here Are Questions You Can Ask',
+                'Here Are Some Questions You Can Ask',
+                speed: typerDuration,
               ),
               FadeAnimatedText(
                 'I am having muscle spasms and twitches.',
+                duration: duration,
               ),
-              FadeAnimatedText(
-                "My family does not believe that I am sick.",
-              ),
+          
               FadeAnimatedText(
                 'I am having food intolerance.',
+                duration: duration,
               ),
               FadeAnimatedText(
                 "How do I start treating CIRS/Mold Illness?",
+                duration: duration,
               ),
               FadeAnimatedText(
                 "I can't afford a doctor, what can I do?",
+                duration: duration,
               ),
               FadeAnimatedText(
                 "Could my house be making me sick?",
+                duration: duration,
               ),
               FadeAnimatedText(
                 "Doctors are saying it's all in my head.",
+                duration: duration,
               ),
               ScaleAnimatedText(
                 'Will I ever get better?',
+                duration: duration,
               ),
             ],
             repeatForever: true,

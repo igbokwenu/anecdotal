@@ -23,6 +23,7 @@ class ChatInputWidgetState extends State<ChatInputWidget> {
     "What binder is most effective...",
     "I feel like I can't breathe properly...",
     "After starting treatment, my symptoms got worse..."
+        "My family does not believe that I am sick..."
     // Add more hints if needed
   ];
 
@@ -62,7 +63,7 @@ class ChatInputWidgetState extends State<ChatInputWidget> {
           BoxShadow(
             offset: const Offset(0, -2),
             blurRadius: 4,
-            color: Theme.of(context).shadowColor.withOpacity(0.4),
+            color: Theme.of(context).hintColor.withOpacity(0.2),
           ),
         ],
       ),
@@ -81,6 +82,9 @@ class ChatInputWidgetState extends State<ChatInputWidget> {
                 hintText: _hints[_currentHintIndex],
                 hintStyle: TextStyle(color: Theme.of(context).hintColor),
                 border: InputBorder.none,
+                prefixIcon: const Icon(
+                  Icons.auto_awesome,
+                ),
               ),
             ),
           ),

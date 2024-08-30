@@ -169,7 +169,7 @@ class AnecdotalAppHome extends StatelessWidget {
             bottom: 0,
             child: Container(
               padding: const EdgeInsets.symmetric(
-                  horizontal: kIsWeb ? 80 : 60, vertical: 10.0),
+                  horizontal: kIsWeb ? 80 : 20, vertical: 10.0),
               decoration: BoxDecoration(
                 color: Theme.of(context).scaffoldBackgroundColor,
                 boxShadow: [
@@ -187,18 +187,10 @@ class AnecdotalAppHome extends StatelessWidget {
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.auto_awesome,
-                      ),
-                      SizedBox(width: 12),
                       SizedBox(
                         height: 25,
                         width: 300,
                         child: AnimatedText(),
-                      ),
-                      SizedBox(width: 12),
-                      Icon(
-                        Icons.auto_awesome,
                       ),
                     ],
                   ),
