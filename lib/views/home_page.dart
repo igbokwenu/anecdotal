@@ -43,7 +43,7 @@ class AnecdotalAppHome extends StatelessWidget {
             ),
             SizedBox(width: 12),
             Text('Anecdotal'),
-            SizedBox(width: 12),
+            // SizedBox(width: 12),
             Icon(Icons.health_and_safety),
           ],
         )),
@@ -52,134 +52,158 @@ class AnecdotalAppHome extends StatelessWidget {
           SizedBox(width: 10),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "Anecdotal is built by patients, with the help of compassionate doctors - for those in search of answers and support regarding complex and debilitating chronic conditions like CIRS and Mold Illness. ",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Anecdotal is built by patients, with the help of compassionate doctors - for those in search of answers and support regarding complex and debilitating chronic conditions like CIRS and Mold Illness. ",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                    mySizedBox(),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          CustomCard(
+                            title: 'Progress Tracker',
+                            icon: Icons.track_changes,
+                            description:
+                                'Track your daily treatments, symptoms and feelings',
+                            onTap: () {
+                              if (kDebugMode) {
+                                print("card clicked");
+                              }
+                            },
+                            onInfoTapped: () {
+                              if (kDebugMode) {
+                                print("info icon clicked");
+                              }
+                            },
+                          ),
+                          CustomCard(
+                            title: 'Symptom Checker',
+                            icon: Icons.health_and_safety,
+                            description:
+                                "Tell us your symptoms. We could point you in the right direction",
+                            onTap: () {},
+                            onInfoTapped: () {},
+                          ),
+                          CustomCard(
+                            title: 'Spread Awareness',
+                            icon: Icons.family_restroom,
+                            description:
+                                'Share an explainer video with loved ones',
+                            onTap: () {},
+                            onInfoTapped: () {},
+                          ),
+                          CustomCard(
+                            title: 'Chat with AI',
+                            icon: Icons.chat,
+                            description:
+                                'Ask questions about symptoms and treatments',
+                            onTap: () {},
+                            onInfoTapped: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          CustomCard(
+                            title: 'Home Remedies',
+                            icon: Icons.home,
+                            description:
+                                'Pocket-friendly healing pathways to get you started',
+                            onTap: () {},
+                            onInfoTapped: () {},
+                          ),
+                          CustomCard(
+                            title: 'Investigate',
+                            icon: Icons.camera_alt,
+                            description:
+                                'Take pictures of potential mold growth in your home',
+                            onTap: () {},
+                            onInfoTapped: () {},
+                          ),
+                          CustomCard(
+                            title: 'Lifestyle',
+                            icon: Icons.fitness_center,
+                            description:
+                                'Make helpful lifestyle adjustments to support your recovery',
+                            onTap: () {},
+                            onInfoTapped: () {},
+                          ),
+                          CustomCard(
+                            title: 'Who Are We',
+                            icon: Icons.info,
+                            description: 'Learn more about us',
+                            onTap: () {},
+                            onInfoTapped: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Add some bottom padding to ensure content isn't covered by the stack
+                    SizedBox(height: 180),
+                  ],
                 ),
-                mySizedBox(),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      CustomCard(
-                        title: 'Progress Tracker',
-                        icon: Icons.track_changes,
-                        description:
-                            'Track your daily treatments, symptoms and feelings',
-                        onTap: () {
-                          if (kDebugMode) {
-                            print("card clicked");
-                          }
-                        },
-                        onInfoTapped: () {},
-                      ),
-                      CustomCard(
-                        title: 'Symptom Checker',
-                        icon: Icons.health_and_safety,
-                        description:
-                            "Tell us your symptoms. We could point you in the right direction",
-                        onTap: () {},
-                        onInfoTapped: () {},
-                      ),
-                      CustomCard(
-                        title: 'Home Treatments',
-                        icon: Icons.home,
-                        description:
-                            'Pocket-friendly healing pathways to get you started',
-                        onTap: () {},
-                        onInfoTapped: () {},
-                      ),
-                      CustomCard(
-                        title: 'Is This Making Me Sick?',
-                        icon: Icons.camera_alt,
-                        description: 'Take pictures of potential mold growth',
-                        onTap: () {},
-                        onInfoTapped: () {},
-                      ),
-                    ],
-                  ),
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      CustomCard(
-                        title: 'Chat with AI',
-                        icon: Icons.chat,
-                        description:
-                            'Ask questions about symptoms and treatments',
-                        onTap: () {
-                          if (kDebugMode) {
-                            print("card clicked");
-                          }
-                        },
-                        onInfoTapped: () {},
-                      ),
-                      CustomCard(
-                        title: 'Spread Awareness',
-                        icon: Icons.family_restroom,
-                        description: 'Share an explainer video with loved ones',
-                        onTap: () {},
-                        onInfoTapped: () {},
-                      ),
-                      CustomCard(
-                        title: 'Who Are We',
-                        icon: Icons.info,
-                        description: 'Learn more about us',
-                        onTap: () {},
-                        onInfoTapped: () {},
-                      ),
-                      CustomCard(
-                        title: 'Lifestyle Adjustments',
-                        icon: Icons.fitness_center,
-                        description: 'Tips for adapting your lifestyle',
-                        onTap: () {},
-                        onInfoTapped: () {},
-                      ),
-                    ],
-                  ),
-                ),
-
-                // const PoweredByAnecdotalAI(),
-              ],
-            ),
-          ),
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(
-              height: 75,
-              child: AnimatedText(),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2.0),
-              child: MicrophoneIconWidget(
-                size: 42.0,
-                onTap: () {},
               ),
             ),
-            const SizedBox(height: 10),
-            ChatInputWidget(
-              onSend: (message) => _showMessageDialog(context, message),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(
+                    height: 75,
+                    child: AnimatedText(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                    child: MicrophoneIconWidget(
+                      size: 42.0,
+                      onTap: () {},
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ChatInputWidget(
+                    onSend: (message) => _showMessageDialog(context, message),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

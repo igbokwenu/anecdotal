@@ -19,8 +19,8 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 200,
-      height: 140,
+      width: 180,
+      height: 180,
       child: Card(
         elevation: 4,
         shape: RoundedRectangleBorder(
@@ -30,29 +30,60 @@ class CustomCard extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(16),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6.0),
+            padding: const EdgeInsets.all(8.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icon, size: 25),
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                // const SizedBox(height: 4),
-                Text(
-                  description,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                // const SizedBox(height: 16),
-                IconButton(
-                  icon: Icon(
-                    Icons.info_outline,
-                    size: 20,
+                Expanded(
+                  flex: 2,
+                  child: Center(
+                    child: Icon(icon, size: 25),
                   ),
-                  onPressed: onInfoTapped,
+                ),
+                Expanded(
+                  flex: 7,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: Center(
+                          child: Text(
+                            title,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.titleMedium,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        flex: 4,
+                        child: Center(
+                          child: Text(
+                            description,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodySmall,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        flex: 2,
+                        child: Center(
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.info_outline,
+                              size: 20,
+                            ),
+                            onPressed: onInfoTapped,
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

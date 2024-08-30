@@ -10,10 +10,10 @@ class AnimatedText extends StatelessWidget {
       children: [
         Text(
           "Talk To Us - We Understand 🤍",
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         DefaultTextStyle(
-          style: Theme.of(context).textTheme.labelLarge!,
+          style: Theme.of(context).textTheme.bodyMedium!,
           child: AnimatedTextKit(
             animatedTexts: [
               RotateAnimatedText(
@@ -35,7 +35,7 @@ class AnimatedText extends StatelessWidget {
                 "Could my house be making me sick?",
               ),
               RotateAnimatedText(
-                "Doctors are saying it's all in my head but I feel very sick...",
+                "Doctors are saying it's all in my head.",
               ),
             ],
             repeatForever: true,
