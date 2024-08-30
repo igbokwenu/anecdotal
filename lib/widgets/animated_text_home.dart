@@ -9,8 +9,8 @@ class AnimatedText extends StatelessWidget {
     return Column(
       children: [
         Text(
-          "Talk To Us - We Understand 🩵",
-          style: Theme.of(context).textTheme.headlineSmall,
+          "Talk To Us - We Understand 🤍",
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         DefaultTextStyle(
           style: Theme.of(context).textTheme.labelLarge!,

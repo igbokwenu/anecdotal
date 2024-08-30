@@ -12,10 +12,10 @@ class ResizableMicIcon extends StatefulWidget {
   });
 
   @override
-  _ResizableMicIconState createState() => _ResizableMicIconState();
+  ResizableMicIconState createState() => ResizableMicIconState();
 }
 
-class _ResizableMicIconState extends State<ResizableMicIcon> {
+class ResizableMicIconState extends State<ResizableMicIcon> {
   bool _isListening = false;
 
   void _toggleListening() {
@@ -57,10 +57,10 @@ class MicrophoneIconWidget extends StatefulWidget {
   });
 
   @override
-  _MicrophoneIconWidgetState createState() => _MicrophoneIconWidgetState();
+  MicrophoneIconWidgetState createState() => MicrophoneIconWidgetState();
 }
 
-class _MicrophoneIconWidgetState extends State<MicrophoneIconWidget> {
+class MicrophoneIconWidgetState extends State<MicrophoneIconWidget> {
   bool _isListening = false;
 
   void _toggleListening() {

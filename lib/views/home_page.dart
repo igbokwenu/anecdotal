@@ -1,8 +1,10 @@
+import 'package:anecdotal/utils/smaller_reusable_widgets.dart';
 import 'package:anecdotal/widgets/animated_text_home.dart';
 import 'package:anecdotal/widgets/chat_input_widget.dart';
 import 'package:anecdotal/widgets/custom_card_home.dart';
 import 'package:anecdotal/widgets/microphone.dart';
 import 'package:anecdotal/widgets/theme_toggle_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AnecdotalAppHome extends StatelessWidget {
@@ -32,7 +34,18 @@ class AnecdotalAppHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('Anecdotal')),
+        title: const Center(
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.auto_awesome,
+            ),
+            SizedBox(width: 12),
+            Text('Anecdotal'),
+            Icon(Icons.health_and_safety),
+          ],
+        )),
         actions: const [
           ThemeToggle(),
           SizedBox(width: 10),
@@ -42,71 +55,98 @@ class AnecdotalAppHome extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                "This platform is built by recovered and recovering patients, with the help of compassionate medical practitioners who understand the complexities of debilitating conditions like CIRS/Mold Illness—conditions that modern medicine has yet to fully grasp. For those in search of answers and support.",
+                "Anecdotal is built by patients, with the help of compassionate doctors - for those in search of answers and support regarding complex and debilitating chronic conditions like CIRS and Mold Illness. ",
                 style: Theme.of(context).textTheme.bodySmall,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
-                height: 200,
-                child: CarouselView(
-                  itemExtent: 330,
-                  shrinkExtent: 260,
-                  elevation: 4,
+              mySizedBox(),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
                   children: [
-                    buildCard(
-                      'Progress Tracker',
-                      Icons.track_changes,
-                      'Track your daily treatments and feelings',
-                      () {},
+                    CustomCard(
+                      title: 'Progress Tracker',
+                      icon: Icons.track_changes,
+                      description:
+                          'Track your daily treatments, symptoms and feelings',
+                      onTap: () {
+                        if (kDebugMode) {
+                          print("card clicked");
+                        }
+                      },
+                      onInfoTapped: () {},
                     ),
-                    buildCard(
-                      'Symptom Checker',
-                      Icons.health_and_safety,
-                      'Tell us your symptoms, we could point you in the right direction.',
-                      () {},
+                    CustomCard(
+                      title: 'Symptom Checker',
+                      icon: Icons.health_and_safety,
+                      description:
+                          "Tell us your symptoms. We could point you in the right direction",
+                      onTap: () {},
+                      onInfoTapped: () {},
                     ),
-                    buildCard(
-                      'Home Treatments',
-                      Icons.home,
-                      'Pocket-friendly options for treating MARCons and Toxins',
-                      () {},
+                    CustomCard(
+                      title: 'Home Treatments',
+                      icon: Icons.home,
+                      description:
+                          'Pocket-friendly healing pathways to get you started',
+                      onTap: () {},
+                      onInfoTapped: () {},
                     ),
-                    buildCard(
-                      'Is This Making Me Sick?',
-                      Icons.camera_alt,
-                      'Take pictures of potential mold growth',
-                      () {},
-                    ),
-                    buildCard(
-                      'Chat with AI',
-                      Icons.chat,
-                      'Ask questions about symptoms and treatments',
-                      () {},
-                    ),
-                    buildCard(
-                      'Explain Your Condition',
-                      Icons.family_restroom,
-                      'Share an explainer video with loved ones',
-                      () {},
-                    ),
-                    buildCard(
-                      'Who Are We',
-                      Icons.info,
-                      'Learn more about us',
-                      () {},
-                    ),
-                    buildCard(
-                      'Lifestyle Adjustments',
-                      Icons.fitness_center,
-                      'Tips for adapting your lifestyle',
-                      () {},
+                    CustomCard(
+                      title: 'Is This Making Me Sick?',
+                      icon: Icons.camera_alt,
+                      description: 'Take pictures of potential mold growth',
+                      onTap: () {},
+                      onInfoTapped: () {},
                     ),
                   ],
                 ),
               ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    CustomCard(
+                      title: 'Chat with AI',
+                      icon: Icons.chat,
+                      description:
+                          'Ask questions about symptoms and treatments',
+                      onTap: () {
+                        if (kDebugMode) {
+                          print("card clicked");
+                        }
+                      },
+                      onInfoTapped: () {},
+                    ),
+                    CustomCard(
+                      title: 'Spread Awareness',
+                      icon: Icons.family_restroom,
+                      description: 'Share an explainer video with loved ones',
+                      onTap: () {},
+                      onInfoTapped: () {},
+                    ),
+                    CustomCard(
+                      title: 'Who Are We',
+                      icon: Icons.info,
+                      description: 'Learn more about us',
+                      onTap: () {},
+                      onInfoTapped: () {},
+                    ),
+                    CustomCard(
+                      title: 'Lifestyle Adjustments',
+                      icon: Icons.fitness_center,
+                      description: 'Tips for adapting your lifestyle',
+                      onTap: () {},
+                      onInfoTapped: () {},
+                    ),
+                  ],
+                ),
+              ),
+
+              // const PoweredByAnecdotalAI(),
             ],
           ),
         ),
@@ -138,10 +178,7 @@ class AnecdotalAppHome extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: MicrophoneIconWidget(
                 size: 52.0,
-                onTap: () {
-                  // TODO: Implement voice input functionality
-                  print('Microphone tapped');
-                },
+                onTap: () {},
               ),
             ),
             const SizedBox(height: 10),

@@ -7,10 +7,10 @@ class ChatInputWidget extends StatefulWidget {
   const ChatInputWidget({super.key, required this.onSend});
 
   @override
-  _ChatInputWidgetState createState() => _ChatInputWidgetState();
+  ChatInputWidgetState createState() => ChatInputWidgetState();
 }
 
-class _ChatInputWidgetState extends State<ChatInputWidget> {
+class ChatInputWidgetState extends State<ChatInputWidget> {
   final TextEditingController _controller = TextEditingController();
   bool _isComposing = false;
   late Timer _timer;
@@ -18,12 +18,10 @@ class _ChatInputWidgetState extends State<ChatInputWidget> {
 
   final List<String> _hints = [
     'I am feeling very weak...',
-    "I can’t concentrate...",
-    
-    
-    
-    "How do i start treatment...",
+    "I can't concentrate...",
+    "How do I start treatment...",
     "What binder is most effective...",
+    "I feel like I can't breathe properly...",
     "After starting treatment, my symptoms got worse..."
     // Add more hints if needed
   ];
