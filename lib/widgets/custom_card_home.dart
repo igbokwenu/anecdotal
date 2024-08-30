@@ -19,7 +19,7 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 220,
+      width: 200,
       height: 140,
       child: Card(
         elevation: 4,
@@ -30,32 +30,27 @@ class CustomCard extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(16),
           child: Padding(
-            padding: const EdgeInsets.all(6.0),
+            padding: const EdgeInsets.symmetric(horizontal: 6.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  icon,
-                  size: MediaQuery.sizeOf(context).width / 22,
-                ),
+                Icon(icon, size: 25),
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: MediaQuery.sizeOf(context).width / 35),
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 // const SizedBox(height: 4),
                 Text(
                   description,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontSize: MediaQuery.sizeOf(context).width / 45),
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
                 // const SizedBox(height: 16),
                 IconButton(
                   icon: Icon(
                     Icons.info_outline,
-                    size: MediaQuery.sizeOf(context).width / 24,
+                    size: 20,
                   ),
                   onPressed: onInfoTapped,
                 ),
