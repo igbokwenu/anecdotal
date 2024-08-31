@@ -3,6 +3,7 @@ import 'package:anecdotal/widgets/animated_text_home.dart';
 import 'package:anecdotal/widgets/chat_input_widget.dart';
 import 'package:anecdotal/widgets/custom_card_home.dart';
 import 'package:anecdotal/widgets/microphone.dart';
+import 'package:anecdotal/widgets/test_widget.dart';
 import 'package:anecdotal/widgets/theme_toggle_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -127,7 +128,13 @@ class AnecdotalAppHome extends StatelessWidget {
                             icon: Icons.home,
                             description:
                                 'Pocket-friendly healing pathways to get you started',
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TestWidget()),
+                              );
+                            },
                             onInfoTapped: () {},
                           ),
                           CustomCard(

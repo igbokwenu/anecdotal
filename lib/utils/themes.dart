@@ -10,7 +10,7 @@ class AppTheme {
         primaryContainer: Colors.teal[100]!,
         secondary: Colors.tealAccent[700]!,
         tertiary: Colors.teal[300]!,
-        surface: Colors.white,
+        surface: Colors.teal[50]!,
         onPrimary: Colors.white,
         onSecondary: Colors.white,
         onSurface: Colors.teal[900]!,
@@ -26,7 +26,7 @@ class AppTheme {
         foregroundColor: Colors.white,
       ),
       cardTheme: CardTheme(
-        color: Colors.teal[50],
+        color: Colors.teal[80],
         elevation: 2,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -88,7 +88,6 @@ class AppTheme {
         color: Colors.teal[200],
         // size: 24.0,
       ),
-      
     );
   }
 }

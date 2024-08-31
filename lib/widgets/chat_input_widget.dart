@@ -80,7 +80,9 @@ class ChatInputWidgetState extends State<ChatInputWidget> {
               onSubmitted: _isComposing ? _handleSubmitted : null,
               decoration: InputDecoration(
                 hintText: _hints[_currentHintIndex],
-                hintStyle: TextStyle(color: Theme.of(context).hintColor),
+                hintStyle: TextStyle(
+                    color: Theme.of(context).hintColor,
+                    fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize),
                 border: InputBorder.none,
                 prefixIcon: const Icon(
                   Icons.auto_awesome,
