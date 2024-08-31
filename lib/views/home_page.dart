@@ -1,4 +1,6 @@
+import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/utils/smaller_reusable_widgets.dart';
+import 'package:anecdotal/views/basic_info_view.dart';
 import 'package:anecdotal/widgets/animated_text_home.dart';
 import 'package:anecdotal/widgets/chat_input_widget.dart';
 import 'package:anecdotal/widgets/custom_card_home.dart';
@@ -82,6 +84,12 @@ class AnecdotalAppHome extends StatelessWidget {
                             description:
                                 'Track your daily treatments, symptoms and feelings',
                             onTap: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  MedicalInfoScreen(),
+                                ),
+                              );
                               if (kDebugMode) {
                                 print("card clicked");
                               }
@@ -97,7 +105,14 @@ class AnecdotalAppHome extends StatelessWidget {
                             icon: Icons.health_and_safety,
                             description:
                                 "Tell us your symptoms. We could point you in the right direction",
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  MedicalInfoScreen3(),
+                                ),
+                              );
+                            },
                             onInfoTapped: () {},
                           ),
                           CustomCard(
@@ -131,8 +146,9 @@ class AnecdotalAppHome extends StatelessWidget {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => TestWidget()),
+                                slideRightTransitionPageBuilder(
+                                  const TestWidget(),
+                                ),
                               );
                             },
                             onInfoTapped: () {},

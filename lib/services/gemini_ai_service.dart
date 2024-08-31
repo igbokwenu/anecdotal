@@ -179,12 +179,12 @@ class GeminiAIHelper {
 
   static Future<String?> sendImagePrompt(
       {required String message, required String imagePath}) async {
-    final GenerativeModel _visionModel = GenerativeModel(
+    final GenerativeModel visionModel = GenerativeModel(
       model: geminiFlashModel,
       apiKey: geminiApiKey,
     );
 
-    final List<Map<String, dynamic>> _generatedContent = [];
+    final List<Map<String, dynamic>> generatedContent = [];
 
     try {
       final File imageFile = File(imagePath);
@@ -198,13 +198,13 @@ class GeminiAIHelper {
         ])
       ];
 
-      _generatedContent.add({
+      generatedContent.add({
         'image': imagePath,
         'text': message,
         'fromUser': true,
       });
 
-      final response = await _visionModel.generateContent(content);
+      final response = await visionModel.generateContent(content);
       final String? text = response.text;
 
       if (text == null) {
@@ -212,7 +212,7 @@ class GeminiAIHelper {
         return null;
       } else {
         // Return the generated text
-        _generatedContent.add({'image': null, 'text': text, 'fromUser': false});
+        generatedContent.add({'image': null, 'text': text, 'fromUser': false});
         return text;
       }
     } catch (e) {
