@@ -87,7 +87,7 @@ class AnecdotalAppHome extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 slideLeftTransitionPageBuilder(
-                                  MedicalInfoScreen(),
+                                  const MedicalInfoScreen(),
                                 ),
                               );
                               if (kDebugMode) {
@@ -109,7 +109,7 @@ class AnecdotalAppHome extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 slideLeftTransitionPageBuilder(
-                                  MedicalInfoScreen3(),
+                                  const MedicalInfoScreen3(),
                                 ),
                               );
                             },

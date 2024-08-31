@@ -1,3 +1,4 @@
+import 'package:anecdotal/utils/smaller_reusable_widgets.dart';
 import 'package:flutter/material.dart';
 
 class MedicalInfoScreen extends StatelessWidget {
@@ -7,14 +8,24 @@ class MedicalInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Medical Information'),
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.auto_awesome),
+            SizedBox(
+              width: 10,
+            ),
+            Text('Summary'),
+          ],
+        ),
         elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(context),
+            mySizedBox(height: 10),
+            Center(child: _buildHeader(context)),
             _buildSection(
               context,
               title: 'Findings',
@@ -36,12 +47,11 @@ class MedicalInfoScreen extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(30),
-          bottomRight: Radius.circular(30),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(30),
         ),
       ),
       child: Column(
@@ -49,12 +59,13 @@ class MedicalInfoScreen extends StatelessWidget {
         children: [
           Text(
             'John Doe',
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             'Last updated: August 31, 2024',
             style: Theme.of(context).textTheme.labelMedium!.copyWith(
@@ -71,26 +82,26 @@ class MedicalInfoScreen extends StatelessWidget {
       required IconData icon,
       required String content}) {
     return Card(
-      margin: EdgeInsets.all(16),
+      margin: const EdgeInsets.all(16),
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(icon, color: Theme.of(context).primaryColor),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ],
             ),
-            Divider(),
-            SizedBox(height: 8),
+            const Divider(),
+            const SizedBox(height: 8),
             Text(
               content,
               style: Theme.of(context).textTheme.bodyMedium,
@@ -103,38 +114,38 @@ class MedicalInfoScreen extends StatelessWidget {
 
   Widget _buildSuggestions(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(16),
+      margin: const EdgeInsets.all(16),
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.recommend, color: Theme.of(context).primaryColor),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text(
                   'Suggestions',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ],
             ),
-            Divider(),
-            SizedBox(height: 8),
+            const Divider(),
+            const SizedBox(height: 8),
             _buildSuggestionButton(
               context,
               title: 'View Lab Results',
               icon: Icons.science,
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             _buildSuggestionButton(
               context,
               title: 'Schedule Follow-up',
               icon: Icons.calendar_today,
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             _buildSuggestionButton(
               context,
               title: 'Medication List',
@@ -154,13 +165,6 @@ class MedicalInfoScreen extends StatelessWidget {
       },
       icon: Icon(icon),
       label: Text(title),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).primaryColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      ),
     );
   }
 }
@@ -173,8 +177,19 @@ class MedicalInfoScreen3 extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text('Medical Information', style: theme.textTheme.headlineLarge),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Icon(Icons.auto_awesome),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              'Findings',
+              style: theme.textTheme.headlineSmall,
+            ),
+          ],
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -182,7 +197,7 @@ class MedicalInfoScreen3 extends StatelessWidget {
           children: [
             // Findings Section
             _buildSection(
-              title: 'Findings',
+              title: 'Summary',
               icon: Icons.notes,
               color: theme.colorScheme.primary,
               children: [
@@ -231,19 +246,19 @@ class MedicalInfoScreen3 extends StatelessWidget {
                   onPressed: () {
                     // Navigate to another screen
                   },
-                  icon: Icon(Icons.directions_bike),
-                  label: Text('Exercise Recommendations'),
+                  icon: const Icon(Icons.directions_bike),
+                  label: const Text('Exercise Recommendations'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: theme.colorScheme.primary,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 ElevatedButton.icon(
                   onPressed: () {
                     // Navigate to another screen
                   },
-                  icon: Icon(Icons.restaurant),
-                  label: Text('Dietary Advice'),
+                  icon: const Icon(Icons.restaurant),
+                  label: const Text('Dietary Advice'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: theme.colorScheme.secondary,
                   ),
@@ -268,14 +283,14 @@ class MedicalInfoScreen3 extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.withOpacity(0.4),
         borderRadius: BorderRadius.circular(16.0),
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.3),
-            blurRadius: 5,
-            spreadRadius: 2,
-            offset: Offset(0, 4),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: color.withOpacity(0.2),
+        //     blurRadius: 2,
+        //     spreadRadius: 2,
+        //     offset: const Offset(0, 2),
+        //   ),
+        // ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,7 +298,7 @@ class MedicalInfoScreen3 extends StatelessWidget {
           Row(
             children: [
               Icon(icon, color: color),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
                 title,
                 style: TextStyle(
@@ -294,7 +309,7 @@ class MedicalInfoScreen3 extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           ...children,
         ],
       ),
@@ -311,25 +326,25 @@ class MedicalInfoScreen3 extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: Colors.teal),
-          SizedBox(width: 8),
+          Icon(
+            icon,
+          ),
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black87,
                   ),
                 ),
                 Text(
                   content,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
-                    color: Colors.black54,
                   ),
                 ),
               ],
