@@ -72,8 +72,6 @@ class AnecdotalAppHome extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                        "is sending ${chatInputState.isSending} \n isComposing: ${chatInputState.isComposing}"),
-                    Text(
                       "Anecdotal is built by patients, with the help of compassionate doctors - for those in search of answers and support regarding complex and debilitating chronic conditions like CIRS and Mold Illness. ",
                       style: Theme.of(context)
                           .textTheme
