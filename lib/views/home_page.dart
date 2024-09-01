@@ -1,6 +1,7 @@
 import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/utils/smaller_reusable_widgets.dart';
-import 'package:anecdotal/views/basic_info_view.dart';
+import 'package:anecdotal/views/general_info_view.dart';
+import 'package:anecdotal/views/report_view.dart';
 import 'package:anecdotal/widgets/animated_text_home.dart';
 import 'package:anecdotal/widgets/chat_input_widget.dart';
 import 'package:anecdotal/widgets/custom_card_home.dart';
@@ -87,7 +88,7 @@ class AnecdotalAppHome extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 slideLeftTransitionPageBuilder(
-                                  const MedicalInfoScreen(),
+                                  const ReportView(),
                                 ),
                               );
                               if (kDebugMode) {
@@ -109,7 +110,7 @@ class AnecdotalAppHome extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 slideLeftTransitionPageBuilder(
-                                  const MedicalInfoScreen3(),
+                                  const GeneralInfoView(),
                                 ),
                               );
                             },

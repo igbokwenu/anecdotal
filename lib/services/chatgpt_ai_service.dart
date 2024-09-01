@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:anecdotal/utils/constants.dart';
 
@@ -111,8 +112,12 @@ class ChatGPTService {
         }
       }
 
-      print('Response Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
+      if (kDebugMode) {
+        print('Response Code: ${response.statusCode}');
+      }
+      if (kDebugMode) {
+        print('Response Body: ${response.body}');
+      }
     } catch (error) {
       print('Error: $error');
     }
