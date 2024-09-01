@@ -5,3 +5,10 @@ Widget mySizedBox({double? height}) {
     height: height ?? 20,
   );
 }
+
+Widget myEmptySizedBox() {
+  return const SizedBox.shrink(
+    
+  );
+}
+

@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 class GeminiResponseScreen extends StatelessWidget {
   final Map<String, dynamic> response;
 
-  GeminiResponseScreen({required this.response});
+  const GeminiResponseScreen({super.key, required this.response});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Gemini AI Response"),
+        title: const Text("Gemini AI Response"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -18,19 +18,19 @@ class GeminiResponseScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Summary", style: Theme.of(context).textTheme.titleLarge),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(response['summary']),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text("Insights", style: Theme.of(context).textTheme.titleLarge),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             ...List<Widget>.from(response['insights'].map((insight) => Text("• $insight"))),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text("Recommendations", style: Theme.of(context).textTheme.titleLarge),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             ...List<Widget>.from(response['recommendations'].map((recommendation) => Text("• $recommendation"))),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text("Suggestions", style: Theme.of(context).textTheme.titleLarge),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             ...List<Widget>.from(response['suggestions'].map((suggestion) => Text("• $suggestion"))),
           ],
         ),

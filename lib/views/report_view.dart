@@ -4,26 +4,14 @@ class ReportView extends StatelessWidget {
   final String summaryContent;
   final List<String> keyInsights;
   final List<String> recommendations;
-  final List<Widget> followUpSuggestions;
+  final List<String> followUpSuggestions;
 
   const ReportView({
     super.key,
-    this.summaryContent =
-        "The patient's medical report indicates normal vital signs with a blood pressure of 120/80 mmHg and a heart rate of 72 bpm. Cholesterol levels are within the acceptable range at 190 mg/dL. Overall, the patient's general health appears to be in good condition, with no immediate concerns identified during this examination.",
-    this.keyInsights = const [
-      'No significant cardiovascular issues detected',
-      'Moderate risk of diabetes due to family history',
-      'Cholesterol levels are within normal range',
-    ],
-    this.recommendations = const [
-      'Maintain a balanced diet rich in fruits and vegetables',
-      'Engage in regular physical activity, aiming for 150 minutes per week',
-      'Monitor blood glucose levels periodically',
-      'Schedule a follow-up appointment in 6 months',
-    ],
-    this.followUpSuggestions = const [
-      // Default Follow Up Buttons or Widgets
-    ],
+    required this.summaryContent,
+    required this.keyInsights,
+    required this.recommendations,
+    required this.followUpSuggestions,
   });
 
   @override
@@ -76,31 +64,7 @@ class ReportView extends StatelessWidget {
               title: 'Follow Up Suggestions',
               icon: Icons.directions_run,
               color: theme.colorScheme.primaryFixedDim,
-              children: followUpSuggestions.isNotEmpty
-                  ? followUpSuggestions
-                  : [
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          // Navigate to another screen
-                        },
-                        icon: const Icon(Icons.directions_bike),
-                        label: const Text('Exercise Recommendations'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: theme.colorScheme.primary,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          // Navigate to another screen
-                        },
-                        icon: const Icon(Icons.restaurant),
-                        label: const Text('Dietary Advice'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: theme.colorScheme.secondary,
-                        ),
-                      ),
-                    ],
+              children: _buildBulletPoints(followUpSuggestions),
             ),
           ],
         ),
@@ -161,10 +125,11 @@ class ReportView extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.health_and_safety),
+                  const Icon(Icons.health_and_safety_rounded),
+                  const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      " $point",
+                      point,
                       style: const TextStyle(fontSize: 14),
                     ),
                   ),

@@ -1,6 +1,7 @@
+import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
-import 'package:anecdotal/utils/constants.dart';
+import 'package:anecdotal/utils/ai_prompts.dart';
 import 'package:anecdotal/utils/smaller_reusable_widgets.dart';
 import 'package:anecdotal/views/general_info_view.dart';
 import 'package:anecdotal/views/report_view.dart';
@@ -12,8 +13,9 @@ import 'package:anecdotal/widgets/test_widget.dart';
 import 'package:anecdotal/widgets/theme_toggle_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AnecdotalAppHome extends StatelessWidget {
+class AnecdotalAppHome extends ConsumerWidget {
   const AnecdotalAppHome({super.key});
 
   void _showMessageDialog(BuildContext context, String message) {
@@ -37,7 +39,8 @@ class AnecdotalAppHome extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final chatInputState = ref.watch(chatInputProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -68,32 +71,8 @@ class AnecdotalAppHome extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    ElevatedButton(
-                        onPressed: () async {
-                          final response = await GeminiService.sendTextPrompt(
-                            preferredModel: geminiProModel,
-                            message:
-                                "Can water damage and growth in a home make someone very sick?",
-                          );
-
-                          if (response != null) {
-                            print("Summary: ${response['summary']}");
-                            print("Insights: ${response['insights']}");
-                            print(
-                                "Recommendations: ${response['recommendations']}");
-                            print("Suggestions: ${response['suggestions']}");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    GeminiResponseScreen(response: response),
-                              ),
-                            );
-                          } else {
-                            print("No response received.");
-                          }
-                        },
-                        child: Text("Test")),
+                    Text(
+                        "is sending ${chatInputState.isSending} \n isComposing: ${chatInputState.isComposing}"),
                     Text(
                       "Anecdotal is built by patients, with the help of compassionate doctors - for those in search of answers and support regarding complex and debilitating chronic conditions like CIRS and Mold Illness. ",
                       style: Theme.of(context)
@@ -112,13 +91,38 @@ class AnecdotalAppHome extends StatelessWidget {
                             icon: Icons.track_changes,
                             description:
                                 'Track your daily treatments, symptoms and feelings',
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                slideLeftTransitionPageBuilder(
-                                  const ReportView(),
-                                ),
+                            onTap: () async {
+                              final response =
+                                  await GeminiService.sendTextPrompt(
+                                message:
+                                    "Can water damage and growth in a home make someone very sick? Under summary, give a very detailed feedback.",
                               );
+
+                              if (response != null) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ReportView(
+                                      summaryContent: response['summary'] ??
+                                          'No summary available.',
+                                      keyInsights: response['insights']
+                                              ?.cast<String>() ??
+                                          [],
+                                      recommendations:
+                                          response['recommendations']
+                                                  ?.cast<String>() ??
+                                              [],
+                                      followUpSuggestions:
+                                          response['suggestions']
+                                                  ?.cast<String>() ??
+                                              [],
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                print("No response received.");
+                              }
+
                               if (kDebugMode) {
                                 print("card clicked");
                               }
@@ -246,16 +250,44 @@ class AnecdotalAppHome extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 2.0),
-                    child: MicrophoneIconWidget(
-                      size: 42.0,
-                      onTap: () {},
-                    ),
-                  ),
+                  chatInputState.isSending
+                      ? myEmptySizedBox()
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2.0),
+                          child: MicrophoneIconWidget(
+                            size: 42.0,
+                            onTap: () {},
+                          ),
+                        ),
                   const SizedBox(height: 10),
                   ChatInputWidget(
-                    onSend: (message) => _showMessageDialog(context, message),
+                    onSend: (message) async {
+                      final response = await GeminiService.sendTextPrompt(
+                        message: sendChatPrompt(message),
+                      );
+
+                      if (response != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ReportView(
+                              summaryContent: response['summary'] ??
+                                  'No summary available.',
+                              keyInsights:
+                                  response['insights']?.cast<String>() ?? [],
+                              recommendations:
+                                  response['recommendations']?.cast<String>() ??
+                                      [],
+                              followUpSuggestions:
+                                  response['suggestions']?.cast<String>() ?? [],
+                            ),
+                          ),
+                        );
+                      } else {
+                        _showMessageDialog(context, "No response received.");
+                        print("No response received.");
+                      }
+                    },
                   ),
                 ],
               ),
