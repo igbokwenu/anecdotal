@@ -1,6 +1,45 @@
 import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:flutter/material.dart';
 
+class GeminiResponseScreen extends StatelessWidget {
+  final Map<String, dynamic> response;
+
+  GeminiResponseScreen({required this.response});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Gemini AI Response"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Summary", style: Theme.of(context).textTheme.titleLarge),
+            SizedBox(height: 8),
+            Text(response['summary']),
+            SizedBox(height: 16),
+            Text("Insights", style: Theme.of(context).textTheme.titleLarge),
+            SizedBox(height: 8),
+            ...List<Widget>.from(response['insights'].map((insight) => Text("• $insight"))),
+            SizedBox(height: 16),
+            Text("Recommendations", style: Theme.of(context).textTheme.titleLarge),
+            SizedBox(height: 8),
+            ...List<Widget>.from(response['recommendations'].map((recommendation) => Text("• $recommendation"))),
+            SizedBox(height: 16),
+            Text("Suggestions", style: Theme.of(context).textTheme.titleLarge),
+            SizedBox(height: 8),
+            ...List<Widget>.from(response['suggestions'].map((suggestion) => Text("• $suggestion"))),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
 class TestWidget extends StatelessWidget {
   const TestWidget({super.key});
 
@@ -14,7 +53,7 @@ class TestWidget extends StatelessWidget {
           child: Column(
             children: [
               FutureBuilder<String?>(
-                future: GeminiService.sendTextPrompt(
+                future: GeminiService.sendTextPromptWithoutJson(
                     message:
                         "Can you analyze images and tell when an image has water damage that can lead to growth of mold and other toxins that can be a health hazard"),
                 builder: (context, snapshot) {

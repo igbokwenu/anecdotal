@@ -1,4 +1,6 @@
 import 'package:anecdotal/services/animated_navigator.dart';
+import 'package:anecdotal/services/gemini_ai_service.dart';
+import 'package:anecdotal/utils/constants.dart';
 import 'package:anecdotal/utils/smaller_reusable_widgets.dart';
 import 'package:anecdotal/views/general_info_view.dart';
 import 'package:anecdotal/views/report_view.dart';
@@ -66,6 +68,32 @@ class AnecdotalAppHome extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    ElevatedButton(
+                        onPressed: () async {
+                          final response = await GeminiService.sendTextPrompt(
+                            preferredModel: geminiProModel,
+                            message:
+                                "Can water damage and growth in a home make someone very sick?",
+                          );
+
+                          if (response != null) {
+                            print("Summary: ${response['summary']}");
+                            print("Insights: ${response['insights']}");
+                            print(
+                                "Recommendations: ${response['recommendations']}");
+                            print("Suggestions: ${response['suggestions']}");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    GeminiResponseScreen(response: response),
+                              ),
+                            );
+                          } else {
+                            print("No response received.");
+                          }
+                        },
+                        child: Text("Test")),
                     Text(
                       "Anecdotal is built by patients, with the help of compassionate doctors - for those in search of answers and support regarding complex and debilitating chronic conditions like CIRS and Mold Illness. ",
                       style: Theme.of(context)

@@ -2,8 +2,40 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:anecdotal/utils/constants.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'dart:convert'; // For JSON handling
 
+//Gemini models documentation:https://ai.google.dev/models/gemini
 class GeminiService {
+  static Future<Map<String, dynamic>?> sendTextPrompt({
+    required String message,
+    String? preferredModel,
+  }) async {
+    final model = GenerativeModel(
+      model: preferredModel ?? geminiProModel,
+      apiKey: geminiApiKey,
+      generationConfig: GenerationConfig(
+        responseMimeType: "application/json",
+        responseSchema: Schema.object(
+          properties: {
+            "summary": Schema.string(),
+            "insights": Schema.array(items: Schema.string()),
+            "recommendations": Schema.array(items: Schema.string()),
+            "suggestions": Schema.array(items: Schema.string()),
+          },
+        ),
+      ),
+    );
+
+    final content = [Content.text(message)];
+    final response = await model.generateContent(content);
+
+    if (response.text != null) {
+      return jsonDecode(response.text!);
+    } else {
+      return null;
+    }
+  }
+
   static Future<String?> analyzeAudio({
     required List<File> audios,
     required String prompt,
@@ -12,7 +44,8 @@ class GeminiService {
     final model = GenerativeModel(
         model: preferredModel ?? geminiFlashModel, apiKey: geminiApiKey);
 
-    final audioBytes = await Future.wait(audios.map((file) => file.readAsBytes()));
+    final audioBytes =
+        await Future.wait(audios.map((file) => file.readAsBytes()));
     List<DataPart> audioParts = [];
     for (var i = 0; i < audios.length; i++) {
       String mimeType = _getMimeType(audios[i].path);
@@ -35,8 +68,10 @@ class GeminiService {
     final model = GenerativeModel(
         model: preferredModel ?? geminiFlashModel, apiKey: geminiApiKey);
 
-    final imageBytes = await Future.wait(images.map((file) => file.readAsBytes()));
-    final imageParts = imageBytes.map((bytes) => DataPart('image/jpeg', bytes)).toList();
+    final imageBytes =
+        await Future.wait(images.map((file) => file.readAsBytes()));
+    final imageParts =
+        imageBytes.map((bytes) => DataPart('image/jpeg', bytes)).toList();
 
     final textPart = TextPart(prompt);
     final response = await model.generateContent([
@@ -73,7 +108,7 @@ class GeminiService {
     }
   }
 
-  static Future<String?> sendTextPrompt({
+  static Future<String?> sendTextPromptWithoutJson({
     required String message,
     String? preferredModel,
   }) async {
@@ -106,7 +141,6 @@ class GeminiService {
     }
   }
 }
-
 
 class GeminiAIHelper {
   static Future<String> analyzeAudio(List<File> audios, String prompt) async {
