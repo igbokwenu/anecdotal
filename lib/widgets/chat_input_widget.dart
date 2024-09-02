@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:anecdotal/providers/button_state_providers.dart';
+import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ChatInputWidget extends ConsumerStatefulWidget {
   final Function(String) onSend;
@@ -91,7 +93,9 @@ class ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
           ),
           IconButton(
             icon: chatInputState.isSending
-                ? const CircularProgressIndicator()
+                ? MySpinKitWaveSpinner(
+                    size: 40,
+                  )
                 : Icon(Icons.send,
                     color: Theme.of(context).colorScheme.secondary),
             onPressed: chatInputState.isComposing && !chatInputState.isSending

@@ -2,22 +2,30 @@ class ChatInputState {
   final bool isComposing;
   final bool isSending;
   final int currentHintIndex;
+  final bool isProcessingAudio;
+  final bool isListeningToAudio;
 
   ChatInputState({
     required this.isComposing,
     required this.isSending,
     required this.currentHintIndex,
+    required this.isProcessingAudio,
+     required this.isListeningToAudio, 
   });
 
   ChatInputState copyWith({
     bool? isComposing,
     bool? isSending,
     int? currentHintIndex,
+    bool? isProcessingAudio,
+    bool? isListeningToAudio
   }) {
     return ChatInputState(
       isComposing: isComposing ?? this.isComposing,
       isSending: isSending ?? this.isSending,
       currentHintIndex: currentHintIndex ?? this.currentHintIndex,
+      isProcessingAudio: isProcessingAudio ?? this.isProcessingAudio,
+      isListeningToAudio: isListeningToAudio ?? this.isListeningToAudio,
     );
   }
 }

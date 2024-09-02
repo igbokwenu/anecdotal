@@ -1,5 +1,5 @@
 
-String sendChatPrompt(String prompt) {
+String sendChatPrompt({String? prompt}) {
   return """ 
   You are helping people get answers regarding, mold illness, also known as Chronic inflammatory response syndrome (CIRS), bio-toxin illness etc. 
   
@@ -13,7 +13,7 @@ Under recommendations give helpful recommendations that the patient can use to a
 
 Under suggestions come up with related search terms that the user can input in a search engine to get more information about their prompt.
 
-  User question: $prompt 
+   ${prompt == null ? "": "User question: $prompt"}
   
   """;
 }

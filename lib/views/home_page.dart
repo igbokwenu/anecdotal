@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
@@ -11,9 +13,11 @@ import 'package:anecdotal/widgets/custom_card_home.dart';
 import 'package:anecdotal/widgets/microphone.dart';
 import 'package:anecdotal/widgets/test_widget.dart';
 import 'package:anecdotal/widgets/theme_toggle_button.dart';
+import 'package:anecdotal/widgets/voice_recorder_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class AnecdotalAppHome extends ConsumerWidget {
   const AnecdotalAppHome({super.key});
@@ -38,9 +42,73 @@ class AnecdotalAppHome extends ConsumerWidget {
     );
   }
 
+  Future<void> _handleSend(BuildContext context, String message) async {
+    final response = await GeminiService.sendTextPrompt(
+      message: sendChatPrompt(prompt: message),
+    );
+
+    if (response != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ReportView(
+            summaryContent: response['summary'] ?? 'No summary available.',
+            keyInsights: response['insights']?.cast<String>() ?? [],
+            recommendations: response['recommendations']?.cast<String>() ?? [],
+            followUpSuggestions: response['suggestions']?.cast<String>() ?? [],
+          ),
+        ),
+      );
+    } else {
+      _showMessageDialog(context, "No response received.");
+      print("No response received.");
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chatInputState = ref.watch(chatInputProvider);
+
+    Future<void> handleAudioStop(String path) async {
+      ref.read(chatInputProvider.notifier).setIsProcessingAudio(true);
+      ref.read(chatInputProvider.notifier).setIsListeningToAudio(false);
+      try {
+        final response = await GeminiService.analyzeAudio(
+          audios: [File(path)],
+          prompt: sendChatPrompt(),
+        );
+
+        if (response != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ReportView(
+                summaryContent: response['summary'] ?? 'No summary available.',
+                keyInsights: response['insights']?.cast<String>() ?? [],
+                recommendations:
+                    response['recommendations']?.cast<String>() ?? [],
+                followUpSuggestions:
+                    response['suggestions']?.cast<String>() ?? [],
+              ),
+            ),
+          );
+        } else {
+          _showMessageDialog(context, "No response received.");
+          print("No response received.");
+        }
+      } catch (e) {
+        _showMessageDialog(context, "Error: $e");
+      } finally {
+        ref.read(chatInputProvider.notifier).setIsProcessingAudio(false);
+        // setState(() {
+        //   _isLoading = false;
+        // });
+      }
+
+      // Clean up the audio file
+      File(path).delete();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -52,7 +120,6 @@ class AnecdotalAppHome extends ConsumerWidget {
             ),
             SizedBox(width: 12),
             Text('Anecdotal'),
-            // SizedBox(width: 12),
             Icon(Icons.health_and_safety),
           ],
         )),
@@ -178,7 +245,7 @@ class AnecdotalAppHome extends ConsumerWidget {
                               Navigator.push(
                                 context,
                                 slideRightTransitionPageBuilder(
-                                  const TestWidget(),
+                                  VoiceChatScreen(),
                                 ),
                               );
                             },
@@ -210,7 +277,6 @@ class AnecdotalAppHome extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    // Add some bottom padding to ensure content isn't covered by the stack
                     const SizedBox(height: 180),
                   ],
                 ),
@@ -238,50 +304,39 @@ class AnecdotalAppHome extends ConsumerWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(
-                    height: 25,
-                    width: 300,
-                    child: AnimatedText(),
-                  ),
+                  chatInputState.isListeningToAudio
+                      ? const MyAnimatedText(
+                          text: "Press stop when you are done speaking")
+                      : chatInputState.isProcessingAudio
+                          ? MyAnimatedText2()
+                          : chatInputState.isSending
+                              ? MyAnimatedText2()
+                              : SizedBox(
+                                  height: 25,
+                                  width: 300,
+                                  child: AnimatedText(),
+                                ),
                   chatInputState.isSending
                       ? myEmptySizedBox()
                       : Padding(
                           padding: const EdgeInsets.symmetric(vertical: 2.0),
-                          child: MicrophoneIconWidget(
-                            size: 42.0,
-                            onTap: () {},
-                          ),
+                          child: chatInputState.isProcessingAudio
+                              ? MySpinKitWaveSpinner()
+                              : Recorder(
+                                  onStop: handleAudioStop,
+                                  onStart: () {
+                                    ref
+                                        .read(chatInputProvider.notifier)
+                                        .setIsListeningToAudio(true);
+                                  },
+                                ),
                         ),
                   const SizedBox(height: 10),
-                  ChatInputWidget(
-                    onSend: (message) async {
-                      final response = await GeminiService.sendTextPrompt(
-                        message: sendChatPrompt(message),
-                      );
-
-                      if (response != null) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ReportView(
-                              summaryContent: response['summary'] ??
-                                  'No summary available.',
-                              keyInsights:
-                                  response['insights']?.cast<String>() ?? [],
-                              recommendations:
-                                  response['recommendations']?.cast<String>() ??
-                                      [],
-                              followUpSuggestions:
-                                  response['suggestions']?.cast<String>() ?? [],
-                            ),
-                          ),
-                        );
-                      } else {
-                        _showMessageDialog(context, "No response received.");
-                        print("No response received.");
-                      }
-                    },
-                  ),
+                  chatInputState.isProcessingAudio
+                      ? myEmptySizedBox()
+                      : ChatInputWidget(
+                          onSend: (message) => _handleSend(context, message),
+                        ),
                   mySpacing(),
                 ],
               ),

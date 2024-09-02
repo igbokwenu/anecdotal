@@ -3,7 +3,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/chat_input_state.dart';
 
-
 final chatInputProvider =
     StateNotifierProvider<ChatInputNotifier, ChatInputState>(
         (ref) => ChatInputNotifier());
@@ -14,6 +13,8 @@ class ChatInputNotifier extends StateNotifier<ChatInputState> {
           isComposing: false,
           isSending: false,
           currentHintIndex: 0,
+          isProcessingAudio: false,
+          isListeningToAudio: false,
         ));
 
   void setIsComposing(bool value) {
@@ -27,6 +28,14 @@ class ChatInputNotifier extends StateNotifier<ChatInputState> {
   void updateHintIndex() {
     state = state.copyWith(
         currentHintIndex: (state.currentHintIndex + 1) % chatHints.length);
+  }
+
+  void setIsProcessingAudio(bool value) {
+    state = state.copyWith(isProcessingAudio: value);
+  }
+
+  void setIsListeningToAudio(bool value) {
+    state = state.copyWith(isListeningToAudio: value);
   }
 
   static const List<String> chatHints = [
