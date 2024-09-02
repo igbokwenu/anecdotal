@@ -238,15 +238,10 @@ class AnecdotalAppHome extends ConsumerWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 25,
-                        width: 300,
-                        child: AnimatedText(),
-                      ),
-                    ],
+                  const SizedBox(
+                    height: 25,
+                    width: 300,
+                    child: AnimatedText(),
                   ),
                   chatInputState.isSending
                       ? myEmptySizedBox()
@@ -287,6 +282,7 @@ class AnecdotalAppHome extends ConsumerWidget {
                       }
                     },
                   ),
+                  mySpacing(),
                 ],
               ),
             ),

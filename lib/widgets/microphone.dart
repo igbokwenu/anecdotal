@@ -1,50 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
-class ResizableMicIcon extends StatefulWidget {
-  final double size;
-  final Color iconColor;
-
-  const ResizableMicIcon({
-    super.key,
-    this.size = 24.0,
-    this.iconColor = Colors.black,
-  });
-
-  @override
-  ResizableMicIconState createState() => ResizableMicIconState();
-}
-
-class ResizableMicIconState extends State<ResizableMicIcon> {
-  bool _isListening = false;
-
-  void _toggleListening() {
-    setState(() {
-      _isListening = !_isListening;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: _toggleListening,
-      child: _isListening
-          ? Pulse(
-              infinite: true,
-              child: Icon(
-                Icons.mic_none,
-                color: widget.iconColor,
-                size: widget.size,
-              ),
-            )
-          : Icon(
-              Icons.mic,
-              color: widget.iconColor,
-              size: widget.size,
-            ),
-    );
-  }
-}
 
 class MicrophoneIconWidget extends StatefulWidget {
   final double size;
