@@ -12,10 +12,10 @@ class Recorder extends StatefulWidget {
   final VoidCallback? onStart;
 
   const Recorder({
-    Key? key,
+    super.key,
     required this.onStop,
     this.onStart,
-  }) : super(key: key);
+  });
 
   @override
   State<Recorder> createState() => _RecorderState();
@@ -57,7 +57,7 @@ class _RecorderState extends State<Recorder> {
 
         widget.onStart?.call();
         await _audioRecorder.start(
-          RecordConfig(encoder: AudioEncoder.wav),
+          const RecordConfig(encoder: AudioEncoder.wav),
           path: _currentRecordingPath!,
         );
       }
@@ -87,7 +87,7 @@ class _RecorderState extends State<Recorder> {
             if (_isListening)
               SpinKitRipple(
                 color: Theme.of(context).colorScheme.secondary.withOpacity(0.6),
-                size: 60,
+                size: 100,
               ),
             Center(
               child: Pulse(

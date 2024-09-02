@@ -3,10 +3,10 @@ import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:anecdotal/widgets/voice_recorder_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:path_provider/path_provider.dart';
 
 class VoiceChatScreen extends StatefulWidget {
+  const VoiceChatScreen({super.key});
+
   @override
   _VoiceChatScreenState createState() => _VoiceChatScreenState();
 }
@@ -55,13 +55,13 @@ class _VoiceChatScreenState extends State<VoiceChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Voice Chat with Gemini')),
+      appBar: AppBar(title: const Text('Voice Chat with Gemini')),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Text(_responseText),
             ),
           ),
@@ -69,13 +69,13 @@ class _VoiceChatScreenState extends State<VoiceChatScreen> {
             size: 50,
           ),
           Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Recorder(
               onStop: _handleAudioStop,
               onStart: () => setState(() => _responseText = 'Recording...'),
             ),
           ),
-          if (_isLoading) CircularProgressIndicator(),
+          if (_isLoading) const CircularProgressIndicator(),
         ],
       ),
     );

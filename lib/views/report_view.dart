@@ -1,4 +1,3 @@
-import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:flutter/material.dart';
 
 class ReportView extends StatelessWidget {

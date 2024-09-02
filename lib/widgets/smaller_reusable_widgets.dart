@@ -66,6 +66,7 @@ class MyAnimatedText extends StatelessWidget {
           colors: colorizeColors,
         ),
       ],
+       repeatForever: true,
     );
   }
 }
@@ -103,6 +104,7 @@ class MyAnimatedText2 extends StatelessWidget {
           colors: colorizeColors,
         ),
       ],
+      repeatForever: true,
     );
   }
 }

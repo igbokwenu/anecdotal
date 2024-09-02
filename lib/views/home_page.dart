@@ -10,14 +10,12 @@ import 'package:anecdotal/views/report_view.dart';
 import 'package:anecdotal/widgets/animated_text_home.dart';
 import 'package:anecdotal/widgets/chat_input_widget.dart';
 import 'package:anecdotal/widgets/custom_card_home.dart';
-import 'package:anecdotal/widgets/microphone.dart';
 import 'package:anecdotal/widgets/test_widget.dart';
 import 'package:anecdotal/widgets/theme_toggle_button.dart';
 import 'package:anecdotal/widgets/voice_recorder_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class AnecdotalAppHome extends ConsumerWidget {
   const AnecdotalAppHome({super.key});
@@ -245,7 +243,7 @@ class AnecdotalAppHome extends ConsumerWidget {
                               Navigator.push(
                                 context,
                                 slideRightTransitionPageBuilder(
-                                  VoiceChatScreen(),
+                                  const VoiceChatScreen(),
                                 ),
                               );
                             },
@@ -308,10 +306,10 @@ class AnecdotalAppHome extends ConsumerWidget {
                       ? const MyAnimatedText(
                           text: "Press stop when you are done speaking")
                       : chatInputState.isProcessingAudio
-                          ? MyAnimatedText2()
+                          ? const MyAnimatedText2()
                           : chatInputState.isSending
-                              ? MyAnimatedText2()
-                              : SizedBox(
+                              ? const MyAnimatedText2()
+                              : const SizedBox(
                                   height: 25,
                                   width: 300,
                                   child: AnimatedText(),
@@ -321,7 +319,7 @@ class AnecdotalAppHome extends ConsumerWidget {
                       : Padding(
                           padding: const EdgeInsets.symmetric(vertical: 2.0),
                           child: chatInputState.isProcessingAudio
-                              ? MySpinKitWaveSpinner()
+                              ? const MySpinKitWaveSpinner()
                               : Recorder(
                                   onStop: handleAudioStop,
                                   onStart: () {
