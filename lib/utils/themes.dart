@@ -4,6 +4,7 @@ class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
+      fontFamily: 'Raleway',
       brightness: Brightness.light,
       colorScheme: ColorScheme.light(
         primary: Colors.teal,
@@ -56,6 +57,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
+      fontFamily: 'Raleway',
       colorScheme: ColorScheme.dark(
         primary: Colors.teal[300]!,
         primaryContainer: Colors.teal[700]!,

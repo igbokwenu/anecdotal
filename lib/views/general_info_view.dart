@@ -1,4 +1,4 @@
-import 'package:anecdotal/utils/smaller_reusable_widgets.dart';
+import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:flutter/material.dart';
 
 class GeneralInfoView extends StatelessWidget {

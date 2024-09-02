@@ -2,7 +2,7 @@ import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/utils/ai_prompts.dart';
-import 'package:anecdotal/utils/smaller_reusable_widgets.dart';
+import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:anecdotal/views/general_info_view.dart';
 import 'package:anecdotal/views/report_view.dart';
 import 'package:anecdotal/widgets/animated_text_home.dart';
