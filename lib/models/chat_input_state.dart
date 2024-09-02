@@ -1,4 +1,3 @@
-// file: lib/models/chat_input_state.dart
 
 class ChatInputState {
   final bool isComposing;

@@ -36,12 +36,6 @@ class AppTheme {
           foregroundColor: Colors.white,
         ),
       ),
-      // iconButtonTheme: IconButtonThemeData(
-      //   style: IconButton.styleFrom(
-      //     backgroundColor: Colors.teal[300],
-      //     foregroundColor: Colors.white,
-      //   ),
-      // ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: Colors.tealAccent[700],
         foregroundColor: Colors.white,
@@ -88,12 +82,6 @@ class AppTheme {
           foregroundColor: Colors.black,
         ),
       ),
-      // iconButtonTheme: IconButtonThemeData(
-      //   style: IconButton.styleFrom(
-      //     backgroundColor: Colors.teal[300],
-      //     foregroundColor: Colors.black,
-      //   ),
-      // ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: Colors.tealAccent[400],
         foregroundColor: Colors.black,
