@@ -46,7 +46,7 @@ class GeminiService {
       generationConfig: GenerationConfig(
         responseMimeType: "application/json",
         responseSchema: Schema.object(
-            properties: {
+          properties: {
             "summary": Schema.string(),
             "insights": Schema.array(items: Schema.string()),
             "recommendations": Schema.array(items: Schema.string()),
@@ -88,9 +88,10 @@ class GeminiService {
         responseMimeType: "application/json",
         responseSchema: Schema.object(
           properties: {
-            "description": Schema.string(),
-            "objects": Schema.array(items: Schema.string()),
-            "analysis": Schema.string(),
+            "summary": Schema.string(),
+            "insights": Schema.array(items: Schema.string()),
+            "recommendations": Schema.array(items: Schema.string()),
+            "suggestions": Schema.array(items: Schema.string()),
           },
         ),
       ),
@@ -125,9 +126,10 @@ class GeminiService {
         responseMimeType: "application/json",
         responseSchema: Schema.object(
           properties: {
-            "description": Schema.string(),
-            "analysis": Schema.string(),
-            "relevantDetails": Schema.array(items: Schema.string()),
+            "summary": Schema.string(),
+            "insights": Schema.array(items: Schema.string()),
+            "recommendations": Schema.array(items: Schema.string()),
+            "suggestions": Schema.array(items: Schema.string()),
           },
         ),
       ),

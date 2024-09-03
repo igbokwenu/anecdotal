@@ -4,6 +4,10 @@ import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/utils/ai_prompts.dart';
+import 'package:anecdotal/utils/constants.dart';
+import 'package:anecdotal/views/about_view.dart';
+import 'package:anecdotal/widgets/camera_ai.dart';
+import 'package:anecdotal/widgets/camera_gpt.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:anecdotal/views/info_view.dart';
 import 'package:anecdotal/views/report_view.dart';
@@ -25,8 +29,13 @@ class AnecdotalAppHome extends ConsumerWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Your Message'),
-          content: Text(message),
+          title: const Center(
+            child: Icon(Icons.info_outline_rounded),
+          ),
+          content: Text(
+            message,
+            textAlign: TextAlign.center,
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -155,45 +164,22 @@ class AnecdotalAppHome extends ConsumerWidget {
                             description:
                                 'Track your daily treatments, symptoms and feelings',
                             onTap: () async {
-                              final response =
-                                  await GeminiService.sendTextPrompt(
-                                message:
-                                    "Can water damage and growth in a home make someone very sick? Under summary, give a very detailed feedback.",
-                              );
-
-                              if (response != null) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ReportView(
-                                      summaryContent: response['summary'] ??
-                                          'No summary available.',
-                                      keyInsights: response['insights']
-                                              ?.cast<String>() ??
-                                          [],
-                                      recommendations:
-                                          response['recommendations']
-                                                  ?.cast<String>() ??
-                                              [],
-                                      followUpSuggestions:
-                                          response['suggestions']
-                                                  ?.cast<String>() ??
-                                              [],
-                                    ),
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  InfoView(
+                                    title: progressTrackerSectionHeader,
+                                    sectionSummary:
+                                        progressTrackerSectionSummary,
                                   ),
-                                );
-                              } else {
-                                print("No response received.");
-                              }
-
-                              if (kDebugMode) {
-                                print("card clicked");
-                              }
+                                ),
+                              );
                             },
                             onInfoTapped: () {
-                              if (kDebugMode) {
-                                print("info icon clicked");
-                              }
+                              _showMessageDialog(
+                                context,
+                                progressTrackerSectionSummary,
+                              );
                             },
                           ),
                           CustomCard(
@@ -205,27 +191,60 @@ class AnecdotalAppHome extends ConsumerWidget {
                               Navigator.push(
                                 context,
                                 slideLeftTransitionPageBuilder(
-                                  const InfoView(),
+                                  InfoView(
+                                    title: symptomSectionHeader,
+                                    sectionSummary: symptomSectionSummary,
+                                  ),
                                 ),
                               );
                             },
-                            onInfoTapped: () {},
+                            onInfoTapped: () {
+                              _showMessageDialog(
+                                  context, symptomSectionSummary);
+                            },
                           ),
                           CustomCard(
                             title: 'Spread Awareness',
                             icon: Icons.family_restroom,
                             description:
                                 'Share an explainer video with loved ones',
-                            onTap: () {},
-                            onInfoTapped: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  InfoView(
+                                    title: spreadAwarenessSectionHeader,
+                                    sectionSummary:
+                                        spreadAwarenessSectionSummary,
+                                  ),
+                                ),
+                              );
+                            },
+                            onInfoTapped: () {
+                              _showMessageDialog(
+                                  context, spreadAwarenessSectionSummary);
+                            },
                           ),
                           CustomCard(
-                            title: 'Chat with AI',
-                            icon: Icons.chat,
+                            title: 'Find a Doctor',
+                            icon: Icons.location_on,
                             description:
-                                'Ask questions about symptoms and treatments',
-                            onTap: () {},
-                            onInfoTapped: () {},
+                                'Find a CIRS trained doctor in your area',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  InfoView(
+                                    title: findDoctorSectionHeader,
+                                    sectionSummary: findDoctorSectionSummary,
+                                  ),
+                                ),
+                              );
+                            },
+                            onInfoTapped: () {
+                              _showMessageDialog(
+                                  context, findDoctorSectionSummary);
+                            },
                           ),
                         ],
                       ),
@@ -242,20 +261,157 @@ class AnecdotalAppHome extends ConsumerWidget {
                             onTap: () {
                               Navigator.push(
                                 context,
-                                slideRightTransitionPageBuilder(
-                                  const VoiceChatScreen(),
+                                slideLeftTransitionPageBuilder(
+                                  InfoView(
+                                    title: homeRemediesSectionHeader,
+                                    sectionSummary: homeRemediesSectionSummary,
+                                  ),
                                 ),
                               );
                             },
-                            onInfoTapped: () {},
+                            onInfoTapped: () {
+                              _showMessageDialog(
+                                context,
+                                homeRemediesSectionSummary,
+                              );
+                            },
                           ),
                           CustomCard(
                             title: 'Investigate',
                             icon: Icons.camera_alt,
                             description:
                                 'Take pictures of potential mold growth in your home',
-                            onTap: () {},
-                            onInfoTapped: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  InfoView(
+                                    title: investigateSectionHeader,
+                                    sectionSummary: investigateSectionSummary,
+                                    firstWidget: Column(
+                                      children: [
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                slideLeftTransitionPageBuilder(
+                                                  CustomCamera(
+                                                    prompt: 'What do you see',
+                                                    onResponse: (result) {
+                                                      if (result != null) {
+                                                        Navigator.push(
+                                                          context,
+                                                          slideLeftTransitionPageBuilder(
+                                                            ReportView(
+                                                              summaryContent: result[
+                                                                      'summary'] ??
+                                                                  'No summary available.',
+                                                              keyInsights: result[
+                                                                          'insights']
+                                                                      ?.cast<
+                                                                          String>() ??
+                                                                  [],
+                                                              recommendations:
+                                                                  result['recommendations']
+                                                                          ?.cast<
+                                                                              String>() ??
+                                                                      [],
+                                                              followUpSuggestions:
+                                                                  result['suggestions']
+                                                                          ?.cast<
+                                                                              String>() ??
+                                                                      [],
+                                                            ),
+                                                          ),
+                                                        );
+                                                        print(
+                                                            "Summary: ${result['summary']}");
+                                                        print(
+                                                            "Insights: ${result['insights']}");
+                                                        print(
+                                                            "Recommendations: ${result['recommendations']}");
+                                                        print(
+                                                            "Suggestions: ${result['suggestions']}");
+                                                      } else {
+                                                        print(
+                                                            "Analysis failed or returned no results");
+                                                      }
+                                                    },
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: Text("GPT")),
+                                        ElevatedButton.icon(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              slideLeftTransitionPageBuilder(
+                                                AICameraWidget(
+                                                  prompt:
+                                                      "Analyze this image and describe what you see",
+                                                  onAnalysisComplete: (result) {
+                                                    if (result != null) {
+                                                      Navigator.push(
+                                                        context,
+                                                        slideLeftTransitionPageBuilder(
+                                                          ReportView(
+                                                            summaryContent: result[
+                                                                    'summary'] ??
+                                                                'No summary available.',
+                                                            keyInsights: result[
+                                                                        'insights']
+                                                                    ?.cast<
+                                                                        String>() ??
+                                                                [],
+                                                            recommendations:
+                                                                result['recommendations']
+                                                                        ?.cast<
+                                                                            String>() ??
+                                                                    [],
+                                                            followUpSuggestions:
+                                                                result['suggestions']
+                                                                        ?.cast<
+                                                                            String>() ??
+                                                                    [],
+                                                          ),
+                                                        ),
+                                                      );
+                                                      print(
+                                                          "Summary: ${result['summary']}");
+                                                      print(
+                                                          "Insights: ${result['insights']}");
+                                                      print(
+                                                          "Recommendations: ${result['recommendations']}");
+                                                      print(
+                                                          "Suggestions: ${result['suggestions']}");
+                                                    } else {
+                                                      print(
+                                                          "Analysis failed or returned no results");
+                                                    }
+                                                  },
+                                                  enableFlash: true,
+                                                  enableZoom: true,
+                                                  preferredModel:
+                                                      geminiProModel, // Optional
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          label:
+                                              Text("Capture your surrounding"),
+                                          icon: Icon(Icons.camera),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            onInfoTapped: () {
+                              _showMessageDialog(
+                                  context, investigateSectionSummary);
+                            },
                           ),
                           CustomCard(
                             title: 'Lifestyle',
@@ -269,8 +425,22 @@ class AnecdotalAppHome extends ConsumerWidget {
                             title: 'Who Are We',
                             icon: Icons.info,
                             description: 'Learn more about us',
-                            onTap: () {},
-                            onInfoTapped: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  const AboutPage(),
+                                ),
+                              );
+                            },
+                            onInfoTapped: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  const AboutPage(),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -318,7 +488,6 @@ class AnecdotalAppHome extends ConsumerWidget {
                       ? myEmptySizedBox()
                       : Padding(
                           padding: const EdgeInsets.symmetric(vertical: 2.0),
-                          
                           child: chatInputState.isProcessingAudio
                               ? const MySpinKitWaveSpinner()
                               : Recorder(
