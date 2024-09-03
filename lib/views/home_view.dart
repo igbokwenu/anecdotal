@@ -8,6 +8,7 @@ import 'package:anecdotal/utils/constants.dart';
 import 'package:anecdotal/views/about_view.dart';
 import 'package:anecdotal/widgets/camera_ai.dart';
 import 'package:anecdotal/widgets/camera_gpt.dart';
+import 'package:anecdotal/widgets/image_select_ai.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:anecdotal/views/info_view.dart';
 import 'package:anecdotal/views/report_view.dart';
@@ -290,58 +291,6 @@ class AnecdotalAppHome extends ConsumerWidget {
                                     sectionSummary: investigateSectionSummary,
                                     firstWidget: Column(
                                       children: [
-                                        ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                slideLeftTransitionPageBuilder(
-                                                  CustomCamera(
-                                                    prompt: 'What do you see',
-                                                    onResponse: (result) {
-                                                      if (result != null) {
-                                                        Navigator.push(
-                                                          context,
-                                                          slideLeftTransitionPageBuilder(
-                                                            ReportView(
-                                                              summaryContent: result[
-                                                                      'summary'] ??
-                                                                  'No summary available.',
-                                                              keyInsights: result[
-                                                                          'insights']
-                                                                      ?.cast<
-                                                                          String>() ??
-                                                                  [],
-                                                              recommendations:
-                                                                  result['recommendations']
-                                                                          ?.cast<
-                                                                              String>() ??
-                                                                      [],
-                                                              followUpSuggestions:
-                                                                  result['suggestions']
-                                                                          ?.cast<
-                                                                              String>() ??
-                                                                      [],
-                                                            ),
-                                                          ),
-                                                        );
-                                                        print(
-                                                            "Summary: ${result['summary']}");
-                                                        print(
-                                                            "Insights: ${result['insights']}");
-                                                        print(
-                                                            "Recommendations: ${result['recommendations']}");
-                                                        print(
-                                                            "Suggestions: ${result['suggestions']}");
-                                                      } else {
-                                                        print(
-                                                            "Analysis failed or returned no results");
-                                                      }
-                                                    },
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            child: Text("GPT")),
                                         ElevatedButton.icon(
                                           onPressed: () {
                                             Navigator.push(
@@ -349,7 +298,7 @@ class AnecdotalAppHome extends ConsumerWidget {
                                               slideLeftTransitionPageBuilder(
                                                 AICameraWidget(
                                                   prompt:
-                                                      "Analyze this image and describe what you see",
+                                                      sendHouseImageAnalysisPrompt,
                                                   onAnalysisComplete: (result) {
                                                     if (result != null) {
                                                       Navigator.push(
@@ -401,6 +350,49 @@ class AnecdotalAppHome extends ConsumerWidget {
                                           label:
                                               Text("Capture your surrounding"),
                                           icon: Icon(Icons.camera),
+                                        ),
+                                        AIImageSelectWidget(
+                                          prompt: sendHouseImageAnalysisPrompt,
+                                          // allowFileSelect: false,
+                                          maxImages: 4,
+                                          onResponse: (result) {
+                                            if (result != null) {
+                                              Navigator.push(
+                                                context,
+                                                slideLeftTransitionPageBuilder(
+                                                  ReportView(
+                                                    summaryContent: result[
+                                                            'summary'] ??
+                                                        'No summary available.',
+                                                    keyInsights: result[
+                                                                'insights']
+                                                            ?.cast<String>() ??
+                                                        [],
+                                                    recommendations:
+                                                        result['recommendations']
+                                                                ?.cast<
+                                                                    String>() ??
+                                                            [],
+                                                    followUpSuggestions: result[
+                                                                'suggestions']
+                                                            ?.cast<String>() ??
+                                                        [],
+                                                  ),
+                                                ),
+                                              );
+                                              print(
+                                                  "Summary: ${result['summary']}");
+                                              print(
+                                                  "Insights: ${result['insights']}");
+                                              print(
+                                                  "Recommendations: ${result['recommendations']}");
+                                              print(
+                                                  "Suggestions: ${result['suggestions']}");
+                                            } else {
+                                              print(
+                                                  "Analysis failed or returned no results");
+                                            }
+                                          },
                                         ),
                                       ],
                                     ),

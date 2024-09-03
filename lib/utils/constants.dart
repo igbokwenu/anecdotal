@@ -21,7 +21,7 @@ String progressTrackerSectionSummary =
 
 String investigateSectionHeader = "Investigate Your Home";
 String investigateSectionSummary =
-    "Learn more about how your surroundings might be contributing to your condition. This section helps you identify potential environmental triggers like mold, dampness, or other harmful factors that could be affecting your health. Investigate and take steps to create a safer living space.";
+    "Learn more about how your surroundings might be contributing to your condition. This section helps you identify potential environmental triggers like mold, dampness, or other harmful factors that could be affecting your health. Investigate and take steps to create a safer living space. You can either capture your surrounding using the camera or upload and analyze images for a specialized AI powered image analysis on potential mold growth that could make you sick.";
 
 String homeRemediesSectionHeader = "Explore Home Remedies";
 String homeRemediesSectionSummary =

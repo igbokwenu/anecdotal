@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:anecdotal/services/gemini_ai_service.dart';
+import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' show join;
 
@@ -48,8 +48,6 @@ class _AICameraWidgetState extends State<AICameraWidget> {
       _controller =
           CameraController(cameras[selectedCameraIdx], ResolutionPreset.high);
       await _controller!.initialize();
-        await _controller!.lockCaptureOrientation(DeviceOrientation.portraitUp);
-
       if (mounted) setState(() {});
     }
   }
@@ -158,7 +156,11 @@ class _AICameraWidgetState extends State<AICameraWidget> {
                 onPressed: _toggleCameraLens,
               ),
               IconButton(
-                icon: Icon(_isAnalyzing ? Icons.hourglass_empty : Icons.camera),
+                icon: _isAnalyzing
+                    ? const MySpinKitWaveSpinner(
+                        size: 40,
+                      )
+                    : const Icon(Icons.camera),
                 onPressed: _isAnalyzing ? null : _captureImage,
               ),
               if (widget.enableFlash)

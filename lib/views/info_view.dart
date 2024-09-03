@@ -40,7 +40,7 @@ class InfoView extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             mySizedBox(height: 10),
             _buildHeader(context),

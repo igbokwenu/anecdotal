@@ -13,7 +13,7 @@ Widget myEmptySizedBox() {
   return const SizedBox.shrink();
 }
 
-Widget mySpacing({double? spacing}) {
+Widget mySpacing( {double? spacing}) {
   return Gap(
     spacing ?? 10,
   );
