@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
 class ReportView extends StatelessWidget {
@@ -22,7 +23,10 @@ class ReportView extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            const Icon(Icons.auto_awesome),
+            Pulse(
+              delay: const Duration(milliseconds: 5000),
+              child: const Icon(Icons.auto_awesome),
+            ),
             const SizedBox(width: 10),
             Text(
               'Highlights',

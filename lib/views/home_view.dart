@@ -5,7 +5,7 @@ import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/utils/ai_prompts.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
-import 'package:anecdotal/views/general_info_view.dart';
+import 'package:anecdotal/views/info_view.dart';
 import 'package:anecdotal/views/report_view.dart';
 import 'package:anecdotal/widgets/animated_text_home.dart';
 import 'package:anecdotal/widgets/chat_input_widget.dart';
@@ -205,7 +205,7 @@ class AnecdotalAppHome extends ConsumerWidget {
                               Navigator.push(
                                 context,
                                 slideLeftTransitionPageBuilder(
-                                  const GeneralInfoView(),
+                                  const InfoView(),
                                 ),
                               );
                             },
@@ -287,7 +287,7 @@ class AnecdotalAppHome extends ConsumerWidget {
             bottom: 0,
             child: Container(
               padding: const EdgeInsets.symmetric(
-                  horizontal: kIsWeb ? 80 : 20, vertical: 10.0),
+                  horizontal: kIsWeb ? 80 : 20, vertical: 5.0),
               decoration: BoxDecoration(
                 color: Theme.of(context).scaffoldBackgroundColor,
                 boxShadow: [
@@ -310,7 +310,7 @@ class AnecdotalAppHome extends ConsumerWidget {
                           : chatInputState.isSending
                               ? const MyAnimatedText2()
                               : const SizedBox(
-                                  height: 25,
+                                  height: 22,
                                   width: 300,
                                   child: AnimatedText(),
                                 ),
@@ -318,6 +318,7 @@ class AnecdotalAppHome extends ConsumerWidget {
                       ? myEmptySizedBox()
                       : Padding(
                           padding: const EdgeInsets.symmetric(vertical: 2.0),
+                          
                           child: chatInputState.isProcessingAudio
                               ? const MySpinKitWaveSpinner()
                               : Recorder(

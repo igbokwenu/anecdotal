@@ -1,21 +1,39 @@
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
-class GeneralInfoView extends StatelessWidget {
-  const GeneralInfoView({super.key});
+class InfoView extends StatelessWidget {
+  final String? title;
+  final String? patientsName;
+  final String? sectionSummary;
+  final Widget? firstWidget;
+  final Widget? secondWidget;
+  const InfoView({
+    super.key,
+    this.patientsName,
+    this.sectionSummary,
+    this.firstWidget,
+    this.secondWidget,
+    this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Icon(Icons.auto_awesome),
-            SizedBox(
-              width: 10,
+            Pulse(
+                delay: const Duration(milliseconds: 2000),
+                child: const Icon(Icons.auto_awesome)),
+            const SizedBox(width: 10),
+            Text(
+              title ?? 'Analyze Your Symptoms',
+              style: theme.textTheme.titleLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
             ),
-            Text('Summary'),
           ],
         ),
         elevation: 0,
@@ -28,16 +46,13 @@ class GeneralInfoView extends StatelessWidget {
             _buildHeader(context),
             _buildSection(
               context,
-              title: 'Findings',
-              icon: Icons.search,
-              content: 'Patient shows signs of...',
-            ),
-            _buildSection(
-              context,
-              title: 'Insights',
+              title: 'Section Summary',
               icon: Icons.lightbulb,
-              content: 'Based on the symptoms, it appears...',
+              content: sectionSummary ??
+                  'Here, we take a look at your symptoms and give you a general idea of if you might be dealing with Mold illness.',
             ),
+            firstWidget ?? myEmptySizedBox(),
+            secondWidget ?? myEmptySizedBox(),
             _buildSuggestions(context),
           ],
         ),
@@ -47,24 +62,17 @@ class GeneralInfoView extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
-      // decoration: BoxDecoration(
-      //   color: Theme.of(context).primaryColor,
-      //   borderRadius: const BorderRadius.all(
-      //     Radius.circular(30),
-      //   ),
-      // ),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'John Doe',
+            patientsName ?? 'John Doe',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
           ),
-          const SizedBox(height: 10),
           Text(
             'Last updated: August 31, 2024',
             style: Theme.of(context).textTheme.labelMedium!.copyWith(
@@ -95,7 +103,7 @@ class GeneralInfoView extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   title,
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
               ],
             ),
@@ -126,8 +134,8 @@ class GeneralInfoView extends StatelessWidget {
                 Icon(Icons.recommend, color: Theme.of(context).iconTheme.color),
                 const SizedBox(width: 8),
                 Text(
-                  'Suggestions',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  'Follow Up Suggestions',
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
               ],
             ),

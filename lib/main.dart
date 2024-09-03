@@ -1,7 +1,7 @@
 import 'package:anecdotal/firebase_options.dart';
 import 'package:anecdotal/providers/theme_provider.dart';
 import 'package:anecdotal/utils/themes.dart';
-import 'package:anecdotal/views/home_page.dart';
+import 'package:anecdotal/views/home_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

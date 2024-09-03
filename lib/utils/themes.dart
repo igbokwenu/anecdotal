@@ -19,7 +19,7 @@ class AppTheme {
       textTheme: TextTheme(
         bodyLarge: TextStyle(color: Colors.teal[900]),
         bodyMedium: TextStyle(color: Colors.teal[900]),
-        titleLarge: TextStyle(color: Colors.teal[800]),
+        titleLarge: const TextStyle(color: Colors.white),
         titleMedium: TextStyle(color: Colors.teal[800]),
       ),
       appBarTheme: const AppBarTheme(
