@@ -13,7 +13,7 @@ const String myOpenAIKey =
 //Home Section
 String symptomSectionHeader = "Analyze Your Symptoms";
 String symptomSectionSummary =
-    "Discover if your symptoms might be related to Mold illness. Simply share your story or select symptoms that applies to you from a list. Then, generate a report for insights. Remember, this is not medical advice, but a starting point for further discussion with a healthcare professional.";
+    "Discover if your symptoms might be related to Mold illness. Simply share your story or select symptoms that applies to you from a list. Then, generate a report for insights. \n\nRemember, this is not medical advice, but a starting point for further discussion with a healthcare professional.";
 
 String progressTrackerSectionHeader = "Track Your Progress";
 String progressTrackerSectionSummary =
@@ -34,3 +34,7 @@ String findDoctorSectionSummary =
 String spreadAwarenessSectionHeader = "Spread Awareness";
 String spreadAwarenessSectionSummary =
     "Help raise awareness about Chronic Inflammatory Response Syndrome and mold illness. This section provides resources and information that you can share with others, empowering your community to recognize and address this often-overlooked health issue.";
+
+String interpretLabResultSectionHeader = "Lab Result";
+String interpretLabResultSectionSummary =
+    "Decipher your test results with confidence! This section offers clear explanations and expert insights to help you understand your lab results, empowering you to take informed action towards your recovery from mold illness and related conditions. \n\n**Please note that this is not a replacement or substitute for professional medical interpretation of the report. Always consult a qualified healthcare professional for personalized guidance and diagnosis.**";

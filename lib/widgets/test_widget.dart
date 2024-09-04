@@ -1,83 +1,63 @@
-import 'dart:io';
-import 'package:anecdotal/services/gemini_ai_service.dart';
-import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
-import 'package:anecdotal/widgets/voice_recorder_widget.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
-class VoiceChatScreen extends StatefulWidget {
-  const VoiceChatScreen({super.key});
+late List<CameraDescription> _cameras;
 
-  @override
-  _VoiceChatScreenState createState() => _VoiceChatScreenState();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  _cameras = await availableCameras();
+  runApp(const CameraApp());
 }
 
-class _VoiceChatScreenState extends State<VoiceChatScreen> {
-  String _responseText = '';
-  bool _isLoading = false;
+/// CameraApp is the Main Application.
+class CameraApp extends StatefulWidget {
+  /// Default Constructor
+  const CameraApp({super.key});
 
-  Future<void> _handleAudioStop(String path) async {
-    setState(() {
-      _isLoading = true;
-      _responseText = 'Processing audio...';
-    });
+  @override
+  State<CameraApp> createState() => _CameraAppState();
+}
 
-    try {
-      final response = await GeminiService.analyzeAudio(
-        audios: [File(path)],
-        prompt: "Analyze the content of this audio and provide a summary.",
-      );
+class _CameraAppState extends State<CameraApp> {
+  late CameraController controller;
 
-      if (response != null) {
-        setState(() {
-          _responseText = 'Summary: ${response['summary']}\n\n'
-              'Insights: ${response['insights']?.join(', ')}\n\n'
-              'Recommendations: ${response['recommendations']?.join(', ')}';
-        });
-      } else {
-        setState(() {
-          _responseText = 'Failed to analyze audio.';
-        });
+  @override
+  void initState() {
+    super.initState();
+    controller = CameraController(_cameras[0], ResolutionPreset.max);
+    controller.initialize().then((_) {
+      if (!mounted) {
+        return;
       }
-    } catch (e) {
-      setState(() {
-        _responseText = 'Error: $e';
-      });
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
+      setState(() {});
+    }).catchError((Object e) {
+      if (e is CameraException) {
+        switch (e.code) {
+          case 'CameraAccessDenied':
+            // Handle access errors here.
+            break;
+          default:
+            // Handle other errors here.
+            break;
+        }
+      }
+    });
+  }
 
-    // Clean up the audio file
-    File(path).delete();
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Voice Chat with Gemini')),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Text(_responseText),
-            ),
-          ),
-          const MySpinKitWaveSpinner(
-            size: 50,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Recorder(
-              onStop: _handleAudioStop,
-              onStart: () => setState(() => _responseText = 'Recording...'),
-            ),
-          ),
-          if (_isLoading) const CircularProgressIndicator(),
-        ],
-      ),
+    if (!controller.value.isInitialized) {
+      return Container();
+    }
+    return MaterialApp(
+      home: CameraPreview(controller),
     );
   }
 }

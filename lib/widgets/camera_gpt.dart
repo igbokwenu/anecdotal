@@ -8,10 +8,10 @@ class CustomCamera extends StatefulWidget {
   final Function(Map<String, dynamic>?) onResponse;
 
   const CustomCamera({
-    Key? key,
+    super.key,
     required this.prompt,
     required this.onResponse,
-  }) : super(key: key);
+  });
 
   @override
   _CustomCameraState createState() => _CustomCameraState();
@@ -70,7 +70,7 @@ class _CustomCameraState extends State<CustomCamera> {
                 left: MediaQuery.of(context).size.width / 2 - 30,
                 child: FloatingActionButton(
                   onPressed: _takePicture,
-                  child: Icon(Icons.camera),
+                  child: const Icon(Icons.camera),
                 ),
               ),
               Positioned(
@@ -106,7 +106,7 @@ class _CustomCameraState extends State<CustomCamera> {
             ],
           );
         } else {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
       },
     );
@@ -118,15 +118,17 @@ List<CameraDescription> cameras = [];
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   cameras = await availableCameras();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('Custom Camera Example')),
+        appBar: AppBar(title: const Text('Custom Camera Example')),
         body: CustomCamera(
           prompt: 'Analyze this image',
           onResponse: (response) {

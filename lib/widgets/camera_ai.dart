@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' show join;
+import 'dart:math' as math;
 
 class AICameraWidget extends StatefulWidget {
   final String prompt;
@@ -14,13 +15,13 @@ class AICameraWidget extends StatefulWidget {
   final String? preferredModel;
 
   const AICameraWidget({
-    Key? key,
+    super.key,
     required this.prompt,
     required this.onAnalysisComplete,
     this.enableFlash = true,
     this.enableZoom = true,
     this.preferredModel,
-  }) : super(key: key);
+  });
 
   @override
   _AICameraWidgetState createState() => _AICameraWidgetState();
@@ -44,9 +45,14 @@ class _AICameraWidgetState extends State<AICameraWidget> {
 
   Future<void> _initializeCamera() async {
     cameras = await availableCameras();
+    final firstCamera = cameras.first;
+
     if (cameras.isNotEmpty) {
-      _controller =
-          CameraController(cameras[selectedCameraIdx], ResolutionPreset.high);
+      _controller = CameraController(
+        cameras[selectedCameraIdx],
+        ResolutionPreset.high,
+        enableAudio: false,
+      );
       await _controller!.initialize();
       if (mounted) setState(() {});
     }
@@ -139,12 +145,21 @@ class _AICameraWidgetState extends State<AICameraWidget> {
       return Container();
     }
 
+    // Apply a transformation to correct the orientation if necessary
+    // You may need to adjust the angle based on your specific case (e.g., 90, 180, 270)
+    final cameraPreview = Transform(
+      alignment: Alignment.center,
+      transform: Matrix4.rotationY(0)
+        ..rotateZ(math.pi / 2), // Rotate by 180 degrees
+      child: CameraPreview(_controller!),
+    );
+
     return Column(
       children: [
         GestureDetector(
           onScaleStart: (_) => _baseZoomLevel = _currentZoomLevel,
           onScaleUpdate: widget.enableZoom ? _handleZoomUpdate : null,
-          child: CameraPreview(_controller!),
+          child: cameraPreview,
         ),
         Padding(
           padding: const EdgeInsets.all(16.0),
@@ -152,7 +167,7 @@ class _AICameraWidgetState extends State<AICameraWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                icon: Icon(Icons.switch_camera),
+                icon: const Icon(Icons.switch_camera),
                 onPressed: _toggleCameraLens,
               ),
               IconButton(

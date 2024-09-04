@@ -57,7 +57,7 @@ class AppTheme {
         primaryContainer: Colors.teal[700]!,
         secondary: Colors.tealAccent[400]!,
         tertiary: Colors.teal[200]!,
-        surface: const Color(0xFF1E1E1E),
+        surface: Colors.grey[900]!,
         onPrimary: Colors.black,
         onSecondary: Colors.black,
         onSurface: Colors.white,

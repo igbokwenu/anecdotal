@@ -12,12 +12,12 @@ class AIImageSelectWidget extends StatefulWidget {
   final int maxImages;
 
   const AIImageSelectWidget({
-    Key? key,
+    super.key,
     required this.prompt,
     required this.onResponse,
     this.allowFileSelect = false,
     this.maxImages = 4,
-  }) : super(key: key);
+  });
 
   @override
   _AIImageSelectWidgetState createState() => _AIImageSelectWidgetState();
