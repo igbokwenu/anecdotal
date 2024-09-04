@@ -36,7 +36,7 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
         // Handle password reset error
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error resetting password. Please try again.'),
+            content: Text('Error resetting password. Please try again. \n $e'),
             duration: Duration(seconds: 3),
           ),
         );

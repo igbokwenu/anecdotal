@@ -1,8 +1,11 @@
 // sign_in_screen.dart
 import 'package:anecdotal/services/auth_service.dart';
+import 'package:anecdotal/utils/constants.dart';
+import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toastification/toastification.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -44,6 +47,7 @@ class _SignInScreenState extends State<SignInScreen> {
           _emailController.text.trim(),
           _passwordController.text.trim(),
         );
+        Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
         // Navigate to the home screen
       } on FirebaseAuthException catch (e) {
         // Handle sign-in error
@@ -54,6 +58,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Future<void> _signInWithGoogle() async {
     try {
       await _authService.signInWithGoogle();
+      Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
       // Navigate to the home screen
     } on FirebaseAuthException catch (e) {
       // Handle sign-in error
@@ -63,14 +68,19 @@ class _SignInScreenState extends State<SignInScreen> {
   Future<void> _signInAnonymously() async {
     try {
       await _authService.signInAnonymously();
+      Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
       // Navigate to the home screen
     } on FirebaseAuthException catch (e) {
+      ReusableFunctions.showCustomToast(
+        description: "Error: $e",
+        type: ToastificationType.error,
+      );
       // Handle sign-in error
     }
   }
 
   void _navigateToPasswordRecovery() {
-    // Navigate to the password recovery screen
+    Navigator.pushNamed(context, AppRoutes.passwordRecovery);
   }
 
   @override

@@ -1,5 +1,6 @@
 // sign_up_screen.dart
 import 'package:anecdotal/services/auth_service.dart';
+import 'package:anecdotal/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -25,19 +26,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  Future<void> _signUpWithEmailAndPassword() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        await _authService.signInWithEmailAndPassword(
-          _emailController.text.trim(),
-          _passwordController.text.trim(),
-        );
-        // Navigate to the home screen
-      } on FirebaseAuthException catch (e) {
-        // Handle sign-up error
-      }
+Future<void> _signUpWithEmailAndPassword() async {
+  if (_formKey.currentState!.validate()) {
+    try {
+      await _authService.signUpWithEmailAndPassword(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
+      );
+     Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
+    } on FirebaseAuthException catch (e) {
+      // Handle sign-up error
     }
   }
+}
 
   @override
   Widget build(BuildContext context) {

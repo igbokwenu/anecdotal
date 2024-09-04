@@ -153,43 +153,6 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                slideLeftTransitionPageBuilder(
-                                  SignInScreen(),
-                                ),
-                              );
-                            },
-                            child: Text("Sign In"),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                slideLeftTransitionPageBuilder(
-                                  SignUpScreen(),
-                                ),
-                              );
-                            },
-                            child: Text("Sign Up"),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                slideLeftTransitionPageBuilder(
-                                  PasswordRecoveryScreen(),
-                                ),
-                              );
-                            },
-                            child: Text("Password"),
-                          ),
-                        ],
-                      ),
                       Text(
                         "Anecdotal is built by patients, with the help of compassionate doctors - for those in search of answers and support regarding complex and debilitating chronic conditions like CIRS and Mold Illness. ",
                         style: Theme.of(context)

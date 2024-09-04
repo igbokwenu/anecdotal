@@ -38,3 +38,10 @@ String spreadAwarenessSectionSummary =
 String interpretLabResultSectionHeader = "Lab Result";
 String interpretLabResultSectionSummary =
     "Understand your test results with confidence! This section offers clear explanations and expert insights to help you understand your lab results, empowering you to take informed action towards your recovery from mold illness and related conditions. \n\n**Please note that this is not a replacement or substitute for professional medical interpretation of the report. Always consult a qualified healthcare professional for personalized guidance and diagnosis.**";
+
+class AppRoutes {
+  static const String authWrapper = '/';
+  static const String signUp = '/signUp';
+  static const String passwordRecovery = '/passwordRecovery';
+  static const String home = '/home';
+}
