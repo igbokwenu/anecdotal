@@ -1,3 +1,6 @@
+import 'package:anecdotal/views/remember_password_view.dart';
+import 'package:anecdotal/views/sign_in_view.dart';
+import 'package:anecdotal/views/sign_up_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -150,6 +153,43 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  SignInScreen(),
+                                ),
+                              );
+                            },
+                            child: Text("Sign In"),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  SignUpScreen(),
+                                ),
+                              );
+                            },
+                            child: Text("Sign Up"),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  PasswordRecoveryScreen(),
+                                ),
+                              );
+                            },
+                            child: Text("Password"),
+                          ),
+                        ],
+                      ),
                       Text(
                         "Anecdotal is built by patients, with the help of compassionate doctors - for those in search of answers and support regarding complex and debilitating chronic conditions like CIRS and Mold Illness. ",
                         style: Theme.of(context)
@@ -424,23 +464,26 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                               onInfoTapped: () {},
                             ),
                             CustomCard(
-                              title: 'Who Are We',
-                              icon: Icons.info,
-                              description: 'Learn more about us',
+                              title: 'Interpret Lab',
+                              icon: Icons.biotech_rounded,
+                              description:
+                                  'Get a preliminary assessment of your lab results',
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   slideLeftTransitionPageBuilder(
-                                    const AboutPage(),
+                                    InfoView(
+                                      title: interpretLabResultSectionHeader,
+                                      sectionSummary:
+                                          interpretLabResultSectionSummary,
+                                    ),
                                   ),
                                 );
                               },
                               onInfoTapped: () {
-                                Navigator.push(
+                                _showMessageDialog(
                                   context,
-                                  slideLeftTransitionPageBuilder(
-                                    const AboutPage(),
-                                  ),
+                                  interpretLabResultSectionSummary,
                                 );
                               },
                             ),

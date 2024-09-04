@@ -1,4 +1,5 @@
 import 'package:anecdotal/services/animated_navigator.dart';
+import 'package:anecdotal/views/about_view.dart';
 import 'package:anecdotal/widgets/test_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
@@ -41,6 +42,12 @@ class CustomDrawer extends StatelessWidget {
             ListTile(
               onTap: () {
                 // Navigate to About
+                Navigator.push(
+                  context,
+                  slideLeftTransitionPageBuilder(
+                    const AboutPage(),
+                  ),
+                );
               },
               leading: const Icon(Icons.info),
               title: const Text('About'),
