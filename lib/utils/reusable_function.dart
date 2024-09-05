@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:toastification/toastification.dart';
 
-class ReusableFunctions {
+class MyReusableFunctions {
   // Static method to show custom toast
   static void showCustomToast({
     required String description, // Required parameter
@@ -25,6 +25,55 @@ class ReusableFunctions {
       borderRadius: borderRadius,
       boxShadow: boxShadow ?? lowModeShadow,
       applyBlurEffect: applyBlurEffect,
+    );
+  }
+
+  static Future<void> myReusableCustomDialog({
+    required BuildContext context,
+    Widget? widget,
+    required IconData icon,
+    Color? dialogIconColor,
+    List<Widget>? actions,
+    String? message,
+    String? actionButtonText,
+    Color? textColor,
+    bool barrierDismissible = true,
+  }) {
+    return showDialog(
+      barrierDismissible: barrierDismissible,
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Icon(
+          icon,
+          size: 40,
+          color: dialogIconColor ?? Theme.of(context).iconTheme.color,
+        ),
+        content: widget ??
+            Text(
+              message ?? '',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16, // Adjust the font size as needed
+                color:
+                    textColor ?? Theme.of(context).textTheme.bodyLarge?.color,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        actions: actions ??
+            <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  actionButtonText ?? 'Close',
+                  style: TextStyle(
+                    fontSize: 16, // Adjust the font size as needed
+                    color: dialogIconColor ?? Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+      ),
     );
   }
 }

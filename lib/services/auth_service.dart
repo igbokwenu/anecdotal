@@ -7,7 +7,9 @@ import 'package:anecdotal/services/database_service.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+      clientId:
+          "996712058212-p9347k0u5mipoqc6176uc8k0f21d05eq.apps.googleusercontent.com");
 
   Future<void> _createUserDocumentIfNeeded(User? user) async {
     if (user != null) {
@@ -40,7 +42,7 @@ class AuthService {
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      ReusableFunctions.showCustomToast(
+      MyReusableFunctions.showCustomToast(
           description: "Error: $e", type: ToastificationType.error);
       return null;
     }
@@ -63,14 +65,14 @@ class AuthService {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('email', email);
 
-      ReusableFunctions.showCustomToast(
+      MyReusableFunctions.showCustomToast(
         description: "Sign-up successful",
         type: ToastificationType.success,
       );
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      ReusableFunctions.showCustomToast(
+      MyReusableFunctions.showCustomToast(
           description: "Error: $e", type: ToastificationType.error);
       return null;
     }
@@ -93,14 +95,14 @@ class AuthService {
       // Create user document
       await _createUserDocumentIfNeeded(userCredential.user);
 
-      ReusableFunctions.showCustomToast(
+      MyReusableFunctions.showCustomToast(
         description: "Sign-in successful",
         type: ToastificationType.success,
       );
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      ReusableFunctions.showCustomToast(
+      MyReusableFunctions.showCustomToast(
           description: "Error: $e", type: ToastificationType.error);
       return null;
     }
@@ -116,7 +118,7 @@ class AuthService {
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      ReusableFunctions.showCustomToast(
+      MyReusableFunctions.showCustomToast(
         description: "Error: $e",
         type: ToastificationType.error,
       );
@@ -149,24 +151,24 @@ class AuthService {
         // Delete the user from Firebase Authentication
         await user.delete();
 
-        ReusableFunctions.showCustomToast(
-          description: "User and their data deleted successfully",
+        MyReusableFunctions.showCustomToast(
+          description: "Your account and user data was deleted successfully",
           type: ToastificationType.success,
         );
       } else {
-        ReusableFunctions.showCustomToast(
+        MyReusableFunctions.showCustomToast(
           description: "No user is currently signed in",
           type: ToastificationType.warning,
         );
       }
     } on FirebaseAuthException catch (e) {
-      ReusableFunctions.showCustomToast(
+      MyReusableFunctions.showCustomToast(
           description: "Error deleting user: $e",
           type: ToastificationType.error);
     }
   }
 
-    // Method to check if the user signed in anonymously
+  // Method to check if the user signed in anonymously
   bool isUserAnonymous() {
     User? user = _firebaseAuth.currentUser;
     if (user != null) {

@@ -59,7 +59,7 @@ class PrivacyAndTermsButton extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              // Navigate to Terms of Service
+              Navigator.pushNamed(context, AppRoutes.terms);
             },
             child: Text(
               'Terms of Service',
@@ -71,7 +71,7 @@ class PrivacyAndTermsButton extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              // Navigate to Privacy Policy
+             Navigator.pushNamed(context, AppRoutes.privacy);
             },
             child: Text(
               'Privacy Policy',
@@ -98,53 +98,6 @@ class PrivacyAndTermsButton extends StatelessWidget {
   }
 }
 
-Future<void> myReusableCustomDialog({
-  required BuildContext context,
-  Widget? widget,
-  required IconData icon,
-  Color? dialogIconColor,
-  List<Widget>? actions,
-  String? message,
-  String? actionButtonText,
-  Color? textColor,
-  bool barrierDismissible = true,
-}) {
-  return showDialog(
-    barrierDismissible: barrierDismissible,
-    context: context,
-    builder: (context) => AlertDialog(
-      title: Icon(
-        icon,
-        size: 40,
-        color: dialogIconColor ?? Theme.of(context).primaryColor,
-      ),
-      content: widget ??
-          Text(
-            message ?? '',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16, // Adjust the font size as needed
-              color: textColor ?? Theme.of(context).textTheme.bodyLarge?.color,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-      actions: actions ??
-          <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(
-                actionButtonText ?? 'Close',
-                style: TextStyle(
-                  fontSize: 16, // Adjust the font size as needed
-                  color: dialogIconColor ?? Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-    ),
-  );
-}
 
 Widget mySizedBox({double? height}) {
   return SizedBox(

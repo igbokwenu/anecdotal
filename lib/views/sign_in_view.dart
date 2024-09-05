@@ -77,7 +77,7 @@ class _SignInScreenState extends State<SignInScreen> {
       Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
       // Navigate to the home screen
     } on FirebaseAuthException catch (e) {
-      ReusableFunctions.showCustomToast(
+      MyReusableFunctions.showCustomToast(
         description: "Error: $e",
         type: ToastificationType.error,
       );
@@ -99,98 +99,98 @@ class _SignInScreenState extends State<SignInScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const MyCircularImage(imageUrl: logoAssetImageUrlNoTagLine),
-              mySpacing(spacing: 20),
-              TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const MyCircularImage(imageUrl: logoAssetImageUrlNoTagLine),
+                mySpacing(spacing: 20),
+                TextFormField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty || !value.contains('@')) {
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value!.isEmpty || !value.contains('@')) {
-                    return 'Please enter a valid email address';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _passwordController,
-                obscureText: _obscurePassword,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: Icon(_obscurePassword
-                        ? Icons.visibility_off
-                        : Icons.visibility),
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                    },
+                const SizedBox(height: 16.0),
+                TextFormField(
+                  controller: _passwordController,
+                  obscureText: _obscurePassword,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(_obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility),
+                      onPressed: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value!.length < 6) {
+                      return 'Password must be at least 6 characters long';
+                    }
+                    return null;
+                  },
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: _navigateToPasswordRecovery,
+                    child: const Text('Forgot Password'),
                   ),
                 ),
-                validator: (value) {
-                  if (value!.length < 6) {
-                    return 'Password must be at least 6 characters long';
-                  }
-                  return null;
-                },
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: _navigateToPasswordRecovery,
-                  child: const Text('Forgot Password'),
+                ElevatedButton.icon(
+                  onPressed: _signInWithEmailAndPassword,
+                  label: const Text('Sign In'),
+                  icon: const Icon(Icons.login_rounded),
                 ),
-              ),
-              ElevatedButton.icon(
-                onPressed: _signInWithEmailAndPassword,
-                label: const Text('Sign In'),
-                icon: const Icon(Icons.login_rounded),
-              ),
-              mySpacing(spacing: 25),
-              const Divider(
-                height: 10,
-                indent: 60,
-                endIndent: 60,
-              ),
-              ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pushNamed(context, AppRoutes.signUp);
-                },
-                label: const Text('Create Account'),
-                icon: const Icon(Icons.person_add),
-              ),
-              mySpacing(),
-              ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pushNamed(context, AppRoutes.signUp);
-                },
-                label: const Text('Sign In Anonymously'),
-                icon: const Icon(Icons.visibility_off),
-              ),
-              if (Platform.isAndroid) const SizedBox(height: 16.0),
-              if (Platform.isAndroid)
+                mySpacing(spacing: 25),
+                const Divider(
+                  height: 10,
+                  indent: 60,
+                  endIndent: 60,
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pushNamed(context, AppRoutes.signUp);
+                  },
+                  label: const Text('Create Account'),
+                  icon: const Icon(Icons.person_add),
+                ),
+                mySpacing(),
+                ElevatedButton.icon(
+                  onPressed: _signInAnonymously,
+                  label: const Text('Continue Anonymously'),
+                  icon: const Icon(Icons.visibility_off),
+                ),
+                const SizedBox(height: 16.0),
                 OutlinedButton.icon(
                   onPressed: _signInWithGoogle,
                   icon: const Icon(Icons.person),
                   label: const Text('Sign In with Google'),
                 ),
-              mySpacing(),
-              const Align(
-                alignment: Alignment.bottomCenter,
-                child: PrivacyAndTermsButton(
-                  showAbout: true,
+                mySpacing(),
+                const Align(
+                  alignment: Alignment.bottomCenter,
+                  child: PrivacyAndTermsButton(
+                    showAbout: true,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

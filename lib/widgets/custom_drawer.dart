@@ -1,6 +1,7 @@
 import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants.dart';
+import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/about_view.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:anecdotal/widgets/test_widget.dart';
@@ -41,7 +42,7 @@ class CustomDrawer extends StatelessWidget {
                 // Navigate to Profile
               },
               leading: const Icon(Icons.account_circle_rounded),
-              title: const Text('Profile'),
+              title: const Text('Account'),
             ),
             ListTile(
               onTap: () {
@@ -77,36 +78,31 @@ class CustomDrawer extends StatelessWidget {
               leading: const Icon(Icons.contact_support),
               title: const Text('Contact Us'),
             ),
-            ListTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  slideLeftTransitionPageBuilder(
-                    const CameraApp(),
-                  ),
-                );
-              },
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-            ),
             const Spacer(),
             ListTile(
               onTap: () async {
                 authService.isUserAnonymous()
-                    ? myReusableCustomDialog(
+                    ? MyReusableFunctions.myReusableCustomDialog(
                         context: context,
                         icon: Icons.info,
                         message:
                             "You are signed in anonymously, this means that all your data will be lost forever if you sign out now. Are you sure you want to sign out?",
-                        widget: TextButton(
-                          onPressed: () async {
-                            authService.deleteUser();
-                            await authService.signOut();
-                            Navigator.pop(context);
-                          },
-                          child: const Text("Sign Out & Delete Account"),
-                        ),
-                      )
+                        actions: [
+                            ElevatedButton(
+                              onPressed: () async {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Create Account"),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                Navigator.pop(context);
+                                await authService.deleteUser();
+                                await authService.signOut();
+                              },
+                              child: const Text("Sign Out & Delete Account"),
+                            ),
+                          ])
                     : await authService.signOut();
                 // Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
               },
@@ -114,7 +110,7 @@ class CustomDrawer extends StatelessWidget {
               title: const Text('Sign Out'),
             ),
             const PrivacyAndTermsButton(),
-            ],
+          ],
         ),
       ),
     );

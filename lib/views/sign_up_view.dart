@@ -126,9 +126,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: _signUpWithEmailAndPassword,
-                child: const Text('Sign Up'),
+                child: const Text('Create Account'),
               ),
-               mySpacing(),
+              mySpacing(),
               const Align(
                 alignment: Alignment.bottomCenter,
                 child: PrivacyAndTermsButton(
