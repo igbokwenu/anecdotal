@@ -5,6 +5,7 @@ import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/about_view.dart';
 import 'package:anecdotal/views/account_view.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
+import 'package:anecdotal/widgets/test_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 
@@ -53,12 +54,12 @@ class CustomDrawer extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   slideLeftTransitionPageBuilder(
-                //     FancyAccountPage(),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  slideLeftTransitionPageBuilder(
+                    CameraExampleHome(),
+                  ),
+                );
               },
               leading: const Icon(Icons.chat),
               title: const Text('Chat Room'),
