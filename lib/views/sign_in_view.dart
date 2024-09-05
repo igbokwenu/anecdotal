@@ -103,7 +103,16 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const MyCircularImage(imageUrl: logoAssetImageUrlNoTagLine),
+                const MyCircularImage(
+                  imageUrl: logoAssetImageUrlNoTagLine,
+                  size: 120,
+                ),
+                mySpacing(),
+                Text(
+                  "You're not alone in your healing journey. Anecdotal is a safe space to track your progress, explore resources, and connect with others who understand what you're going through 🤍",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
                 mySpacing(spacing: 20),
                 TextFormField(
                   controller: _emailController,
@@ -154,7 +163,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ElevatedButton.icon(
                   onPressed: _signInWithEmailAndPassword,
                   label: const Text('Sign In'),
-                  icon: const Icon(Icons.login_rounded),
+                  icon: const Icon(Icons.auto_awesome),
                 ),
                 mySpacing(spacing: 25),
                 const Divider(

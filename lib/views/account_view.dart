@@ -1,15 +1,15 @@
 import 'package:anecdotal/utils/constants.dart';
+import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:anecdotal/services/auth_service.dart';
 
 class AccountPage extends StatelessWidget {
-  final AuthService _authService = AuthService();
-  User? user = FirebaseAuth.instance.currentUser;
-  AccountPage({super.key});
+  const AccountPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AuthService authService = AuthService();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Account Details'),
@@ -26,6 +26,19 @@ class AccountPage extends StatelessWidget {
             _buildReportCardButton(context),
             const SizedBox(height: 20),
             _buildDeleteAccountButton(context),
+            const SizedBox(height: 20),
+            if (authService.isUserAnonymous())
+              Column(
+                children: [
+                  Text(
+                    'You are signed in anonymously. When you sign out, your account and data will be permanently deleted. To preserve your data you can click the button below to link your data to your login credentials.',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  mySpacing(),
+                  _buildLinkAccountButton(context),
+                ],
+              ),
           ],
         ),
       ),
@@ -34,6 +47,7 @@ class AccountPage extends StatelessWidget {
 
   // Build profile picture and basic info
   Widget _buildProfileSection() {
+    User? user = FirebaseAuth.instance.currentUser;
     return Row(
       children: [
         const CircleAvatar(
@@ -97,6 +111,29 @@ class AccountPage extends StatelessWidget {
     );
   }
 
+  // Build "View Reports" button
+  Widget _buildLinkAccountButton(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () {
+          // Navigate to report page
+          Navigator.pushNamed(context, AppRoutes.signUp);
+        },
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.all(16.0),
+          backgroundColor: Colors.green,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+        child: const Text(
+          'Link Account',
+          style: TextStyle(fontSize: 16),
+        ),
+      ),
+    );
+  }
+
   // Build "Delete Account" button
   Widget _buildDeleteAccountButton(BuildContext context) {
     return SizedBox(
@@ -121,6 +158,7 @@ class AccountPage extends StatelessWidget {
 
   // Show confirmation dialog before deleting account
   void _showDeleteConfirmationDialog(BuildContext context) {
+    final AuthService authService = AuthService();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -137,7 +175,7 @@ class AccountPage extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
-                await _authService
+                await authService
                     .deleteUser(); // Call AuthService delete account
                 Navigator.of(context).pop(); // Close the dialog
                 Navigator.pushReplacementNamed(context,

@@ -39,25 +39,14 @@ class CustomDrawer extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                Navigator.push(
-                  context,
-                  slideLeftTransitionPageBuilder(
-                     AccountPage(),
-                  ),
-                );
+                Navigator.pushNamed(context, AppRoutes.account);
               },
               leading: const Icon(Icons.account_circle_rounded),
               title: const Text('Account'),
             ),
             ListTile(
               onTap: () {
-                // Navigate to About
-                Navigator.push(
-                  context,
-                  slideLeftTransitionPageBuilder(
-                    const AboutPage(),
-                  ),
-                );
+                Navigator.pushNamed(context, AppRoutes.about);
               },
               leading: const Icon(Icons.info),
               title: const Text('About'),

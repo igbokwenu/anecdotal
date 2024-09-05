@@ -65,7 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final authService = AuthService();
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('Sign Up')),
+        title: const Center(child: Text('Create Your Account')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -150,9 +150,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                 ),
                 const SizedBox(height: 16.0),
-                ElevatedButton(
+                ElevatedButton.icon(
                   onPressed: _handleSignUp,
-                  child: const Text('Create Account'),
+                  label: const Text('Create Account'),
+                  icon: const Icon(Icons.auto_awesome),
                 ),
                 mySpacing(),
                 const Align(

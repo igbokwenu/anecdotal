@@ -47,6 +47,7 @@ class AppRoutes {
   static const String about = '/about';
    static const String privacy = '/privacy';
   static const String terms = '/terms';
+  static const String account = '/account';
 }
 
 const String logoAssetImageUrlCircular =
