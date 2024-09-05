@@ -113,38 +113,8 @@ class CustomDrawer extends StatelessWidget {
               leading: const Icon(Icons.logout_rounded),
               title: const Text('Sign Out'),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 16.0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      // Navigate to Terms of Service
-                    },
-                    child: Text(
-                      'Terms of Service',
-                      style: Theme.of(context).textTheme.labelSmall,
-                    ),
-                  ),
-                  const Text(
-                    '|',
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      // Navigate to Privacy Policy
-                    },
-                    child: Text(
-                      'Privacy Policy',
-                      style: Theme.of(context).textTheme.labelSmall,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+            const PrivacyAndTermsButton(),
+            ],
         ),
       ),
     );

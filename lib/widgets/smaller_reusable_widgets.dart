@@ -1,8 +1,102 @@
+import 'package:anecdotal/utils/constants.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
 
+class MyCircularImage extends StatelessWidget {
+  final String imageUrl;
+  final double size;
+  final bool isAsset;
+  final bool hasBorder; // New parameter to toggle border
+
+  const MyCircularImage({
+    super.key,
+    required this.imageUrl,
+    this.size = 150.0,
+    this.isAsset = true,
+    this.hasBorder = true, // Default to showing border
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: hasBorder // Conditionally show border
+            ? Border.all(
+                color: Theme.of(context)
+                    .colorScheme
+                    .tertiary, // Use default theme color
+                width: 4.0, // You can adjust the border width if needed
+              )
+            : null, // No border if hasBorder is false
+        image: DecorationImage(
+          fit: BoxFit.contain,
+          image: isAsset
+              ? AssetImage(imageUrl) as ImageProvider
+              : NetworkImage(imageUrl),
+        ),
+      ),
+    );
+  }
+}
+
+class PrivacyAndTermsButton extends StatelessWidget {
+  final bool showAbout;
+  const PrivacyAndTermsButton({super.key, this.showAbout = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 16.0,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          GestureDetector(
+            onTap: () {
+              // Navigate to Terms of Service
+            },
+            child: Text(
+              'Terms of Service',
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+          ),
+          const Text(
+            '|',
+          ),
+          GestureDetector(
+            onTap: () {
+              // Navigate to Privacy Policy
+            },
+            child: Text(
+              'Privacy Policy',
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+          ),
+          if (showAbout)
+            const Text(
+              '|',
+            ),
+          if (showAbout)
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.about);
+              },
+              child: Text(
+                'About',
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
 
 Future<void> myReusableCustomDialog({
   required BuildContext context,
@@ -52,7 +146,6 @@ Future<void> myReusableCustomDialog({
   );
 }
 
-
 Widget mySizedBox({double? height}) {
   return SizedBox(
     height: height ?? 20,
@@ -63,7 +156,7 @@ Widget myEmptySizedBox() {
   return const SizedBox.shrink();
 }
 
-Widget mySpacing( {double? spacing}) {
+Widget mySpacing({double? spacing}) {
   return Gap(
     spacing ?? 10,
   );
@@ -116,14 +209,15 @@ class MyAnimatedText extends StatelessWidget {
           colors: colorizeColors,
         ),
       ],
-       repeatForever: true,
+      repeatForever: true,
     );
   }
 }
 
 class MyAnimatedText2 extends StatelessWidget {
-  
-  const MyAnimatedText2({super.key, });
+  const MyAnimatedText2({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

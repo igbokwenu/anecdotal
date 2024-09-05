@@ -1,8 +1,10 @@
 // password_recovery_screen.dart
 import 'package:anecdotal/services/auth_service.dart';
+import 'package:anecdotal/utils/constants.dart';
+
+import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 
 class PasswordRecoveryScreen extends StatefulWidget {
   const PasswordRecoveryScreen({super.key});
@@ -29,7 +31,8 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Password reset email sent. Please check your inbox.'),
+            content:
+                Text('Password reset email sent. Please check your inbox.'),
             duration: Duration(seconds: 3),
           ),
         );
@@ -50,7 +53,7 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Password Recovery'),
+        title: const Center(child: Text('Password Recovery')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -59,8 +62,11 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const MyCircularImage(imageUrl: logoAssetImageUrlNoTagLine),
+              mySpacing(spacing: 20),
               Text(
                 'Enter your email address to receive a password reset link.',
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 16.0),
@@ -82,6 +88,14 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
               ElevatedButton(
                 onPressed: _resetPassword,
                 child: const Text('Reset Password'),
+              ),
+
+               mySpacing(),
+              const Align(
+                alignment: Alignment.bottomCenter,
+                child: PrivacyAndTermsButton(
+                  showAbout: true,
+                ),
               ),
             ],
           ),

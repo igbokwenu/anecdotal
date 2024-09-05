@@ -1,6 +1,8 @@
 // sign_up_screen.dart
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants.dart';
+
+import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -28,25 +30,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-Future<void> _signUpWithEmailAndPassword() async {
-  if (_formKey.currentState!.validate()) {
-    try {
-      await _authService.signUpWithEmailAndPassword(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
-     Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
-    } on FirebaseAuthException {
-      // Handle sign-up error
+  Future<void> _signUpWithEmailAndPassword() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        await _authService.signUpWithEmailAndPassword(
+          _emailController.text.trim(),
+          _passwordController.text.trim(),
+        );
+        Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
+      } on FirebaseAuthException {
+        // Handle sign-up error
+      }
     }
   }
-}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign Up'),
+        title: const Center(child: Text('Sign Up')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -55,6 +57,8 @@ Future<void> _signUpWithEmailAndPassword() async {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const MyCircularImage(imageUrl: logoAssetImageUrlNoTagLine),
+              mySpacing(spacing: 20),
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -123,6 +127,13 @@ Future<void> _signUpWithEmailAndPassword() async {
               ElevatedButton(
                 onPressed: _signUpWithEmailAndPassword,
                 child: const Text('Sign Up'),
+              ),
+               mySpacing(),
+              const Align(
+                alignment: Alignment.bottomCenter,
+                child: PrivacyAndTermsButton(
+                  showAbout: true,
+                ),
               ),
             ],
           ),

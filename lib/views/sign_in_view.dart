@@ -1,8 +1,10 @@
 // sign_in_screen.dart
+import 'dart:io';
+
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
-import 'package:anecdotal/widgets/circular_image.dart';
+
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -100,7 +102,7 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const CircularImage(imageUrl: logoAssetImageUrlNoTagLine),
+              const MyCircularImage(imageUrl: logoAssetImageUrlNoTagLine),
               mySpacing(spacing: 20),
               TextFormField(
                 controller: _emailController,
@@ -151,7 +153,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ElevatedButton.icon(
                 onPressed: _signInWithEmailAndPassword,
                 label: const Text('Sign In'),
-                icon: Icon(Icons.login_rounded),
+                icon: const Icon(Icons.login_rounded),
               ),
               mySpacing(spacing: 25),
               const Divider(
@@ -163,8 +165,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 onPressed: () {
                   Navigator.pushNamed(context, AppRoutes.signUp);
                 },
-                label: const Text('Sign Up'),
-                icon: Icon(Icons.person_add),
+                label: const Text('Create Account'),
+                icon: const Icon(Icons.person_add),
               ),
               mySpacing(),
               ElevatedButton.icon(
@@ -172,13 +174,21 @@ class _SignInScreenState extends State<SignInScreen> {
                   Navigator.pushNamed(context, AppRoutes.signUp);
                 },
                 label: const Text('Sign In Anonymously'),
-                icon: Icon(Icons.visibility_off),
+                icon: const Icon(Icons.visibility_off),
               ),
-              const SizedBox(height: 16.0),
-              OutlinedButton.icon(
-                onPressed: _signInWithGoogle,
-                icon: const Icon(Icons.person),
-                label: const Text('Sign In with Google'),
+              if (Platform.isAndroid) const SizedBox(height: 16.0),
+              if (Platform.isAndroid)
+                OutlinedButton.icon(
+                  onPressed: _signInWithGoogle,
+                  icon: const Icon(Icons.person),
+                  label: const Text('Sign In with Google'),
+                ),
+              mySpacing(),
+              const Align(
+                alignment: Alignment.bottomCenter,
+                child: PrivacyAndTermsButton(
+                  showAbout: true,
+                ),
               ),
             ],
           ),

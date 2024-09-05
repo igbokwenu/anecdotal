@@ -44,9 +44,11 @@ class AppRoutes {
   static const String signUp = '/sign_up';
   static const String passwordRecovery = '/password_recovery';
   static const String home = '/home';
+  static const String about = '/about';
+   static const String privacy = '/privacy';
+  static const String terms = '/terms';
 }
 
 const String logoAssetImageUrlCircular =
     "assets/images/anecdotal_logo_rounded_800x800.png";
-const String logoAssetImageUrlNoTagLine =
-    "assets/images/anecdotal_logo_rounded_800x800.png";
+const String logoAssetImageUrlNoTagLine = "assets/images/anecdotal_1000.png";
