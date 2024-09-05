@@ -3,8 +3,8 @@ import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/about_view.dart';
+import 'package:anecdotal/views/account_view.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
-import 'package:anecdotal/widgets/test_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 
@@ -39,7 +39,12 @@ class CustomDrawer extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                // Navigate to Profile
+                Navigator.push(
+                  context,
+                  slideLeftTransitionPageBuilder(
+                     AccountPage(),
+                  ),
+                );
               },
               leading: const Icon(Icons.account_circle_rounded),
               title: const Text('Account'),
@@ -59,7 +64,12 @@ class CustomDrawer extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                // Navigate to Chat Room
+                // Navigator.push(
+                //   context,
+                //   slideLeftTransitionPageBuilder(
+                //     FancyAccountPage(),
+                //   ),
+                // );
               },
               leading: const Icon(Icons.chat),
               title: const Text('Chat Room'),
@@ -86,21 +96,23 @@ class CustomDrawer extends StatelessWidget {
                         context: context,
                         icon: Icons.info,
                         message:
-                            "You are signed in anonymously, this means that all your data will be lost forever if you sign out now. Are you sure you want to sign out?",
+                            "You are signed in anonymously, this means that all your data will be deleted and lost forever if you sign out. Are you sure you want to sign out?",
                         actions: [
-                            ElevatedButton(
-                              onPressed: () async {
-                                Navigator.pop(context);
-                              },
-                              child: const Text("Create Account"),
-                            ),
                             ElevatedButton(
                               onPressed: () async {
                                 Navigator.pop(context);
                                 await authService.deleteUser();
                                 await authService.signOut();
+                                Navigator.pushReplacementNamed(
+                                    context, AppRoutes.authWrapper);
                               },
-                              child: const Text("Sign Out & Delete Account"),
+                              child: const Text("Sign Out"),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                Navigator.pushNamed(context, AppRoutes.signUp);
+                              },
+                              child: const Text("Link Account"),
                             ),
                           ])
                     : await authService.signOut();

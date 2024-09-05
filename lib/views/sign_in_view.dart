@@ -1,5 +1,4 @@
 // sign_in_screen.dart
-import 'dart:io';
 
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants.dart';

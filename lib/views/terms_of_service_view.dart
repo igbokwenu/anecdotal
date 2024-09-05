@@ -1,8 +1,8 @@
-import 'package:anecdotal/widgets/legal_page_template.dart';
+
 import 'package:flutter/material.dart';
 
 class TermsOfServicePage extends StatelessWidget {
-  const TermsOfServicePage({Key? key}) : super(key: key);
+  const TermsOfServicePage({super.key});
 
   @override
   Widget build(BuildContext context) {

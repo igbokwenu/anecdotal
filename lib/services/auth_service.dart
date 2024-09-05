@@ -126,6 +126,49 @@ class AuthService {
     }
   }
 
+    // Method to link anonymous account with email and password
+  Future<UserCredential?> linkAnonymousAccountWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      User? user = _firebaseAuth.currentUser;
+
+      if (user != null && user.isAnonymous) {
+        AuthCredential credential = EmailAuthProvider.credential(
+          email: email,
+          password: password,
+        );
+
+        // Link anonymous account with email/password credential
+        UserCredential userCredential =
+            await user.linkWithCredential(credential);
+
+        // Update Firestore document if necessary (it should already exist)
+        await _createUserDocumentIfNeeded(userCredential.user);
+
+        // Save email to shared preferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('email', email);
+
+        MyReusableFunctions.showCustomToast(
+          description: "Your account was successfully linked with an email and password 🥰",
+          type: ToastificationType.success,
+        );
+
+        return userCredential;
+      } else {
+        MyReusableFunctions.showCustomToast(
+          description: "User is not anonymous",
+          type: ToastificationType.warning,
+        );
+        return null;
+      }
+    } on FirebaseAuthException catch (e) {
+      MyReusableFunctions.showCustomToast(
+          description: "Error: $e", type: ToastificationType.error);
+      return null;
+    }
+  }
+
   // Password reset
   Future<void> resetPassword(String email) async {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
