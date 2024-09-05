@@ -46,10 +46,10 @@ class MyApp extends ConsumerWidget {
         // home: const AnecdotalAppHome(),
         initialRoute: '/',
         routes: {
-          AppRoutes.authWrapper: (context) => AuthWrapper(),
-          AppRoutes.signUp: (context) => SignUpScreen(),
-          AppRoutes.passwordRecovery: (context) => PasswordRecoveryScreen(),
-          AppRoutes.home: (context) => AnecdotalAppHome(),
+          AppRoutes.authWrapper: (context) => const AuthWrapper(),
+          AppRoutes.signUp: (context) => const SignUpScreen(),
+          AppRoutes.passwordRecovery: (context) => const PasswordRecoveryScreen(),
+          AppRoutes.home: (context) => const AnecdotalAppHome(),
         },
       ),
     );

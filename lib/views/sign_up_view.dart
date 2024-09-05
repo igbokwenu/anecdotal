@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
@@ -34,7 +36,7 @@ Future<void> _signUpWithEmailAndPassword() async {
         _passwordController.text.trim(),
       );
      Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       // Handle sign-up error
     }
   }
@@ -44,7 +46,7 @@ Future<void> _signUpWithEmailAndPassword() async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: const Text('Sign Up'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -56,7 +58,7 @@ Future<void> _signUpWithEmailAndPassword() async {
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
                 ),
@@ -67,13 +69,13 @@ Future<void> _signUpWithEmailAndPassword() async {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               TextFormField(
                 controller: _passwordController,
                 obscureText: _obscurePassword,
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
                     icon: Icon(_obscurePassword
                         ? Icons.visibility_off
@@ -92,13 +94,13 @@ Future<void> _signUpWithEmailAndPassword() async {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               TextFormField(
                 controller: _confirmPasswordController,
                 obscureText: _obscureConfirmPassword,
                 decoration: InputDecoration(
                   labelText: 'Confirm Password',
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
                     icon: Icon(_obscureConfirmPassword
                         ? Icons.visibility_off
@@ -117,10 +119,10 @@ Future<void> _signUpWithEmailAndPassword() async {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: _signUpWithEmailAndPassword,
-                child: Text('Sign Up'),
+                child: const Text('Sign Up'),
               ),
             ],
           ),

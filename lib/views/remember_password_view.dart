@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 
 class PasswordRecoveryScreen extends StatefulWidget {
+  const PasswordRecoveryScreen({super.key});
+
   @override
   _PasswordRecoveryScreenState createState() => _PasswordRecoveryScreenState();
 }
@@ -26,7 +28,7 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
         await _authService.resetPassword(_emailController.text.trim());
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Password reset email sent. Please check your inbox.'),
             duration: Duration(seconds: 3),
           ),
@@ -37,7 +39,7 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error resetting password. Please try again. \n $e'),
-            duration: Duration(seconds: 3),
+            duration: const Duration(seconds: 3),
           ),
         );
       }
@@ -48,7 +50,7 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Password Recovery'),
+        title: const Text('Password Recovery'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -61,11 +63,11 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                 'Enter your email address to receive a password reset link.',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
                 ),
@@ -76,10 +78,10 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: _resetPassword,
-                child: Text('Reset Password'),
+                child: const Text('Reset Password'),
               ),
             ],
           ),

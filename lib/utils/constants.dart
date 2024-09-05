@@ -41,7 +41,12 @@ String interpretLabResultSectionSummary =
 
 class AppRoutes {
   static const String authWrapper = '/';
-  static const String signUp = '/signUp';
-  static const String passwordRecovery = '/passwordRecovery';
+  static const String signUp = '/sign_up';
+  static const String passwordRecovery = '/password_recovery';
   static const String home = '/home';
 }
+
+const String logoAssetImageUrlCircular =
+    "assets/images/anecdotal_logo_rounded_800x800.png";
+const String logoAssetImageUrlNoTagLine =
+    "assets/images/anecdotal_logo_rounded_800x800.png";

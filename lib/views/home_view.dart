@@ -1,6 +1,3 @@
-import 'package:anecdotal/views/remember_password_view.dart';
-import 'package:anecdotal/views/sign_in_view.dart';
-import 'package:anecdotal/views/sign_up_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +9,6 @@ import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/utils/ai_prompts.dart';
 import 'package:anecdotal/utils/constants.dart';
-import 'package:anecdotal/views/about_view.dart';
 import 'package:anecdotal/widgets/camera_ai.dart';
 import 'package:anecdotal/widgets/image_select_ai.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';

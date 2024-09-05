@@ -7,7 +7,7 @@ class CustomTextField extends StatelessWidget {
   final bool showToggle;
   final void Function()? togglePasswordView;
 
-  const CustomTextField({
+  const CustomTextField({super.key, 
     required this.controller,
     required this.labelText,
     this.isPassword = false,

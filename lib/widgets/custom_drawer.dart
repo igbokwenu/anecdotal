@@ -32,7 +32,7 @@ class CustomDrawer extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: Image.asset(
-                'assets/images/anecdotal_logo_rounded_800x800.png',
+                logoAssetImageUrlCircular,
                 fit: BoxFit.cover,
               ),
             ),
@@ -82,7 +82,7 @@ class CustomDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   slideLeftTransitionPageBuilder(
-                    CameraApp(),
+                    const CameraApp(),
                   ),
                 );
               },
@@ -104,7 +104,7 @@ class CustomDrawer extends StatelessWidget {
                             await authService.signOut();
                             Navigator.pop(context);
                           },
-                          child: Text("Sign Out & Delete Account"),
+                          child: const Text("Sign Out & Delete Account"),
                         ),
                       )
                     : await authService.signOut();

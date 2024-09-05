@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthWrapper extends ConsumerWidget {
+  const AuthWrapper({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authStateProvider);
@@ -12,12 +14,12 @@ class AuthWrapper extends ConsumerWidget {
     return authState.when(
       data: (user) {
         if (user != null) {
-          return AnecdotalAppHome(); // User is signed in
+          return const AnecdotalAppHome(); // User is signed in
         } else {
-          return SignInScreen(); // User is NOT signed in
+          return const SignInScreen(); // User is NOT signed in
         }
       },
-      loading: () => Scaffold(body: Center(child: CircularProgressIndicator())),
+      loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
       error: (error, stackTrace) => Scaffold(body: Center(child: Text('Error: $error'))),
     );
   }

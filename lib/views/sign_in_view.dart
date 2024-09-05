@@ -2,12 +2,16 @@
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
+import 'package:anecdotal/widgets/circular_image.dart';
+import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 
 class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
+
   @override
   _SignInScreenState createState() => _SignInScreenState();
 }
@@ -49,7 +53,7 @@ class _SignInScreenState extends State<SignInScreen> {
         );
         Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
         // Navigate to the home screen
-      } on FirebaseAuthException catch (e) {
+      } on FirebaseAuthException {
         // Handle sign-in error
       }
     }
@@ -60,7 +64,7 @@ class _SignInScreenState extends State<SignInScreen> {
       await _authService.signInWithGoogle();
       Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
       // Navigate to the home screen
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       // Handle sign-in error
     }
   }
@@ -87,7 +91,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign In'),
+        title: const Center(child: Text('Sign In')),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -96,10 +100,12 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const CircularImage(imageUrl: logoAssetImageUrlNoTagLine),
+              mySpacing(spacing: 20),
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
                 ),
@@ -110,13 +116,13 @@ class _SignInScreenState extends State<SignInScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               TextFormField(
                 controller: _passwordController,
                 obscureText: _obscurePassword,
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
                     icon: Icon(_obscurePassword
                         ? Icons.visibility_off
@@ -135,30 +141,44 @@ class _SignInScreenState extends State<SignInScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
-              ElevatedButton(
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: _navigateToPasswordRecovery,
+                  child: const Text('Forgot Password'),
+                ),
+              ),
+              ElevatedButton.icon(
                 onPressed: _signInWithEmailAndPassword,
-                child: Text('Sign In'),
+                label: const Text('Sign In'),
+                icon: Icon(Icons.login_rounded),
               ),
-              SizedBox(height: 16.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: _signInAnonymously,
-                    child: Text('Sign In Anonymously'),
-                  ),
-                  TextButton(
-                    onPressed: _navigateToPasswordRecovery,
-                    child: Text('Forgot Password'),
-                  ),
-                ],
+              mySpacing(spacing: 25),
+              const Divider(
+                height: 10,
+                indent: 60,
+                endIndent: 60,
               ),
-              SizedBox(height: 16.0),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, AppRoutes.signUp);
+                },
+                label: const Text('Sign Up'),
+                icon: Icon(Icons.person_add),
+              ),
+              mySpacing(),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, AppRoutes.signUp);
+                },
+                label: const Text('Sign In Anonymously'),
+                icon: Icon(Icons.visibility_off),
+              ),
+              const SizedBox(height: 16.0),
               OutlinedButton.icon(
                 onPressed: _signInWithGoogle,
-                icon: Icon(Icons.person),
-                label: Text('Sign In with Google'),
+                icon: const Icon(Icons.person),
+                label: const Text('Sign In with Google'),
               ),
             ],
           ),
