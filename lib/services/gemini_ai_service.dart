@@ -47,6 +47,51 @@ class GeminiService {
         responseMimeType: "application/json",
         responseSchema: Schema.object(
           properties: {
+            "firstName": Schema.string(),
+            "lastName": Schema.string(),
+            "gender": Schema.string(),
+            "knownSymptoms": Schema.array(items: Schema.string()),
+            "unknownSymptoms": Schema.array(items: Schema.string()),
+            "country": Schema.string(),
+            "state": Schema.string(),
+            "recommendations": Schema.array(items: Schema.string()),
+          },
+        ),
+      ),
+    );
+
+    final audioBytes =
+        await Future.wait(audios.map((file) => file.readAsBytes()));
+    List<DataPart> audioParts = [];
+    for (var i = 0; i < audios.length; i++) {
+      String mimeType = _getMimeType(audios[i].path);
+      audioParts.add(DataPart(mimeType, audioBytes[i]));
+    }
+
+    final textPart = TextPart(prompt);
+    final response = await model.generateContent([
+      Content.multi([textPart, ...audioParts])
+    ]);
+
+    if (response.text != null) {
+      return jsonDecode(response.text!);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<Map<String, dynamic>?> analyzeAudioForHome({
+    required List<File> audios,
+    required String prompt,
+    String? preferredModel,
+  }) async {
+    final model = GenerativeModel(
+      model: preferredModel ?? geminiFlashModel,
+      apiKey: geminiApiKey,
+      generationConfig: GenerationConfig(
+        responseMimeType: "application/json",
+        responseSchema: Schema.object(
+          properties: {
             "summary": Schema.string(),
             "insights": Schema.array(items: Schema.string()),
             "recommendations": Schema.array(items: Schema.string()),

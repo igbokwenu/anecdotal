@@ -53,3 +53,5 @@ class AppRoutes {
 const String logoAssetImageUrlCircular =
     "assets/images/anecdotal_logo_rounded_800x800.png";
 const String logoAssetImageUrlNoTagLine = "assets/images/anecdotal_1000.png";
+
+

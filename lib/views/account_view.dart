@@ -25,13 +25,11 @@ class AccountPage extends StatelessWidget {
             const SizedBox(height: 20),
             _buildReportCardButton(context),
             const SizedBox(height: 20),
-            _buildDeleteAccountButton(context),
-            const SizedBox(height: 20),
             if (authService.isUserAnonymous())
               Column(
                 children: [
                   Text(
-                    'You are signed in anonymously. When you sign out, your account and data will be permanently deleted. To preserve your data you can click the button below to link your data to your login credentials.',
+                    'You are signed in anonymously. When you sign out, your account and data will be permanently deleted. To preserve your data you can click the (Link Account) button below to link your data to your login credentials.',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
@@ -39,6 +37,8 @@ class AccountPage extends StatelessWidget {
                   _buildLinkAccountButton(context),
                 ],
               ),
+            const SizedBox(height: 20),
+            _buildDeleteAccountButton(context),
           ],
         ),
       ),

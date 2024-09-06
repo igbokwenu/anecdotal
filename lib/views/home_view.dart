@@ -44,7 +44,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
       ref.read(chatInputProvider.notifier).setIsProcessingAudio(true);
       ref.read(chatInputProvider.notifier).setIsListeningToAudio(false);
       try {
-        final response = await GeminiService.analyzeAudio(
+        final response = await GeminiService.analyzeAudioForHome(
           audios: [File(path)],
           prompt: sendChatPrompt(),
         );

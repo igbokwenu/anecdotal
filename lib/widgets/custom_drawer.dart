@@ -4,6 +4,7 @@ import 'package:anecdotal/utils/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/about_view.dart';
 import 'package:anecdotal/views/account_view.dart';
+import 'package:anecdotal/views/welcome_view.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:anecdotal/widgets/test_widget.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,26 @@ class CustomDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   slideLeftTransitionPageBuilder(
-                    CameraExampleHome(),
+                    CameraWidget(
+                      prompt: "Analyze this image and tell me what you see",
+                      onResponse: (response) {
+                        if (response != null) {
+                          MyReusableFunctions.myReusableCustomDialog(
+                            context: context,
+                            message: "AI Response: $response",
+                            icon: Icons.info_outline_rounded,
+                          );
+                          print("AI Response: $response");
+                        }
+                      },
+                      onComplete: () {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => AnalysisResultPage()),
+                        // );
+                      },
+                    ),
                   ),
                 );
               },
@@ -66,7 +86,12 @@ class CustomDrawer extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                // Navigate to Subscription
+                Navigator.push(
+                  context,
+                  slideLeftTransitionPageBuilder(
+                    OnboardingScreen(),
+                  ),
+                );
               },
               leading: const Icon(Icons.monetization_on),
               title: const Text('Subscription'),
