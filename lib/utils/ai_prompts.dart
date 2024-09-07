@@ -51,5 +51,5 @@ You are a helpful assistant tasked with extracting specific information from the
   "recommendations": ["List of recommended actions from the predetermined list."]
 }
 
-Ensure that the JSON is properly formatted and only includes the specified fields.
+Ensure that the JSON is properly formatted and only includes the specified fields
 """;
