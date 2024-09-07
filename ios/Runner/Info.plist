@@ -24,6 +24,15 @@
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
+		<key>NSCameraUsageDescription</key>
+		<string>We need access to your camera to enable you use our AI image search features.</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+   		<string>To enable GPS location access for Exif data</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>We need access to your microphone for our AI voice search features.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>We need access to your photo library to allow you to upload images for AI analysis.</string>
+		<key>NSUserTrackingUsageDescription</key>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>
@@ -31,8 +40,6 @@
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
-			<string>UIInterfaceOrientationLandscapeLeft</string>
-			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
 		<key>UISupportedInterfaceOrientations~ipad</key>
 		<array>
