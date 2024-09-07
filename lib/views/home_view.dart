@@ -399,7 +399,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                                           "Suggestions: ${result['suggestions']}");
                                                     } else {
                                                       print(
-                                                          "Analysis failed or returned no results");
+                                                          "Analysis failed or returned no results.");
                                                     }
                                                   },
                                                 ),
