@@ -97,6 +97,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
           ),
         ),
       ),
+      openRatio: kIsWeb ? 0.35 : 0.65,
       controller: _advancedDrawerController,
       animationCurve: Curves.easeInOut,
       animationDuration: const Duration(milliseconds: 300),
