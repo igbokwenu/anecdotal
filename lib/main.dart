@@ -20,12 +20,11 @@ import 'package:toastification/toastification.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   if (!kIsWeb) {
     await initializeRevenueCat();
     await configureRevenueCatSDK();
   }
-
-  WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);

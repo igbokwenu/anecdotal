@@ -9,6 +9,7 @@ import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:anecdotal/widgets/test_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 
 class CustomDrawer extends StatelessWidget {
   final AdvancedDrawerController controller;
@@ -85,13 +86,14 @@ class CustomDrawer extends StatelessWidget {
               title: const Text('Chat Room'),
             ),
             ListTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  slideLeftTransitionPageBuilder(
-                    OnboardingScreen(),
-                  ),
-                );
+              onTap: () async{
+                await RevenueCatUI.presentPaywall();
+                // Navigator.push(
+                //   context,
+                //   slideLeftTransitionPageBuilder(
+                //     OnboardingScreen(),
+                //   ),
+                // );
               },
               leading: const Icon(Icons.monetization_on),
               title: const Text('Subscription'),
