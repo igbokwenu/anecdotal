@@ -30,7 +30,7 @@ class DownloadPage extends StatelessWidget {
                 mySpacing(),
                 const MyCircularImage(
                   imageUrl: logoAssetImageUrlNoTagLine,
-                  size: 200,
+                  size: 180,
                 ),
                 // const SizedBox(height: 20),
                 // ClipRRect(
@@ -51,7 +51,7 @@ class DownloadPage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 Text(
                   'Anecdotal is your companion app for managing chronic illness. '
                   'Track and evaluate symptoms, get personalized health insights, and connect with others '
@@ -59,7 +59,7 @@ class DownloadPage extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

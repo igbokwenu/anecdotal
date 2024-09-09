@@ -103,7 +103,7 @@ class PrivacyAndTermsButton extends StatelessWidget {
                 Navigator.pushNamed(context, AppRoutes.download);
               },
               child: Text(
-                'About',
+                'Download',
                 style: Theme.of(context).textTheme.labelSmall,
               ),
             ),
