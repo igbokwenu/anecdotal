@@ -29,12 +29,12 @@ class AboutPage extends StatelessWidget {
               const SizedBox(height: 20),
               _buildSection(
                 'Our Mission',
-                'Anecdotal aims to empower people with knowledge, connect them with a supportive community, and provide tools for managing their health journey.',
+                'People who deal with chronic illnesses often burn through multiple doctors and limited financial resources before getting an accurate diagnosis. Anecdotal aims to empower people with knowledge, connect them with a supportive community, shorten their journey to recovery, and provide tools for managing their health journey.',
                 Icons.flag,
               ),
               _buildSection(
                 'The Story Behind Anecdotal',
-                "Anecdotal was created by someone who understands the challenges of chronic inflammatory response syndrome (CIRS) and mold illness firsthand. As a survivor and thriver, the app's developer drew upon their personal journey to design an app that addresses the complexities and uncertainties of these conditions. With a deep understanding of the struggles and frustrations that come with navigating these health challenges, the developer crafted Anecdotal as a tool they wished they had during their dark days of uncertainty about their health. This app is a labor of love, driven by a passion to support and empower others on their own paths to recovery.",
+                "Anecdotal was created by someone who understands the challenges of chronic illness (CIRS) firsthand. As a survivor and thriver, he drew upon his personal journey to design an app that addresses the complexities and uncertainties of such conditions. With a deep understanding of the struggles and frustrations that come with navigating these health challenges, I crafted Anecdotal as a tool I wished I had during my dark days of uncertainty about my health. This app is a labor of love, driven by a passion to support and empower others on their own paths to recovery.",
                 Icons.person,
               ),
               _buildSection(
@@ -69,7 +69,7 @@ class AboutPage extends StatelessWidget {
                   _buildFeature('Lifestyle Adjustments',
                       'Access lifestyle tips and recommendations to help manage your condition.'),
                   _buildFeature('Explainer for Loved Ones',
-                      'Share a video with family or colleagues to help them understand your invisible illness and spread awareness.'),
+                      'Share a video with family or colleagues to help them understand your invisible, yet debilitating, illness and spread awareness.'),
                 ],
               ),
               _buildSection(

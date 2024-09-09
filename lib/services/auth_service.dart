@@ -26,6 +26,7 @@ class AuthService {
   // Sign in with email and password
   Future<UserCredential?> signInWithEmailAndPassword(
       String email, String password) async {
+    MyReusableFunctions.showProcessingToast();
     try {
       UserCredential userCredential =
           await _firebaseAuth.signInWithEmailAndPassword(
@@ -51,6 +52,7 @@ class AuthService {
   // Sign up with email and password
   Future<UserCredential?> signUpWithEmailAndPassword(
       String email, String password) async {
+    MyReusableFunctions.showProcessingToast();
     try {
       UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(
@@ -80,6 +82,7 @@ class AuthService {
 
   // Sign in with Google
   Future<UserCredential?> signInWithGoogle() async {
+    MyReusableFunctions.showProcessingToast();
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth =
@@ -110,6 +113,7 @@ class AuthService {
 
   // Sign in anonymously
   Future<UserCredential?> signInAnonymously() async {
+    MyReusableFunctions.showProcessingToast();
     try {
       UserCredential userCredential = await _firebaseAuth.signInAnonymously();
 
@@ -126,9 +130,10 @@ class AuthService {
     }
   }
 
-    // Method to link anonymous account with email and password
+  // Method to link anonymous account with email and password
   Future<UserCredential?> linkAnonymousAccountWithEmailAndPassword(
       String email, String password) async {
+    MyReusableFunctions.showProcessingToast();
     try {
       User? user = _firebaseAuth.currentUser;
 
@@ -150,7 +155,8 @@ class AuthService {
         await prefs.setString('email', email);
 
         MyReusableFunctions.showCustomToast(
-          description: "Your account was successfully linked with an email and password 🥰",
+          description:
+              "Your account was successfully linked with an email and password 🥰",
           type: ToastificationType.success,
         );
 
@@ -171,17 +177,20 @@ class AuthService {
 
   // Password reset
   Future<void> resetPassword(String email) async {
+    MyReusableFunctions.showProcessingToast();
     await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
   // Sign out
   Future<void> signOut() async {
+    MyReusableFunctions.showProcessingToast();
     await _firebaseAuth.signOut();
     await _googleSignIn.signOut();
   }
 
   // Delete user and their corresponding document
   Future<void> deleteUser() async {
+    MyReusableFunctions.showProcessingToast();
     try {
       // Get the currently signed-in user
       User? user = _firebaseAuth.currentUser;

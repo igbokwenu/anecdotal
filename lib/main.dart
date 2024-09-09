@@ -6,7 +6,7 @@ import 'package:anecdotal/utils/constants.dart';
 import 'package:anecdotal/utils/themes.dart';
 import 'package:anecdotal/views/about_view.dart';
 import 'package:anecdotal/views/account_view.dart';
-import 'package:anecdotal/views/home_view.dart';
+import 'package:anecdotal/views/download_view.dart';
 import 'package:anecdotal/views/privacy_policy_view.dart';
 import 'package:anecdotal/views/remember_password_view.dart';
 import 'package:anecdotal/views/sign_up_view.dart';
@@ -67,6 +67,7 @@ class MyApp extends ConsumerWidget {
           AppRoutes.privacy: (context) => const PrivacyPolicyPage(),
           AppRoutes.terms: (context) => const TermsOfServicePage(),
           AppRoutes.account: (context) => const AccountPage(),
+          AppRoutes.download: (context) => const DownloadPage(),
         },
       ),
     );

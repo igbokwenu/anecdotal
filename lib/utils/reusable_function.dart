@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'package:toastification/toastification.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyReusableFunctions {
+  static Future<void> launchCustomUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
   // Static method to show custom toast
   static void showCustomToast({
     required String description, // Required parameter
@@ -20,6 +28,30 @@ class MyReusableFunctions {
       style: style,
       title: Text(title),
       description: Text(description),
+      alignment: alignment,
+      autoCloseDuration: duration,
+      borderRadius: borderRadius,
+      boxShadow: boxShadow ?? lowModeShadow,
+      applyBlurEffect: applyBlurEffect,
+    );
+  }
+
+  static void showProcessingToast({
+    String description = '', // Required parameter
+    ToastificationType type = ToastificationType.info,
+    ToastificationStyle style = ToastificationStyle.flat,
+    String title = "Processing... please wait",
+    Alignment alignment = Alignment.topCenter,
+    Duration duration = const Duration(seconds: 4),
+    BorderRadius borderRadius = const BorderRadius.all(Radius.circular(12.0)),
+    bool applyBlurEffect = false,
+    List<BoxShadow>? boxShadow,
+  }) {
+    toastification.show(
+      type: type,
+      style: style,
+      title: Text(title),
+      // description: Text(description),
       alignment: alignment,
       autoCloseDuration: duration,
       borderRadius: borderRadius,

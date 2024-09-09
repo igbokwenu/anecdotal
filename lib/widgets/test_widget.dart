@@ -10,19 +10,19 @@ class CameraWidget extends StatefulWidget {
   final VoidCallback onComplete;
 
   const CameraWidget({
-    Key? key,
+    super.key,
     required this.prompt,
     required this.onResponse,
     required this.onComplete,
-  }) : super(key: key);
+  });
 
   @override
   State<CameraWidget> createState() => _CameraWidgetState();
 }
 
 class _CameraWidgetState extends State<CameraWidget> {
-  FlashMode _flashMode = FlashMode.auto;
-  double _zoom = 0.0;
+  final FlashMode _flashMode = FlashMode.auto;
+  final double _zoom = 0.0;
   File? _capturedImage;
 
   @override
@@ -64,7 +64,7 @@ class _CameraWidgetState extends State<CameraWidget> {
           ),
 
           // UI for flash toggle and zoom controls
-          Positioned(
+          const Positioned(
             top: 50,
             right: 20,
             child: Column(

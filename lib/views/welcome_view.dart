@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 
 class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
   @override
   _OnboardingScreenState createState() => _OnboardingScreenState();
 }
@@ -16,9 +18,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Welcome to Anecdotal')),
+      appBar: AppBar(title: const Text('Welcome to Anecdotal')),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -26,18 +28,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               'Welcome to Anecdotal! To help us provide the best care for you, could you please tell us a bit about yourself and any health concerns you\'re currently experiencing? Feel free to include your name, where you\'re from, and any symptoms you\'ve been noticing. Don\'t worry if you\'re not sure about medical terms – just describe how you\'re feeling in your own words.',
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Center(
               child: Recorder(
                 onStart: _startRecording,
                 onStop: _stopRecording,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             if (_extractedInfo != null) ...[
               Text('Extracted Information:',
                   style: Theme.of(context).textTheme.titleLarge),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _buildInfoCard('Name',
                   '${_extractedInfo!['firstName']} ${_extractedInfo!['lastName']}'),
               _buildInfoCard('Gender', _extractedInfo?['gender'] ?? ''),
@@ -59,11 +61,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget _buildInfoCard(String title, String content) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
             Text(content),
           ],
         ),

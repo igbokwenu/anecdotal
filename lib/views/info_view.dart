@@ -67,7 +67,7 @@ class InfoView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            patientsName ?? 'John Doe',
+            patientsName ?? 'Amanda Davis',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   fontWeight: FontWeight.bold,

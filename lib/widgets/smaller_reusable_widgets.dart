@@ -1,5 +1,6 @@
 import 'package:anecdotal/utils/constants.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
@@ -71,7 +72,7 @@ class PrivacyAndTermsButton extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-             Navigator.pushNamed(context, AppRoutes.privacy);
+              Navigator.pushNamed(context, AppRoutes.privacy);
             },
             child: Text(
               'Privacy Policy',
@@ -92,12 +93,25 @@ class PrivacyAndTermsButton extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelSmall,
               ),
             ),
+          if (kIsWeb)
+            const Text(
+              '|',
+            ),
+          if (kIsWeb)
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.download);
+              },
+              child: Text(
+                'About',
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+            ),
         ],
       ),
     );
   }
 }
-
 
 Widget mySizedBox({double? height}) {
   return SizedBox(

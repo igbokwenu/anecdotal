@@ -43,11 +43,12 @@ class AppRoutes {
   static const String authWrapper = '/';
   static const String signUp = '/sign_up';
   static const String passwordRecovery = '/password_recovery';
-  static const String home = '/home';
+  // static const String home = '/home';
   static const String about = '/about';
   static const String privacy = '/privacy';
   static const String terms = '/terms';
   static const String account = '/account';
+  static const String download = '/download';
 }
 
 const String logoAssetImageUrlCircular = "assets/images/anecdotal_rounded.png";
