@@ -4,6 +4,7 @@ import 'package:anecdotal/utils/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/about_view.dart';
 import 'package:anecdotal/views/account_view.dart';
+import 'package:anecdotal/views/download_view.dart';
 import 'package:anecdotal/views/welcome_view.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:anecdotal/widgets/test_widget.dart';
@@ -86,12 +87,12 @@ class CustomDrawer extends StatelessWidget {
               title: const Text('Chat Room'),
             ),
             ListTile(
-              onTap: () async{
+              onTap: () async {
                 await RevenueCatUI.presentPaywall();
                 // Navigator.push(
                 //   context,
                 //   slideLeftTransitionPageBuilder(
-                //     OnboardingScreen(),
+                //     DownloadPage(),
                 //   ),
                 // );
               },

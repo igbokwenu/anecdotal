@@ -1,3 +1,4 @@
+import 'package:anecdotal/views/download_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -149,6 +150,43 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      Row(
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  DownloadPage(),
+                                ),
+                              );
+                            },
+                            child: Text('Meta'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  AnecdotalDownloadPage(),
+                                ),
+                              );
+                            },
+                            child: Text('Claude'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  DownloadView(),
+                                ),
+                              );
+                            },
+                            child: Text('Open'),
+                          ),
+                        ],
+                      ),
                       Text(
                         "Anecdotal is built by patients, with the help of compassionate doctors - for those in search of answers and support regarding complex and debilitating chronic conditions like CIRS and Mold Illness. ",
                         style: Theme.of(context)

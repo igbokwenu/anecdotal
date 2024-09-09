@@ -45,17 +45,17 @@ class AppRoutes {
   static const String passwordRecovery = '/password_recovery';
   static const String home = '/home';
   static const String about = '/about';
-   static const String privacy = '/privacy';
+  static const String privacy = '/privacy';
   static const String terms = '/terms';
   static const String account = '/account';
 }
 
-const String logoAssetImageUrlCircular =
-    "assets/images/anecdotal_logo_rounded_800x800.png";
+const String logoAssetImageUrlCircular = "assets/images/anecdotal_rounded.png";
+const String logoAssetImageUrlCircularWithTag =
+    "assets/images/anecdotal_rounded_tag.png";
 const String logoAssetImageUrlNoTagLine = "assets/images/anecdotal_1000.png";
-
-
-
+const String logoAssetImageUrlWithTagLine =
+    "assets/images/anecdotal_logo_tag_2000.png";
 
 //revenuecat keys
 const googleApiKey = 'goog_vsEPEYPdkWRUGqBiNyaGMjSqHbt';

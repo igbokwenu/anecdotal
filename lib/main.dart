@@ -62,7 +62,7 @@ class MyApp extends ConsumerWidget {
           AppRoutes.signUp: (context) => const SignUpScreen(),
           AppRoutes.passwordRecovery: (context) =>
               const PasswordRecoveryScreen(),
-          AppRoutes.home: (context) => const AnecdotalAppHome(),
+          // AppRoutes.home: (context) => const AnecdotalAppHome(),
           AppRoutes.about: (context) => const AboutPage(),
           AppRoutes.privacy: (context) => const PrivacyPolicyPage(),
           AppRoutes.terms: (context) => const TermsOfServicePage(),
