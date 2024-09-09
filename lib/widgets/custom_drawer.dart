@@ -53,38 +53,14 @@ class CustomDrawer extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                Navigator.push(
-                  context,
-                  slideLeftTransitionPageBuilder(
-                    CameraWidget(
-                      prompt: "Analyze this image and tell me what you see",
-                      onResponse: (response) {
-                        if (response != null) {
-                          MyReusableFunctions.myReusableCustomDialog(
-                            context: context,
-                            message: "AI Response: $response",
-                            icon: Icons.info_outline_rounded,
-                          );
-                          print("AI Response: $response");
-                        }
-                      },
-                      onComplete: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => AnalysisResultPage()),
-                        // );
-                      },
-                    ),
-                  ),
-                );
+                MyReusableFunctions.showCustomToast(
+                    description: "Coming Soon. Stay Tuned.");
               },
-              leading: const Icon(Icons.chat),
-              title: const Text('Chat Room'),
+              leading: const Icon(Icons.groups),
+              title: const Text('Community Chat'),
             ),
             ListTile(
               onTap: () async {
-               
                 await RevenueCatUI.presentPaywall();
                 // Navigator.push(
                 //   context,
@@ -98,7 +74,8 @@ class CustomDrawer extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                // Navigate to Contact Us
+                MyReusableFunctions.showCustomToast(
+                    description: "Coming Soon. Stay Tuned.");
               },
               leading: const Icon(Icons.contact_support),
               title: const Text('Contact Us'),

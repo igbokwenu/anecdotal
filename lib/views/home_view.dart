@@ -1,5 +1,7 @@
 import 'package:anecdotal/views/download_view.dart';
+import 'package:anecdotal/views/symptoms_selector_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
+import 'package:anecdotal/widgets/test_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
@@ -237,6 +239,25 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                     InfoView(
                                       title: symptomSectionHeader,
                                       sectionSummary: symptomSectionSummary,
+                                      firstWidget: Column(
+                                        children: [
+                                          ElevatedButton.icon(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                slideLeftTransitionPageBuilder(
+                                                  SymptomsSelectionPage(),
+                                                ),
+                                              );
+                                            },
+                                            label: Text(
+                                                "Investigate Your Symptoms"),
+                                            icon: Icon(
+                                              Icons.search,
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );
@@ -344,14 +365,14 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                                     Navigator.push(
                                                       context,
                                                       slideLeftTransitionPageBuilder(
-                                                        AICameraWidget(
+                                                        CameraWidget(
                                                           prompt:
                                                               sendHouseImageAnalysisPrompt,
-                                                          onAnalysisComplete:
-                                                              (result) {
+                                                          onResponse: (result) {
                                                             if (result !=
                                                                 null) {
-                                                              Navigator.push(
+                                                              Navigator
+                                                                  .pushReplacement(
                                                                 context,
                                                                 slideLeftTransitionPageBuilder(
                                                                   ReportView(
@@ -383,18 +404,20 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                                                   "Analysis failed or returned no results");
                                                             }
                                                           },
-                                                          enableFlash: true,
-                                                          enableZoom: true,
-                                                          preferredModel:
-                                                              geminiProModel, // Optional
+                                                          // enableFlash: true,
+                                                          // enableZoom: true,
+                                                          // preferredModel:
+                                                          //     geminiProModel,
+                                                          onComplete:
+                                                              () {}, // Optional
                                                         ),
                                                       ),
                                                     );
                                                   },
                                                   label: const Text(
                                                       "Capture Your Surrounding"),
-                                                  icon:
-                                                      const Icon(Icons.camera),
+                                                  icon: const Icon(
+                                                      Icons.camera_alt),
                                                 ),
                                                 AIImageSelectWidget(
                                                   prompt:

@@ -99,7 +99,7 @@ class MyReusableFunctions {
                   actionButtonText ?? 'Close',
                   style: TextStyle(
                     fontSize: 16, // Adjust the font size as needed
-                    color: dialogIconColor ?? Theme.of(context).primaryColor,
+                    color: Theme.of(context).iconTheme.color,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
