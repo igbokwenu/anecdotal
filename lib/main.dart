@@ -1,6 +1,7 @@
 import 'package:anecdotal/firebase_options.dart';
 import 'package:anecdotal/providers/theme_provider.dart';
 import 'package:anecdotal/services/auth_wrapper.dart';
+import 'package:anecdotal/services/iap/config.dart';
 import 'package:anecdotal/utils/constants.dart';
 import 'package:anecdotal/utils/themes.dart';
 import 'package:anecdotal/views/about_view.dart';
@@ -11,6 +12,7 @@ import 'package:anecdotal/views/remember_password_view.dart';
 import 'package:anecdotal/views/sign_up_view.dart';
 import 'package:anecdotal/views/terms_of_service_view.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +20,11 @@ import 'package:toastification/toastification.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 Future<void> main() async {
+  if (!kIsWeb) {
+    await initializeRevenueCat();
+    await configureRevenueCatSDK();
+  }
+
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

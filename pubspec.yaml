@@ -41,6 +41,7 @@ dependencies:
   video_player: ^2.9.1
   camerawesome: ^2.1.0
   purchases_flutter: ^8.1.0
+  purchases_ui_flutter: ^8.1.0
 
 
 dev_dependencies:
@@ -56,12 +57,12 @@ flutter_native_splash:
   color: "#006666"
   image: "assets/images/anecdotal_logo_rounded_800x800.png"
 flutter_icons:
-  image_path: "assets/images/anecdotal_logo.png"
+  image_path: "assets/images/anecdotal_512.png"
   android: true
   ios: true
   web:
    generate: true
-   image_path: "assets/images/anecdotal_logo.png"
+   image_path: "assets/images/anecdotal_512.png"
    
 flutter:
   uses-material-design: true

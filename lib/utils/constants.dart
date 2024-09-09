@@ -55,3 +55,10 @@ const String logoAssetImageUrlCircular =
 const String logoAssetImageUrlNoTagLine = "assets/images/anecdotal_1000.png";
 
 
+
+
+//revenuecat keys
+const googleApiKey = 'goog_vsEPEYPdkWRUGqBiNyaGMjSqHbt';
+const appleApiKey = 'appl_kpeYPMlCLVQCfwiuRuBdPOfYaLL';
+const amazonApiKey = '';
+const entitlementID = 'pro';
