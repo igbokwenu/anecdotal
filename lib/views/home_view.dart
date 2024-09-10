@@ -1,3 +1,4 @@
+import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/medical_history_view.dart';
 import 'package:anecdotal/views/symptoms_selector_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
@@ -628,7 +629,10 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                               icon: Icons.fitness_center,
                               description:
                                   'Make helpful lifestyle adjustments to support your recovery',
-                              onTap: () {},
+                              onTap: () {
+                                MyReusableFunctions.showCustomToast(
+                                    description: "Coming Soon. Stay Tuned.");
+                              },
                               onInfoTapped: () {},
                             ),
                           ],

@@ -30,45 +30,27 @@ class _AIImageSelectWidgetState extends State<AIImageSelectWidget> {
   bool _isAnalyzing = false;
 
   Future<void> _pickImages() async {
-    // Request storage permission
-    PermissionStatus status;
+    List<XFile>? pickedFiles;
     if (widget.allowFileSelect) {
-      status = await Permission.storage.request();
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'jpeg', 'png'],
+        allowMultiple: true,
+      );
+      if (result != null) {
+        pickedFiles = result.files.map((file) => XFile(file.path!)).toList();
+      }
     } else {
-      status = await Permission.photos.request();
+      final ImagePicker picker = ImagePicker();
+      pickedFiles = await picker.pickMultiImage();
     }
 
-    // Check if permission is granted
-    if (status.isGranted) {
-      List<XFile>? pickedFiles;
-      if (widget.allowFileSelect) {
-        FilePickerResult? result = await FilePicker.platform.pickFiles(
-          type: FileType.custom,
-          allowedExtensions: [
-            'jpg', 'jpeg', 'png', // Image formats
-            'doc', 'docx', 'pdf', // Document formats
-            'txt', 'ppt', 'pptx' //other formats
-          ],
-          allowMultiple: true,
-        );
-        if (result != null) {
-          pickedFiles = result.files.map((file) => XFile(file.path!)).toList();
-        }
-      } else {
-        final ImagePicker picker = ImagePicker();
-        pickedFiles = await picker.pickMultiImage();
-      }
-
-      if (pickedFiles != null) {
-        setState(() {
-          _selectedFiles.addAll(pickedFiles!
-              .map((xFile) => File(xFile.path))
-              .take(widget.maxImages - _selectedFiles.length));
-        });
-      }
-    } else {
-      // Permission was denied, show an error message or handle accordingly
-      print('Permission denied to access storage');
+    if (pickedFiles != null) {
+      setState(() {
+        _selectedFiles.addAll(pickedFiles!
+            .map((xFile) => File(xFile.path))
+            .take(widget.maxImages - _selectedFiles.length));
+      });
     }
   }
 
