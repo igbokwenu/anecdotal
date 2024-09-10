@@ -1,4 +1,9 @@
+import 'package:anecdotal/services/gemini_ai_service.dart';
+import 'package:anecdotal/utils/ai_prompts.dart';
+import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/utils/symptom_list.dart';
+import 'package:anecdotal/views/report_view.dart';
+import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:flutter/material.dart';
 
 class SymptomsSelectionPage extends StatefulWidget {
@@ -27,45 +32,121 @@ class SymptomsSelectionPageState extends State<SymptomsSelectionPage> {
     'More Reported Symptoms': additionalCirsSymptoms,
   };
 
+  Future<void> _handleSend(
+    BuildContext context,
+  ) async {
+    MyReusableFunctions.showProcessingToast();
+    final response = await GeminiService.sendTextPrompt(
+      message: sendSymptomAnalysisPrompt(symptoms: "$selectedSymptoms"),
+    );
+
+    if (response != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ReportView(
+            summaryContent: response['summary'] ?? 'No summary available.',
+            keyInsights: response['insights']?.cast<String>() ?? [],
+            recommendations: response['recommendations']?.cast<String>() ?? [],
+            followUpSuggestions: response['suggestions']?.cast<String>() ?? [],
+            title: 'Symptom Analysis',
+          ),
+        ),
+      );
+    } else {
+      MyReusableFunctions.showCustomToast(description: "No response received.");
+      print("No response received.");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Symptoms'),
+        title: const MyAppBarTitleWithAI(title: 'Select & Click Analyze'),
       ),
       body: ListView(
-        children: symptoms.keys.map((category) {
-          return ExpansionTile(
-            title: Text(category),
-            children: symptoms[category]!.map((symptom) {
-              return CheckboxListTile(
-                title: Text(symptom),
-                value: selectedSymptoms[category]?.contains(symptom) ?? false,
-                onChanged: (bool? value) {
-                  setState(() {
-                    if (value == true) {
-                      selectedSymptoms[category] = [
-                        ...(selectedSymptoms[category] ?? []),
-                        symptom
-                      ];
-                    } else {
-                      selectedSymptoms[category]?.remove(symptom);
-                    }
-                  });
-                },
-              );
-            }).toList(),
-          );
-        }).toList(),
+        children: [
+          ...symptoms.keys.map((category) {
+            return ExpansionTile(
+              title: Text(category),
+              children: symptoms[category]!.map((symptom) {
+                return CheckboxListTile(
+                  title: Text(symptom),
+                  value: selectedSymptoms[category]?.contains(symptom) ?? false,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      if (value == true) {
+                        selectedSymptoms[category] = [
+                          ...(selectedSymptoms[category] ?? []),
+                          symptom
+                        ];
+                      } else {
+                        selectedSymptoms[category]?.remove(symptom);
+                      }
+                    });
+                  },
+                );
+              }).toList(),
+            );
+          }).toList(),
+          // Fancy box to show all selected symptoms
+          selectedSymptoms.isEmpty
+              ? myEmptySizedBox()
+              : Card(
+                  margin: const EdgeInsets.all(16),
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Selected Symptoms',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        ...selectedSymptoms.entries.map((entry) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                entry.key,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              ...entry.value.map((symptom) => Padding(
+                                    padding: const EdgeInsets.only(left: 16),
+                                    child: Text('• $symptom'),
+                                  )),
+                              const SizedBox(height: 8),
+                            ],
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
+                ),
+          mySpacing(spacing: 80),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Process selected symptoms
-          print(selectedSymptoms);
-        },
-        child: const Icon(Icons.check),
+      floatingActionButton: ElevatedButton.icon(
+        onPressed: selectedSymptoms.isEmpty
+            ? null
+            : () {
+                _handleSend(context);
+                print(selectedSymptoms);
+              },
+        label: Text('Analyze Symptoms'),
+        icon: Icon(Icons.auto_awesome),
       ),
     );
   }
 }
-

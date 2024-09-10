@@ -1,4 +1,5 @@
 import 'package:anecdotal/utils/constants.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -216,6 +217,31 @@ class MyAnimatedText2 extends StatelessWidget {
         ),
       ],
       repeatForever: true,
+    );
+  }
+}
+
+class MyAppBarTitleWithAI extends StatelessWidget {
+  final String title;
+  const MyAppBarTitleWithAI({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Pulse(
+            delay: const Duration(milliseconds: 2000),
+            child: const Icon(Icons.auto_awesome)),
+        const SizedBox(width: 10),
+        Text(
+          title,
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(fontWeight: FontWeight.bold),
+        ),
+      ],
     );
   }
 }

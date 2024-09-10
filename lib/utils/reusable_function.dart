@@ -63,10 +63,10 @@ class MyReusableFunctions {
   static Future<void> myReusableCustomDialog({
     required BuildContext context,
     Widget? widget,
-    required IconData icon,
+    IconData? icon,
     Color? dialogIconColor,
     List<Widget>? actions,
-    String? message,
+   required String message,
     String? actionButtonText,
     Color? textColor,
     bool barrierDismissible = true,
@@ -76,13 +76,13 @@ class MyReusableFunctions {
       context: context,
       builder: (context) => AlertDialog(
         title: Icon(
-          icon,
+          icon ?? Icons.info,
           size: 40,
           color: dialogIconColor ?? Theme.of(context).iconTheme.color,
         ),
         content: widget ??
             Text(
-              message ?? '',
+              message,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16, // Adjust the font size as needed

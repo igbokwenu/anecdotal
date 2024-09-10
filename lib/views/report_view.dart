@@ -6,13 +6,14 @@ class ReportView extends StatelessWidget {
   final List<String> keyInsights;
   final List<String> recommendations;
   final List<String> followUpSuggestions;
+  final String? title;
 
   const ReportView({
     super.key,
     required this.summaryContent,
     required this.keyInsights,
     required this.recommendations,
-    required this.followUpSuggestions,
+    required this.followUpSuggestions, this.title,
   });
 
   @override
@@ -28,7 +29,7 @@ class ReportView extends StatelessWidget {
               child: const Icon(Icons.auto_awesome),
             ),
             const SizedBox(width: 10),
-            Text(
+            Text( title ??
               'Highlights',
               style: theme.textTheme.headlineSmall!
                   .copyWith(fontWeight: FontWeight.bold),
