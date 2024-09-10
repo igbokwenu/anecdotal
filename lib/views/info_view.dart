@@ -66,7 +66,7 @@ class InfoView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+         patientsName == null ? myEmptySizedBox(): Text(
             patientsName ?? 'Amanda Davis',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineSmall!.copyWith(
@@ -74,7 +74,7 @@ class InfoView extends StatelessWidget {
                 ),
           ),
           Text(
-            'Last updated: August 31, 2024',
+            'Last updated: September 11, 2024',
             style: Theme.of(context).textTheme.labelMedium!.copyWith(
                   fontStyle: FontStyle.italic,
                 ),
