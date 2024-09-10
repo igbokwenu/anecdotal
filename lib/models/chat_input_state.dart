@@ -4,6 +4,7 @@ class ChatInputState {
   final int currentHintIndex;
   final bool isProcessingAudio;
   final bool isListeningToAudio;
+  final bool isAnalyzing;
 
   ChatInputState({
     required this.isComposing,
@@ -11,6 +12,7 @@ class ChatInputState {
     required this.currentHintIndex,
     required this.isProcessingAudio,
      required this.isListeningToAudio, 
+     required this.isAnalyzing,
   });
 
   ChatInputState copyWith({
@@ -18,7 +20,8 @@ class ChatInputState {
     bool? isSending,
     int? currentHintIndex,
     bool? isProcessingAudio,
-    bool? isListeningToAudio
+    bool? isListeningToAudio,
+    bool? isAnalyzing,
   }) {
     return ChatInputState(
       isComposing: isComposing ?? this.isComposing,
@@ -26,6 +29,7 @@ class ChatInputState {
       currentHintIndex: currentHintIndex ?? this.currentHintIndex,
       isProcessingAudio: isProcessingAudio ?? this.isProcessingAudio,
       isListeningToAudio: isListeningToAudio ?? this.isListeningToAudio,
+      isAnalyzing: isAnalyzing ?? this.isAnalyzing,
     );
   }
 }

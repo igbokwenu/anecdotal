@@ -1,5 +1,5 @@
-// file: lib/notifiers/chat_input_notifier.dart
-
+import 'dart:async';
+import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/chat_input_state.dart';
 
@@ -8,6 +8,8 @@ final chatInputProvider =
         (ref) => ChatInputNotifier());
 
 class ChatInputNotifier extends StateNotifier<ChatInputState> {
+  Timer? _analyzingTimer;
+
   ChatInputNotifier()
       : super(ChatInputState(
           isComposing: false,
@@ -15,7 +17,27 @@ class ChatInputNotifier extends StateNotifier<ChatInputState> {
           currentHintIndex: 0,
           isProcessingAudio: false,
           isListeningToAudio: false,
+          isAnalyzing: false,
         ));
+
+  void setIsAnalyzing(bool value) {
+    if (value) {
+      // Start the timer to reset isAnalyzing after 40 seconds
+      _analyzingTimer?.cancel(); // Cancel any previous timer
+      _analyzingTimer = Timer(const Duration(seconds: 40), () {
+        if (state.isAnalyzing) {
+          state = state.copyWith(isAnalyzing: false);
+          MyReusableFunctions.showCustomToast(
+              description: "Time out. Something went wrong 🥲");
+        }
+      });
+    } else {
+      // Cancel the timer if isAnalyzing is set to false manually
+      _analyzingTimer?.cancel();
+    }
+
+    state = state.copyWith(isAnalyzing: value);
+  }
 
   void setIsComposing(bool value) {
     state = state.copyWith(isComposing: value);

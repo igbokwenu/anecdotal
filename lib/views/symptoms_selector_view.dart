@@ -1,3 +1,4 @@
+import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/utils/ai_prompts.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
@@ -5,15 +6,16 @@ import 'package:anecdotal/utils/symptom_list.dart';
 import 'package:anecdotal/views/report_view.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SymptomsSelectionPage extends StatefulWidget {
+class SymptomsSelectionPage extends ConsumerStatefulWidget {
   const SymptomsSelectionPage({super.key});
 
   @override
   SymptomsSelectionPageState createState() => SymptomsSelectionPageState();
 }
 
-class SymptomsSelectionPageState extends State<SymptomsSelectionPage> {
+class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
   // Store the selected symptoms
   Map<String, List<String>> selectedSymptoms = {};
 
@@ -36,11 +38,13 @@ class SymptomsSelectionPageState extends State<SymptomsSelectionPage> {
     BuildContext context,
   ) async {
     MyReusableFunctions.showProcessingToast();
+    ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
     final response = await GeminiService.sendTextPrompt(
       message: sendSymptomAnalysisPrompt(symptoms: "$selectedSymptoms"),
     );
 
     if (response != null) {
+      ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -54,6 +58,7 @@ class SymptomsSelectionPageState extends State<SymptomsSelectionPage> {
         ),
       );
     } else {
+      ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
       MyReusableFunctions.showCustomToast(description: "No response received.");
       print("No response received.");
     }
@@ -61,6 +66,7 @@ class SymptomsSelectionPageState extends State<SymptomsSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final buttonLoadingState = ref.watch(chatInputProvider);
     return Scaffold(
       appBar: AppBar(
         title: const MyAppBarTitleWithAI(title: 'Select & Click Analyze'),
@@ -137,16 +143,18 @@ class SymptomsSelectionPageState extends State<SymptomsSelectionPage> {
           mySpacing(spacing: 80),
         ],
       ),
-      floatingActionButton: ElevatedButton.icon(
-        onPressed: selectedSymptoms.isEmpty
-            ? null
-            : () {
-                _handleSend(context);
-                print(selectedSymptoms);
-              },
-        label: Text('Analyze Symptoms'),
-        icon: Icon(Icons.auto_awesome),
-      ),
+      floatingActionButton: buttonLoadingState.isAnalyzing
+          ? const MySpinKitWaveSpinner()
+          : ElevatedButton.icon(
+              onPressed: selectedSymptoms.isEmpty
+                  ? null
+                  : () {
+                      _handleSend(context);
+                      print(selectedSymptoms);
+                    },
+              label: Text('Analyze Symptoms'),
+              icon: Icon(Icons.auto_awesome),
+            ),
     );
   }
 }

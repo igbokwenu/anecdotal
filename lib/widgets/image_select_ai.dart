@@ -105,7 +105,8 @@ class _AIImageSelectWidgetState extends State<AIImageSelectWidget> {
               _selectedFiles.isEmpty || _isAnalyzing ? null : _analyzeImages,
           label: _isAnalyzing
               ? const MySpinKitWaveSpinner(size: 40)
-              : const Text('Analyze Images'),
+              : Text(
+                  widget.allowFileSelect ? 'Analyze Files' : 'Analyze Images'),
           icon: const Icon(Icons.auto_awesome),
         ),
       ],

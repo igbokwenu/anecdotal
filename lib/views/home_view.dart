@@ -1,3 +1,4 @@
+import 'package:anecdotal/views/medical_history_view.dart';
 import 'package:anecdotal/views/symptoms_selector_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:flutter/material.dart';
@@ -250,6 +251,22 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                               Navigator.push(
                                                 context,
                                                 slideLeftTransitionPageBuilder(
+                                                  ExposureHistoryScreen(),
+                                                ),
+                                              );
+                                            },
+                                            label: const Text(
+                                                "Tell Us A Bit About Your History"),
+                                            icon: const Icon(
+                                              Icons.health_and_safety,
+                                            ),
+                                          ),
+                                          mySpacing(),
+                                          ElevatedButton.icon(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                slideLeftTransitionPageBuilder(
                                                   const SymptomsSelectionPage(),
                                                 ),
                                               );
@@ -259,7 +276,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                             icon: const Icon(
                                               Icons.search,
                                             ),
-                                          )
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -384,12 +401,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                                                   "Analysis failed or returned no results");
                                                             }
                                                           },
-                                                          // enableFlash: true,
-                                                          // enableZoom: true,
-                                                          // preferredModel:
-                                                          //     geminiProModel,
-                                                          onComplete:
-                                                              () {}, // Optional
+                                                          onComplete: () {},
                                                         ),
                                                       ),
                                                     );
@@ -469,6 +481,113 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                       title: interpretLabResultSectionHeader,
                                       sectionSummary:
                                           interpretLabResultSectionSummary,
+                                      firstWidget: Column(
+                                        children: [
+                                          ElevatedButton.icon(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                slideLeftTransitionPageBuilder(
+                                                  CameraWidget(
+                                                    prompt:
+                                                        sendHouseImageAnalysisPrompt,
+                                                    onResponse: (result) {
+                                                      if (result != null) {
+                                                        Navigator
+                                                            .pushReplacement(
+                                                          context,
+                                                          slideLeftTransitionPageBuilder(
+                                                            ReportView(
+                                                              summaryContent: result[
+                                                                      'summary'] ??
+                                                                  'No summary available.',
+                                                              keyInsights: result[
+                                                                          'insights']
+                                                                      ?.cast<
+                                                                          String>() ??
+                                                                  [],
+                                                              recommendations:
+                                                                  result['recommendations']
+                                                                          ?.cast<
+                                                                              String>() ??
+                                                                      [],
+                                                              followUpSuggestions:
+                                                                  result['suggestions']
+                                                                          ?.cast<
+                                                                              String>() ??
+                                                                      [],
+                                                            ),
+                                                          ),
+                                                        );
+                                                        print(
+                                                            "Summary: ${result['summary']}");
+                                                        print(
+                                                            "Insights: ${result['insights']}");
+                                                        print(
+                                                            "Recommendations: ${result['recommendations']}");
+                                                        print(
+                                                            "Suggestions: ${result['suggestions']}");
+                                                      } else {
+                                                        print(
+                                                            "Analysis failed or returned no results");
+                                                      }
+                                                    },
+                                                    onComplete: () {},
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            label: const Text("Capture Report"),
+                                            icon: const Icon(Icons.camera_alt),
+                                          ),
+                                          AIImageSelectWidget(
+                                            prompt:
+                                                sendHouseImageAnalysisPrompt,
+                                            allowFileSelect: true,
+                                            maxImages: 4,
+                                            onResponse: (result) {
+                                              if (result != null) {
+                                                Navigator.push(
+                                                  context,
+                                                  slideLeftTransitionPageBuilder(
+                                                    ReportView(
+                                                      summaryContent: result[
+                                                              'summary'] ??
+                                                          'No summary available.',
+                                                      keyInsights: result[
+                                                                  'insights']
+                                                              ?.cast<
+                                                                  String>() ??
+                                                          [],
+                                                      recommendations: result[
+                                                                  'recommendations']
+                                                              ?.cast<
+                                                                  String>() ??
+                                                          [],
+                                                      followUpSuggestions:
+                                                          result['suggestions']
+                                                                  ?.cast<
+                                                                      String>() ??
+                                                              [],
+                                                    ),
+                                                  ),
+                                                );
+                                                print(
+                                                    "Summary: ${result['summary']}");
+                                                print(
+                                                    "Insights: ${result['insights']}");
+                                                print(
+                                                    "Recommendations: ${result['recommendations']}");
+                                                print(
+                                                    "Suggestions: ${result['suggestions']}");
+                                              } else {
+                                                print(
+                                                    "Analysis failed or returned no results.");
+                                              }
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );

@@ -42,6 +42,7 @@ class DatabaseService {
       userHomeReportPdfUrls: [],
       userLabReportPdfUrls: [],
       userSymptomReportPdfUrls: [],
+      userMedicalHistoryList: [],
     });
   }
 }

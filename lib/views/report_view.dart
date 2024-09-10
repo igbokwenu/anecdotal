@@ -13,7 +13,8 @@ class ReportView extends StatelessWidget {
     required this.summaryContent,
     required this.keyInsights,
     required this.recommendations,
-    required this.followUpSuggestions, this.title,
+    required this.followUpSuggestions,
+    this.title,
   });
 
   @override
@@ -29,8 +30,8 @@ class ReportView extends StatelessWidget {
               child: const Icon(Icons.auto_awesome),
             ),
             const SizedBox(width: 10),
-            Text( title ??
-              'Highlights',
+            Text(
+              title ?? 'Highlights',
               style: theme.textTheme.headlineSmall!
                   .copyWith(fontWeight: FontWeight.bold),
             ),
@@ -66,7 +67,7 @@ class ReportView extends StatelessWidget {
             ),
             // Follow Up Suggestions Section
             _buildSection(
-              title: 'Follow Up Suggestions',
+              title: 'Follow Up Search Terms',
               icon: Icons.directions_run,
               color: theme.colorScheme.primaryFixedDim,
               children: _buildBulletPoints(followUpSuggestions),

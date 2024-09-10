@@ -116,3 +116,18 @@ Under suggestions come up with related search terms that the user can input in a
 // Low MSH
 // Elevated C4a
 // Experience symptomatic and lab value improvement with therapy.
+
+// How do you treat CIRS?
+// Treatment is individualized for each patient. It frequently includes:
+
+// Elimination of further biotoxin exposure
+// Resetting nervous system
+// Setting foundations of health
+// Choosing the right binder(s)
+// Opening detox and lymphatic pathways
+// Healing the gut
+// Healing the sinuses including MARCONs
+// Calming mast cell activation syndrome (if needed)
+// Prescribing antifungals medications and herbs
+// Correcting abnormal lab values – sex hormones, ADH/osmolarity, MMP9, VEGF, C3a, C4a, TGF B-1, VIP
+// Addressing tickborne infections (if needed)
