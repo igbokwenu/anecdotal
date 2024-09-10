@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 
+import 'package:permission_handler/permission_handler.dart';
+
 class AIImageSelectWidget extends StatefulWidget {
   final String prompt;
   final Function(Map<String, dynamic>?) onResponse;
@@ -28,27 +30,45 @@ class _AIImageSelectWidgetState extends State<AIImageSelectWidget> {
   bool _isAnalyzing = false;
 
   Future<void> _pickImages() async {
-    List<XFile>? pickedFiles;
+    // Request storage permission
+    PermissionStatus status;
     if (widget.allowFileSelect) {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['jpg', 'jpeg', 'png'],
-        allowMultiple: true,
-      );
-      if (result != null) {
-        pickedFiles = result.files.map((file) => XFile(file.path!)).toList();
-      }
+      status = await Permission.storage.request();
     } else {
-      final ImagePicker picker = ImagePicker();
-      pickedFiles = await picker.pickMultiImage();
+      status = await Permission.photos.request();
     }
 
-    if (pickedFiles != null) {
-      setState(() {
-        _selectedFiles.addAll(pickedFiles!
-            .map((xFile) => File(xFile.path))
-            .take(widget.maxImages - _selectedFiles.length));
-      });
+    // Check if permission is granted
+    if (status.isGranted) {
+      List<XFile>? pickedFiles;
+      if (widget.allowFileSelect) {
+        FilePickerResult? result = await FilePicker.platform.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: [
+            'jpg', 'jpeg', 'png', // Image formats
+            'doc', 'docx', 'pdf', // Document formats
+            'txt', 'ppt', 'pptx' //other formats
+          ],
+          allowMultiple: true,
+        );
+        if (result != null) {
+          pickedFiles = result.files.map((file) => XFile(file.path!)).toList();
+        }
+      } else {
+        final ImagePicker picker = ImagePicker();
+        pickedFiles = await picker.pickMultiImage();
+      }
+
+      if (pickedFiles != null) {
+        setState(() {
+          _selectedFiles.addAll(pickedFiles!
+              .map((xFile) => File(xFile.path))
+              .take(widget.maxImages - _selectedFiles.length));
+        });
+      }
+    } else {
+      // Permission was denied, show an error message or handle accordingly
+      print('Permission denied to access storage');
     }
   }
 
@@ -90,14 +110,19 @@ class _AIImageSelectWidgetState extends State<AIImageSelectWidget> {
         ),
         if (_selectedFiles.isNotEmpty) ...[
           mySpacing(spacing: 16),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: _selectedFiles
-                .map((file) => Image.file(file,
-                    width: 100, height: 100, fit: BoxFit.cover))
-                .toList(),
-          ),
+          widget.allowFileSelect
+              ? const Text(
+                  "Can't show preview, click button below to analyze selected files.",
+                  textAlign: TextAlign.center,
+                )
+              : Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: _selectedFiles
+                      .map((file) => Image.file(file,
+                          width: 100, height: 100, fit: BoxFit.cover))
+                      .toList(),
+                ),
         ],
         mySpacing(spacing: 16),
         ElevatedButton.icon(

@@ -209,30 +209,6 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                         child: Row(
                           children: [
                             CustomCard(
-                              title: 'Progress Tracker',
-                              icon: Icons.track_changes,
-                              description:
-                                  'Track your daily treatments, symptoms and feelings',
-                              onTap: () async {
-                                Navigator.push(
-                                  context,
-                                  slideLeftTransitionPageBuilder(
-                                    InfoView(
-                                      title: progressTrackerSectionHeader,
-                                      sectionSummary:
-                                          progressTrackerSectionSummary,
-                                    ),
-                                  ),
-                                );
-                              },
-                              onInfoTapped: () {
-                                _showMessageDialog(
-                                  context,
-                                  progressTrackerSectionSummary,
-                                );
-                              },
-                            ),
-                            CustomCard(
                               title: 'Symptom Checker',
                               icon: Icons.health_and_safety,
                               description:
@@ -286,6 +262,30 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                               onInfoTapped: () {
                                 _showMessageDialog(
                                     context, symptomSectionSummary);
+                              },
+                            ),
+                            CustomCard(
+                              title: 'Progress Tracker',
+                              icon: Icons.track_changes,
+                              description:
+                                  'Track your daily treatments, symptoms and feelings',
+                              onTap: () async {
+                                Navigator.push(
+                                  context,
+                                  slideLeftTransitionPageBuilder(
+                                    InfoView(
+                                      title: progressTrackerSectionHeader,
+                                      sectionSummary:
+                                          progressTrackerSectionSummary,
+                                    ),
+                                  ),
+                                );
+                              },
+                              onInfoTapped: () {
+                                _showMessageDialog(
+                                  context,
+                                  progressTrackerSectionSummary,
+                                );
                               },
                             ),
                             CustomCard(
@@ -543,7 +543,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                           AIImageSelectWidget(
                                             prompt:
                                                 sendHouseImageAnalysisPrompt,
-                                            allowFileSelect: true,
+                                            // allowFileSelect: true,
                                             maxImages: 4,
                                             onResponse: (result) {
                                               if (result != null) {
