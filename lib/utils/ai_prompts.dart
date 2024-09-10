@@ -92,6 +92,8 @@ Experience symptomatic and lab value improvement with therapy.
 
 Here is a list of symptoms the patient listed: ${symptoms == null ? "The patient did not list any symptoms. Encourage them to share their symptoms to help with your analysis" : " $symptoms"}
 Here is a list of questions the patient answered regarding their medical history: ${history == null ? "The patient did not share their history. Encourage them to share their history to help with your analysis" : " $history"}
+
+Your primary objective is to determine if the symptoms they listed matches at least 8 from the 13 clusters of symptoms. Give the report like you are speaking to the patient.
   
 In your response you are using JSON mode to respond to a patients query.
 
