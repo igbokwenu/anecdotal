@@ -1,7 +1,5 @@
-import 'package:anecdotal/views/download_view.dart';
 import 'package:anecdotal/views/symptoms_selector_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
-import 'package:anecdotal/widgets/test_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
@@ -83,6 +81,12 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
       File(path).delete();
     }
 
+    // Get the screen size using MediaQuery.sizeOf or MediaQuery.of(context).size
+    final Size screenSize = MediaQuery.sizeOf(context);
+    // final bool isMobile = screenSize.width < 600;
+    final bool isTabletOrDesktop = screenSize.width >= 600;
+    // final bool isLandscape = screenSize.width > screenSize.height;
+
     return AdvancedDrawer(
       backdrop: Container(
         width: double.infinity,
@@ -99,7 +103,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
           ),
         ),
       ),
-      openRatio: kIsWeb ? 0.35 : 0.65,
+      openRatio: isTabletOrDesktop ? 0.35 : 0.65,
       controller: _advancedDrawerController,
       animationCurve: Curves.easeInOut,
       animationDuration: const Duration(milliseconds: 300),
@@ -246,13 +250,13 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                               Navigator.push(
                                                 context,
                                                 slideLeftTransitionPageBuilder(
-                                                  SymptomsSelectionPage(),
+                                                  const SymptomsSelectionPage(),
                                                 ),
                                               );
                                             },
-                                            label: Text(
+                                            label: const Text(
                                                 "Investigate Your Symptoms"),
-                                            icon: Icon(
+                                            icon: const Icon(
                                               Icons.search,
                                             ),
                                           )
@@ -265,6 +269,27 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                               onInfoTapped: () {
                                 _showMessageDialog(
                                     context, symptomSectionSummary);
+                              },
+                            ),
+                            CustomCard(
+                              title: 'Find a Doctor',
+                              icon: Icons.location_on,
+                              description:
+                                  'Find a CIRS trained doctor in your area',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  slideLeftTransitionPageBuilder(
+                                    InfoView(
+                                      title: findDoctorSectionHeader,
+                                      sectionSummary: findDoctorSectionSummary,
+                                    ),
+                                  ),
+                                );
+                              },
+                              onInfoTapped: () {
+                                _showMessageDialog(
+                                    context, findDoctorSectionSummary);
                               },
                             ),
                             CustomCard(
@@ -289,27 +314,6 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                     context, spreadAwarenessSectionSummary);
                               },
                             ),
-                            CustomCard(
-                              title: 'Find a Doctor',
-                              icon: Icons.location_on,
-                              description:
-                                  'Find a CIRS trained doctor in your area',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  slideLeftTransitionPageBuilder(
-                                    InfoView(
-                                      title: findDoctorSectionHeader,
-                                      sectionSummary: findDoctorSectionSummary,
-                                    ),
-                                  ),
-                                );
-                              },
-                              onInfoTapped: () {
-                                _showMessageDialog(
-                                    context, findDoctorSectionSummary);
-                              },
-                            ),
                           ],
                         ),
                       ),
@@ -317,30 +321,6 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            CustomCard(
-                              title: 'Home Remedies',
-                              icon: Icons.home,
-                              description:
-                                  'Pocket-friendly healing pathways to get you started',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  slideLeftTransitionPageBuilder(
-                                    InfoView(
-                                      title: homeRemediesSectionHeader,
-                                      sectionSummary:
-                                          homeRemediesSectionSummary,
-                                    ),
-                                  ),
-                                );
-                              },
-                              onInfoTapped: () {
-                                _showMessageDialog(
-                                  context,
-                                  homeRemediesSectionSummary,
-                                );
-                              },
-                            ),
                             CustomCard(
                               title: 'Investigate',
                               icon: Icons.camera_alt,
@@ -477,14 +457,6 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                               },
                             ),
                             CustomCard(
-                              title: 'Lifestyle',
-                              icon: Icons.fitness_center,
-                              description:
-                                  'Make helpful lifestyle adjustments to support your recovery',
-                              onTap: () {},
-                              onInfoTapped: () {},
-                            ),
-                            CustomCard(
                               title: 'Interpret Lab',
                               icon: Icons.biotech_rounded,
                               description:
@@ -507,6 +479,38 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                   interpretLabResultSectionSummary,
                                 );
                               },
+                            ),
+                            CustomCard(
+                              title: 'Home Remedies',
+                              icon: Icons.home,
+                              description:
+                                  'Pocket-friendly healing pathways to get you started',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  slideLeftTransitionPageBuilder(
+                                    InfoView(
+                                      title: homeRemediesSectionHeader,
+                                      sectionSummary:
+                                          homeRemediesSectionSummary,
+                                    ),
+                                  ),
+                                );
+                              },
+                              onInfoTapped: () {
+                                _showMessageDialog(
+                                  context,
+                                  homeRemediesSectionSummary,
+                                );
+                              },
+                            ),
+                            CustomCard(
+                              title: 'Lifestyle',
+                              icon: Icons.fitness_center,
+                              description:
+                                  'Make helpful lifestyle adjustments to support your recovery',
+                              onTap: () {},
+                              onInfoTapped: () {},
                             ),
                           ],
                         ),

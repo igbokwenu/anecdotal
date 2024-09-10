@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:anecdotal/services/gemini_ai_service.dart';
+import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter/material.dart';
@@ -102,6 +103,7 @@ class _CameraWidgetState extends State<CameraWidget> {
 
   Future<void> _analyzeCapturedImage() async {
     if (_capturedImage != null) {
+      MyReusableFunctions.showProcessingToast();
       final response = await GeminiService.analyzeImages(
         images: [_capturedImage!],
         prompt: widget.prompt,

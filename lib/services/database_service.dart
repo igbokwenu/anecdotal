@@ -1,3 +1,4 @@
+import 'package:anecdotal/utils/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -14,31 +15,36 @@ class DatabaseService {
 
   Future<void> createUserDocument() async {
     return await updateUserDocument({
-      'firstName': '',
-      'lastName': '',
-      'country': '',
-      'state': '',
-      'email': '',
-      'symptoms': [],
-      'toDo': [],
-      'done': [],
-      'symptomAnalysis': '',
-      'homeAnalysis': '',
-      'progressAnalysis': '',
-      'progress': [],
-      'userStory': [],
-      'isDiagnosed': false,
-      'isMedicalProfessional': false,
-      'isAdmin': false,
-      'isBanned': false,
-      'isSuperAdmin': false,
-      'isPro': false,
-      'otherSymptoms': [],
-      'uid': uid,
+      userFirstName: '',
+      userLastName: '',
+      userCountry: '',
+      userState: '',
+      userEmail: '',
+      userSymptomsList: [],
+      userToDoList: [],
+      userDoneList: [],
+      userSymptomAnalysis: '',
+      userHomeAnalysis: '',
+      userProgressAnalysis: '',
+      userProgressList: [],
+      userUserStoryList: [],
+      userIsDiagnosed: false,
+      userIsMedicalProfessional: false,
+      userIsAdmin: false,
+      userIsBanned: false,
+      userIsSuperAdmin: false,
+      userIsPro: false,
+      userOtherSymptomsList: [],
+      userUid: uid,
+      userHomeReportImageUrls: [],
+      userLabReportImageUrls: [],
+      userSymptomReportImageUrls: [],
+      userHomeReportPdfUrls: [],
+      userLabReportPdfUrls: [],
+      userSymptomReportPdfUrls: [],
     });
   }
 }
-
 
 class DatabaseService2 {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

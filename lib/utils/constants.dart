@@ -63,3 +63,34 @@ const googleApiKey = 'goog_vsEPEYPdkWRUGqBiNyaGMjSqHbt';
 const appleApiKey = 'appl_kpeYPMlCLVQCfwiuRuBdPOfYaLL';
 const amazonApiKey = '';
 const entitlementID = 'pro';
+
+
+//User database reference:
+
+const String userFirstName = 'firstName';
+const String userLastName = 'lastName';
+const String userCountry = 'country';
+const String userState = 'state';
+const String userEmail = 'email';
+const String userSymptomsList = 'symptoms';
+const String userToDoList = 'toDo';
+const String userDoneList = 'done';
+const String userSymptomAnalysis = 'symptomAnalysis';
+const String userHomeAnalysis = 'homeAnalysis';
+const String userProgressAnalysis = 'progressAnalysis';
+const String userProgressList = 'progress';
+const String userUserStoryList = 'userStory';
+const String userIsDiagnosed = 'isDiagnosed';
+const String userIsMedicalProfessional = 'isMedicalProfessional';
+const String userIsAdmin = 'isAdmin';
+const String userIsBanned = 'isBanned';
+const String userIsSuperAdmin = 'isSuperAdmin';
+const String userIsPro = 'isPro';
+const String userOtherSymptomsList = 'otherSymptoms';
+const String userUid = 'uid';
+const String userHomeReportImageUrls = 'homeReportImageUrls';
+const String userLabReportImageUrls = 'labReportImageUrls';
+const String userSymptomReportImageUrls = 'symptomReportImageUrls';
+const String userHomeReportPdfUrls = 'homeReportPdfUrls';
+const String userLabReportPdfUrls = 'labReportPdfUrls';
+const String userSymptomReportPdfUrls = 'symptomReportPdfUrls';
