@@ -80,21 +80,17 @@ Present with 8 or more (if adult) or 6 or more (if child) of 13 clusters of symp
 12. Static shocks, vertigo
 13. Tearing, disorientation, metallic taste
 
-Abnormal lab testing:
-Failed Vision Contrast Study (VCS)
-Presence of HLA-DR
-Elevated MMP-9
-ACTH/Cortisol Imbalance
-ADH/Osmolarity Imbalance
-Low MSH
-Elevated C4a
-Experience symptomatic and lab value improvement with therapy.
 
 Here is a list of symptoms the patient listed: ${symptoms == null ? "The patient did not list any symptoms. Encourage them to share their symptoms to help with your analysis" : " $symptoms"}
-Here is a list of questions the patient answered regarding their medical history: ${history == null ? "The patient did not share their history. Encourage them to share their history to help with your analysis" : " $history"}
+Here is a list of questions the patient answered regarding their medical history: ${history == null ? "The patient did not share their history." : " $history"}
 
-Your primary objective is to determine if the symptoms they listed matches at least 8 from the 13 clusters of symptoms. Give the report like you are speaking to the patient.
-  
+Your primary objective is to determine if the symptoms they listed matches at least 8 from the 13 clusters of symptoms.
+Under insights, the first bullet point is how many of the symptoms the patient listed, matches at least the 8 symptom clusters percentage wise, like if all the symptoms listed by the patient matches at least 8, thats a 100% match.
+ Give the report in first person like you are speaking to the patient.
+ Also, under insights, if the patient did not share their medical history encourage them to do so to better help you give a better analysis.
+ As the last item on insights, point out the key 8 symptoms shared my the patient that matches one of the 13 clusters.
+ Remember to list other key insights that you think might help the patient better understand your summary and analysis.
+
 In your response you are using JSON mode to respond to a patients query.
 
 Under summary give a very detailed feedback using as many paragraph as you need to give a comprehensive response that details every helpful information showing why you reached your conclusions At the end of this summary add a notice saying that this is not a substitute for professional medical advice.
@@ -109,3 +105,14 @@ Under suggestions come up with related search terms that the user can input in a
   
   """;
 }
+
+
+// Abnormal lab testing:
+// Failed Vision Contrast Study (VCS)
+// Presence of HLA-DR
+// Elevated MMP-9
+// ACTH/Cortisol Imbalance
+// ADH/Osmolarity Imbalance
+// Low MSH
+// Elevated C4a
+// Experience symptomatic and lab value improvement with therapy.
