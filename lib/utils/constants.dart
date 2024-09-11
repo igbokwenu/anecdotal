@@ -73,6 +73,7 @@ const String userState = 'state';
 const String userEmail = 'email';
 const String userSymptomsList = 'symptoms';
 const String userToDoList = 'toDo';
+const String userInProgressList = 'inProgress';
 const String userDoneList = 'done';
 const String userSymptomAnalysis = 'symptomAnalysis';
 const String userHomeAnalysis = 'homeAnalysis';

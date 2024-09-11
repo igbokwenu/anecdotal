@@ -22,6 +22,7 @@ class DatabaseService {
       userEmail: '',
       userSymptomsList: [],
       userToDoList: [],
+      userInProgressList: [],
       userDoneList: [],
       userSymptomAnalysis: '',
       userHomeAnalysis: '',
