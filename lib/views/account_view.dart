@@ -1,4 +1,5 @@
 import 'package:anecdotal/utils/constants.dart';
+import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,7 @@ class AccountPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'John Doe', // Replace with real data
+              'Name Not Available',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
@@ -89,14 +90,13 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  // Build "View Reports" button
   Widget _buildReportCardButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          // Navigate to report page
-          Navigator.pushNamed(context, '/viewReports');
+          MyReusableFunctions.showCustomToast(
+              description: "Coming Soon. Stay Tuned.");
         },
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.all(16.0),
