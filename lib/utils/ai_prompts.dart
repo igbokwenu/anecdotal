@@ -17,7 +17,7 @@ Under suggestions come up with related search terms that the user can input in a
   """;
 }
 
-String sendHouseImageAnalysisPrompt = """
+String sendHouseImageAnalysisPrompt({String? prompt} ) { return  """
   You are helping people get answers regarding, mold illness, also known as Chronic inflammatory response syndrome (CIRS), bio-toxin illness etc. 
   
   In your response you are using JSON mode to respond to a patients query.
@@ -31,8 +31,10 @@ Under recommendations give helpful recommendations that the patient can use to a
 Under suggestions come up with related search terms that the user can input in a search engine to get more information about their prompt.
 
    User question: I am worried mold might be growing in my house and making me sick. i want you to analyze the images attached and let me know if it looks like mold, water damage or a condition that could contribute to mold illness or if its an environmental hazard or factor that could make me sick. Tell me why you reached your conclusions based on what you see in the images.
+
+   ${prompt ?? ""}
   
-  """;
+  """ ;}
 
 const String aboutYou =
     "Introduce yourself and tell us a bit about you, including the symptoms you've been experiencing. You can mention anything that's been bothering you, and we'll do our best to hopefully point you in the right direction.";

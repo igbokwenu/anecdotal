@@ -95,7 +95,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       final result = await GeminiService.analyzeAudioForHome(
         audios: [File(_audioFilePath!)],
         prompt:
-            "Analyze the provided audio and extract the following information...", // Use the prompt we created earlier
+            "Analyze the provided audio and extract the following information. ",
       );
 
       setState(() {

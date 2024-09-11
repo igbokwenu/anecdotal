@@ -186,8 +186,9 @@ class _SignInScreenState extends State<SignInScreen> {
                   label: const Text('Continue Anonymously'),
                   icon: const Icon(Icons.visibility_off),
                 ),
-                if (Platform.isAndroid) const SizedBox(height: 16.0),
-                if (Platform.isAndroid)
+                // if (Platform.isAndroid) 
+                const SizedBox(height: 16.0),
+                // if (Platform.isAndroid)
                   OutlinedButton.icon(
                     onPressed: _signInWithGoogle,
                     icon: const Icon(Icons.person),
