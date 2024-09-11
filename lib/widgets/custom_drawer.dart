@@ -72,8 +72,7 @@ class CustomDrawer extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                MyReusableFunctions.showCustomToast(
-                    description: "Coming Soon. Stay Tuned.");
+                MyReusableFunctions.launchMail();
               },
               leading: const Icon(Icons.contact_support),
               title: const Text('Contact Us'),

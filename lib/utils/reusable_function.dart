@@ -1,16 +1,42 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MyReusableFunctions {
-    static Future<void> launchGoogleSearch(String searchQuery) async {
-    final String url = 'https://www.google.com/search?q=$searchQuery'; // replace with your desired search engine
+  static Future<void> launchMail({String? address}) async {
+    String encodeQueryParameters(Map<String, String> params) {
+      return params.entries
+          .map((MapEntry<String, String> e) =>
+              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+          .join('&');
+    }
+
+    final Uri url = Uri(
+      scheme: 'mailto',
+      path: address ?? "okechukwu@habilisfusion.co",
+      query: encodeQueryParameters(<String, String>{
+        'subject': '❤️From Anecdotal App❤️',
+        'body':
+            'Account ID: ${FirebaseAuth.instance.currentUser?.uid} \n\n <--- Add Message Below This Text ---> \n\n',
+      }),
+    );
+    if (!await launchUrl(url)) {
+      throw 'Could not launch $url';
+    }
+  }
+
+  static Future<void> launchGoogleSearch(String searchQuery) async {
+    final String url =
+        'https://www.google.com/search?q=$searchQuery'; // replace with your desired search engine
     final Uri uri = Uri.parse(url);
-    if (!await launchUrl(uri, mode: LaunchMode.inAppWebView)) { // use inAppWebView to open within the app
+    if (!await launchUrl(uri, mode: LaunchMode.inAppWebView)) {
+      // use inAppWebView to open within the app
       throw Exception('Could not launch search');
     }
   }
+
   static Future<void> launchCustomUrl(String url) async {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
@@ -73,7 +99,7 @@ class MyReusableFunctions {
     IconData? icon,
     Color? dialogIconColor,
     List<Widget>? actions,
-   required String message,
+    required String message,
     String? actionButtonText,
     Color? textColor,
     bool barrierDismissible = true,
