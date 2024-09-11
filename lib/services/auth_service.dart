@@ -1,3 +1,4 @@
+import 'package:anecdotal/utils/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -19,6 +20,10 @@ class AuthService {
 
       if (!docSnapshot.exists) {
         await databaseService.createUserDocument();
+        await databaseService.updateAnyUserData(
+          fieldName: userEmail,
+          newValue: _firebaseAuth.currentUser?.email ?? '',
+        );
       }
     }
   }

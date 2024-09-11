@@ -66,13 +66,15 @@ class InfoView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-         patientsName == null ? myEmptySizedBox(): Text(
-            patientsName ?? 'Amanda Davis',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                  fontWeight: FontWeight.bold,
+          patientsName == null
+              ? myEmptySizedBox()
+              : Text(
+                  patientsName ?? 'Amanda Davis',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
-          ),
           Text(
             'Last updated: September 11, 2024',
             style: Theme.of(context).textTheme.labelMedium!.copyWith(
@@ -141,23 +143,23 @@ class InfoView extends StatelessWidget {
             ),
             const Divider(),
             const SizedBox(height: 8),
-            _buildSuggestionButton(
-              context,
-              title: 'View Lab Results',
-              icon: Icons.science,
-            ),
-            const SizedBox(height: 8),
-            _buildSuggestionButton(
-              context,
-              title: 'Schedule Follow-up',
-              icon: Icons.calendar_today,
-            ),
-            const SizedBox(height: 8),
-            _buildSuggestionButton(
-              context,
-              title: 'Medication List',
-              icon: Icons.medication,
-            ),
+            // _buildSuggestionButton(
+            //   context,
+            //   title: 'View Lab Results',
+            //   icon: Icons.science,
+            // ),
+            // const SizedBox(height: 8),
+            // _buildSuggestionButton(
+            //   context,
+            //   title: 'Schedule Follow-up',
+            //   icon: Icons.calendar_today,
+            // ),
+            // const SizedBox(height: 8),
+            // _buildSuggestionButton(
+            //   context,
+            //   title: 'Medication List',
+            //   icon: Icons.medication,
+            // ),
           ],
         ),
       ),

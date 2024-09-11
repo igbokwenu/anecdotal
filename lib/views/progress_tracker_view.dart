@@ -1,5 +1,8 @@
+import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
@@ -19,12 +22,12 @@ class HealingJourneyEntry {
   });
 }
 
-class HealingJourneyApp extends StatefulWidget {
+class HealingJourneyApp extends ConsumerStatefulWidget {
   @override
   _HealingJourneyAppState createState() => _HealingJourneyAppState();
 }
 
-class _HealingJourneyAppState extends State<HealingJourneyApp> {
+class _HealingJourneyAppState extends ConsumerState<HealingJourneyApp> {
   double _currentPercentage = 0;
   List<String> _inProgressList = [
     "Meditation",
@@ -39,19 +42,6 @@ class _HealingJourneyAppState extends State<HealingJourneyApp> {
   List<HealingJourneyEntry> _entries = [];
   TextEditingController _notesController = TextEditingController();
 
-  void _recordProgress() {
-    setState(() {
-      _entries.add(HealingJourneyEntry(
-        timestamp: DateTime.now(),
-        percentage: _currentPercentage,
-        inProgressList: List.from(_inProgressList),
-        doneList: List.from(_doneList),
-        notes: _notesController.text, // This can now be empty
-      ));
-      _notesController.clear();
-    });
-  }
-
   void _showEntryDetails(HealingJourneyEntry entry) {
     showDialog(
       context: context,
@@ -65,11 +55,12 @@ class _HealingJourneyAppState extends State<HealingJourneyApp> {
                     'Date: ${DateFormat('yyyy-MM-dd HH:mm').format(entry.timestamp)}'),
                 Text('Feeling ${entry.percentage.toStringAsFixed(1)}% better'),
                 SizedBox(height: 10),
-                Text('In Progress:',
+                Text('Tasks In Progress:',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 ...entry.inProgressList.map((item) => Text('• $item')),
                 SizedBox(height: 10),
-                Text('Done:', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('Completed Tasks:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 ...entry.doneList.map((item) => Text('• $item')),
                 SizedBox(height: 10),
                 Text('Notes:', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -92,6 +83,21 @@ class _HealingJourneyAppState extends State<HealingJourneyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+    void recordProgress() {
+      setState(() {
+        _entries.add(HealingJourneyEntry(
+          timestamp: DateTime.now(),
+          percentage: _currentPercentage,
+          inProgressList: List.from(userData!.inProgressList),
+          doneList: List.from(userData.doneList),
+          notes: _notesController.text, // This can now be empty
+        ));
+        _notesController.clear();
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: MyAppBarTitleWithAI(
@@ -107,7 +113,6 @@ class _HealingJourneyAppState extends State<HealingJourneyApp> {
                 Text(
                     'Use the slider below to tell us how you are feeling about your health. 0% means your symptoms are debilitating and 100% means you are symptom free.',
                     style: Theme.of(context).textTheme.bodySmall),
-
                 Row(
                   children: [
                     Expanded(
@@ -134,22 +139,6 @@ class _HealingJourneyAppState extends State<HealingJourneyApp> {
                     ),
                   ],
                 ),
-                // SizedBox(height: 20),
-                // Text('In Progress Activities:', style: TextStyle(fontSize: 16)),
-                // Wrap(
-                //   spacing: 8,
-                //   children: _inProgressList
-                //       .map((item) => Chip(label: Text(item)))
-                //       .toList(),
-                // ),
-                // SizedBox(height: 20),
-                // Text('Completed Activities:', style: TextStyle(fontSize: 16)),
-                // Wrap(
-                //   spacing: 8,
-                //   children:
-                //       _doneList.map((item) => Chip(label: Text(item))).toList(),
-                // ),
-                // SizedBox(height: 20),
                 Text('Notes (Optional):', style: TextStyle(fontSize: 16)),
                 TextField(
                   controller: _notesController,
@@ -164,7 +153,7 @@ class _HealingJourneyAppState extends State<HealingJourneyApp> {
                 SizedBox(height: 10),
                 ElevatedButton.icon(
                   label: Text('Record Progress'),
-                  onPressed: _recordProgress,
+                  onPressed: recordProgress,
                   icon: Icon(Icons.check),
                 ),
               ],

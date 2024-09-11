@@ -1,6 +1,6 @@
 import 'package:anecdotal/utils/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 
 class DatabaseService {
   final String uid;
@@ -8,6 +8,28 @@ class DatabaseService {
 
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
+
+   Future<void> updateAnyUserData(
+      {
+      required String fieldName,
+      required dynamic newValue}) async {
+    final userRef =
+        FirebaseFirestore.instance.collection('users').doc(uid);
+
+    // Get the current data
+    final currentData = (await userRef.get()).data();
+
+    if (currentData != null) {
+      // Update the specified field with the new value
+      currentData[fieldName] = newValue;
+
+      // Update the document with the modified data
+      await userRef.update(currentData);
+    } else {
+      // Handle the case where currentData is null (document not found)
+      print('Document with ID $uid not found.');
+    }
+  }
 
   Future<void> updateUserDocument(Map<String, dynamic> userData) async {
     return await userCollection.doc(uid).set(userData);
@@ -20,6 +42,7 @@ class DatabaseService {
       userCountry: '',
       userState: '',
       userEmail: '',
+      userProfilePicUrl: '',
       userSymptomsList: [],
       userToDoList: [],
       userInProgressList: [],
@@ -52,4 +75,3 @@ class DatabaseService {
     });
   }
 }
-

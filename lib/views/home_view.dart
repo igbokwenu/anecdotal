@@ -328,28 +328,28 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                     context, findDoctorSectionSummary);
                               },
                             ),
-                            CustomCard(
-                              title: 'Spread Awareness',
-                              icon: Icons.family_restroom,
-                              description:
-                                  'Share an explainer video with loved ones',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  slideLeftTransitionPageBuilder(
-                                    InfoView(
-                                      title: spreadAwarenessSectionHeader,
-                                      sectionSummary:
-                                          spreadAwarenessSectionSummary,
-                                    ),
-                                  ),
-                                );
-                              },
-                              onInfoTapped: () {
-                                _showMessageDialog(
-                                    context, spreadAwarenessSectionSummary);
-                              },
-                            ),
+                            // CustomCard(
+                            //   title: 'Spread Awareness',
+                            //   icon: Icons.family_restroom,
+                            //   description:
+                            //       'Share an explainer video with loved ones',
+                            //   onTap: () {
+                            //     Navigator.push(
+                            //       context,
+                            //       slideLeftTransitionPageBuilder(
+                            //         InfoView(
+                            //           title: spreadAwarenessSectionHeader,
+                            //           sectionSummary:
+                            //               spreadAwarenessSectionSummary,
+                            //         ),
+                            //       ),
+                            //     );
+                            //   },
+                            //   onInfoTapped: () {
+                            //     _showMessageDialog(
+                            //         context, spreadAwarenessSectionSummary);
+                            //   },
+                            // ),
                           ],
                         ),
                       ),
@@ -644,17 +644,17 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                 );
                               },
                             ),
-                            CustomCard(
-                              title: 'Lifestyle',
-                              icon: Icons.fitness_center,
-                              description:
-                                  'Make helpful lifestyle adjustments to support your recovery',
-                              onTap: () {
-                                MyReusableFunctions.showCustomToast(
-                                    description: "Coming Soon. Stay Tuned.");
-                              },
-                              onInfoTapped: () {},
-                            ),
+                            // CustomCard(
+                            //   title: 'Lifestyle',
+                            //   icon: Icons.fitness_center,
+                            //   description:
+                            //       'Make helpful lifestyle adjustments to support your recovery',
+                            //   onTap: () {
+                            //     MyReusableFunctions.showCustomToast(
+                            //         description: "Coming Soon. Stay Tuned.");
+                            //   },
+                            //   onInfoTapped: () {},
+                            // ),
                           ],
                         ),
                       ),

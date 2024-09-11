@@ -71,6 +71,7 @@ const String userLastName = 'lastName';
 const String userCountry = 'country';
 const String userState = 'state';
 const String userEmail = 'email';
+const String userProfilePicUrl = 'profilePicUrl';
 const String userSymptomsList = 'symptoms';
 const String userToDoList = 'toDo';
 const String userInProgressList = 'inProgress';
