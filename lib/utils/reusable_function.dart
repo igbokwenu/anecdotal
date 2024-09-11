@@ -4,6 +4,13 @@ import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MyReusableFunctions {
+    static Future<void> launchGoogleSearch(String searchQuery) async {
+    final String url = 'https://www.google.com/search?q=$searchQuery'; // replace with your desired search engine
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.inAppWebView)) { // use inAppWebView to open within the app
+      throw Exception('Could not launch search');
+    }
+  }
   static Future<void> launchCustomUrl(String url) async {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {

@@ -12,14 +12,16 @@ class AIImageSelectWidget extends StatefulWidget {
   final Function(Map<String, dynamic>?) onResponse;
   final bool allowFileSelect;
   final int maxImages;
+  final String? selectButtonText;
+  final String? analyzeButtonText;
 
-  const AIImageSelectWidget({
-    super.key,
-    required this.prompt,
-    required this.onResponse,
-    this.allowFileSelect = false,
-    this.maxImages = 4,
-  });
+  const AIImageSelectWidget(
+      {super.key,
+      required this.prompt,
+      required this.onResponse,
+      this.allowFileSelect = false,
+      this.maxImages = 4,
+      this.selectButtonText = 'Select Image', this.analyzeButtonText = 'Analyze Image'});
 
   @override
   _AIImageSelectWidgetState createState() => _AIImageSelectWidgetState();
@@ -86,12 +88,21 @@ class _AIImageSelectWidgetState extends State<AIImageSelectWidget> {
         mySpacing(spacing: 16),
         ElevatedButton.icon(
           onPressed: _pickImages,
-          label:
-              Text(widget.allowFileSelect ? 'Select Files' : 'Select Images'),
+          label: Text(widget.allowFileSelect
+              ? 'Select Files'
+              : widget.selectButtonText!),
           icon: const Icon(Icons.attach_file),
         ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "Only images are currently supported. We are working towards adding support for uploading documents.",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ),
         if (_selectedFiles.isNotEmpty) ...[
-          mySpacing(spacing: 16),
+          // mySpacing(spacing: 8),
           widget.allowFileSelect
               ? const Text(
                   "Can't show preview, click button below to analyze selected files.",
@@ -113,7 +124,7 @@ class _AIImageSelectWidgetState extends State<AIImageSelectWidget> {
           label: _isAnalyzing
               ? const MySpinKitWaveSpinner(size: 40)
               : Text(
-                  widget.allowFileSelect ? 'Analyze Files' : 'Analyze Images'),
+                  widget.allowFileSelect ? 'Analyze Files' : widget.analyzeButtonText!),
           icon: const Icon(Icons.auto_awesome),
         ),
       ],

@@ -43,6 +43,10 @@ class DatabaseService {
       userLabReportPdfUrls: [],
       userSymptomReportPdfUrls: [],
       userMedicalHistoryList: [],
+      userAiMediaUsageCount: 0,
+      userAiTextUsageCount: 0,
+      userAiGeneralMediaUsageCount: 0,
+      userAiGeneralTextUsageCount: 0,
     });
   }
 }

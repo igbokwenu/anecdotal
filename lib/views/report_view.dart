@@ -1,3 +1,4 @@
+import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +21,36 @@ class ReportView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    List<Widget> _buildSearchTerms(List<String> points) {
+      return points
+          .map((point) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // const Icon(Icons.health_and_safety_rounded),
+                    // const SizedBox(width: 8),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton.icon(
+                          label: Text(
+                            point,
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                          icon: const Icon(Icons.search),
+                          onPressed: () {
+                            MyReusableFunctions.launchGoogleSearch(point);
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ))
+          .toList();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -70,7 +101,7 @@ class ReportView extends StatelessWidget {
               title: 'Follow Up Search Terms',
               icon: Icons.directions_run,
               color: theme.colorScheme.primaryFixedDim,
-              children: _buildBulletPoints(followUpSuggestions),
+              children: _buildSearchTerms(followUpSuggestions),
             ),
           ],
         ),

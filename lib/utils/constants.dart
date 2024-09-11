@@ -13,7 +13,7 @@ const String myOpenAIKey =
 //Home Section
 String symptomSectionHeader = "Analyze Your Symptoms";
 String symptomSectionSummary =
-    "Discover if your symptoms might be related to Mold illness. Simply share your story or select symptoms that applies to you from a list. Then, generate a report for insights. \n\nRemember, this is not medical advice, but a starting point for further discussion with a healthcare professional.";
+    "Discover if your symptoms might be related to Mold illness. Simply share your story or select symptoms that applies to you. Then, generate a report for insights. \n\nStart by clicking the button below and telling us a bit about yourself. \n\nRemember, this is not medical advice, but a starting point for further discussion with a healthcare professional.";
 
 String progressTrackerSectionHeader = "Track Your Progress";
 String progressTrackerSectionSummary =
@@ -37,7 +37,7 @@ String spreadAwarenessSectionSummary =
 
 String interpretLabResultSectionHeader = "Lab Result";
 String interpretLabResultSectionSummary =
-    "Understand your test results with confidence! This section offers clear explanations and expert insights to help you understand your lab results, empowering you to take informed action towards your recovery from mold illness and related conditions. This could be lab reports from testing your home from toxins etc.  \n\nPlease note that this is not a replacement or substitute for professional medical interpretation of the report. Always consult a qualified healthcare professional for personalized guidance and diagnosis.";
+    "Understand your test results with confidence! This section offers clear explanations and expert insights to help you understand your lab results, empowering you to take informed action towards your recovery. This could be lab reports from testing your home from toxins etc. \n\nWe do our best to tell which lab results might be tied to the symptoms you are experiencing (Requires filling the \"Symptom Checker\" section).  \n\nPlease note that this is not a replacement or substitute for professional medical interpretation of the report. Always consult a qualified healthcare professional for personalized guidance and diagnosis.";
 
 class AppRoutes {
   static const String authWrapper = '/';
@@ -94,3 +94,7 @@ const String userHomeReportPdfUrls = 'homeReportPdfUrls';
 const String userLabReportPdfUrls = 'labReportPdfUrls';
 const String userSymptomReportPdfUrls = 'symptomReportPdfUrls';
 const String userMedicalHistoryList = 'medicalHistoryList';
+const String userAiMediaUsageCount = 'aiMediaUsageCount';
+const String userAiTextUsageCount = 'aiTextUsageCount';
+const String userAiGeneralMediaUsageCount = 'aiGeneralMediaUsageCount';
+const String userAiGeneralTextUsageCount = 'aiGeneralTextUsageCount';

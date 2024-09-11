@@ -491,7 +491,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                                 slideLeftTransitionPageBuilder(
                                                   CameraWidget(
                                                     prompt:
-                                                        sendHouseImageAnalysisPrompt,
+                                                        sendLabAnalysisPrompt(),
                                                     onResponse: (result) {
                                                       if (result != null) {
                                                         Navigator
@@ -542,9 +542,11 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                             icon: const Icon(Icons.camera_alt),
                                           ),
                                           AIImageSelectWidget(
-                                            prompt:
-                                                sendHouseImageAnalysisPrompt,
+                                            prompt: sendLabAnalysisPrompt(),
                                             // allowFileSelect: true,
+                                            selectButtonText:
+                                                'Select Report Image',
+                                            analyzeButtonText: 'Analyze Report',
                                             maxImages: 4,
                                             onResponse: (result) {
                                               if (result != null) {
