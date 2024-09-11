@@ -361,7 +361,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                               title: 'Investigate',
                               icon: Icons.camera_alt,
                               description:
-                                  'Take pictures of potential mold growth in your home',
+                                  'Take pictures of mold or toxins in your home for analysis',
                               onTap: () {
                                 Navigator.push(
                                   context,
