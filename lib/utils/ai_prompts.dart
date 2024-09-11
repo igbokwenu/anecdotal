@@ -108,11 +108,10 @@ Under suggestions come up with related search terms that the user can input in a
 
 String sendLabAnalysisPrompt({String? symptoms, String? history}) {
   return """
-  You are a medical research assistant helping provide a preliminary report on whether a person has toxins in their home making them sick or if they mold illness, also known as Chronic inflammatory response syndrome (CIRS), or bio-toxin illness based on lab results. 
-
+  You are a medical research assistant helping provide a preliminary report on the results of a lab test provided in an image attached to this prompt. The lab test results you will be analyzing is centered around trying to diagnose Chronic inflammatory response syndrome (CIRS), also known as mold illness or bio-toxin illness. 
+Below is a basic understanding of how CIRS is diagnosed. If the image provided is not a lab test result, Make sure you point it out and request the image of a lab result to help in your analysis.
 How is CIRS diagnosed?
 There is no one diagnostic test or marker for CIRS. Diagnosis is often based on the following lab results:  
-
 Failed Vision Contrast Study (VCS)
 Presence of HLA-DR
 Elevated MMP-9
@@ -124,13 +123,12 @@ Elevated C4a
 And treatment involves Correcting abnormal lab values – sex hormones, ADH/osmolarity, MMP9, VEGF, C3a, C4a, TGF B-1, VIP etc
 
 
+${symptoms == null ? "The patient did not list any symptoms. Encourage them to share their symptoms by completing the \"Symptom Checker\" section of the app to help with your analysis of their lab result" : "Explain how markers and data in their lab results might be related to their symptoms. Here is a list of symptoms the patient listed: $symptoms"}
+${history == null ? "" : "Here is a list of questions the patient answered regarding their medical history: $history"}
 
 
-Here is a list of symptoms the patient listed: ${symptoms == null ? "The patient did not list any symptoms. Encourage them to share their symptoms to help with your analysis" : " $symptoms"}
-Here is a list of questions the patient answered regarding their medical history: ${history == null ? "The patient did not share their history." : " $history"}
+Your primary objective is to help interpret the lab results in the image attached to this prompt.
 
-Your primary objective is to help interpret the lab results.
-If the patient has their symptoms listed, explain how markers and data in their lab results might be related to their symptoms
  Give the report in first person like you are speaking to the patient.
 
  Remember to list other key insights that you think might help the patient better understand your summary and analysis.

@@ -19,7 +19,7 @@ class MyReusableFunctions {
       query: encodeQueryParameters(<String, String>{
         'subject': '❤️From Anecdotal App❤️',
         'body':
-            'Account ID: ${FirebaseAuth.instance.currentUser?.uid} \n\n <--- Add Message Below This Text ---> \n\n',
+            'Anecdotal User ID: ${FirebaseAuth.instance.currentUser?.uid} \n\n <--- Add Message Below This Text ---> \n\n',
       }),
     );
     if (!await launchUrl(url)) {
