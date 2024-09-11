@@ -48,6 +48,7 @@ class DatabaseService {
       userAiTextUsageCount: 0,
       userAiGeneralMediaUsageCount: 0,
       userAiGeneralTextUsageCount: 0,
+      userHealingJourneyMap: {},
     });
   }
 }

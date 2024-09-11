@@ -99,3 +99,4 @@ const String userAiMediaUsageCount = 'aiMediaUsageCount';
 const String userAiTextUsageCount = 'aiTextUsageCount';
 const String userAiGeneralMediaUsageCount = 'aiGeneralMediaUsageCount';
 const String userAiGeneralTextUsageCount = 'aiGeneralTextUsageCount';
+const String userHealingJourneyMap = 'healingJourneyMap';

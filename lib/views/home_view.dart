@@ -1,7 +1,9 @@
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/medical_history_view.dart';
+import 'package:anecdotal/views/progress_tracker_view.dart';
 import 'package:anecdotal/views/symptoms_selector_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
+import 'package:anecdotal/widgets/test_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
@@ -278,6 +280,35 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                       title: progressTrackerSectionHeader,
                                       sectionSummary:
                                           progressTrackerSectionSummary,
+                                      firstWidget: Column(
+                                        children: [
+                                          ElevatedButton.icon(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                slideLeftTransitionPageBuilder(
+                                                  HealingJourneyPage(),
+                                                ),
+                                              );
+                                            },
+                                            label: Text("Track Progress"),
+                                            icon: Icon(Icons.timeline),
+                                          ),
+                                          ElevatedButton.icon(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                slideLeftTransitionPageBuilder(
+                                                  HealingJourneyApp(),
+                                                ),
+                                              );
+                                            },
+                                            label:
+                                                Text("Track Progress Claude"),
+                                            icon: Icon(Icons.timeline),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );
