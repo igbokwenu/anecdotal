@@ -291,7 +291,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                                 ),
                                               );
                                             },
-                                            label: Text("Track Progress"),
+                                            label: Text("Track Your Progress"),
                                             icon: Icon(Icons.timeline),
                                           ),
                                         ],
