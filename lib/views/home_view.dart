@@ -287,24 +287,11 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                               Navigator.push(
                                                 context,
                                                 slideLeftTransitionPageBuilder(
-                                                  HealingJourneyPage(),
-                                                ),
-                                              );
-                                            },
-                                            label: Text("Track Progress"),
-                                            icon: Icon(Icons.timeline),
-                                          ),
-                                          ElevatedButton.icon(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                slideLeftTransitionPageBuilder(
                                                   HealingJourneyApp(),
                                                 ),
                                               );
                                             },
-                                            label:
-                                                Text("Track Progress Claude"),
+                                            label: Text("Track Progress"),
                                             icon: Icon(Icons.timeline),
                                           ),
                                         ],

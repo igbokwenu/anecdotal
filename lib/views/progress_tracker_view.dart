@@ -1,179 +1,202 @@
+import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:timelines/timelines.dart';
 import 'package:intl/intl.dart';
+import 'package:timeline_tile/timeline_tile.dart';
 
-class HealingJourneyPage extends StatefulWidget {
-  @override
-  _HealingJourneyPageState createState() => _HealingJourneyPageState();
+class HealingJourneyEntry {
+  final DateTime timestamp;
+  final double percentage;
+  final List<String> inProgressList;
+  final List<String> doneList;
+  final String notes;
+
+  HealingJourneyEntry({
+    required this.timestamp,
+    required this.percentage,
+    required this.inProgressList,
+    required this.doneList,
+    required this.notes,
+  });
 }
 
-class _HealingJourneyPageState extends State<HealingJourneyPage> {
-  double _healingPercentage = 0.0;
-  final List<Map<String, dynamic>> _healingRecords = [];
-  final List<String> _inProgressList = ['Meditation', 'Physical Therapy'];
-  final List<String> _doneList = ['Diet Change', 'Daily Walking'];
+class HealingJourneyApp extends StatefulWidget {
+  @override
+  _HealingJourneyAppState createState() => _HealingJourneyAppState();
+}
+
+class _HealingJourneyAppState extends State<HealingJourneyApp> {
+  double _currentPercentage = 0;
+  List<String> _inProgressList = [
+    "Meditation",
+    "Physical therapy",
+    "Healthy eating",
+  ];
+  List<String> _doneList = [
+    "Daily exercise",
+    "Therapy session",
+    "Journaling",
+  ];
+  List<HealingJourneyEntry> _entries = [];
   TextEditingController _notesController = TextEditingController();
 
   void _recordProgress() {
-    final timestamp = DateFormat.yMd().add_jm().format(DateTime.now());
-
-    if (_notesController.text.length > 500) return; // Limit notes to 500 chars
-
     setState(() {
-      _healingRecords.add({
-        'percentage': _healingPercentage,
-        'inProgressList': List.from(_inProgressList),
-        'doneList': List.from(_doneList),
-        'timestamp': timestamp,
-        'note': _notesController.text,
-      });
-      _notesController.clear(); // Clear the notes after recording
+      _entries.add(HealingJourneyEntry(
+        timestamp: DateTime.now(),
+        percentage: _currentPercentage,
+        inProgressList: List.from(_inProgressList),
+        doneList: List.from(_doneList),
+        notes: _notesController.text, // This can now be empty
+      ));
+      _notesController.clear();
     });
+  }
+
+  void _showEntryDetails(HealingJourneyEntry entry) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Journey Details'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                    'Date: ${DateFormat('yyyy-MM-dd HH:mm').format(entry.timestamp)}'),
+                Text('Feeling ${entry.percentage.toStringAsFixed(1)}% better'),
+                SizedBox(height: 10),
+                Text('In Progress:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                ...entry.inProgressList.map((item) => Text('• $item')),
+                SizedBox(height: 10),
+                Text('Done:', style: TextStyle(fontWeight: FontWeight.bold)),
+                ...entry.doneList.map((item) => Text('• $item')),
+                SizedBox(height: 10),
+                Text('Notes:', style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(entry.notes),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Healing Journey')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('How are you feeling today?', style: TextStyle(fontSize: 18)),
-            Row(
+      appBar: AppBar(
+        title: MyAppBarTitleWithAI(
+          title: 'Track Your Healing',
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.all(16),
               children: [
-                Expanded(
-                  child: Slider(
-                    value: _healingPercentage,
-                    min: 0,
-                    max: 100,
-                    divisions: 100,
-                    label: '${_healingPercentage.round()}%',
-                    onChanged: (value) {
-                      setState(() {
-                        _healingPercentage = value;
-                      });
-                    },
+                Text(
+                    'Use the slider below to tell us how you are feeling about your health. 0% means your symptoms are debilitating and 100% means you are symptom free.',
+                    style: Theme.of(context).textTheme.bodySmall),
+
+                Row(
+                  children: [
+                    Expanded(
+                      child: Slider(
+                        value: _currentPercentage,
+                        min: 0,
+                        max: 100,
+                        divisions: 100,
+                        label: '${_currentPercentage.round()}%',
+                        onChanged: (value) {
+                          setState(() {
+                            _currentPercentage = value;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      width: 50,
+                      child: Text(
+                        '${_currentPercentage.round()}%',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+                // SizedBox(height: 20),
+                // Text('In Progress Activities:', style: TextStyle(fontSize: 16)),
+                // Wrap(
+                //   spacing: 8,
+                //   children: _inProgressList
+                //       .map((item) => Chip(label: Text(item)))
+                //       .toList(),
+                // ),
+                // SizedBox(height: 20),
+                // Text('Completed Activities:', style: TextStyle(fontSize: 16)),
+                // Wrap(
+                //   spacing: 8,
+                //   children:
+                //       _doneList.map((item) => Chip(label: Text(item))).toList(),
+                // ),
+                // SizedBox(height: 20),
+                Text('Notes (Optional):', style: TextStyle(fontSize: 16)),
+                TextField(
+                  controller: _notesController,
+                  maxLength: 500,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    hintText:
+                        'Enter any notable details about your health journey.',
+                    border: OutlineInputBorder(),
                   ),
                 ),
-                Text('${_healingPercentage.round()}%',
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              ],
-            ),
-            SizedBox(height: 10),
-            _buildActivityList('In Progress Activities', _inProgressList),
-            _buildActivityList('Done Activities', _doneList),
-            SizedBox(height: 20),
-            _buildNotesSection(),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _recordProgress,
-              child: Text('Record Progress'),
-            ),
-            SizedBox(height: 30),
-            Expanded(child: _buildTimeline())
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActivityList(String label, List<String> activityList) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: TextStyle(fontSize: 16)),
-        Wrap(
-          children: List.generate(
-            activityList.length,
-            (index) => Chip(
-              label: Text(activityList[index]),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildNotesSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Notes (optional)', style: TextStyle(fontSize: 16)),
-        TextField(
-          controller: _notesController,
-          maxLength: 500,
-          decoration: InputDecoration(hintText: 'Enter any notable activities'),
-          maxLines: 3,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTimeline() {
-    return Timeline.tileBuilder(
-      builder: TimelineTileBuilder.fromStyle(
-        contentsAlign: ContentsAlign.alternating,
-        contentsBuilder: (context, index) {
-          final record = _healingRecords[index];
-          return GestureDetector(
-            onTap: () => _showRecordDetails(record),
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Text(
-                'Progress: ${record['percentage']}%\nRecorded on: ${record['timestamp']}',
-              ),
-            ),
-          );
-        },
-        indicatorStyle: IndicatorStyle
-            .dot, // Use indicatorStyle instead of indicatorBuilder
-        indicatorPositionBuilder: (context, index) {
-          return 0.5; // Adjust as needed for positioning
-        },
-        connectorStyle: ConnectorStyle.solidLine,
-        itemCount: _healingRecords.length,
-      ),
-    );
-  }
-
-  void _showRecordDetails(Map<String, dynamic> record) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Progress: ${record['percentage']}%'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Recorded on: ${record['timestamp']}'),
                 SizedBox(height: 10),
-                Text('In Progress:',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                ...record['inProgressList']
-                    .map<Widget>((task) => Text('- $task')),
-                SizedBox(height: 10),
-                Text('Done:', style: TextStyle(fontWeight: FontWeight.bold)),
-                ...record['doneList'].map<Widget>((task) => Text('- $task')),
-                SizedBox(height: 10),
-                if (record['note'].isNotEmpty)
-                  Text('Note:', style: TextStyle(fontWeight: FontWeight.bold)),
-                if (record['note'].isNotEmpty) Text(record['note']),
+                ElevatedButton.icon(
+                  label: Text('Record Progress'),
+                  onPressed: _recordProgress,
+                  icon: Icon(Icons.check),
+                ),
               ],
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('Close'),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _entries.length,
+              itemBuilder: (context, index) {
+                final entry = _entries[_entries.length - 1 - index];
+                return TimelineTile(
+                  alignment: TimelineAlign.manual,
+                  lineXY: 0.1,
+                  isFirst: index == 0,
+                  isLast: index == _entries.length - 1,
+                  indicatorStyle: IndicatorStyle(
+                    width: 20,
+                    color: Theme.of(context).colorScheme.secondary,
+                    padding: EdgeInsets.all(6),
+                  ),
+                  endChild: ListTile(
+                    title: Text('${entry.percentage.toStringAsFixed(1)}%'),
+                    subtitle:
+                        Text(DateFormat('yyyy-MM-dd').format(entry.timestamp)),
+                    onTap: () => _showEntryDetails(entry),
+                  ),
+                );
+              },
             ),
-          ],
-        );
-      },
+          ),
+        ],
+      ),
     );
   }
 }
