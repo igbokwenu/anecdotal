@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
@@ -57,19 +60,21 @@ class CustomDrawer extends StatelessWidget {
               leading: const Icon(Icons.groups),
               title: const Text('Community Chat'),
             ),
-            ListTile(
-              onTap: () async {
-                await RevenueCatUI.presentPaywall();
-                // Navigator.push(
-                //   context,
-                //   slideLeftTransitionPageBuilder(
-                //     DownloadPage(),
-                //   ),
-                // );
-              },
-              leading: const Icon(Icons.monetization_on),
-              title: const Text('Subscription'),
-            ),
+            if (!kIsWeb)
+              if (Platform.isAndroid)
+                ListTile(
+                  onTap: () async {
+                    await RevenueCatUI.presentPaywall();
+                    // Navigator.push(
+                    //   context,
+                    //   slideLeftTransitionPageBuilder(
+                    //     DownloadPage(),
+                    //   ),
+                    // );
+                  },
+                  leading: const Icon(Icons.monetization_on),
+                  title: const Text('Subscription'),
+                ),
             ListTile(
               onTap: () {
                 MyReusableFunctions.launchMail();

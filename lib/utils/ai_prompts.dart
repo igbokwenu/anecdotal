@@ -25,9 +25,9 @@ String sendHouseImageAnalysisPrompt({String? prompt, String? externalReport}) {
 
 Under summary give a very detailed feedback using as many paragraph as you need to give a comprehensive response that details every helpful information.
 
-Under insights give key insights from the response you gave in the summary.
+Under insights give key insights from the response you gave in the summary. ${externalReport ?? "Depending on who you are preparing the report for"}.
 
-Under recommendations give helpful recommendations ${externalReport == null ? " that the patient can use to alleviate the situation" : "To the doctor or landlord/property manager to guide them towards properly treating the patient or remediating their property"}
+Under recommendations give helpful recommendations ${externalReport == null ? " that the patient can use to alleviate the situation" : "depending on who you are preparing the report for"}
 
 Under suggestions come up with related search terms that the user can input in a search engine to get more information about their prompt.
 
@@ -35,7 +35,7 @@ Under suggestions come up with related search terms that the user can input in a
 
    ${prompt ?? ""}
 
-   ${externalReport ?? ""}
+   ${externalReport == null ? "" : "Who you are preparing this report for: $externalReport"}
 
   
   """;
@@ -141,7 +141,7 @@ ${history == null ? "" : "Here is a list of questions the patient answered regar
 
 Your primary objective is to help interpret the lab results in the image attached to this prompt.
 
-${externalReport ?? "Give the report in first person because you are speaking to the affected individual directly."}
+${externalReport == null ? "Give the report in first person because you are speaking to the affected individual directly." : "Who you are preparing this report for: $externalReport"}
 
 
  Remember to list other key insights that you think might help the patient better understand your summary and analysis.
@@ -164,7 +164,9 @@ Under suggestions come up with related search terms that the user can input in a
 const String forDoctor =
     "Prepare your response like you are preparing a response for a doctor or medical practitioner, detailing the patients symptoms and potential exposure history if available and why you reached your conclusions. Encourage the doctor to investigate along the lines of your conclusions especially if the patient is complaining of debilitating symptoms despite their regular blood work and medical tests comes back as normal. Just in case, also define what CIRS is and how it differs significantly from mold allergy/an allergic reaction to mold";
 const String forLandlord =
-    "Prepare your response for a landlord or property manager or management company, detailing why and how mold growth/water damage (if detected in the image provided) might be making the tenant sick and causing symptoms reported (if available). And why they should prioritize remediating their property both for the current tenant and future tenants.";
+    "Prepare your response for a landlord or property manager or management company, sent by the tenant, detailing why and how mold growth/water damage (if detected in the image provided) in their property might be making the tenant sick and causing symptoms reported (if available). And why they should prioritize remediating their property both for the current tenant and future tenants.";
+const String forEmployer =
+    "Prepare your response for an employer, from an employee, detailing why and how mold growth/water damage (if detected in the image provided) in the office building might be making the staff sick and causing symptoms reported (if available). And why they should prioritize remediating their office space to improve the employers working condition.";
 
 // Abnormal lab testing:
 // Failed Vision Contrast Study (VCS)

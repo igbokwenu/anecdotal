@@ -8,8 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FirstWidgetInvestigateHome extends ConsumerWidget {
-  const FirstWidgetInvestigateHome({super.key});
+class FirstWidgetInterpretLab extends ConsumerWidget {
+  const FirstWidgetInterpretLab({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,10 +23,13 @@ class FirstWidgetInvestigateHome extends ConsumerWidget {
               context,
               slideLeftTransitionPageBuilder(
                 CameraWidget(
-                  prompt: sendHouseImageAnalysisPrompt(
-                      prompt: userData!.symptomsList.isEmpty
+                  prompt: sendLabAnalysisPrompt(
+                      symptoms: userData!.symptomsList.isEmpty
                           ? null
-                          : "Here are symptoms the user previously reported experiencing : ${userData.symptomsList}. And some details from their previously shared medical/exposure history: ${userData.medicalHistoryList}"),
+                          : "${userData.symptomsList}",
+                      history: userData.medicalHistoryList.isEmpty
+                          ? null
+                          : "${userData.medicalHistoryList}"),
                   onResponse: (result) {
                     if (result != null) {
                       Navigator.pushReplacement(
@@ -57,16 +60,23 @@ class FirstWidgetInvestigateHome extends ConsumerWidget {
               ),
             );
           },
-          label: const Text("Capture Your Surrounding"),
+          label: const Text("Capture Report"),
           icon: const Icon(Icons.camera_alt),
         ),
         AIImageSelectWidget(
-          prompt: sendHouseImageAnalysisPrompt(
-            prompt: userData!.symptomsList.isEmpty
-                ? null
-                : "Here are symptoms the user previously reported experiencing : ${userData.symptomsList}. And some details from their previously shared medical/exposure history: ${userData.medicalHistoryList}",
-          ),
-          // allowFileSelect: false,
+          isLabTest: true,
+          // showSendToLandlord: false,
+          // showSendToEmployer: false,
+          prompt: sendLabAnalysisPrompt(
+              symptoms: userData!.symptomsList.isEmpty
+                  ? null
+                  : "${userData.symptomsList}",
+              history: userData.medicalHistoryList.isEmpty
+                  ? null
+                  : "${userData.medicalHistoryList}"),
+          // allowFileSelect: true,
+          selectButtonText: 'Select Report Image',
+          analyzeButtonText: 'Analyze Report',
           maxImages: 4,
           onResponse: (result) {
             if (result != null) {

@@ -2,6 +2,7 @@ import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/views/progress_tracker_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
+import 'package:anecdotal/widgets/home_widgets/first_interpret_lab_widget.dart';
 import 'package:anecdotal/widgets/home_widgets/first_investigate_home.dart';
 import 'package:anecdotal/widgets/home_widgets/progress_tracker_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -255,10 +256,11 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                   context,
                                   slideLeftTransitionPageBuilder(
                                     InfoView(
-                                        title: symptomSectionHeader,
-                                        sectionSummary: symptomSectionSummary,
-                                        firstWidget:
-                                            const FirstWidgetSymptomChecker(),),
+                                      title: symptomSectionHeader,
+                                      sectionSummary: symptomSectionSummary,
+                                      firstWidget:
+                                          const FirstWidgetSymptomChecker(),
+                                    ),
                                   ),
                                 );
                               },
@@ -280,7 +282,8 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                       title: progressTrackerSectionHeader,
                                       sectionSummary:
                                           progressTrackerSectionSummary,
-                                      firstWidget: const FirstWidgetProgressTracker(),
+                                      firstWidget:
+                                          const FirstWidgetProgressTracker(),
                                     ),
                                   ),
                                 );
@@ -292,27 +295,30 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                 );
                               },
                             ),
-                            CustomCard(
-                              title: 'Find a Doctor',
-                              icon: Icons.location_on,
-                              description:
-                                  'Find a CIRS trained doctor in your area',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  slideLeftTransitionPageBuilder(
-                                    InfoView(
-                                      title: findDoctorSectionHeader,
-                                      sectionSummary: findDoctorSectionSummary,
-                                    ),
-                                  ),
-                                );
-                              },
-                              onInfoTapped: () {
-                                _showMessageDialog(
-                                    context, findDoctorSectionSummary);
-                              },
-                            ),
+                            if (!kIsWeb)
+                              if (Platform.isAndroid)
+                                CustomCard(
+                                  title: 'Find a Doctor',
+                                  icon: Icons.location_on,
+                                  description:
+                                      'Find a CIRS trained doctor in your area',
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      slideLeftTransitionPageBuilder(
+                                        InfoView(
+                                          title: findDoctorSectionHeader,
+                                          sectionSummary:
+                                              findDoctorSectionSummary,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  onInfoTapped: () {
+                                    _showMessageDialog(
+                                        context, findDoctorSectionSummary);
+                                  },
+                                ),
                             // CustomCard(
                             //   title: 'Spread Awareness',
                             //   icon: Icons.family_restroom,
@@ -352,14 +358,15 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                   context,
                                   slideLeftTransitionPageBuilder(
                                     InfoView(
-                                      title: investigateSectionHeader,
-                                      sectionSummary: investigateSectionSummary,
-                                      firstWidget: kIsWeb
-                                          ? const Text(
-                                              "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
-                                              textAlign: TextAlign.center,
-                                            )
-                                          : const FirstWidgetInvestigateHome()),
+                                        title: investigateSectionHeader,
+                                        sectionSummary:
+                                            investigateSectionSummary,
+                                        firstWidget: kIsWeb
+                                            ? const Text(
+                                                "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
+                                                textAlign: TextAlign.center,
+                                              )
+                                            : const FirstWidgetInvestigateHome()),
                                   ),
                                 );
                               },
@@ -381,133 +388,8 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                       title: interpretLabResultSectionHeader,
                                       sectionSummary:
                                           interpretLabResultSectionSummary,
-                                      firstWidget: Column(
-                                        children: [
-                                          ElevatedButton.icon(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                slideLeftTransitionPageBuilder(
-                                                  CameraWidget(
-                                                    prompt: sendLabAnalysisPrompt(
-                                                        symptoms: userData!
-                                                                .symptomsList
-                                                                .isEmpty
-                                                            ? null
-                                                            : "${userData.symptomsList}",
-                                                        history: userData
-                                                                .medicalHistoryList
-                                                                .isEmpty
-                                                            ? null
-                                                            : "${userData.medicalHistoryList}"),
-                                                    onResponse: (result) {
-                                                      if (result != null) {
-                                                        Navigator
-                                                            .pushReplacement(
-                                                          context,
-                                                          slideLeftTransitionPageBuilder(
-                                                            ReportView(
-                                                              summaryContent: result[
-                                                                      'summary'] ??
-                                                                  'No summary available.',
-                                                              keyInsights: result[
-                                                                          'insights']
-                                                                      ?.cast<
-                                                                          String>() ??
-                                                                  [],
-                                                              recommendations:
-                                                                  result['recommendations']
-                                                                          ?.cast<
-                                                                              String>() ??
-                                                                      [],
-                                                              followUpSuggestions:
-                                                                  result['suggestions']
-                                                                          ?.cast<
-                                                                              String>() ??
-                                                                      [],
-                                                            ),
-                                                          ),
-                                                        );
-                                                        print(
-                                                            "Summary: ${result['summary']}");
-                                                        print(
-                                                            "Insights: ${result['insights']}");
-                                                        print(
-                                                            "Recommendations: ${result['recommendations']}");
-                                                        print(
-                                                            "Suggestions: ${result['suggestions']}");
-                                                      } else {
-                                                        print(
-                                                            "Analysis failed or returned no results");
-                                                      }
-                                                    },
-                                                    onComplete: () {},
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                            label: const Text("Capture Report"),
-                                            icon: const Icon(Icons.camera_alt),
-                                          ),
-                                          AIImageSelectWidget(
-                                            prompt: sendLabAnalysisPrompt(
-                                                symptoms: userData!
-                                                        .symptomsList.isEmpty
-                                                    ? null
-                                                    : "${userData.symptomsList}",
-                                                history: userData
-                                                        .medicalHistoryList
-                                                        .isEmpty
-                                                    ? null
-                                                    : "${userData.medicalHistoryList}"),
-                                            // allowFileSelect: true,
-                                            selectButtonText:
-                                                'Select Report Image',
-                                            analyzeButtonText: 'Analyze Report',
-                                            maxImages: 4,
-                                            onResponse: (result) {
-                                              if (result != null) {
-                                                Navigator.push(
-                                                  context,
-                                                  slideLeftTransitionPageBuilder(
-                                                    ReportView(
-                                                      summaryContent: result[
-                                                              'summary'] ??
-                                                          'No summary available.',
-                                                      keyInsights: result[
-                                                                  'insights']
-                                                              ?.cast<
-                                                                  String>() ??
-                                                          [],
-                                                      recommendations: result[
-                                                                  'recommendations']
-                                                              ?.cast<
-                                                                  String>() ??
-                                                          [],
-                                                      followUpSuggestions:
-                                                          result['suggestions']
-                                                                  ?.cast<
-                                                                      String>() ??
-                                                              [],
-                                                    ),
-                                                  ),
-                                                );
-                                                print(
-                                                    "Summary: ${result['summary']}");
-                                                print(
-                                                    "Insights: ${result['insights']}");
-                                                print(
-                                                    "Recommendations: ${result['recommendations']}");
-                                                print(
-                                                    "Suggestions: ${result['suggestions']}");
-                                              } else {
-                                                print(
-                                                    "Analysis failed or returned no results.");
-                                              }
-                                            },
-                                          ),
-                                        ],
-                                      ),
+                                      firstWidget:
+                                          const FirstWidgetInterpretLab(),
                                     ),
                                   ),
                                 );
@@ -519,30 +401,32 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                 );
                               },
                             ),
-                            CustomCard(
-                              title: 'Home Remedies',
-                              icon: Icons.home,
-                              description:
-                                  'Pocket-friendly healing pathways to get you started',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  slideLeftTransitionPageBuilder(
-                                    InfoView(
-                                      title: homeRemediesSectionHeader,
-                                      sectionSummary:
-                                          homeRemediesSectionSummary,
-                                    ),
-                                  ),
-                                );
-                              },
-                              onInfoTapped: () {
-                                _showMessageDialog(
-                                  context,
-                                  homeRemediesSectionSummary,
-                                );
-                              },
-                            ),
+                            if (!kIsWeb)
+                              if (Platform.isAndroid)
+                                CustomCard(
+                                  title: 'Home Remedies',
+                                  icon: Icons.home,
+                                  description:
+                                      'Pocket-friendly healing pathways to get you started',
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      slideLeftTransitionPageBuilder(
+                                        InfoView(
+                                          title: homeRemediesSectionHeader,
+                                          sectionSummary:
+                                              homeRemediesSectionSummary,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  onInfoTapped: () {
+                                    _showMessageDialog(
+                                      context,
+                                      homeRemediesSectionSummary,
+                                    );
+                                  },
+                                ),
                             // CustomCard(
                             //   title: 'Lifestyle',
                             //   icon: Icons.fitness_center,
