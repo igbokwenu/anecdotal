@@ -1,4 +1,5 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
+import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,41 +7,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
-class HealingJourneyEntry {
-  final DateTime timestamp;
-  final double percentage;
-  final List<String> inProgressList;
-  final List<String> doneList;
-  final String notes;
-
-  HealingJourneyEntry({
-    required this.timestamp,
-    required this.percentage,
-    required this.inProgressList,
-    required this.doneList,
-    required this.notes,
-  });
-}
-
 class ProgressTracker extends ConsumerStatefulWidget {
   const ProgressTracker({super.key});
 
   @override
-  _HealingJourneyAppState createState() => _HealingJourneyAppState();
+  ProgressTrackerAppState createState() => ProgressTrackerAppState();
 }
 
-class _HealingJourneyAppState extends ConsumerState<ProgressTracker> {
+class ProgressTrackerAppState extends ConsumerState<ProgressTracker> {
   double _currentPercentage = 0;
-  final List<String> _inProgressList = [
-    "Meditation",
-    "Physical therapy",
-    "Healthy eating",
-  ];
-  final List<String> _doneList = [
-    "Daily exercise",
-    "Therapy session",
-    "Journaling",
-  ];
+
   final List<HealingJourneyEntry> _entries = [];
   final TextEditingController _notesController = TextEditingController();
 
@@ -88,17 +64,38 @@ class _HealingJourneyAppState extends ConsumerState<ProgressTracker> {
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
-    void recordProgress() {
-      setState(() {
-        _entries.add(HealingJourneyEntry(
-          timestamp: DateTime.now(),
-          percentage: _currentPercentage,
-          inProgressList: List.from(userData!.inProgressList),
-          doneList: List.from(userData.doneList),
-          notes: _notesController.text, // This can now be empty
-        ));
-        _notesController.clear();
-      });
+
+    void recordProgress() async {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      final dbService = DatabaseService(uid: uid!);
+
+      final newEntry = {
+        'timestamp': DateTime.now().millisecondsSinceEpoch,
+        'percentage': _currentPercentage,
+        'inProgressList': userData!.inProgressList,
+        'doneList': userData.doneList,
+        'notes': _notesController.text,
+      };
+
+      // Add the new entry to Firestore
+      await dbService.addToHealingJourneyMap(newEntry);
+
+      // Clear the notes field
+      _notesController.clear();
+    }
+
+    List<HealingJourneyEntry> _entries = [];
+
+    if (userData != null && userData.healingJourneyMap.isNotEmpty) {
+      _entries = userData.healingJourneyMap.map((entry) {
+        return HealingJourneyEntry(
+          timestamp: DateTime.fromMillisecondsSinceEpoch(entry['timestamp']),
+          percentage: entry['percentage'].toDouble(),
+          inProgressList: List<String>.from(entry['inProgressList']),
+          doneList: List<String>.from(entry['doneList']),
+          notes: entry['notes'],
+        );
+      }).toList();
     }
 
     return Scaffold(
@@ -191,4 +188,20 @@ class _HealingJourneyAppState extends ConsumerState<ProgressTracker> {
       ),
     );
   }
+}
+
+class HealingJourneyEntry {
+  final DateTime timestamp;
+  final double percentage;
+  final List<String> inProgressList;
+  final List<String> doneList;
+  final String notes;
+
+  HealingJourneyEntry({
+    required this.timestamp,
+    required this.percentage,
+    required this.inProgressList,
+    required this.doneList,
+    required this.notes,
+  });
 }

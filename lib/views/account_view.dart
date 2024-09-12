@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:anecdotal/utils/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:anecdotal/services/auth_service.dart';
 
@@ -24,7 +27,8 @@ class AccountPage extends StatelessWidget {
             const SizedBox(height: 20),
             _buildDetailSection(),
             const SizedBox(height: 20),
-            _buildReportCardButton(context),
+            if (!kIsWeb)
+              if (Platform.isAndroid) _buildReportCardButton(context),
             const SizedBox(height: 20),
             if (authService.isUserAnonymous())
               Column(
@@ -61,7 +65,7 @@ class AccountPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Name Not Available',
+              '',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
@@ -81,7 +85,7 @@ class AccountPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Location: New York, USA', // Replace with real data
+          ' ', // Replace with real data
           style: TextStyle(fontSize: 16),
         ),
         SizedBox(height: 10),

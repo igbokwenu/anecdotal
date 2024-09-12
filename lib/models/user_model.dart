@@ -35,7 +35,7 @@ class AnecdotalUserData {
   final int aiTextUsageCount;
   final int aiGeneralMediaUsageCount;
   final int aiGeneralTextUsageCount;
-  final Map<String, dynamic> healingJourneyMap;
+ final List<Map<String, dynamic>> healingJourneyMap;
 
   AnecdotalUserData({
     this.uid,
@@ -72,7 +72,7 @@ class AnecdotalUserData {
     this.aiTextUsageCount = 0,
     this.aiGeneralMediaUsageCount = 0,
     this.aiGeneralTextUsageCount = 0,
-    this.healingJourneyMap = const {},
+   this.healingJourneyMap = const [],
   });
 
   factory AnecdotalUserData.fromMap(Map<String, dynamic>? data) {
@@ -116,8 +116,7 @@ class AnecdotalUserData {
       aiTextUsageCount: data?[userAiTextUsageCount] ?? 0,
       aiGeneralMediaUsageCount: data?[userAiGeneralMediaUsageCount] ?? 0,
       aiGeneralTextUsageCount: data?[userAiGeneralTextUsageCount] ?? 0,
-      healingJourneyMap:
-          Map<String, dynamic>.from(data?[userHealingJourneyMap] ?? {}),
+        healingJourneyMap: List<Map<String, dynamic>>.from(data?[userHealingJourneyMap] ?? []),
     );
   }
 }

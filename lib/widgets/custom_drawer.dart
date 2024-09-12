@@ -52,14 +52,16 @@ class CustomDrawer extends StatelessWidget {
               leading: const Icon(Icons.info),
               title: const Text('About'),
             ),
-            ListTile(
-              onTap: () {
-                MyReusableFunctions.showCustomToast(
-                    description: "Coming Soon. Stay Tuned.");
-              },
-              leading: const Icon(Icons.groups),
-              title: const Text('Community Chat'),
-            ),
+            if (!kIsWeb)
+              if (Platform.isAndroid)
+                ListTile(
+                  onTap: () {
+                    MyReusableFunctions.showCustomToast(
+                        description: "Coming Soon. Stay Tuned.");
+                  },
+                  leading: const Icon(Icons.groups),
+                  title: const Text('Community Chat'),
+                ),
             if (!kIsWeb)
               if (Platform.isAndroid)
                 ListTile(
