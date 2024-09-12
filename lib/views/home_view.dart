@@ -43,10 +43,9 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
   Widget build(BuildContext context) {
     final chatInputState = ref.watch(chatInputProvider);
     final theme = Theme.of(context);
-        final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = FirebaseAuth.instance.currentUser?.uid;
 
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
-    
 
     Future<void> handleAudioStop(String path) async {
       ref.read(chatInputProvider.notifier).setIsProcessingAudio(true);
@@ -54,7 +53,10 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
       try {
         final response = await GeminiService.analyzeAudioForHome(
           audios: [File(path)],
-          prompt: sendChatPrompt(prompt: userData!.symptomsList.isEmpty ? null: "Here are symptoms the user says they are having: ${userData.symptomsList}. And some details on their medical history: ${userData.medicalHistoryList}"),
+          prompt: sendChatPrompt(
+              prompt: userData!.symptomsList.isEmpty
+                  ? null
+                  : "Here are symptoms the user says they are having: ${userData.symptomsList}. And some details on their medical history: ${userData.medicalHistoryList}"),
         );
 
         if (response != null) {
@@ -88,29 +90,32 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
       File(path).delete();
     }
 
-      Future<void> handleSend(BuildContext context, String message) async {
-    final response = await GeminiService.sendTextPrompt(
-      message: sendChatPrompt(prompt: "$message Here are symptoms the user says they are having: ${userData!.symptomsList}. And some details on their medical history: ${userData.medicalHistoryList}"),
-    );
-
-    if (response != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ReportView(
-            summaryContent: response['summary'] ?? 'No summary available.',
-            keyInsights: response['insights']?.cast<String>() ?? [],
-            recommendations: response['recommendations']?.cast<String>() ?? [],
-            followUpSuggestions: response['suggestions']?.cast<String>() ?? [],
-          ),
-        ),
+    Future<void> handleSend(BuildContext context, String message) async {
+      final response = await GeminiService.sendTextPrompt(
+        message: sendChatPrompt(
+            prompt:
+                "$message Here are symptoms the user says they are having: ${userData!.symptomsList}. And some details on their medical history: ${userData.medicalHistoryList}"),
       );
-    } else {
-      _showMessageDialog(context, "No response received.");
-      print("No response received.");
-    }
-  }
 
+      if (response != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ReportView(
+              summaryContent: response['summary'] ?? 'No summary available.',
+              keyInsights: response['insights']?.cast<String>() ?? [],
+              recommendations:
+                  response['recommendations']?.cast<String>() ?? [],
+              followUpSuggestions:
+                  response['suggestions']?.cast<String>() ?? [],
+            ),
+          ),
+        );
+      } else {
+        _showMessageDialog(context, "No response received.");
+        print("No response received.");
+      }
+    }
 
     // Get the screen size using MediaQuery.sizeOf or MediaQuery.of(context).size
     final Size screenSize = MediaQuery.sizeOf(context);
@@ -248,9 +253,10 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                   context,
                                   slideLeftTransitionPageBuilder(
                                     InfoView(
-                                      title: symptomSectionHeader,
-                                      sectionSummary: symptomSectionSummary,
-                                      firstWidget: const HomeAnalyzeSymptomsWidget() ),
+                                        title: symptomSectionHeader,
+                                        sectionSummary: symptomSectionSummary,
+                                        firstWidget:
+                                            const FirstWidgetSymptomChecker()),
                                   ),
                                 );
                               },
@@ -283,7 +289,8 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                                 ),
                                               );
                                             },
-                                            label: const Text("Track Your Progress"),
+                                            label: const Text(
+                                                "Track Your Progress"),
                                             icon: const Icon(Icons.timeline),
                                           ),
                                         ],
@@ -374,8 +381,12 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                                       context,
                                                       slideLeftTransitionPageBuilder(
                                                         CameraWidget(
-                                                          prompt:
-                                                              sendHouseImageAnalysisPrompt(prompt: userData!.symptomsList.isEmpty ? null: "Here are symptoms the user says they are having: ${userData.symptomsList}. And some details on their medical history: ${userData.medicalHistoryList}"),
+                                                          prompt: sendHouseImageAnalysisPrompt(
+                                                              prompt: userData!
+                                                                      .symptomsList
+                                                                      .isEmpty
+                                                                  ? null
+                                                                  : "Here are symptoms the user previously reported experiencing : ${userData.symptomsList}. And some details from their previously shared medical/exposure history: ${userData.medicalHistoryList}"),
                                                           onResponse: (result) {
                                                             if (result !=
                                                                 null) {
@@ -423,8 +434,12 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                                       Icons.camera_alt),
                                                 ),
                                                 AIImageSelectWidget(
-                                                  prompt:
-                                                      sendHouseImageAnalysisPrompt(prompt: userData!.symptomsList.isEmpty ? null: "Here are symptoms the user says they are having: ${userData.symptomsList}. And some details on their medical history: ${userData.medicalHistoryList}"),
+                                                  prompt: sendHouseImageAnalysisPrompt(
+                                                      prompt: userData!
+                                                              .symptomsList
+                                                              .isEmpty
+                                                          ? null
+                                                          : "Here are symptoms the user previously reported experiencing : ${userData.symptomsList}. And some details from their previously shared medical/exposure history: ${userData.medicalHistoryList}"),
                                                   // allowFileSelect: false,
                                                   maxImages: 4,
                                                   onResponse: (result) {
@@ -500,8 +515,17 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                                 context,
                                                 slideLeftTransitionPageBuilder(
                                                   CameraWidget(
-                                                    prompt:
-                                                        sendLabAnalysisPrompt(symptoms: userData!.symptomsList.isEmpty ? null : "${userData.symptomsList}", history: userData.medicalHistoryList.isEmpty ? null : "${userData.medicalHistoryList}"),
+                                                    prompt: sendLabAnalysisPrompt(
+                                                        symptoms: userData!
+                                                                .symptomsList
+                                                                .isEmpty
+                                                            ? null
+                                                            : "${userData.symptomsList}",
+                                                        history: userData
+                                                                .medicalHistoryList
+                                                                .isEmpty
+                                                            ? null
+                                                            : "${userData.medicalHistoryList}"),
                                                     onResponse: (result) {
                                                       if (result != null) {
                                                         Navigator
@@ -552,7 +576,16 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                             icon: const Icon(Icons.camera_alt),
                                           ),
                                           AIImageSelectWidget(
-                                            prompt: sendLabAnalysisPrompt(symptoms: userData!.symptomsList.isEmpty ? null : "${userData.symptomsList}", history: userData.medicalHistoryList.isEmpty ? null : "${userData.medicalHistoryList}"),
+                                            prompt: sendLabAnalysisPrompt(
+                                                symptoms: userData!
+                                                        .symptomsList.isEmpty
+                                                    ? null
+                                                    : "${userData.symptomsList}",
+                                                history: userData
+                                                        .medicalHistoryList
+                                                        .isEmpty
+                                                    ? null
+                                                    : "${userData.medicalHistoryList}"),
                                             // allowFileSelect: true,
                                             selectButtonText:
                                                 'Select Report Image',
@@ -745,5 +778,4 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
       },
     );
   }
-
 }

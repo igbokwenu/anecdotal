@@ -89,7 +89,7 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
 
       if (response != null) {
         ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => ReportView(

@@ -44,7 +44,7 @@ class PrivacyPolicyPage extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'You can delete your data from the app at any time. Simply navigate to your profile settings and select the "Delete Account" option.',
+              'You can delete your data from the app at any time. Simply navigate to the "Account" section and select the "Delete Account" option.',
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 16),
