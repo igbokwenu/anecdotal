@@ -51,7 +51,7 @@ class InfoView extends StatelessWidget {
               content: sectionSummary ??
                   'Here, we take a look at your symptoms and give you a general idea of if you might be dealing with Mold illness.',
             ),
-            firstWidget ?? Text("This page is being updated..."),
+            firstWidget ?? const Text("This page is being updated..."),
             secondWidget ?? myEmptySizedBox(),
             _buildSuggestions(context),
           ],

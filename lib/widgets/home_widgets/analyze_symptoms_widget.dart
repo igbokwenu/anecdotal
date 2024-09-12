@@ -12,8 +12,8 @@ class HomeAnalyzeSymptomsWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _uid = FirebaseAuth.instance.currentUser?.uid;
-    final userData = ref.watch(anecdotalUserDataProvider(_uid)).value;
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
     return Column(
       children: [
         ElevatedButton.icon(
@@ -21,7 +21,7 @@ class HomeAnalyzeSymptomsWidget extends ConsumerWidget {
             Navigator.push(
               context,
               slideLeftTransitionPageBuilder(
-                ExposureHistoryScreen(),
+                const ExposureHistoryScreen(),
               ),
             );
           },

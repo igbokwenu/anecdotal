@@ -21,7 +21,7 @@ class ReportView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    List<Widget> _buildSearchTerms(List<String> points) {
+    List<Widget> buildSearchTerms(List<String> points) {
       return points
           .map((point) => Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -101,7 +101,7 @@ class ReportView extends StatelessWidget {
               title: 'Follow Up Search Terms',
               icon: Icons.directions_run,
               color: theme.colorScheme.primaryFixedDim,
-              children: _buildSearchTerms(followUpSuggestions),
+              children: buildSearchTerms(followUpSuggestions),
             ),
           ],
         ),

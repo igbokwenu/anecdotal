@@ -1,11 +1,7 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
-import 'package:anecdotal/utils/reusable_function.dart';
-import 'package:anecdotal/views/medical_history_view.dart';
 import 'package:anecdotal/views/progress_tracker_view.dart';
-import 'package:anecdotal/views/symptoms_selector_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
-import 'package:anecdotal/widgets/test_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -92,7 +88,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
       File(path).delete();
     }
 
-      Future<void> _handleSend(BuildContext context, String message) async {
+      Future<void> handleSend(BuildContext context, String message) async {
     final response = await GeminiService.sendTextPrompt(
       message: sendChatPrompt(prompt: "$message Here are symptoms the user says they are having: ${userData!.symptomsList}. And some details on their medical history: ${userData.medicalHistoryList}"),
     );
@@ -283,12 +279,12 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                               Navigator.push(
                                                 context,
                                                 slideLeftTransitionPageBuilder(
-                                                  HealingJourneyApp(),
+                                                  const HealingJourneyApp(),
                                                 ),
                                               );
                                             },
-                                            label: Text("Track Your Progress"),
-                                            icon: Icon(Icons.timeline),
+                                            label: const Text("Track Your Progress"),
+                                            icon: const Icon(Icons.timeline),
                                           ),
                                         ],
                                       ),
@@ -712,7 +708,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                     chatInputState.isProcessingAudio
                         ? myEmptySizedBox()
                         : ChatInputWidget(
-                            onSend: (message) => _handleSend(context, message),
+                            onSend: (message) => handleSend(context, message),
                           ),
                     mySpacing(),
                   ],

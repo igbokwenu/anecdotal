@@ -23,54 +23,56 @@ class HealingJourneyEntry {
 }
 
 class HealingJourneyApp extends ConsumerStatefulWidget {
+  const HealingJourneyApp({super.key});
+
   @override
   _HealingJourneyAppState createState() => _HealingJourneyAppState();
 }
 
 class _HealingJourneyAppState extends ConsumerState<HealingJourneyApp> {
   double _currentPercentage = 0;
-  List<String> _inProgressList = [
+  final List<String> _inProgressList = [
     "Meditation",
     "Physical therapy",
     "Healthy eating",
   ];
-  List<String> _doneList = [
+  final List<String> _doneList = [
     "Daily exercise",
     "Therapy session",
     "Journaling",
   ];
-  List<HealingJourneyEntry> _entries = [];
-  TextEditingController _notesController = TextEditingController();
+  final List<HealingJourneyEntry> _entries = [];
+  final TextEditingController _notesController = TextEditingController();
 
   void _showEntryDetails(HealingJourneyEntry entry) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Journey Details'),
+          title: const Text('Journey Details'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text(
                     'Date: ${DateFormat('yyyy-MM-dd HH:mm').format(entry.timestamp)}'),
                 Text('Feeling ${entry.percentage.toStringAsFixed(1)}% better'),
-                SizedBox(height: 10),
-                Text('Tasks In Progress:',
+                const SizedBox(height: 10),
+                const Text('Tasks In Progress:',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 ...entry.inProgressList.map((item) => Text('• $item')),
-                SizedBox(height: 10),
-                Text('Completed Tasks:',
+                const SizedBox(height: 10),
+                const Text('Completed Tasks:',
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 ...entry.doneList.map((item) => Text('• $item')),
-                SizedBox(height: 10),
-                Text('Notes:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10),
+                const Text('Notes:', style: TextStyle(fontWeight: FontWeight.bold)),
                 Text(entry.notes),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Close'),
+              child: const Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -100,7 +102,7 @@ class _HealingJourneyAppState extends ConsumerState<HealingJourneyApp> {
 
     return Scaffold(
       appBar: AppBar(
-        title: MyAppBarTitleWithAI(
+        title: const MyAppBarTitleWithAI(
           title: 'Track Your Healing',
         ),
       ),
@@ -108,7 +110,7 @@ class _HealingJourneyAppState extends ConsumerState<HealingJourneyApp> {
         children: [
           Expanded(
             child: ListView(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               children: [
                 Text(
                     'Use the slider below to tell us how you are feeling about your health. 0% means your symptoms are debilitating and 100% means you are symptom free.',
@@ -129,32 +131,32 @@ class _HealingJourneyAppState extends ConsumerState<HealingJourneyApp> {
                         },
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 50,
                       child: Text(
                         '${_currentPercentage.round()}%',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
                 ),
-                Text('Notes (Optional):', style: TextStyle(fontSize: 16)),
+                const Text('Notes (Optional):', style: TextStyle(fontSize: 16)),
                 TextField(
                   controller: _notesController,
                   maxLength: 500,
                   maxLines: 3,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText:
                         'Enter any notable details about your health journey.',
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 ElevatedButton.icon(
-                  label: Text('Record Progress'),
+                  label: const Text('Record Progress'),
                   onPressed: recordProgress,
-                  icon: Icon(Icons.check),
+                  icon: const Icon(Icons.check),
                 ),
               ],
             ),
@@ -172,7 +174,7 @@ class _HealingJourneyAppState extends ConsumerState<HealingJourneyApp> {
                   indicatorStyle: IndicatorStyle(
                     width: 20,
                     color: Theme.of(context).colorScheme.secondary,
-                    padding: EdgeInsets.all(6),
+                    padding: const EdgeInsets.all(6),
                   ),
                   endChild: ListTile(
                     title: Text('${entry.percentage.toStringAsFixed(1)}%'),

@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ExposureHistoryScreen extends ConsumerStatefulWidget {
+  const ExposureHistoryScreen({super.key});
+
   @override
   _ExposureHistoryScreenState createState() => _ExposureHistoryScreenState();
 }
@@ -35,12 +37,12 @@ class _ExposureHistoryScreenState extends ConsumerState<ExposureHistoryScreen> {
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
 
     // Show the results dialog with all responses
-    void _showResultsDialog() {
+    void showResultsDialog() {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Your Answers'),
+            title: const Text('Your Answers'),
             content: SizedBox(
               height: 300, // Limit the height for scrolling
               child: SingleChildScrollView(
@@ -61,7 +63,7 @@ class _ExposureHistoryScreenState extends ConsumerState<ExposureHistoryScreen> {
                   Navigator.of(context).pop();
                   _resetQuiz();
                 },
-                child: Text('Retake Test'),
+                child: const Text('Retake Test'),
               ),
               TextButton(
                 onPressed: () async {
@@ -81,7 +83,7 @@ class _ExposureHistoryScreenState extends ConsumerState<ExposureHistoryScreen> {
                     ),
                   );
                 },
-                child: Text('Analyze Symptoms'),
+                child: const Text('Analyze Symptoms'),
               ),
             ],
           );
@@ -90,7 +92,7 @@ class _ExposureHistoryScreenState extends ConsumerState<ExposureHistoryScreen> {
     }
 
     // Function to handle user's answer and move to next question
-    void _handleAnswer(String answer) {
+    void handleAnswer(String answer) {
       String currentQuestion = exposureHistory[currentQuestionIndex];
       userResponses.add({'question': currentQuestion, 'answer': answer});
 
@@ -100,7 +102,7 @@ class _ExposureHistoryScreenState extends ConsumerState<ExposureHistoryScreen> {
         });
       } else {
         print("$userResponses");
-        _showResultsDialog();
+        showResultsDialog();
       }
     }
 
@@ -118,41 +120,41 @@ class _ExposureHistoryScreenState extends ConsumerState<ExposureHistoryScreen> {
           children: [
             Text(
               exposureHistory[currentQuestionIndex],
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  onPressed: () => _handleAnswer('Yes'),
+                  onPressed: () => handleAnswer('Yes'),
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                     backgroundColor: Colors.green,
                   ),
-                  child: Text(
+                  child: const Text(
                     'Yes',
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () => _handleAnswer('No'),
+                  onPressed: () => handleAnswer('No'),
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                     backgroundColor: Colors.red,
                   ),
-                  child: Text(
+                  child: const Text(
                     'No',
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               'Question ${currentQuestionIndex + 1} of ${exposureHistory.length}',
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
           ],
         ),

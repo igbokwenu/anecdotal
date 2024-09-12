@@ -55,7 +55,7 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
       return MapEntry(category, filteredSymptoms);
     });
 
-    Future<void> _handleSend(
+    Future<void> handleSend(
       BuildContext context,
     ) async {
       final uid = FirebaseAuth.instance.currentUser?.uid;
@@ -139,7 +139,7 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
                 );
               }).toList(),
             );
-          }).toList(),
+          }),
           // Fancy box to show all selected symptoms
           selectedSymptoms.isEmpty
               ? myEmptySizedBox()
@@ -193,11 +193,11 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
               onPressed: selectedSymptoms.isEmpty
                   ? null
                   : () {
-                      _handleSend(context);
+                      handleSend(context);
                       print(selectedSymptoms);
                     },
-              label: Text('Analyze Symptoms'),
-              icon: Icon(Icons.auto_awesome),
+              label: const Text('Analyze Symptoms'),
+              icon: const Icon(Icons.auto_awesome),
             ),
     );
   }
