@@ -190,12 +190,13 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
       floatingActionButton: buttonLoadingState.isAnalyzing
           ? const MySpinKitWaveSpinner()
           : ElevatedButton.icon(
-              onPressed: selectedSymptoms.isEmpty
-                  ? null
-                  : () {
-                      handleSend(context);
-                      print(selectedSymptoms);
-                    },
+              onPressed:
+                  selectedSymptoms.isEmpty && userData.symptomsList.isEmpty
+                      ? null
+                      : () {
+                          handleSend(context);
+                          print(selectedSymptoms);
+                        },
               label: const Text('Analyze Symptoms'),
               icon: const Icon(Icons.auto_awesome),
             ),
