@@ -108,7 +108,7 @@ class FirstWidgetSymptomChecker extends ConsumerWidget {
                     Icons.auto_awesome,
                   ),
                 ),
-        ]
+        ],
       ],
     );
   }

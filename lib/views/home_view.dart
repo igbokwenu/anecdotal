@@ -2,6 +2,8 @@ import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/views/progress_tracker_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
+import 'package:anecdotal/widgets/home_widgets/first_investigate_home.dart';
+import 'package:anecdotal/widgets/home_widgets/progress_tracker_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -256,7 +258,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                         title: symptomSectionHeader,
                                         sectionSummary: symptomSectionSummary,
                                         firstWidget:
-                                            const FirstWidgetSymptomChecker()),
+                                            const FirstWidgetSymptomChecker(),),
                                   ),
                                 );
                               },
@@ -278,23 +280,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                       title: progressTrackerSectionHeader,
                                       sectionSummary:
                                           progressTrackerSectionSummary,
-                                      firstWidget: Column(
-                                        children: [
-                                          ElevatedButton.icon(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                slideLeftTransitionPageBuilder(
-                                                  const HealingJourneyApp(),
-                                                ),
-                                              );
-                                            },
-                                            label: const Text(
-                                                "Track Your Progress"),
-                                            icon: const Icon(Icons.timeline),
-                                          ),
-                                        ],
-                                      ),
+                                      firstWidget: const FirstWidgetProgressTracker(),
                                     ),
                                   ),
                                 );
@@ -373,119 +359,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                               "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
                                               textAlign: TextAlign.center,
                                             )
-                                          : Column(
-                                              children: [
-                                                ElevatedButton.icon(
-                                                  onPressed: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      slideLeftTransitionPageBuilder(
-                                                        CameraWidget(
-                                                          prompt: sendHouseImageAnalysisPrompt(
-                                                              prompt: userData!
-                                                                      .symptomsList
-                                                                      .isEmpty
-                                                                  ? null
-                                                                  : "Here are symptoms the user previously reported experiencing : ${userData.symptomsList}. And some details from their previously shared medical/exposure history: ${userData.medicalHistoryList}"),
-                                                          onResponse: (result) {
-                                                            if (result !=
-                                                                null) {
-                                                              Navigator
-                                                                  .pushReplacement(
-                                                                context,
-                                                                slideLeftTransitionPageBuilder(
-                                                                  ReportView(
-                                                                    summaryContent:
-                                                                        result['summary'] ??
-                                                                            'No summary available.',
-                                                                    keyInsights:
-                                                                        result['insights']?.cast<String>() ??
-                                                                            [],
-                                                                    recommendations:
-                                                                        result['recommendations']?.cast<String>() ??
-                                                                            [],
-                                                                    followUpSuggestions:
-                                                                        result['suggestions']?.cast<String>() ??
-                                                                            [],
-                                                                  ),
-                                                                ),
-                                                              );
-                                                              print(
-                                                                  "Summary: ${result['summary']}");
-                                                              print(
-                                                                  "Insights: ${result['insights']}");
-                                                              print(
-                                                                  "Recommendations: ${result['recommendations']}");
-                                                              print(
-                                                                  "Suggestions: ${result['suggestions']}");
-                                                            } else {
-                                                              print(
-                                                                  "Analysis failed or returned no results");
-                                                            }
-                                                          },
-                                                          onComplete: () {},
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                  label: const Text(
-                                                      "Capture Your Surrounding"),
-                                                  icon: const Icon(
-                                                      Icons.camera_alt),
-                                                ),
-                                                AIImageSelectWidget(
-                                                  prompt: sendHouseImageAnalysisPrompt(
-                                                      prompt: userData!
-                                                              .symptomsList
-                                                              .isEmpty
-                                                          ? null
-                                                          : "Here are symptoms the user previously reported experiencing : ${userData.symptomsList}. And some details from their previously shared medical/exposure history: ${userData.medicalHistoryList}"),
-                                                  // allowFileSelect: false,
-                                                  maxImages: 4,
-                                                  onResponse: (result) {
-                                                    if (result != null) {
-                                                      Navigator.push(
-                                                        context,
-                                                        slideLeftTransitionPageBuilder(
-                                                          ReportView(
-                                                            summaryContent: result[
-                                                                    'summary'] ??
-                                                                'No summary available.',
-                                                            keyInsights: result[
-                                                                        'insights']
-                                                                    ?.cast<
-                                                                        String>() ??
-                                                                [],
-                                                            recommendations:
-                                                                result['recommendations']
-                                                                        ?.cast<
-                                                                            String>() ??
-                                                                    [],
-                                                            followUpSuggestions:
-                                                                result['suggestions']
-                                                                        ?.cast<
-                                                                            String>() ??
-                                                                    [],
-                                                          ),
-                                                        ),
-                                                      );
-                                                      print(
-                                                          "Summary: ${result['summary']}");
-                                                      print(
-                                                          "Insights: ${result['insights']}");
-                                                      print(
-                                                          "Recommendations: ${result['recommendations']}");
-                                                      print(
-                                                          "Suggestions: ${result['suggestions']}");
-                                                    } else {
-                                                      print(
-                                                          "Analysis failed or returned no results.");
-                                                    }
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                    ),
+                                          : const FirstWidgetInvestigateHome()),
                                   ),
                                 );
                               },

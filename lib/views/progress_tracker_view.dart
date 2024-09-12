@@ -22,14 +22,14 @@ class HealingJourneyEntry {
   });
 }
 
-class HealingJourneyApp extends ConsumerStatefulWidget {
-  const HealingJourneyApp({super.key});
+class ProgressTracker extends ConsumerStatefulWidget {
+  const ProgressTracker({super.key});
 
   @override
   _HealingJourneyAppState createState() => _HealingJourneyAppState();
 }
 
-class _HealingJourneyAppState extends ConsumerState<HealingJourneyApp> {
+class _HealingJourneyAppState extends ConsumerState<ProgressTracker> {
   double _currentPercentage = 0;
   final List<String> _inProgressList = [
     "Meditation",
@@ -65,7 +65,8 @@ class _HealingJourneyAppState extends ConsumerState<HealingJourneyApp> {
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 ...entry.doneList.map((item) => Text('• $item')),
                 const SizedBox(height: 10),
-                const Text('Notes:', style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text('Notes:',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
                 Text(entry.notes),
               ],
             ),
