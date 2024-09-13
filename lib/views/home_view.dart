@@ -352,7 +352,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                               title: 'Investigate',
                               icon: Icons.camera_alt,
                               description:
-                                  'Take pictures of mold or toxins in your home for analysis',
+                                  'Take pictures of mold or toxins in your space for analysis',
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -366,7 +366,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                                 "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
                                                 textAlign: TextAlign.center,
                                               )
-                                            : const FirstWidgetInvestigateHome()),
+                                            : const FirstWidgetInvestigateHome(),),
                                   ),
                                 );
                               },

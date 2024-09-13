@@ -1,10 +1,46 @@
+import 'package:anecdotal/providers/user_data_provider.dart';
+import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
+import 'package:anecdotal/views/info_view.dart';
+import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
+
+class NoSymptomsSharedButton extends ConsumerWidget {
+  const NoSymptomsSharedButton({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+    return userData!.symptomsList.isNotEmpty
+        ? myEmptySizedBox()
+        : TextButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                slideLeftTransitionPageBuilder(
+                  InfoView(
+                    title: symptomSectionHeader,
+                    sectionSummary: symptomSectionSummary,
+                    firstWidget: const FirstWidgetSymptomChecker(),
+                  ),
+                ),
+              );
+            },
+            label: const Text(
+              'We noticed that you have not yet shared your symptoms. Sharing this helps us give you a better analysis. You can click here to get started.',
+              textAlign: TextAlign.center,
+            ),
+          );
+  }
+}
 
 class MyCircularImage extends StatelessWidget {
   final String imageUrl;

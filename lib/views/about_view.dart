@@ -1,3 +1,4 @@
+import 'package:anecdotal/utils/constants/writeups.dart';
 import 'package:flutter/material.dart';
 
 class AboutPage extends StatelessWidget {
@@ -18,15 +19,14 @@ class AboutPage extends StatelessWidget {
             children: [
               const Center(
                 child: Text(
-                  'By patients, for patients 🤍',
+                  'Patient Driven Health Solution 🤍',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.teal,
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
               _buildSection(
                 'Our Mission',
                 'People who deal with chronic illnesses often burn through multiple doctors and limited financial resources before getting an accurate diagnosis. Anecdotal aims to empower people with knowledge, connect them with a supportive community, shorten their journey to recovery, and provide tools for managing their health journey.',
@@ -72,12 +72,17 @@ class AboutPage extends StatelessWidget {
                       'Share a video with family or colleagues to help them understand your invisible, yet debilitating, illness and spread awareness.  (Coming Soon)'),
                 ],
               ),
+              const SizedBox(height: 20),
+              _buildSection(
+                "Our Mission to Support More",
+                futureSupport,
+                Icons.health_and_safety,
+              ),
               _buildSection(
                 'Our Commitment',
                 'We believe that no one should face chronic illness alone. We\'re committed to continually improving our app based on user feedback and the latest medical research.',
                 Icons.favorite,
               ),
-              const SizedBox(height: 20),
               const Center(
                 child: Text(
                   'Anecdotal: A better path to healing.',

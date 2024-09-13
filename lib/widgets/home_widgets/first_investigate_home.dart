@@ -4,6 +4,7 @@ import 'package:anecdotal/utils/constants/ai_prompts.dart';
 import 'package:anecdotal/views/report_view.dart';
 import 'package:anecdotal/widgets/camera_ai.dart';
 import 'package:anecdotal/widgets/image_select_ai.dart';
+import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +18,7 @@ class FirstWidgetInvestigateHome extends ConsumerWidget {
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
     return Column(
       children: [
+        const NoSymptomsSharedButton(),
         ElevatedButton.icon(
           onPressed: () {
             Navigator.push(

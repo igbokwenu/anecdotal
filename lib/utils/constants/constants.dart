@@ -13,13 +13,13 @@ const String myOpenAIKey =
 //Home Section
 String symptomSectionHeader = "Analyze Your Symptoms";
 String symptomSectionSummary =
-    "Discover if your symptoms might be related to a chronic condition like CIRS or bio-toxins. Simply share your story or select symptoms that applies to you. Then, generate a report for insights. \n\nStart by clicking the button below and telling us a bit about yourself. \n\nRemember, this is not medical advice, but a starting point for further discussion with a healthcare professional.";
+    "Discover if your symptoms might be related to a chronic condition like CIRS or bio-toxins. Simply share your story or select symptoms that apply to you. Then, generate a report for insights. \n\nStart by clicking the button below and telling us a bit about yourself. \n\nRemember, this is not medical advice, but a starting point for further discussion with a healthcare professional.";
 
 String progressTrackerSectionHeader = "Track Your Progress";
 String progressTrackerSectionSummary =
     "Monitor how your symptoms evolve over time. By tracking your daily or weekly progress, you can better understand the effectiveness of any treatments or lifestyle changes you've implemented. Consistent tracking can provide valuable insights into your health journey.";
 
-String investigateSectionHeader = "Investigate Your Home";
+String investigateSectionHeader = "Investigate Your Space";
 String investigateSectionSummary =
     "Learn more about how your surroundings might be contributing to your condition. This section helps you identify potential environmental triggers like mold, dampness, or other harmful factors that could be affecting your health. Investigate and take steps to create a safer living space. You can either capture your surrounding using the camera or upload and analyze images for a specialized AI powered image analysis on potential mold growth that could make you sick.";
 
@@ -37,7 +37,7 @@ String spreadAwarenessSectionSummary =
 
 String interpretLabResultSectionHeader = "Lab Result";
 String interpretLabResultSectionSummary =
-    "Understand your test results with confidence! This section offers clear explanations and expert insights to help you understand your lab results, empowering you to take informed action towards your recovery. This could be lab reports from testing your home from toxins etc. \n\nWe do our best to tell which lab results might be tied to the symptoms you are experiencing (Requires filling the \"Symptom Checker\" section).  \n\nPlease note that this is not a replacement or substitute for professional medical interpretation of the report. Always consult a qualified healthcare professional for personalized guidance and diagnosis.";
+    "Understand your test results with confidence! This section offers clear explanations and expert insights to help you understand your lab results, empowering you to take informed action towards your recovery. This could be lab reports from testing your home from toxins etc. We will do our best to tell which lab results might be tied to the symptoms you are experiencing.  \n\nPlease note that this is not a replacement or substitute for professional medical interpretation of the report.";
 
 class AppRoutes {
   static const String authWrapper = '/';
