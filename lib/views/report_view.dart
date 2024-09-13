@@ -1,23 +1,41 @@
+import 'dart:io';
+import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
+import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:share_plus/share_plus.dart';
+import 'package:path_provider/path_provider.dart';
 
-class ReportView extends StatelessWidget {
+class ReportView extends StatefulWidget {
   final String summaryContent;
   final List<String> keyInsights;
   final List<String> recommendations;
-  final List<String> followUpSuggestions;
+  final List<String> followUpSearchTerms;
   final String? title;
+  final String? name;
 
   const ReportView({
     super.key,
     required this.summaryContent,
     required this.keyInsights,
     required this.recommendations,
-    required this.followUpSuggestions,
+    required this.followUpSearchTerms,
     this.title,
+    this.name,
   });
 
+  @override
+  State<ReportView> createState() => _ReportViewState();
+}
+
+bool _isSaved = false;
+
+class _ReportViewState extends State<ReportView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -53,60 +71,187 @@ class ReportView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Pulse(
-              delay: const Duration(milliseconds: 5000),
-              child: const Icon(Icons.auto_awesome),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              title ?? 'Highlights',
-              style: theme.textTheme.headlineSmall!
-                  .copyWith(fontWeight: FontWeight.bold),
-            ),
-          ],
+        title: MyAppBarTitleWithAI(
+          title: widget.title ?? 'Report',
         ),
+        actions: [
+          _isSaved
+              ? const Padding(
+                  padding: EdgeInsets.only(right: 8.0),
+                  child: Icon(Icons.check_circle),
+                )
+              : IconButton(
+                  icon: const Icon(Icons.save),
+                  onPressed: () => _saveAndSharePDF(context, false), // Save PDF
+                ),
+          // IconButton(
+          //   icon: const Icon(Icons.share),
+          //   onPressed: () => _saveAndSharePDF(context, true), // Share PDF
+          // ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Summary Section
+            // _buildHeader(context),
             _buildSection(
               title: 'Summary',
               icon: Icons.notes,
               color: theme.colorScheme.primary,
-              children: [
-                _buildParagraph(summaryContent),
-              ],
+              children: [_buildParagraph(widget.summaryContent)],
             ),
-            // Insights Section
             _buildSection(
               title: 'Key Insights',
               icon: Icons.lightbulb_outline,
               color: theme.colorScheme.secondary,
-              children: _buildBulletPoints(keyInsights),
+              children: _buildBulletPoints(widget.keyInsights),
             ),
-            // Recommendations Section
             _buildSection(
               title: "Recommendations",
               icon: Icons.list_rounded,
               color: theme.colorScheme.tertiary,
-              children: _buildToDoItems(recommendations),
+              children: _buildToDoItems(widget.recommendations),
             ),
-            // Follow Up Suggestions Section
             _buildSection(
               title: 'Follow Up Search Terms',
               icon: Icons.directions_run,
               color: theme.colorScheme.primaryFixedDim,
-              children: buildSearchTerms(followUpSuggestions),
+              children: buildSearchTerms(widget.followUpSearchTerms),
             ),
+            mySpacing(spacing: 80),
           ],
         ),
       ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          _isSaved
+              ? myEmptySizedBox()
+              : IconButton(
+                  icon: const Icon(Icons.save),
+                  onPressed: () => _saveAndSharePDF(context, false), // Save PDF
+                ),
+          IconButton(
+            icon: const Icon(Icons.share),
+            onPressed: () => _saveAndSharePDF(context, true), // Share PDF
+          ),
+        ],
+      ),
     );
+  }
+
+  Future<void> _saveAndSharePDF(BuildContext context, bool share) async {
+    final pdf = pw.Document();
+    final subject = widget.name ?? "Subject Anonymous";
+    // Load image from assets
+    final imageBytes = await rootBundle.load(logoAssetImageUrlNoTagLine);
+    final image = pw.MemoryImage(imageBytes.buffer.asUint8List());
+    // Get the current date and time
+    final now = DateTime.now();
+    final formattedDate = DateFormat('yyyy-MM-dd_HH-mm-ss').format(now);
+
+    // Create file name with current date and time
+    final fileName = "report_anecdotal_$formattedDate.pdf";
+
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Center(
+                child: pw.Container(
+                  alignment: pw.Alignment.center,
+                  width: 100,
+                  height: 100,
+                  decoration: pw.BoxDecoration(
+                    shape: pw.BoxShape.circle,
+                    border: pw.Border.all(
+                      color: PdfColors.teal,
+                      width: 4.0,
+                    ),
+                    image: pw.DecorationImage(
+                      fit: pw.BoxFit.contain,
+                      image: image,
+                    ),
+                  ),
+                ),
+              ),
+              pw.SizedBox(height: 10),
+              pw.Center(
+                child: pw.Header(
+                  level: 0,
+                  child: pw.Text(
+                    'A Personalized Health Analysis Platform',
+                    textAlign: pw.TextAlign.center,
+                    style: pw.TextStyle(
+                        color: PdfColors.teal,
+                        fontWeight: pw.FontWeight.bold,
+                        fontSize: 25),
+                  ),
+                ),
+              ),
+              pw.SizedBox(height: 20),
+              pw.Text('Report Created For: $subject'),
+              pw.SizedBox(height: 5),
+              pw.Text('Date: $formattedDate'),
+              pw.SizedBox(height: 20),
+              pw.Text(
+                'Introduction:',
+                style: pw.TextStyle(
+                    color: PdfColors.teal, fontWeight: pw.FontWeight.bold),
+              ),
+              pw.Text(widget.summaryContent),
+              pw.SizedBox(height: 10),
+              pw.Text(
+                'Key Insights:',
+                style: pw.TextStyle(
+                    color: PdfColors.teal, fontWeight: pw.FontWeight.bold),
+              ),
+              pw.Bullet(text: widget.keyInsights.join(", ")),
+              pw.SizedBox(height: 10),
+              pw.Text(
+                'Recommendations:',
+                style: pw.TextStyle(
+                    color: PdfColors.teal, fontWeight: pw.FontWeight.bold),
+              ),
+              pw.Bullet(text: widget.recommendations.join(", ")),
+              pw.SizedBox(height: 10),
+              pw.Text(
+                'Follow Up Search Terms:',
+                style: pw.TextStyle(
+                    color: PdfColors.teal, fontWeight: pw.FontWeight.bold),
+              ),
+              pw.Bullet(text: widget.followUpSearchTerms.join(", ")),
+            ],
+          );
+        },
+      ),
+    );
+
+    try {
+      final output = await getTemporaryDirectory();
+      final file = File("${output.path}/$fileName");
+      await file.writeAsBytes(await pdf.save());
+
+      if (share) {
+        final xFile = XFile(file.path);
+        await Share.shareXFiles([xFile], text: 'Anecdotal Report');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('PDF saved to ${file.path}')),
+        );
+
+        setState(() {
+          _isSaved = true;
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error creating PDF: $e')),
+      );
+    }
   }
 
   Widget _buildSection({
@@ -195,5 +340,31 @@ class ReportView extends StatelessWidget {
               ),
             ))
         .toList();
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.name != null
+                ? 'Report Created For: \n ${widget.name}'
+                : 'Report Created For: \n Identity Protected',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          Text(
+            'Last updated: September 11, 2024',
+            style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                  fontStyle: FontStyle.italic,
+                ),
+          ),
+        ],
+      ),
+    );
   }
 }

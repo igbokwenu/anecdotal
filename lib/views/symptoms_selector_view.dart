@@ -97,7 +97,7 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
               keyInsights: response['insights']?.cast<String>() ?? [],
               recommendations:
                   response['recommendations']?.cast<String>() ?? [],
-              followUpSuggestions:
+              followUpSearchTerms:
                   response['suggestions']?.cast<String>() ?? [],
               title: 'Symptom Analysis',
             ),

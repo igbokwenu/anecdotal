@@ -44,7 +44,7 @@ class FirstWidgetInterpretLab extends ConsumerWidget {
                                 result['insights']?.cast<String>() ?? [],
                             recommendations:
                                 result['recommendations']?.cast<String>() ?? [],
-                            followUpSuggestions:
+                            followUpSearchTerms:
                                 result['suggestions']?.cast<String>() ?? [],
                           ),
                         ),
@@ -91,7 +91,7 @@ class FirstWidgetInterpretLab extends ConsumerWidget {
                     keyInsights: result['insights']?.cast<String>() ?? [],
                     recommendations:
                         result['recommendations']?.cast<String>() ?? [],
-                    followUpSuggestions:
+                    followUpSearchTerms:
                         result['suggestions']?.cast<String>() ?? [],
                   ),
                 ),

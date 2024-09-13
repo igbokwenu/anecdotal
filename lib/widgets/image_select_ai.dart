@@ -140,7 +140,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
               keyInsights: response['insights']?.cast<String>() ?? [],
               recommendations:
                   response['recommendations']?.cast<String>() ?? [],
-              followUpSuggestions:
+              followUpSearchTerms:
                   response['suggestions']?.cast<String>() ?? [],
               title: 'Symptom Analysis',
             ),

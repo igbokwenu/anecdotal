@@ -71,7 +71,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                 keyInsights: response['insights']?.cast<String>() ?? [],
                 recommendations:
                     response['recommendations']?.cast<String>() ?? [],
-                followUpSuggestions:
+                followUpSearchTerms:
                     response['suggestions']?.cast<String>() ?? [],
               ),
             ),
@@ -109,7 +109,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
               keyInsights: response['insights']?.cast<String>() ?? [],
               recommendations:
                   response['recommendations']?.cast<String>() ?? [],
-              followUpSuggestions:
+              followUpSearchTerms:
                   response['suggestions']?.cast<String>() ?? [],
             ),
           ),
@@ -358,15 +358,15 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                   context,
                                   slideLeftTransitionPageBuilder(
                                     InfoView(
-                                        title: investigateSectionHeader,
-                                        sectionSummary:
-                                            investigateSectionSummary,
-                                        firstWidget: kIsWeb
-                                            ? const Text(
-                                                "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
-                                                textAlign: TextAlign.center,
-                                              )
-                                            : const FirstWidgetInvestigateHome(),),
+                                      title: investigateSectionHeader,
+                                      sectionSummary: investigateSectionSummary,
+                                      firstWidget: kIsWeb
+                                          ? const Text(
+                                              "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
+                                              textAlign: TextAlign.center,
+                                            )
+                                          : const FirstWidgetInvestigateHome(),
+                                    ),
                                   ),
                                 );
                               },
