@@ -23,77 +23,17 @@ class SymptomsDisplay extends ConsumerWidget {
             return const Center(child: Text('No symptoms recorded.'));
           }
 
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              if (constraints.maxWidth > 600) {
-                // Grid layout for larger screens
-                return GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
-                    childAspectRatio: 3 / 2,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20,
-                  ),
-                  itemCount: data.symptomsList.length,
-                  padding: const EdgeInsets.all(20),
-                  itemBuilder: (context, index) {
-                    return _buildSymptomCard(context, data.symptomsList[index]);
-                  },
-                );
-              } else {
-                // List layout for smaller screens
-                return ListView.builder(
-                  itemCount: data.symptomsList.length,
-                  padding: const EdgeInsets.all(16),
-                  itemBuilder: (context, index) {
-                    return _buildSymptomListTile(
-                        context, data.symptomsList[index], ref);
-                  },
-                );
-              }
+          return ListView.builder(
+            itemCount: data.symptomsList.length,
+            padding: const EdgeInsets.all(16),
+            itemBuilder: (context, index) {
+              return _buildSymptomListTile(
+                  context, data.symptomsList[index], ref);
             },
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(child: Text('Error: $error')),
-      ),
-    );
-  }
-
-  Widget _buildSymptomCard(BuildContext context, String symptom) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Theme.of(context).primaryColor,
-              Theme.of(context).primaryColor.withOpacity(0.7)
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              symptom,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.delete, color: Colors.white),
-              onPressed: () => _deleteSymptom(context, symptom),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -107,19 +47,20 @@ class SymptomsDisplay extends ConsumerWidget {
         title: Text(
           symptom,
           style: TextStyle(
-            color: Theme.of(context).textTheme.displayLarge!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
             fontWeight: FontWeight.bold,
           ),
         ),
         trailing: IconButton(
           icon: const Icon(Icons.delete, color: Colors.red),
-          onPressed: () => _deleteSymptom(context, symptom),
+          onPressed: () => _deleteSymptom(context, symptom, ref),
         ),
       ),
     );
   }
 
-  Future<void> _deleteSymptom(BuildContext context, String symptom) async {
+  Future<void> _deleteSymptom(
+      BuildContext context, String symptom, WidgetRef ref) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
 
     if (uid == null) {
@@ -133,8 +74,11 @@ class SymptomsDisplay extends ConsumerWidget {
       final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
 
       await userRef.update({
-        userSymptomsList : FieldValue.arrayRemove([symptom]),
+        userSymptomsList: FieldValue.arrayRemove([symptom]),
       });
+
+      // // Refresh the user data after deletion
+      // ref.refresh(anecdotalUserDataProvider(uid));
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('$symptom deleted successfully.')),
