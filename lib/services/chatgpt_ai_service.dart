@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:anecdotal/utils/constants.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
 
 class ChatGPTService {
   static const String _apiUrl = 'https://api.openai.com/v1/chat/completions';

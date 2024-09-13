@@ -1,8 +1,8 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/database_service.dart';
-import 'package:anecdotal/utils/constants.dart';
-import 'package:anecdotal/utils/symptom_list.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
+import 'package:anecdotal/utils/constants/symptom_list.dart';
 import 'package:anecdotal/views/symptoms_selector_view.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';

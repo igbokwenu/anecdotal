@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:anecdotal/services/iap/store_config.dart';
-import 'package:anecdotal/utils/constants.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 Future<void> configureRevenueCatSDK() async {

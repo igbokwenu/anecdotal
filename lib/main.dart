@@ -2,7 +2,7 @@ import 'package:anecdotal/firebase_options.dart';
 import 'package:anecdotal/providers/theme_provider.dart';
 import 'package:anecdotal/services/auth_wrapper.dart';
 import 'package:anecdotal/services/iap/config.dart';
-import 'package:anecdotal/utils/constants.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/themes.dart';
 import 'package:anecdotal/views/about_view.dart';
 import 'package:anecdotal/views/account_view.dart';

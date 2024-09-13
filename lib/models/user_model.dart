@@ -1,4 +1,4 @@
-import 'package:anecdotal/utils/constants.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
 
 class AnecdotalUserData {
   final String? uid;

@@ -241,11 +241,11 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
 
   Color _getColor(double percentage) {
     if (percentage < 20) {
-      return Colors.yellow;
-    } else if (percentage < 40) {
       return Colors.orange[200]!;
+    } else if (percentage < 40) {
+      return Colors.orange[400]!;
     } else if (percentage < 60) {
-      return Colors.orange;
+      return Colors.orange[600]!;
     } else if (percentage < 80) {
       return Colors.lightGreen;
     } else {

@@ -1,6 +1,6 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
-import 'package:anecdotal/utils/ai_prompts.dart';
+import 'package:anecdotal/utils/constants/ai_prompts.dart';
 import 'package:anecdotal/views/report_view.dart';
 import 'package:anecdotal/widgets/camera_ai.dart';
 import 'package:anecdotal/widgets/image_select_ai.dart';

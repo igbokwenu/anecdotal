@@ -1,4 +1,4 @@
-import 'package:anecdotal/utils/constants.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:anecdotal/services/auth_service.dart';
-import 'package:anecdotal/utils/constants.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:flutter/foundation.dart';

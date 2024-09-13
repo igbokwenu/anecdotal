@@ -2,7 +2,7 @@ import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
-import 'package:anecdotal/utils/ai_prompts.dart';
+import 'package:anecdotal/utils/constants/ai_prompts.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/medical_history_view.dart';
 import 'package:anecdotal/views/report_view.dart';

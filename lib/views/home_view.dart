@@ -14,8 +14,8 @@ import 'dart:io';
 import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
-import 'package:anecdotal/utils/ai_prompts.dart';
-import 'package:anecdotal/utils/constants.dart';
+import 'package:anecdotal/utils/constants/ai_prompts.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/widgets/camera_ai.dart';
 import 'package:anecdotal/widgets/image_select_ai.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
@@ -234,7 +234,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                       //  ],
                       // ),
                       Text(
-                        "Anecdotal is built by patients, with the help of compassionate doctors - for those in search of answers and support regarding complex and debilitating chronic conditions like CIRS and Mold Illness. ",
+                        "Anecdotal is built by patients, with the help of compassionate doctors - for those in search of answers and support regarding complex and debilitating chronic conditions like CIRS and Bio-toxin Illness. ",
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall

@@ -162,7 +162,7 @@ Under suggestions come up with related search terms that the user can input in a
 }
 
 const String forDoctor =
-    "Prepare your response like you are preparing a response for a doctor or medical practitioner, detailing the patients symptoms and potential exposure history if available and why you reached your conclusions. Encourage the doctor to investigate along the lines of your conclusions especially if the patient is complaining of debilitating symptoms despite their regular blood work and medical tests comes back as normal. Just in case, also define what CIRS is and how it differs significantly from mold allergy/an allergic reaction to mold";
+    "Prepare your response like you are preparing a response for a doctor or medical practitioner, detailing the patients symptoms and potential exposure history if available and why you reached your conclusions. Encourage the doctor to investigate along the lines of your conclusions especially if the patient is complaining of debilitating symptoms. Remind the doctor that most common and routine blood work usually cannot detect CIRS and a patient who has a good blood work might be suffering from CIRS. Just in case, also define what CIRS is and how it differs significantly from mold allergy/an allergic reaction to mold";
 const String forLandlord =
     "Prepare your response for a landlord or property manager or management company, sent by the tenant, detailing why and how mold growth/water damage (if detected in the image provided) in their property might be making the tenant sick and causing symptoms reported (if available). And why they should prioritize remediating their property both for the current tenant and future tenants.";
 const String forEmployer =

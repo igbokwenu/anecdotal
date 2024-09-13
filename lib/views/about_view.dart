@@ -34,7 +34,7 @@ class AboutPage extends StatelessWidget {
               ),
               _buildSection(
                 'The Story Behind Anecdotal',
-                "Anecdotal was created by someone who understands the challenges of chronic illness (CIRS) firsthand. As a survivor and thriver, he drew upon his personal journey to design an app that addresses the complexities and uncertainties of such conditions. With a deep understanding of the struggles and frustrations that come with navigating these health challenges, I crafted Anecdotal as a tool I wished I had during my dark days of uncertainty about my health. This app is a labor of love, driven by a passion to support and empower others on their own paths to recovery.",
+                "Anecdotal was born out of personal experience and a deep understanding of the challenges of chronic illness (CIRS). As a survivor and thriver, I drew upon my own journey to design an app that tackles the complexities and uncertainties of these conditions head-on. Having navigated the struggles and frustrations of navigating health challenges firsthand, I created Anecdotal as the tool I wished I had during my darkest days of uncertainty. This app is a labor of love, driven by a passion to support and empower others on their paths to recovery and wellness.",
                 Icons.person,
               ),
               _buildSection(
@@ -80,7 +80,7 @@ class AboutPage extends StatelessWidget {
               const SizedBox(height: 20),
               const Center(
                 child: Text(
-                  'Anecdotal: Your story matters, your health matters.',
+                  'Anecdotal: A better path to healing.',
                   style: TextStyle(
                     fontSize: 16,
                     fontStyle: FontStyle.italic,
