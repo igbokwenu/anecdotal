@@ -135,9 +135,13 @@ class InfoView extends StatelessWidget {
               children: [
                 Icon(Icons.recommend, color: Theme.of(context).iconTheme.color),
                 const SizedBox(width: 8),
-                Text(
-                  'Follow Up Suggestions',
-                  style: Theme.of(context).textTheme.headlineSmall,
+                Flexible(
+                  child: Text(
+                    'Anecdotal: A Superior Way To Manage Your Healing Journey',
+                    style: Theme.of(context).textTheme.titleMedium,
+                    overflow: TextOverflow
+                        .visible, // Optional: you can adjust how overflow is handled
+                  ),
                 ),
               ],
             ),

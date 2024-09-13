@@ -388,8 +388,12 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                       title: interpretLabResultSectionHeader,
                                       sectionSummary:
                                           interpretLabResultSectionSummary,
-                                      firstWidget:
-                                          const FirstWidgetInterpretLab(),
+                                      firstWidget: kIsWeb
+                                          ? const Text(
+                                              "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
+                                              textAlign: TextAlign.center,
+                                            )
+                                          : const FirstWidgetInterpretLab(),
                                     ),
                                   ),
                                 );
