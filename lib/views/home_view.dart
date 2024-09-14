@@ -73,6 +73,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                     response['recommendations']?.cast<String>() ?? [],
                 followUpSearchTerms:
                     response['suggestions']?.cast<String>() ?? [],
+                citations: response['citations']?.cast<String>() ?? [],
               ),
             ),
           );
@@ -111,6 +112,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                   response['recommendations']?.cast<String>() ?? [],
               followUpSearchTerms:
                   response['suggestions']?.cast<String>() ?? [],
+              citations: response['citations']?.cast<String>() ?? [],
             ),
           ),
         );

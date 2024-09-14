@@ -92,7 +92,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
     } finally {
       setState(() {
         _isAnalyzing = false;
-        _selectedFiles.clear(); // Clear the selected files after analysis
+        // _selectedFiles.clear(); // Clear the selected files after analysis
       });
     }
   }
@@ -142,6 +142,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
                   response['recommendations']?.cast<String>() ?? [],
               followUpSearchTerms:
                   response['suggestions']?.cast<String>() ?? [],
+              citations: response['citations']?.cast<String>() ?? [],
               title: 'Symptom Analysis',
             ),
           ),

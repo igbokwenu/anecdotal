@@ -13,7 +13,7 @@ const String myOpenAIKey =
 //Home Section
 String symptomSectionHeader = "Analyze Your Symptoms";
 String symptomSectionSummary =
-    "Discover if your symptoms might be related to a chronic condition like CIRS or bio-toxins. Simply share your story or select symptoms that apply to you. Then, generate a report for insights. \n\nStart by clicking the button below and telling us a bit about yourself. \n\nRemember, this is not medical advice, but a starting point for further discussion with a healthcare professional.";
+    "Discover if your symptoms might be related to a chronic condition like CIRS or bio-toxins. Simply answer a few questions and select the symptoms that apply to you - and we will provide some insights. \n\nStart by clicking the button below and telling us a bit about yourself. \n\nRemember, this is not medical advice, but a starting point for further discussion with a healthcare professional.";
 
 String progressTrackerSectionHeader = "Track Your Progress";
 String progressTrackerSectionSummary =

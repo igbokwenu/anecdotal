@@ -10,3 +10,6 @@ At Anecdotal, we're committed to supporting individuals navigating the complexit
 
 Join us in our mission to foster a supportive community and provide valuable resources for those affected by these conditions. Together, let's navigate the complexities of chronic illness and empower each other towards wellness.
 """;
+
+const String medicalDisclaimer =
+    "This report is for informational purposes only and should not be considered a substitute for professional medical advice, diagnosis, or treatment from a qualified healthcare practitioner.";

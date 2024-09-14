@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:anecdotal/utils/constants/constants.dart';
+import 'package:anecdotal/utils/constants/writeups.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +18,7 @@ class ReportView extends StatefulWidget {
   final List<String> keyInsights;
   final List<String> recommendations;
   final List<String> followUpSearchTerms;
+  final List<String> citations;
   final String? title;
   final String? name;
 
@@ -25,6 +28,7 @@ class ReportView extends StatefulWidget {
     required this.keyInsights,
     required this.recommendations,
     required this.followUpSearchTerms,
+    required this.citations,
     this.title,
     this.name,
   });
@@ -39,6 +43,43 @@ class _ReportViewState extends State<ReportView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    List<Widget> buildCitationLinks(
+        List<String> dynamicCitations, List<String>? manualCitations) {
+      final allCitations = [
+        ...dynamicCitations
+      ]; // Start with dynamic citations
+      if (manualCitations != null && manualCitations.isNotEmpty) {
+        allCitations.addAll(manualCitations); // Add manual citations if present
+      }
+
+      return allCitations
+          .map((citation) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton.icon(
+                          label: Text(
+                            citation,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          icon: const Icon(Icons.link),
+                          onPressed: () {
+                            MyReusableFunctions.launchCustomUrl(citation);
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ))
+          .toList();
+    }
+
     List<Widget> buildSearchTerms(List<String> points) {
       return points
           .map((point) => Padding(
@@ -74,27 +115,39 @@ class _ReportViewState extends State<ReportView> {
         title: MyAppBarTitleWithAI(
           title: widget.title ?? 'Report',
         ),
-        actions: [
-          _isSaved
-              ? const Padding(
-                  padding: EdgeInsets.only(right: 8.0),
-                  child: Icon(Icons.check_circle),
-                )
-              : IconButton(
-                  icon: const Icon(Icons.save),
-                  onPressed: () => _saveAndSharePDF(context, false), // Save PDF
-                ),
-          // IconButton(
-          //   icon: const Icon(Icons.share),
-          //   onPressed: () => _saveAndSharePDF(context, true), // Share PDF
-          // ),
-        ],
+        actions: kIsWeb
+            ? []
+            : [
+                _isSaved
+                    ? const Padding(
+                        padding: EdgeInsets.only(right: 8.0),
+                        child: Icon(Icons.check_circle),
+                      )
+                    : IconButton(
+                        icon: const Icon(Icons.save),
+                        onPressed: () =>
+                            _saveAndSharePDF(context, false), // Save PDF
+                      ),
+                // IconButton(
+                //   icon: const Icon(Icons.share),
+                //   onPressed: () => _saveAndSharePDF(context, true), // Share PDF
+                // ),
+              ],
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // _buildHeader(context),
+            if (!kIsWeb)
+              if (Platform.isIOS)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    medicalDisclaimer,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
             _buildSection(
               title: 'Summary',
               icon: Icons.notes,
@@ -114,6 +167,13 @@ class _ReportViewState extends State<ReportView> {
               children: _buildToDoItems(widget.recommendations),
             ),
             _buildSection(
+              title: 'Citations',
+              icon: Icons.link,
+              color: theme.colorScheme.primaryFixedDim,
+              children: buildCitationLinks(
+                  widget.citations, ["https://www.cirsx.com/reference-papers"]),
+            ),
+            _buildSection(
               title: 'Follow Up Search Terms',
               icon: Icons.directions_run,
               color: theme.colorScheme.primaryFixedDim,
@@ -123,30 +183,35 @@ class _ReportViewState extends State<ReportView> {
           ],
         ),
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          _isSaved
-              ? myEmptySizedBox()
-              : IconButton(
-                  icon: const Icon(Icons.save),
-                  onPressed: () => _saveAndSharePDF(context, false), // Save PDF
+      floatingActionButton: kIsWeb
+          ? myEmptySizedBox()
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                _isSaved
+                    ? myEmptySizedBox()
+                    : IconButton(
+                        icon: const Icon(Icons.save),
+                        onPressed: () =>
+                            _saveAndSharePDF(context, false), // Save PDF
+                      ),
+                IconButton(
+                  icon: const Icon(Icons.share),
+                  onPressed: () => _saveAndSharePDF(context, true), // Share PDF
                 ),
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: () => _saveAndSharePDF(context, true), // Share PDF
-          ),
-        ],
-      ),
+              ],
+            ),
     );
   }
 
   Future<void> _saveAndSharePDF(BuildContext context, bool share) async {
     final pdf = pw.Document();
     final subject = widget.name ?? "Subject Anonymous";
+
     // Load image from assets
     final imageBytes = await rootBundle.load(logoAssetImageUrlNoTagLine);
     final image = pw.MemoryImage(imageBytes.buffer.asUint8List());
+
     // Get the current date and time
     final now = DateTime.now();
     final formattedDate = DateFormat('yyyy-MM-dd_HH-mm-ss').format(now);
@@ -155,78 +220,90 @@ class _ReportViewState extends State<ReportView> {
     final fileName = "report_anecdotal_$formattedDate.pdf";
 
     pdf.addPage(
-      pw.Page(
-        build: (pw.Context context) {
-          return pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Center(
-                child: pw.Container(
-                  alignment: pw.Alignment.center,
-                  width: 100,
-                  height: 100,
-                  decoration: pw.BoxDecoration(
-                    shape: pw.BoxShape.circle,
-                    border: pw.Border.all(
-                      color: PdfColors.teal,
-                      width: 4.0,
-                    ),
-                    image: pw.DecorationImage(
-                      fit: pw.BoxFit.contain,
-                      image: image,
-                    ),
-                  ),
+      pw.MultiPage(
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) => [
+          pw.Center(
+            child: pw.Container(
+              alignment: pw.Alignment.center,
+              width: 130,
+              height: 130,
+              decoration: pw.BoxDecoration(
+                shape: pw.BoxShape.circle,
+                border: pw.Border.all(
+                  color: PdfColors.teal,
+                  width: 4.0,
+                ),
+                image: pw.DecorationImage(
+                  fit: pw.BoxFit.contain,
+                  image: image,
                 ),
               ),
-              pw.SizedBox(height: 10),
-              pw.Center(
-                child: pw.Header(
-                  level: 0,
-                  child: pw.Text(
-                    'A Personalized Health Analysis Platform',
-                    textAlign: pw.TextAlign.center,
-                    style: pw.TextStyle(
-                        color: PdfColors.teal,
-                        fontWeight: pw.FontWeight.bold,
-                        fontSize: 25),
-                  ),
-                ),
+            ),
+          ),
+          pw.SizedBox(height: 10),
+          pw.Center(
+            child: pw.Text(
+              'A Personalized Health Analysis Platform',
+              textAlign: pw.TextAlign.center,
+              style: pw.TextStyle(
+                color: PdfColors.teal,
+                fontWeight: pw.FontWeight.bold,
+                fontSize: 25,
               ),
-              pw.SizedBox(height: 20),
-              pw.Text('Report Created For: $subject'),
-              pw.SizedBox(height: 5),
-              pw.Text('Date: $formattedDate'),
-              pw.SizedBox(height: 20),
-              pw.Text(
-                'Introduction:',
-                style: pw.TextStyle(
-                    color: PdfColors.teal, fontWeight: pw.FontWeight.bold),
-              ),
-              pw.Text(widget.summaryContent),
-              pw.SizedBox(height: 10),
-              pw.Text(
-                'Key Insights:',
-                style: pw.TextStyle(
-                    color: PdfColors.teal, fontWeight: pw.FontWeight.bold),
-              ),
-              pw.Bullet(text: widget.keyInsights.join(", ")),
-              pw.SizedBox(height: 10),
-              pw.Text(
-                'Recommendations:',
-                style: pw.TextStyle(
-                    color: PdfColors.teal, fontWeight: pw.FontWeight.bold),
-              ),
-              pw.Bullet(text: widget.recommendations.join(", ")),
-              pw.SizedBox(height: 10),
-              pw.Text(
-                'Follow Up Search Terms:',
-                style: pw.TextStyle(
-                    color: PdfColors.teal, fontWeight: pw.FontWeight.bold),
-              ),
-              pw.Bullet(text: widget.followUpSearchTerms.join(", ")),
-            ],
-          );
-        },
+            ),
+          ),
+          pw.SizedBox(height: 20),
+          pw.Text('Report Created For: $subject'),
+          pw.SizedBox(height: 5),
+          pw.Text('Date: $formattedDate'),
+          pw.SizedBox(height: 20),
+          pw.Text(
+            'Introduction:',
+            style: pw.TextStyle(
+              color: PdfColors.teal,
+              fontWeight: pw.FontWeight.bold,
+            ),
+          ),
+          pw.Text(widget.summaryContent),
+          pw.SizedBox(height: 10),
+          pw.Text(
+            'Key Insights:',
+            style: pw.TextStyle(
+              color: PdfColors.teal,
+              fontWeight: pw.FontWeight.bold,
+            ),
+          ),
+          ...widget.keyInsights.map((insight) => pw.Bullet(text: insight)),
+          pw.SizedBox(height: 10),
+          pw.Text(
+            'Recommendations:',
+            style: pw.TextStyle(
+              color: PdfColors.teal,
+              fontWeight: pw.FontWeight.bold,
+            ),
+          ),
+          ...widget.recommendations
+              .map((recommendation) => pw.Bullet(text: recommendation)),
+          pw.SizedBox(height: 10),
+          pw.Text(
+            'Citations:',
+            style: pw.TextStyle(
+              color: PdfColors.teal,
+              fontWeight: pw.FontWeight.bold,
+            ),
+          ),
+          ...widget.citations.map((citation) => pw.Bullet(text: citation)),
+          pw.SizedBox(height: 10),
+          pw.Text(
+            'Follow Up Search Terms:',
+            style: pw.TextStyle(
+              color: PdfColors.teal,
+              fontWeight: pw.FontWeight.bold,
+            ),
+          ),
+          ...widget.followUpSearchTerms.map((term) => pw.Bullet(text: term)),
+        ],
       ),
     );
 

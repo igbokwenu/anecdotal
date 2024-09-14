@@ -12,6 +12,8 @@ Under recommendations give helpful recommendations that the patient can use to a
 
 Under suggestions come up with related search terms that the user can input in a search engine to get more information about their prompt.
 
+$showCitation
+
    ${prompt == null ? "" : "User question: $prompt"}
   
   """;
@@ -30,6 +32,8 @@ Under insights give key insights from the response you gave in the summary. ${ex
 Under recommendations give helpful recommendations ${externalReport == null ? " that the patient can use to alleviate the situation" : "depending on who you are preparing the report for"}
 
 Under suggestions come up with related search terms that the user can input in a search engine to get more information about their prompt.
+
+$showCitation
 
    User question: I am worried mold might be growing in my house and making me sick. i want you to analyze the images attached and let me know if it looks like mold, water damage or a condition that could contribute to mold illness or if its an environmental hazard or factor that could make me sick. Tell me why you reached your conclusions based on what you see in the images.
 
@@ -109,6 +113,7 @@ Under recommendations give helpful recommendations ${externalReport == null ? " 
 
 Under suggestions come up with related search terms that the user can input in a search engine to get more information about their prompt.
 
+$showCitation
    
   
   """;
@@ -155,7 +160,7 @@ Under insights give key insights from the response you gave in the summary like 
 Under recommendations give helpful recommendations ${externalReport == null ? " that the patient can use to alleviate the situation" : "To the doctor to guide them towards properly diagnosing and treating the patient"}
 
 Under suggestions come up with related search terms that the user can input in a search engine to get more information about their prompt.
-
+$showCitation
    
   
   """;
@@ -167,6 +172,23 @@ const String forLandlord =
     "Prepare your response for a landlord or property manager or management company, sent by the tenant, detailing why and how mold growth/water damage (if detected in the image provided) in their property might be making the tenant sick and causing symptoms reported (if available). And why they should prioritize remediating their property both for the current tenant and future tenants.";
 const String forEmployer =
     "Prepare your response for an employer, from an employee, detailing why and how mold growth/water damage (if detected in the image provided) in the office building might be making the staff sick and causing symptoms reported (if available). And why they should prioritize remediating their office space to improve the employers working condition.";
+
+const String showCitation =
+    "Under citations list at least 4 urls from these medical articles depending on which one is most relevant to response you gave: $citation1 $citation2 $citation3 $citation4 $citation5 $citation6 $citation7";
+
+const String citation1 =
+    "https://www.medicinenet.com/chronic_inflammatory_response_syndrome_cirs/article.htm";
+const String citation2 =
+    "https://www.aph.gov.au/Parliamentary_Business/Committees/House/Health_Aged_Care_and_Sport/BiotoxinIllnesses/Report/section?id=committees%2Freportrep%2F024194%2F26442";
+const String citation3 =
+    "https://aspenmedcenter.com/what-is-chronic-inflammatory-response-syndrome/";
+const String citation4 = "https://pubmed.ncbi.nlm.nih.gov/36069791/";
+const String citation5 = "https://coem.com/chronic-inflammatory-syndrome";
+const String citation6 =
+    "https://jjimd.com/symptoms-of-cirs-chronic-inflammatory-response-syndrome/";
+const String citation7 =
+    "https://www.vc4hw.com/chronic-inflammatory-response-syndrome-cirs.html";
+
 
 // Abnormal lab testing:
 // Failed Vision Contrast Study (VCS)

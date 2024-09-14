@@ -43,6 +43,8 @@ class FirstWidgetInvestigateHome extends ConsumerWidget {
                                 result['recommendations']?.cast<String>() ?? [],
                             followUpSearchTerms:
                                 result['suggestions']?.cast<String>() ?? [],
+                            citations:
+                                result['citations']?.cast<String>() ?? [],
                           ),
                         ),
                       );
@@ -83,6 +85,7 @@ class FirstWidgetInvestigateHome extends ConsumerWidget {
                         result['recommendations']?.cast<String>() ?? [],
                     followUpSearchTerms:
                         result['suggestions']?.cast<String>() ?? [],
+                    citations: result['citations']?.cast<String>() ?? [],
                   ),
                 ),
               );

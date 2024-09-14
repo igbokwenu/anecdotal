@@ -1,4 +1,6 @@
 import 'package:anecdotal/utils/constants/writeups.dart';
+import 'package:anecdotal/utils/reusable_function.dart';
+import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
 import 'package:flutter/material.dart';
 
 class AboutPage extends StatelessWidget {
@@ -19,12 +21,30 @@ class AboutPage extends StatelessWidget {
             children: [
               const Center(
                 child: Text(
-                  'Patient Driven Health Solution 🤍',
+                  'Patient Inspired Health Solution 🤍',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.teal,
                   ),
+                ),
+              ),
+              mySpacing(),
+              Center(
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    MyReusableFunctions.launchMail();
+                  },
+                  label: Text("Send Us A Mail"),
+                  icon: Icon(Icons.mail),
+                ),
+              ),
+              mySpacing(),
+              Center(
+                child: SelectableText(
+                  "okechukwu@habilisfusion.co",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
               ),
               _buildSection(
@@ -92,6 +112,24 @@ class AboutPage extends StatelessWidget {
                     color: Colors.teal,
                   ),
                   textAlign: TextAlign.center,
+                ),
+              ),
+              mySpacing(),
+              Center(
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    MyReusableFunctions.launchMail();
+                  },
+                  label: Text("Send Us A Mail"),
+                  icon: Icon(Icons.mail),
+                ),
+              ),
+              mySpacing(),
+              Center(
+                child: SelectableText(
+                  "okechukwu@habilisfusion.co",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
               ),
             ],

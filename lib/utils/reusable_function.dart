@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class MyReusableFunctions {
   static Future<void> launchMail({String? address}) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
     String encodeQueryParameters(Map<String, String> params) {
       return params.entries
           .map((MapEntry<String, String> e) =>
@@ -17,9 +18,12 @@ class MyReusableFunctions {
       scheme: 'mailto',
       path: address ?? "okechukwu@habilisfusion.co",
       query: encodeQueryParameters(<String, String>{
-        'subject': '❤️From Anecdotal App❤️',
-        'body':
-            'Anecdotal User ID: ${FirebaseAuth.instance.currentUser?.uid} \n\n <--- Add Message Below This Text ---> \n\n',
+        'subject': uid == null
+            ? 'Enquiries About Anecdotal'
+            : '❤️From Anecdotal App❤️',
+        'body': uid == null
+            ? ''
+            : 'Anecdotal User ID: ${FirebaseAuth.instance.currentUser?.uid} \n\n <--- Add Message Below This Text ---> \n\n',
       }),
     );
     if (!await launchUrl(url)) {
