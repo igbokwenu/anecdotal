@@ -150,14 +150,14 @@ class AboutPage extends StatelessWidget {
           children: [
             Icon(icon, color: Colors.teal),
             const SizedBox(width: 10),
-            Text(
+            SelectableText(
               title,
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
           ],
         ),
         const SizedBox(height: 10),
-        Text(
+        SelectableText(
           content,
           style: const TextStyle(fontSize: 16),
         ),
