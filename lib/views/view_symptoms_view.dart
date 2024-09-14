@@ -1,4 +1,7 @@
+import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
+import 'package:anecdotal/views/symptoms_selector_view.dart';
+import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +18,7 @@ class SymptomsDisplay extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Symptoms'),
+        title: const MyAppBarTitleWithAI(title: 'Symptoms'),
       ),
       body: userData.when(
         data: (data) {
@@ -23,13 +26,36 @@ class SymptomsDisplay extends ConsumerWidget {
             return const Center(child: Text('No symptoms recorded.'));
           }
 
-          return ListView.builder(
-            itemCount: data.symptomsList.length,
-            padding: const EdgeInsets.all(16),
-            itemBuilder: (context, index) {
-              return _buildSymptomListTile(
-                  context, data.symptomsList[index], ref);
-            },
+          return Column(
+            children: [
+              Flexible(
+                child: ListView.builder(
+                  itemCount: data.symptomsList.length,
+                  padding: const EdgeInsets.all(16),
+                  itemBuilder: (context, index) {
+                    return _buildSymptomListTile(
+                        context, data.symptomsList[index], ref);
+                  },
+                ),
+              ),
+
+              // Add widget below the ListView
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      slideLeftTransitionPageBuilder(
+                        const SymptomsSelectionPage(),
+                      ),
+                    );
+                  },
+                  label: const Text('Add Symptom'),
+                  icon: const Icon(Icons.add),
+                ),
+              ),
+            ],
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -76,9 +102,6 @@ class SymptomsDisplay extends ConsumerWidget {
       await userRef.update({
         userSymptomsList: FieldValue.arrayRemove([symptom]),
       });
-
-      // // Refresh the user data after deletion
-      // ref.refresh(anecdotalUserDataProvider(uid));
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('$symptom deleted successfully.')),
