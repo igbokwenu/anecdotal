@@ -36,8 +36,8 @@ class AboutPage extends StatelessWidget {
                   onPressed: () {
                     MyReusableFunctions.launchMail();
                   },
-                  label: Text("Send Us A Mail"),
-                  icon: Icon(Icons.mail),
+                  label: const Text("Send Us A Mail"),
+                  icon: const Icon(Icons.mail),
                 ),
               ),
               if (kIsWeb) mySpacing(),
@@ -121,8 +121,8 @@ class AboutPage extends StatelessWidget {
                   onPressed: () {
                     MyReusableFunctions.launchMail();
                   },
-                  label: Text("Send Us A Mail"),
-                  icon: Icon(Icons.mail),
+                  label: const Text("Send Us A Mail"),
+                  icon: const Icon(Icons.mail),
                 ),
               ),
               if (kIsWeb) mySpacing(),
@@ -132,6 +132,11 @@ class AboutPage extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.labelMedium,
                 ),
+              ),
+              mySpacing(),
+              const Divider(),
+              const PrivacyAndTermsButton(
+                showDownload: true,
               ),
             ],
           ),

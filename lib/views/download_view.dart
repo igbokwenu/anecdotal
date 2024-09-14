@@ -92,8 +92,10 @@ class DownloadPage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 mySpacing(),
+                const Divider(),
                 const PrivacyAndTermsButton(
                   showAbout: true,
+                  showDownload: false,
                 ),
               ],
             ),

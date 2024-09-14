@@ -84,7 +84,12 @@ class MyCircularImage extends StatelessWidget {
 
 class PrivacyAndTermsButton extends StatelessWidget {
   final bool showAbout;
-  const PrivacyAndTermsButton({super.key, this.showAbout = false});
+  final bool showDownload;
+  const PrivacyAndTermsButton({
+    super.key,
+    this.showAbout = false,
+    this.showDownload = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -130,11 +135,10 @@ class PrivacyAndTermsButton extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelSmall,
               ),
             ),
-          if (kIsWeb)
+          if (kIsWeb && showDownload) ...[
             const Text(
               '|',
             ),
-          if (kIsWeb)
             GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, AppRoutes.download);
@@ -144,6 +148,7 @@ class PrivacyAndTermsButton extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelSmall,
               ),
             ),
+          ],
         ],
       ),
     );
