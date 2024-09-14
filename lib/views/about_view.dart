@@ -1,6 +1,7 @@
 import 'package:anecdotal/utils/constants/writeups.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AboutPage extends StatelessWidget {
@@ -39,7 +40,7 @@ class AboutPage extends StatelessWidget {
                   icon: Icon(Icons.mail),
                 ),
               ),
-              mySpacing(),
+              if (kIsWeb) mySpacing(),
               Center(
                 child: SelectableText(
                   "okechukwu@habilisfusion.co",
@@ -124,7 +125,7 @@ class AboutPage extends StatelessWidget {
                   icon: Icon(Icons.mail),
                 ),
               ),
-              mySpacing(),
+              if (kIsWeb) mySpacing(),
               Center(
                 child: SelectableText(
                   "okechukwu@habilisfusion.co",
