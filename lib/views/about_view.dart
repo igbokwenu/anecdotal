@@ -50,7 +50,7 @@ class AboutPage extends StatelessWidget {
               ),
               _buildSection(
                 'Our Mission',
-                'People who deal with chronic illnesses often burn through multiple doctors and limited financial resources before getting an accurate diagnosis. Anecdotal aims to empower people with knowledge, connect them with a supportive community, shorten their journey to recovery, and provide tools for managing their health journey.',
+                anecdotalMainPitch,
                 Icons.flag,
               ),
               _buildSection(
