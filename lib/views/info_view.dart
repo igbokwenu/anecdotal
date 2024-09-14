@@ -1,4 +1,4 @@
-import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
+import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 

@@ -3,7 +3,7 @@ import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/progress_tracker_view.dart';
 import 'package:anecdotal/views/visualise_progress_view.dart';
-import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
+import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

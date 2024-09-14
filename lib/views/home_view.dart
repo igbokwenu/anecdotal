@@ -18,7 +18,7 @@ import 'package:anecdotal/utils/constants/ai_prompts.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/widgets/camera_ai.dart';
 import 'package:anecdotal/widgets/image_select_ai.dart';
-import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
+import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:anecdotal/views/info_view.dart';
 import 'package:anecdotal/views/report_view.dart';
 import 'package:anecdotal/widgets/animated_text_home.dart';

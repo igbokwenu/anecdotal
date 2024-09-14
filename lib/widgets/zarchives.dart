@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:anecdotal/services/gemini_ai_service.dart';
-import 'package:anecdotal/widgets/smaller_reusable_widgets.dart';
+import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:path_provider/path_provider.dart';
