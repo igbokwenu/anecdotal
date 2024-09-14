@@ -53,6 +53,7 @@ class CustomDrawer extends StatelessWidget {
               title: const Text('About'),
             ),
             if (!kIsWeb)
+              //TODO: Remove Android Condition
               if (Platform.isAndroid)
                 ListTile(
                   onTap: () {
@@ -63,6 +64,7 @@ class CustomDrawer extends StatelessWidget {
                   title: const Text('Community Chat'),
                 ),
             if (!kIsWeb)
+              //TODO: Remove Android Condition
               if (Platform.isAndroid)
                 ListTile(
                   onTap: () async {

@@ -1,11 +1,14 @@
 import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
+import 'package:anecdotal/services/iap/singleton.dart';
 import 'package:anecdotal/utils/constants/ai_prompts.dart';
+import 'package:anecdotal/utils/constants/writeups.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/report_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -108,50 +111,61 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
       BuildContext context,
       String forWho,
     ) async {
-      MyReusableFunctions.showProcessingToast();
-      ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
-      final response = await GeminiService.analyzeImages(
-        images: _selectedFiles,
-        prompt: widget.isLabTest
-            ? sendLabAnalysisPrompt(
-                symptoms: userData!.symptomsList.isEmpty
-                    ? null
-                    : "${userData.symptomsList}",
-                history: userData.medicalHistoryList.isEmpty
-                    ? null
-                    : "${userData.medicalHistoryList}",
-                externalReport: forWho,
-              )
-            : sendHouseImageAnalysisPrompt(
-                prompt: userData!.symptomsList.isEmpty
-                    ? null
-                    : "Here is a previously disclosed list of symptoms experienced: ${userData.symptomsList}. And previously disclosed health history: ${userData.medicalHistoryList}",
-                externalReport: forWho,
-              ),
-      );
+      if (!kIsWeb) {
+        //TODO: Remove Android Condition
+        if (Platform.isAndroid) {
+          if (appIAPStatus.isPro == false) {
+            MyReusableFunctions.showPremiumDialog(
+                context: context, message: premiumSpeechAnalyzeButton);
+          } else {
+            MyReusableFunctions.showProcessingToast();
+            ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
+            final response = await GeminiService.analyzeImages(
+              images: _selectedFiles,
+              prompt: widget.isLabTest
+                  ? sendLabAnalysisPrompt(
+                      symptoms: userData!.symptomsList.isEmpty
+                          ? null
+                          : "${userData.symptomsList}",
+                      history: userData.medicalHistoryList.isEmpty
+                          ? null
+                          : "${userData.medicalHistoryList}",
+                      externalReport: forWho,
+                    )
+                  : sendHouseImageAnalysisPrompt(
+                      prompt: userData!.symptomsList.isEmpty
+                          ? null
+                          : "Here is a previously disclosed list of symptoms experienced: ${userData.symptomsList}. And previously disclosed health history: ${userData.medicalHistoryList}",
+                      externalReport: forWho,
+                    ),
+            );
 
-      if (response != null) {
-        ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ReportView(
-              summaryContent: response['summary'] ?? 'No summary available.',
-              keyInsights: response['insights']?.cast<String>() ?? [],
-              recommendations:
-                  response['recommendations']?.cast<String>() ?? [],
-              followUpSearchTerms:
-                  response['suggestions']?.cast<String>() ?? [],
-              citations: response['citations']?.cast<String>() ?? [],
-              title: 'Symptom Analysis',
-            ),
-          ),
-        );
-      } else {
-        ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
-        MyReusableFunctions.showCustomToast(
-            description: "No response received.");
-        print("No response received.");
+            if (response != null) {
+              ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ReportView(
+                    summaryContent:
+                        response['summary'] ?? 'No summary available.',
+                    keyInsights: response['insights']?.cast<String>() ?? [],
+                    recommendations:
+                        response['recommendations']?.cast<String>() ?? [],
+                    followUpSearchTerms:
+                        response['suggestions']?.cast<String>() ?? [],
+                    citations: response['citations']?.cast<String>() ?? [],
+                    title: 'Symptom Analysis',
+                  ),
+                ),
+              );
+            } else {
+              ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
+              MyReusableFunctions.showCustomToast(
+                  description: "No response received.");
+              print("No response received.");
+            }
+          }
+        }
       }
     }
 

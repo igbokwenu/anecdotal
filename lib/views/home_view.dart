@@ -298,6 +298,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                               },
                             ),
                             if (!kIsWeb)
+                            //TODO: Remove Android Condition
                               if (Platform.isAndroid)
                                 CustomCard(
                                   title: 'Find a Doctor',
@@ -408,6 +409,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                               },
                             ),
                             if (!kIsWeb)
+                            //TODO: Remove Android Condition
                               if (Platform.isAndroid)
                                 CustomCard(
                                   title: 'Home Remedies',

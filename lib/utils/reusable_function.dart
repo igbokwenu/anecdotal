@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 
 import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -134,6 +138,74 @@ class MyReusableFunctions {
                 onPressed: () => Navigator.of(context).pop(),
                 child: Text(
                   actionButtonText ?? 'Close',
+                  style: TextStyle(
+                    fontSize: 16, // Adjust the font size as needed
+                    color: Theme.of(context).iconTheme.color,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+      ),
+    );
+  }
+
+  static Future<void> showPremiumDialog({
+    required BuildContext context,
+    Widget? widget,
+    IconData? icon,
+    Color? dialogIconColor,
+    List<Widget>? actions,
+    String? message,
+    String? actionButtonText,
+    Color? textColor,
+    bool barrierDismissible = true,
+  }) {
+    return showDialog(
+      barrierDismissible: barrierDismissible,
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Icon(
+          icon ?? Icons.info,
+          size: 40,
+          color: dialogIconColor ?? Theme.of(context).iconTheme.color,
+        ),
+        content: widget ??
+            Text(
+              "This is a premium feature. ${message ?? ''}",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16, // Adjust the font size as needed
+                color:
+                    textColor ?? Theme.of(context).textTheme.bodyLarge?.color,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        actions: actions ??
+            <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  actionButtonText ?? 'Close',
+                  style: TextStyle(
+                    fontSize: 16, // Adjust the font size as needed
+                    color: Theme.of(context).iconTheme.color,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  if (!kIsWeb) {
+                    //TODO: Remove Android Condition
+                    if (Platform.isAndroid) {
+                      await RevenueCatUI.presentPaywall();
+                    }
+                  }
+                },
+                child: Text(
+                  actionButtonText ?? 'Get Premium',
                   style: TextStyle(
                     fontSize: 16, // Adjust the font size as needed
                     color: Theme.of(context).iconTheme.color,

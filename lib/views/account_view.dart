@@ -28,6 +28,7 @@ class AccountPage extends StatelessWidget {
             _buildDetailSection(),
             const SizedBox(height: 20),
             if (!kIsWeb)
+            //TODO: Remove Android Condition
               if (Platform.isAndroid) _buildReportCardButton(context),
             const SizedBox(height: 20),
             if (authService.isUserAnonymous())
