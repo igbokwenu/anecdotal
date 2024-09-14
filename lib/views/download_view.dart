@@ -54,7 +54,7 @@ class DownloadPage extends StatelessWidget {
                 const SizedBox(height: 10),
                 Text(
                   'Anecdotal is your companion app for managing chronic illness. '
-                  'Track and evaluate symptoms, get personalized health insights, and connect with others '
+                  'Track and evaluate symptoms, investigate your home, get personalized health insights, and connect with others '
                   'who share your journey. Available now on Android and iOS.',
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,

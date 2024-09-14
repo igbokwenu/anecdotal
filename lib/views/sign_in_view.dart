@@ -200,7 +200,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 const Align(
                   alignment: Alignment.bottomCenter,
                   child: PrivacyAndTermsButton(
-                    showAbout: true,
+                    showAbout: true, showDownload: true,
                   ),
                 ),
               ],
