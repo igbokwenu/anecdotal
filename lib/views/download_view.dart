@@ -68,7 +68,8 @@ class DownloadPage extends StatelessWidget {
                           ? 'assets/images/play_store_onlight.png'
                           : 'assets/images/play_store_ondark.png',
                       onTap: () {
-                        MyReusableFunctions.launchCustomUrl('');
+                        MyReusableFunctions.launchCustomUrl(
+                            'https://play.google.com/store/apps/details?id=com.increasedw.anecdotal');
                       },
                     ),
                     const SizedBox(width: 20),
@@ -77,7 +78,8 @@ class DownloadPage extends StatelessWidget {
                           ? 'assets/images/app_store_onlight.png'
                           : 'assets/images/app_store_ondark.png',
                       onTap: () {
-                        MyReusableFunctions.launchCustomUrl('');
+                        MyReusableFunctions.launchCustomUrl(
+                            'https://testflight.apple.com/join/2aWq4CRM');
                       },
                     ),
                   ],
