@@ -215,6 +215,7 @@ class _ReportViewState extends State<ReportView> {
     // Get the current date and time
     final now = DateTime.now();
     final formattedDate = DateFormat('yyyy-MM-dd_HH-mm-ss').format(now);
+    final formattedDateWithoutTime = DateFormat('yyyy-MM-dd').format(now);
 
     // Create file name with current date and time
     final fileName = "report_anecdotal_$formattedDate.pdf";
@@ -253,10 +254,23 @@ class _ReportViewState extends State<ReportView> {
               ),
             ),
           ),
-          pw.SizedBox(height: 20),
+          pw.SizedBox(height: 10),
+          pw.UrlLink(
+            child: pw.Text(
+              'Visit our website: www.anecdotalhq.web.app',
+              style: pw.TextStyle(
+                color: PdfColors.teal,
+                fontWeight: pw.FontWeight.bold,
+                fontSize: 12,
+                fontStyle: pw.FontStyle.italic,
+              ),
+            ),
+            destination: "https://anecdotalhq.web.app/download",
+          ),
+          pw.SizedBox(height: 10),
           pw.Text('Report Created For: $subject'),
           pw.SizedBox(height: 5),
-          pw.Text('Date: $formattedDate'),
+          pw.Text('Date: $formattedDateWithoutTime'),
           pw.SizedBox(height: 20),
           pw.Text(
             'Introduction:',
@@ -293,7 +307,17 @@ class _ReportViewState extends State<ReportView> {
               fontWeight: pw.FontWeight.bold,
             ),
           ),
-          ...widget.citations.map((citation) => pw.Bullet(text: citation)),
+          ...widget.citations.map(
+            (citation) => pw.Padding(
+              padding: pw.EdgeInsets.symmetric(vertical: 5),
+              child: pw.UrlLink(
+                child: pw.Text(
+                  citation,
+                ),
+                destination: citation,
+              ),
+            ),
+          ),
           pw.SizedBox(height: 10),
           pw.Text(
             'Follow Up Search Terms:',
@@ -314,7 +338,16 @@ class _ReportViewState extends State<ReportView> {
 
       if (share) {
         final xFile = XFile(file.path);
-        await Share.shareXFiles([xFile], text: 'Anecdotal Report');
+
+        // Ensure the context and the RenderBox are available
+        final RenderBox? box = context.findRenderObject() as RenderBox?;
+
+        await Share.shareXFiles(
+          [xFile],
+          text: 'Anecdotal Report',
+          sharePositionOrigin:
+              box!.localToGlobal(Offset.zero) & box.size, // Required for iPad
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('PDF saved to ${file.path}')),
