@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:anecdotal/services/auth_service.dart';
+import 'package:anecdotal/services/iap/singleton.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
@@ -65,20 +66,24 @@ class CustomDrawer extends StatelessWidget {
                 ),
             if (!kIsWeb)
               //TODO: Remove Android Condition
-              if (Platform.isAndroid)
-                ListTile(
-                  onTap: () async {
-                    await RevenueCatUI.presentPaywall();
-                    // Navigator.push(
-                    //   context,
-                    //   slideLeftTransitionPageBuilder(
-                    //     DownloadPage(),
-                    //   ),
-                    // );
-                  },
-                  leading: const Icon(Icons.monetization_on),
-                  title: const Text('Subscription'),
-                ),
+              // if (Platform.isAndroid)
+              ListTile(
+                onTap: () async {
+                  appIAPStatus.isPro == true
+                      ? MyReusableFunctions.myReusableCustomDialog(
+                          context: context,
+                          message: 'You are already a pro user')
+                      : await RevenueCatUI.presentPaywall();
+                  // Navigator.push(
+                  //   context,
+                  //   slideLeftTransitionPageBuilder(
+                  //     DownloadPage(),
+                  //   ),
+                  // );
+                },
+                leading: const Icon(Icons.monetization_on),
+                title: const Text('Subscription'),
+              ),
             ListTile(
               onTap: () {
                 MyReusableFunctions.launchMail();
