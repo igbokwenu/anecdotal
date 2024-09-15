@@ -1,5 +1,5 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
-import 'package:anecdotal/views/progress_tracker_view.dart';
+import 'package:anecdotal/services/iap/singleton.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
 import 'package:anecdotal/widgets/home_widgets/first_interpret_lab_widget.dart';
@@ -16,8 +16,6 @@ import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/utils/constants/ai_prompts.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
-import 'package:anecdotal/widgets/camera_ai.dart';
-import 'package:anecdotal/widgets/image_select_ai.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:anecdotal/views/info_view.dart';
 import 'package:anecdotal/views/report_view.dart';
@@ -27,6 +25,7 @@ import 'package:anecdotal/widgets/custom_card_home.dart';
 import 'package:anecdotal/widgets/theme_toggle_button.dart';
 import 'package:anecdotal/widgets/voice_recorder_widget.dart';
 import 'package:flutter/foundation.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 class AnecdotalAppHome extends ConsumerStatefulWidget {
   const AnecdotalAppHome({super.key});
@@ -198,42 +197,29 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      //  Row(
-                      // children: [
-                      // TextButton(
-                      //   onPressed: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       slideLeftTransitionPageBuilder(
-                      //         DownloadPage(),
-                      //       ),
-                      //     );
-                      //   },
-                      //   child: Text('Meta'),
-                      // ),
-                      // TextButton(
-                      //   onPressed: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       slideLeftTransitionPageBuilder(
-                      //         const DownloadPage(),
-                      //       ),
-                      //     );
-                      //   },
-                      //   child: const Text('Claude'),
-                      // ),
-                      // TextButton(
-                      //   onPressed: () {
-                      //     Navigator.push(
-                      //       context,
-                      //       slideLeftTransitionPageBuilder(
-                      //         DownloadView(),
-                      //       ),
-                      //     );
-                      //   },
-                      //   child: Text('Open'),
-                      // ),
-                      //  ],
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     TextButton(
+                      //       onPressed: () async {
+                      //         Offerings? offerings0;
+                      //         var offerings = await Purchases.getOfferings();
+                      //         await Purchases.purchasePackage(
+                      //             offerings.current!.monthly!);
+                      //         // await Purchases.invalidateCustomerInfoCache();
+
+                      //         // await Purchases.restorePurchases();
+
+                      //         print("Success ${appIAPStatus.isPro}");
+                      //         // appIAPStatus.isPro == true
+                      //         //     ? MyReusableFunctions.myReusableCustomDialog(
+                      //         //         context: context,
+                      //         //         message: 'You are already a pro user')
+                      //         //     : await RevenueCatUI.presentPaywall();
+                      //       },
+                      //       child: Text('Open ${appIAPStatus.isPro == true}'),
+                      //     ),
+                      //   ],
                       // ),
                       Text(
                         "Anecdotal is built by patients, with the help of compassionate doctors - for those in search of answers and support regarding complex and debilitating chronic conditions like CIRS and Bio-toxin Illness. ",
@@ -298,7 +284,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                               },
                             ),
                             if (!kIsWeb)
-                            //TODO: Remove Android Condition
+                              //TODO: Remove Android Condition
                               if (Platform.isAndroid)
                                 CustomCard(
                                   title: 'Find a Doctor',
@@ -409,7 +395,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                               },
                             ),
                             if (!kIsWeb)
-                            //TODO: Remove Android Condition
+                              //TODO: Remove Android Condition
                               if (Platform.isAndroid)
                                 CustomCard(
                                   title: 'Home Remedies',

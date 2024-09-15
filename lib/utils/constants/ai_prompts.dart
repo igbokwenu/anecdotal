@@ -169,6 +169,36 @@ $showCitation
   """;
 }
 
+String sendHistoryAnalysisPrompt({String? healingJourneyMap}) {
+  return """
+  You are a data analyst helping someone analyze their data. The data you will be receiving is an array with multiple maps inside as items in the array, each map has the following parameters:
+  A timestamp showing the date and time the user recorded the activity
+  A percentage with a number showing how the user is feeling at the time of the recording. The number ranges from 1-100 with 1 meaning the user does not feel good and 100 meaning that the user feels excellent.
+  An inProgressList that shows activities the user working on or implementing in their to do list.
+  A doneList showing the activities the user has completed from their to do list.
+  A notes section showing notes the user took for the entry.
+
+  I want you to analyze the data provided in the map and look for insights, patterns, and find things note wordy from the data. Activities that made the user feel good or feel bad etc.
+
+  If the maps in the array are less than 50, encourage the user to use the Anecdotal app more often to give you a better data set that you can use to provide valuable insights.
+  
+  In your response you are using JSON mode to respond to the users data.
+
+  Under summary give a detailed feedback that details every helpful information you gathered.
+
+  Under insights give key insights from the response you gave in the summary.
+
+  Under recommendations give helpful recommendations that the user might find helpful
+
+  Under suggestions come up with related search terms that the user can input in a search engine to get more helpful information based on the response you gave.
+
+  Under citations provide urls to helpful articles the user can read up on based on your response and suggestions
+
+  Here is the users data $healingJourneyMap
+
+  """;
+}
+
 const String forDoctor =
     "Prepare your response like you are preparing a response for a doctor or medical practitioner, detailing the patients symptoms and potential exposure history if available and why you reached your conclusions. Encourage the doctor to investigate along the lines of your conclusions especially if the patient is complaining of debilitating symptoms. Remind the doctor that most common and routine blood work usually cannot detect CIRS and a patient who has a good blood work might be suffering from CIRS. Just in case, also define what CIRS is and how it differs significantly from mold allergy/an allergic reaction to mold";
 const String forLandlord =
@@ -191,7 +221,6 @@ const String citation6 =
     "https://jjimd.com/symptoms-of-cirs-chronic-inflammatory-response-syndrome/";
 const String citation7 =
     "https://www.vc4hw.com/chronic-inflammatory-response-syndrome-cirs.html";
-
 
 // Abnormal lab testing:
 // Failed Vision Contrast Study (VCS)

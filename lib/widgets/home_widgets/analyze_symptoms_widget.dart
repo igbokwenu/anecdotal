@@ -118,7 +118,7 @@ class FirstWidgetSymptomChecker extends ConsumerWidget {
                   onPressed: () {
                     handleSend(context);
                   },
-                  label: Text("Generate A Report For Your Doctor"),
+                  label: const Text("Generate A Report For Your Doctor"),
                   icon: const Icon(
                     Icons.auto_awesome,
                   ),

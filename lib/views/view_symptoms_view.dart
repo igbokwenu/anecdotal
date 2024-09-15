@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 
 class SymptomsDisplay extends ConsumerWidget {
-  const SymptomsDisplay({Key? key}) : super(key: key);
+  const SymptomsDisplay({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -4,7 +4,6 @@ import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/constants/writeups.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +21,7 @@ class ReportView extends StatefulWidget {
   final List<String> citations;
   final String? title;
   final String? name;
+  final bool enableManualCitations;
 
   const ReportView({
     super.key,
@@ -32,6 +32,7 @@ class ReportView extends StatefulWidget {
     required this.citations,
     this.title,
     this.name,
+    this.enableManualCitations = true,
   });
 
   @override
@@ -168,7 +169,10 @@ class _ReportViewState extends State<ReportView> {
               icon: Icons.link,
               color: theme.colorScheme.primaryFixedDim,
               children: buildCitationLinks(
-                  widget.citations, ["https://www.cirsx.com/reference-papers"]),
+                  widget.citations,
+                  widget.enableManualCitations
+                      ? ["https://www.cirsx.com/reference-papers"]
+                      : []),
             ),
             _buildSection(
               title: 'Follow Up Search Terms',
@@ -306,7 +310,7 @@ class _ReportViewState extends State<ReportView> {
           ),
           ...widget.citations.map(
             (citation) => pw.Padding(
-              padding: pw.EdgeInsets.symmetric(vertical: 5),
+              padding: const pw.EdgeInsets.symmetric(vertical: 5),
               child: pw.UrlLink(
                 child: pw.Text(
                   citation,
@@ -328,46 +332,46 @@ class _ReportViewState extends State<ReportView> {
       ),
     );
 
-    if (!kIsWeb) {
-      //TODO: Remove Android Condition
-      if (Platform.isAndroid) {
-        if (appIAPStatus.isPro == false) {
-          MyReusableFunctions.showPremiumDialog(
-              context: context, message: premiumSpeechPDFAccess);
-        } else {
-          try {
-            final output = await getTemporaryDirectory();
-            final file = File("${output.path}/$fileName");
-            await file.writeAsBytes(await pdf.save());
+//TODO: Add paywall
+    // if (!kIsWeb) {
+    //   if (Platform.isAndroid) {
+    //     if (appIAPStatus.isPro == false) {
+    //       MyReusableFunctions.showPremiumDialog(
+    //           context: context, message: premiumSpeechPDFAccess);
+    //     }
+    //   }
+    // }
 
-            if (share) {
-              final xFile = XFile(file.path);
+    try {
+      final output = await getTemporaryDirectory();
+      final file = File("${output.path}/$fileName");
+      await file.writeAsBytes(await pdf.save());
 
-              // Ensure the context and the RenderBox are available
-              final RenderBox? box = context.findRenderObject() as RenderBox?;
+      if (share) {
+        final xFile = XFile(file.path);
 
-              await Share.shareXFiles(
-                [xFile],
-                text: 'Anecdotal Report',
-                sharePositionOrigin: box!.localToGlobal(Offset.zero) &
-                    box.size, // Required for iPad
-              );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('PDF saved to ${file.path}')),
-              );
+        // Ensure the context and the RenderBox are available
+        final RenderBox? box = context.findRenderObject() as RenderBox?;
 
-              setState(() {
-                _isSaved = true;
-              });
-            }
-          } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error creating PDF: $e')),
-            );
-          }
-        }
+        await Share.shareXFiles(
+          [xFile],
+          text: 'Anecdotal Report',
+          sharePositionOrigin:
+              box!.localToGlobal(Offset.zero) & box.size, // Required for iPad
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('PDF saved to ${file.path}')),
+        );
+
+        setState(() {
+          _isSaved = true;
+        });
       }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error creating PDF: $e')),
+      );
     }
   }
 

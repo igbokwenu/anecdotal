@@ -45,8 +45,7 @@ class ChatGPTService {
       {
         'type': 'text',
         'text':
-            'Analyze the following images and respond in valid JSON format with keys for summary, insights, recommendations, and suggestions. Ensure all string values are properly escaped. ' +
-                prompt
+            'Analyze the following images and respond in valid JSON format with keys for summary, insights, recommendations, and suggestions. Ensure all string values are properly escaped. $prompt'
       }
     ];
 

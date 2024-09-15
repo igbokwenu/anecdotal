@@ -24,7 +24,7 @@ class ChatInputNotifier extends StateNotifier<ChatInputState> {
     if (value) {
       // Start the timer to reset isAnalyzing after 40 seconds
       _analyzingTimer?.cancel(); // Cancel any previous timer
-      _analyzingTimer = Timer(const Duration(seconds: 40), () {
+      _analyzingTimer = Timer(const Duration(seconds: 60), () {
         if (state.isAnalyzing) {
           state = state.copyWith(isAnalyzing: false);
           MyReusableFunctions.showCustomToast(

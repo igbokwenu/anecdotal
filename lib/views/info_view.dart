@@ -174,7 +174,7 @@ class InfoView extends StatelessWidget {
       {required String title, required IconData icon}) {
     return ElevatedButton.icon(
       onPressed: () {
-        // TODO: Implement navigation
+       
       },
       icon: Icon(
         icon,

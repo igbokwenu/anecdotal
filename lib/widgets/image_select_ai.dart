@@ -111,61 +111,60 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
       BuildContext context,
       String forWho,
     ) async {
-      if (!kIsWeb) {
-        //TODO: Remove Android Condition
-        if (Platform.isAndroid) {
-          if (appIAPStatus.isPro == false) {
-            MyReusableFunctions.showPremiumDialog(
-                context: context, message: premiumSpeechAnalyzeButton);
-          } else {
-            MyReusableFunctions.showProcessingToast();
-            ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
-            final response = await GeminiService.analyzeImages(
-              images: _selectedFiles,
-              prompt: widget.isLabTest
-                  ? sendLabAnalysisPrompt(
-                      symptoms: userData!.symptomsList.isEmpty
-                          ? null
-                          : "${userData.symptomsList}",
-                      history: userData.medicalHistoryList.isEmpty
-                          ? null
-                          : "${userData.medicalHistoryList}",
-                      externalReport: forWho,
-                    )
-                  : sendHouseImageAnalysisPrompt(
-                      prompt: userData!.symptomsList.isEmpty
-                          ? null
-                          : "Here is a previously disclosed list of symptoms experienced: ${userData.symptomsList}. And previously disclosed health history: ${userData.medicalHistoryList}",
-                      externalReport: forWho,
-                    ),
-            );
+      //TODO: Add paywall
+      // if (!kIsWeb) {
+      //   if (Platform.isAndroid) {
+      //     if (appIAPStatus.isPro == false) {
+      //       MyReusableFunctions.showPremiumDialog(
+      //           context: context, message: premiumSpeechAnalyzeButton);
+      //     }
+      //   }
+      // }
 
-            if (response != null) {
-              ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ReportView(
-                    summaryContent:
-                        response['summary'] ?? 'No summary available.',
-                    keyInsights: response['insights']?.cast<String>() ?? [],
-                    recommendations:
-                        response['recommendations']?.cast<String>() ?? [],
-                    followUpSearchTerms:
-                        response['suggestions']?.cast<String>() ?? [],
-                    citations: response['citations']?.cast<String>() ?? [],
-                    title: 'Symptom Analysis',
-                  ),
-                ),
-              );
-            } else {
-              ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
-              MyReusableFunctions.showCustomToast(
-                  description: "No response received.");
-              print("No response received.");
-            }
-          }
-        }
+      MyReusableFunctions.showProcessingToast();
+      ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
+      final response = await GeminiService.analyzeImages(
+        images: _selectedFiles,
+        prompt: widget.isLabTest
+            ? sendLabAnalysisPrompt(
+                symptoms: userData!.symptomsList.isEmpty
+                    ? null
+                    : "${userData.symptomsList}",
+                history: userData.medicalHistoryList.isEmpty
+                    ? null
+                    : "${userData.medicalHistoryList}",
+                externalReport: forWho,
+              )
+            : sendHouseImageAnalysisPrompt(
+                prompt: userData!.symptomsList.isEmpty
+                    ? null
+                    : "Here is a previously disclosed list of symptoms experienced: ${userData.symptomsList}. And previously disclosed health history: ${userData.medicalHistoryList}",
+                externalReport: forWho,
+              ),
+      );
+
+      if (response != null) {
+        ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ReportView(
+              summaryContent: response['summary'] ?? 'No summary available.',
+              keyInsights: response['insights']?.cast<String>() ?? [],
+              recommendations:
+                  response['recommendations']?.cast<String>() ?? [],
+              followUpSearchTerms:
+                  response['suggestions']?.cast<String>() ?? [],
+              citations: response['citations']?.cast<String>() ?? [],
+              title: 'Symptom Analysis',
+            ),
+          ),
+        );
+      } else {
+        ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
+        MyReusableFunctions.showCustomToast(
+            description: "No response received.");
+        print("No response received.");
       }
     }
 
@@ -237,7 +236,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
                           : () {
                               handleSend(context, forDoctor);
                             },
-                      label: Text("Generate Report For Your Doctor"),
+                      label: const Text("Generate Report For Your Doctor"),
                       icon: const Icon(
                         Icons.auto_awesome,
                       ),
@@ -251,7 +250,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
                           : () {
                               handleSend(context, forLandlord);
                             },
-                      label: Text("Generate Report For Your Landlord"),
+                      label: const Text("Generate Report For Your Landlord"),
                       icon: const Icon(
                         Icons.auto_awesome,
                       ),
@@ -265,7 +264,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
                           : () {
                               handleSend(context, forEmployer);
                             },
-                      label: Text("Generate Report For Your Employer"),
+                      label: const Text("Generate Report For Your Employer"),
                       icon: const Icon(
                         Icons.auto_awesome,
                       ),

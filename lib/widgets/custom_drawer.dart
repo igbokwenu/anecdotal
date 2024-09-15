@@ -8,6 +8,7 @@ import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -69,17 +70,30 @@ class CustomDrawer extends StatelessWidget {
               // if (Platform.isAndroid)
               ListTile(
                 onTap: () async {
+                  // Offerings? _offerings;
+
+                  // Future<void> fetchData() async {
+                  //   Offerings? offerings;
+                  //   try {
+                  //     offerings = await Purchases.getOfferings();
+                  //   } on PlatformException catch (e) {
+                  //     debugPrint(e.toString());
+                  //   }
+                  // }
+
+                  // await fetchData();
+
+                  // await Purchases.getCustomerInfo();
+                  await Purchases.invalidateCustomerInfoCache();
+                  await Purchases.syncPurchases();
+                  await Purchases.getCustomerInfo();
+
+                  print("Success ${appIAPStatus.isPro}");
                   appIAPStatus.isPro == true
                       ? MyReusableFunctions.myReusableCustomDialog(
                           context: context,
                           message: 'You are already a pro user')
                       : await RevenueCatUI.presentPaywall();
-                  // Navigator.push(
-                  //   context,
-                  //   slideLeftTransitionPageBuilder(
-                  //     DownloadPage(),
-                  //   ),
-                  // );
                 },
                 leading: const Icon(Icons.monetization_on),
                 title: const Text('Subscription'),

@@ -1,4 +1,9 @@
+import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
+import 'package:anecdotal/services/gemini_ai_service.dart';
+import 'package:anecdotal/utils/constants/ai_prompts.dart';
+import 'package:anecdotal/utils/reusable_function.dart';
+import 'package:anecdotal/views/report_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 class VisualizeProgress extends ConsumerStatefulWidget {
-  const VisualizeProgress({Key? key}) : super(key: key);
+  const VisualizeProgress({super.key});
 
   @override
   _VisualizeProgressState createState() => _VisualizeProgressState();
@@ -16,7 +21,7 @@ class VisualizeProgress extends ConsumerStatefulWidget {
 class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
   static const int _pageSize = 50;
   final ScrollController _scrollController = ScrollController();
-  List<HealingJourneyEntry> _entries = [];
+  final List<HealingJourneyEntry> _entries = [];
   bool _isLoading = false;
   bool _hasMore = true;
 
@@ -144,6 +149,48 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
 
   @override
   Widget build(BuildContext context) {
+    final buttonLoadingState = ref.watch(chatInputProvider);
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+
+    final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+
+    Future<void> handleSend(
+      BuildContext context,
+    ) async {
+      MyReusableFunctions.showProcessingToast();
+      ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
+
+      final response = await GeminiService.sendTextPrompt(
+        message: sendHistoryAnalysisPrompt(
+            healingJourneyMap: "${userData!.healingJourneyMap}"),
+      );
+
+      if (response != null) {
+        ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ReportView(
+              summaryContent: response['summary'] ?? 'No summary available.',
+              keyInsights: response['insights']?.cast<String>() ?? [],
+              recommendations:
+                  response['recommendations']?.cast<String>() ?? [],
+              followUpSearchTerms:
+                  response['suggestions']?.cast<String>() ?? [],
+              citations: response['citations']?.cast<String>() ?? [],
+              title: 'Symptom Analysis',
+              enableManualCitations: false,
+            ),
+          ),
+        );
+      } else {
+        ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
+        MyReusableFunctions.showCustomToast(
+            description: "No response received.");
+        print("No response received.");
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const MyAppBarTitleWithAI(
@@ -153,15 +200,27 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
       ),
       body: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            color: Theme.of(context).primaryColor.withOpacity(0.1),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Text(
               'Click on any point in the timeline for more details on the activities recorded.',
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(fontSize: 12),
               textAlign: TextAlign.center,
             ),
           ),
+          buttonLoadingState.isAnalyzing
+              ? const MySpinKitWaveSpinner()
+              : ElevatedButton.icon(
+                  onPressed: () {
+                    print("Sending");
+                    handleSend(context);
+                  },
+                  label: const Text("Analyze Your Journey"),
+                  icon: const Icon(Icons.auto_awesome),
+                ),
           Expanded(
             child: _entries.isEmpty && !_isLoading
                 ? const Center(child: Text('No progress data available.'))

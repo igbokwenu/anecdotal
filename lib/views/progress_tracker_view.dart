@@ -317,7 +317,7 @@ class ProgressTrackerAppState extends ConsumerState<ProgressTracker> {
                                   )),
                                 ),
                               ))
-                          .toList(),
+                          ,
                       const SizedBox(height: 10),
                       Center(
                         child: ElevatedButton(
