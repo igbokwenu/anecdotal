@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -20,9 +19,13 @@ class CustomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.sizeOf(context);
+    // final bool isMobile = screenSize.width < 600;
+    final bool isTabletOrDesktop = screenSize.width >= 600;
+    // final bool isLandscape = screenSize.width > screenSize.height;
     return SizedBox(
-      width: kIsWeb ? 220 : 180,
-      height: kIsWeb ? 150 : 180,
+      width: isTabletOrDesktop ? 220 : 180,
+      height: isTabletOrDesktop ? 150 : 180,
       child: Card(
         elevation: 4,
         shape: RoundedRectangleBorder(
