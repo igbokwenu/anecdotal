@@ -120,16 +120,18 @@ class _ReportViewState extends State<ReportView> {
         actions: kIsWeb
             ? []
             : [
-                _isSaved
-                    ? const Padding(
-                        padding: EdgeInsets.only(right: 8.0),
-                        child: Icon(Icons.check_circle),
-                      )
-                    : IconButton(
-                        icon: const Icon(Icons.save),
-                        onPressed: () =>
-                            _saveAndSharePDF(context, false), // Save PDF
-                      ),
+                if (!kIsWeb)
+                  if (Platform.isAndroid)
+                    _isSaved
+                        ? const Padding(
+                            padding: EdgeInsets.only(right: 8.0),
+                            child: Icon(Icons.check_circle),
+                          )
+                        : IconButton(
+                            icon: const Icon(Icons.save),
+                            onPressed: () =>
+                                _saveAndSharePDF(context, false), // Save PDF
+                          ),
               ],
       ),
       body: SingleChildScrollView(
@@ -189,13 +191,15 @@ class _ReportViewState extends State<ReportView> {
           : Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                _isSaved
-                    ? myEmptySizedBox()
-                    : IconButton(
-                        icon: const Icon(Icons.save),
-                        onPressed: () =>
-                            _saveAndSharePDF(context, false), // Save PDF
-                      ),
+                if (!kIsWeb)
+                  if (Platform.isAndroid)
+                    _isSaved
+                        ? myEmptySizedBox()
+                        : IconButton(
+                            icon: const Icon(Icons.save),
+                            onPressed: () =>
+                                _saveAndSharePDF(context, false), // Save PDF
+                          ),
                 IconButton(
                   icon: const Icon(Icons.share),
                   onPressed: () => _saveAndSharePDF(context, true), // Share PDF
@@ -332,46 +336,46 @@ class _ReportViewState extends State<ReportView> {
       ),
     );
 
-//TODO: Add paywall
-    // if (!kIsWeb) {
-    //   if (Platform.isAndroid) {
-    //     if (appIAPStatus.isPro == false) {
-    //       MyReusableFunctions.showPremiumDialog(
-    //           context: context, message: premiumSpeechPDFAccess);
-    //     }
-    //   }
-    // }
 
-    try {
-      final output = await getTemporaryDirectory();
-      final file = File("${output.path}/$fileName");
-      await file.writeAsBytes(await pdf.save());
+    if (!kIsWeb) {
+      if (Platform.isAndroid) {
+        if (appIAPStatus.isPro == false) {
+          MyReusableFunctions.showPremiumDialog(
+              context: context, message: premiumSpeechPDFAccess);
+        } else {
+          try {
+            final output = await getTemporaryDirectory();
+            final file = File("${output.path}/$fileName");
+            await file.writeAsBytes(await pdf.save());
 
-      if (share) {
-        final xFile = XFile(file.path);
+            if (share) {
+              final xFile = XFile(file.path);
 
-        // Ensure the context and the RenderBox are available
-        final RenderBox? box = context.findRenderObject() as RenderBox?;
+              // Ensure the context and the RenderBox are available
+              final RenderBox? box = context.findRenderObject() as RenderBox?;
 
-        await Share.shareXFiles(
-          [xFile],
-          text: 'Anecdotal Report',
-          sharePositionOrigin:
-              box!.localToGlobal(Offset.zero) & box.size, // Required for iPad
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('PDF saved to ${file.path}')),
-        );
+              await Share.shareXFiles(
+                [xFile],
+                text: 'Anecdotal Report',
+                sharePositionOrigin: box!.localToGlobal(Offset.zero) &
+                    box.size, // Required for iPad
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('PDF saved to ${file.path}')),
+              );
 
-        setState(() {
-          _isSaved = true;
-        });
+              setState(() {
+                _isSaved = true;
+              });
+            }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error creating PDF: $e')),
+            );
+          }
+        }
       }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error creating PDF: $e')),
-      );
     }
   }
 

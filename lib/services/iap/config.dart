@@ -4,7 +4,7 @@ import 'package:anecdotal/services/iap/store_config.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
-Future<void> configureRevenueCatSDK() async {
+Future<void> configureRevenueCatSdk() async {
   // Enable debug logs before calling `configure`.
   await Purchases.setLogLevel(LogLevel.debug);
 
@@ -17,21 +17,17 @@ Future<void> configureRevenueCatSDK() async {
   if (StoreConfig.isForAmazonAppstore()) {
     configuration = AmazonConfiguration(StoreConfig.instance.apiKey)
       ..appUserID = null
-      ..purchasesAreCompletedBy = PurchasesAreCompletedByMyApp(
-        storeKitVersion: StoreKitVersion.storeKit2,
-      );
+      ..purchasesAreCompletedBy = const PurchasesAreCompletedByRevenueCat();
   } else {
     configuration = PurchasesConfiguration(StoreConfig.instance.apiKey)
       ..appUserID = null
-      ..purchasesAreCompletedBy = PurchasesAreCompletedByMyApp(
-        storeKitVersion: StoreKitVersion.storeKit2,
-      );
+      ..purchasesAreCompletedBy = const PurchasesAreCompletedByRevenueCat();
   }
   await Purchases.configure(configuration);
 }
 
-Future<void> initializeRevenueCat() async {
-    if (Platform.isIOS || Platform.isMacOS) {
+void setRevenueCatStoreConfig() async {
+  if (Platform.isIOS || Platform.isMacOS) {
     StoreConfig(
       store: Store.appStore,
       apiKey: appleApiKey,
@@ -44,5 +40,4 @@ Future<void> initializeRevenueCat() async {
       apiKey: useAmazon ? amazonApiKey : googleApiKey,
     );
   }
-
 }

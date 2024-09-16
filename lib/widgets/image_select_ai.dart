@@ -111,60 +111,60 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
       BuildContext context,
       String forWho,
     ) async {
-      //TODO: Add paywall
-      // if (!kIsWeb) {
-      //   if (Platform.isAndroid) {
-      //     if (appIAPStatus.isPro == false) {
-      //       MyReusableFunctions.showPremiumDialog(
-      //           context: context, message: premiumSpeechAnalyzeButton);
-      //     }
-      //   }
-      // }
+      if (!kIsWeb) {
+        if (Platform.isAndroid) {
+          if (appIAPStatus.isPro == false) {
+            MyReusableFunctions.showPremiumDialog(
+                context: context, message: premiumSpeechAnalyzeButton);
+          } else {
+            MyReusableFunctions.showProcessingToast();
+            ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
+            final response = await GeminiService.analyzeImages(
+              images: _selectedFiles,
+              prompt: widget.isLabTest
+                  ? sendLabAnalysisPrompt(
+                      symptoms: userData!.symptomsList.isEmpty
+                          ? null
+                          : "${userData.symptomsList}",
+                      history: userData.medicalHistoryList.isEmpty
+                          ? null
+                          : "${userData.medicalHistoryList}",
+                      externalReport: forWho,
+                    )
+                  : sendHouseImageAnalysisPrompt(
+                      prompt: userData!.symptomsList.isEmpty
+                          ? null
+                          : "Here is a previously disclosed list of symptoms experienced: ${userData.symptomsList}. And previously disclosed health history: ${userData.medicalHistoryList}",
+                      externalReport: forWho,
+                    ),
+            );
 
-      MyReusableFunctions.showProcessingToast();
-      ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
-      final response = await GeminiService.analyzeImages(
-        images: _selectedFiles,
-        prompt: widget.isLabTest
-            ? sendLabAnalysisPrompt(
-                symptoms: userData!.symptomsList.isEmpty
-                    ? null
-                    : "${userData.symptomsList}",
-                history: userData.medicalHistoryList.isEmpty
-                    ? null
-                    : "${userData.medicalHistoryList}",
-                externalReport: forWho,
-              )
-            : sendHouseImageAnalysisPrompt(
-                prompt: userData!.symptomsList.isEmpty
-                    ? null
-                    : "Here is a previously disclosed list of symptoms experienced: ${userData.symptomsList}. And previously disclosed health history: ${userData.medicalHistoryList}",
-                externalReport: forWho,
-              ),
-      );
-
-      if (response != null) {
-        ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ReportView(
-              summaryContent: response['summary'] ?? 'No summary available.',
-              keyInsights: response['insights']?.cast<String>() ?? [],
-              recommendations:
-                  response['recommendations']?.cast<String>() ?? [],
-              followUpSearchTerms:
-                  response['suggestions']?.cast<String>() ?? [],
-              citations: response['citations']?.cast<String>() ?? [],
-              title: 'Symptom Analysis',
-            ),
-          ),
-        );
-      } else {
-        ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
-        MyReusableFunctions.showCustomToast(
-            description: "No response received.");
-        print("No response received.");
+            if (response != null) {
+              ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ReportView(
+                    summaryContent:
+                        response['summary'] ?? 'No summary available.',
+                    keyInsights: response['insights']?.cast<String>() ?? [],
+                    recommendations:
+                        response['recommendations']?.cast<String>() ?? [],
+                    followUpSearchTerms:
+                        response['suggestions']?.cast<String>() ?? [],
+                    citations: response['citations']?.cast<String>() ?? [],
+                    title: 'Symptom Analysis',
+                  ),
+                ),
+              );
+            } else {
+              ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
+              MyReusableFunctions.showCustomToast(
+                  description: "No response received.");
+              print("No response received.");
+            }
+          }
+        }
       }
     }
 
