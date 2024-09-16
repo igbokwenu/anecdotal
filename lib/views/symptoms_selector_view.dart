@@ -2,8 +2,10 @@ import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
+import 'package:anecdotal/services/iap/singleton.dart';
 import 'package:anecdotal/utils/constants/ai_prompts.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
+import 'package:anecdotal/utils/constants/writeups.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/utils/constants/symptom_list.dart';
 import 'package:anecdotal/views/report_view.dart';
@@ -27,6 +29,8 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
   Widget build(BuildContext context) {
     final buttonLoadingState = ref.watch(chatInputProvider);
     final uid = FirebaseAuth.instance.currentUser?.uid;
+
+    final databaseService = DatabaseService(uid: uid!);
 
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
 
@@ -98,7 +102,8 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
               recommendations:
                   response['recommendations']?.cast<String>() ?? [],
               followUpSearchTerms:
-                  response['suggestions']?.cast<String>() ?? [],citations: response['citations']?.cast<String>() ?? [],
+                  response['suggestions']?.cast<String>() ?? [],
+              citations: response['citations']?.cast<String>() ?? [],
               title: 'Symptom Analysis',
             ),
           ),
@@ -193,8 +198,16 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
               onPressed:
                   selectedSymptoms.isEmpty && userData.symptomsList.isEmpty
                       ? null
-                      : () {
-                          handleSend(context);
+                      : () async {
+                          await databaseService.incrementUsageCount(
+                              uid, userAiGeneralTextUsageCount);
+                          await databaseService.incrementUsageCount(
+                              uid, userAiTextUsageCount);
+                          userData.aiGeneralTextUsageCount >= 3 && appIAPStatus.isPro == false
+                              ? MyReusableFunctions.showPremiumDialog(
+                                  context: context,
+                                  message: freeAiUsageExceeded)
+                              : await handleSend(context);
                           print(selectedSymptoms);
                         },
               label: const Text('Analyze Symptoms'),

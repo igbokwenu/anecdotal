@@ -8,6 +8,37 @@ class DatabaseService {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
 
+  Future<void> incrementUsageCount(String uid, String field) async {
+    final userDoc = FirebaseFirestore.instance.collection('users').doc(uid);
+
+    // Increment the field value by 1 using Firestore's FieldValue.increment()
+    await userDoc.update({
+      field: FieldValue.increment(1),
+    });
+  }
+
+  Future<bool> checkUsageLimitExceeded(String uid) async {
+  final userDoc = FirebaseFirestore.instance.collection('users').doc(uid);
+  final snapshot = await userDoc.get();
+  final data = snapshot.data();
+
+  if (data != null) {
+    final aiMediaUsageCount = data['aiMediaUsageCount'] ?? 0;
+    final aiTextUsageCount = data['aiTextUsageCount'] ?? 0;
+    final aiGeneralMediaUsageCount = data['aiGeneralMediaUsageCount'] ?? 0;
+    final aiGeneralTextUsageCount = data['aiGeneralTextUsageCount'] ?? 0;
+
+    // Check if any count exceeds 3
+    return aiMediaUsageCount > 3 ||
+           aiTextUsageCount > 3 ||
+           aiGeneralMediaUsageCount > 3 ||
+           aiGeneralTextUsageCount > 3;
+  }
+  
+  return false;
+}
+
+
   Future<void> addToHealingJourneyMap(Map<String, dynamic> newEntry) async {
     final userRef = userCollection.doc(uid);
 

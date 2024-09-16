@@ -336,44 +336,41 @@ class _ReportViewState extends State<ReportView> {
       ),
     );
 
-
     if (!kIsWeb) {
-      if (Platform.isAndroid) {
-        if (appIAPStatus.isPro == false) {
-          MyReusableFunctions.showPremiumDialog(
-              context: context, message: premiumSpeechPDFAccess);
-        } else {
-          try {
-            final output = await getTemporaryDirectory();
-            final file = File("${output.path}/$fileName");
-            await file.writeAsBytes(await pdf.save());
+      if (appIAPStatus.isPro == false) {
+        MyReusableFunctions.showPremiumDialog(
+            context: context, message: premiumSpeechPDFAccess);
+      } else {
+        try {
+          final output = await getTemporaryDirectory();
+          final file = File("${output.path}/$fileName");
+          await file.writeAsBytes(await pdf.save());
 
-            if (share) {
-              final xFile = XFile(file.path);
+          if (share) {
+            final xFile = XFile(file.path);
 
-              // Ensure the context and the RenderBox are available
-              final RenderBox? box = context.findRenderObject() as RenderBox?;
+            // Ensure the context and the RenderBox are available
+            final RenderBox? box = context.findRenderObject() as RenderBox?;
 
-              await Share.shareXFiles(
-                [xFile],
-                text: 'Anecdotal Report',
-                sharePositionOrigin: box!.localToGlobal(Offset.zero) &
-                    box.size, // Required for iPad
-              );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('PDF saved to ${file.path}')),
-              );
-
-              setState(() {
-                _isSaved = true;
-              });
-            }
-          } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error creating PDF: $e')),
+            await Share.shareXFiles(
+              [xFile],
+              text: 'Anecdotal Report',
+              sharePositionOrigin: box!.localToGlobal(Offset.zero) &
+                  box.size, // Required for iPad
             );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('PDF saved to ${file.path}')),
+            );
+
+            setState(() {
+              _isSaved = true;
+            });
           }
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error creating PDF: $e')),
+          );
         }
       }
     }

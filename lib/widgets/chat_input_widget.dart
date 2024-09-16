@@ -1,6 +1,13 @@
 import 'dart:async';
 import 'package:anecdotal/providers/button_state_providers.dart';
+import 'package:anecdotal/providers/user_data_provider.dart';
+import 'package:anecdotal/services/database_service.dart';
+import 'package:anecdotal/services/iap/singleton.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
+import 'package:anecdotal/utils/constants/writeups.dart';
+import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -48,6 +55,9 @@ class ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
   @override
   Widget build(BuildContext context) {
     final chatInputState = ref.watch(chatInputProvider);
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final databaseService = DatabaseService(uid: uid!);
+    final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
@@ -98,7 +108,17 @@ class ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
                 : Icon(Icons.send,
                     color: Theme.of(context).colorScheme.secondary),
             onPressed: chatInputState.isComposing && !chatInputState.isSending
-                ? () => _handleSubmitted(_controller.text)
+                ? () async {
+                    await databaseService.incrementUsageCount(
+                        uid, userAiGeneralTextUsageCount);
+                    await databaseService.incrementUsageCount(
+                        uid, userAiTextUsageCount);
+                    userData!.aiGeneralTextUsageCount >= 3 &&
+                            appIAPStatus.isPro == false
+                        ? MyReusableFunctions.showPremiumDialog(
+                            context: context, message: freeAiUsageExceeded)
+                        : _handleSubmitted(_controller.text);
+                  }
                 : null,
           ),
         ],

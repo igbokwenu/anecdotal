@@ -46,7 +46,8 @@ class FirstWidgetInterpretLab extends ConsumerWidget {
                                 result['recommendations']?.cast<String>() ?? [],
                             followUpSearchTerms:
                                 result['suggestions']?.cast<String>() ?? [],
-                                citations: result['citations']?.cast<String>() ?? [],
+                            citations:
+                                result['citations']?.cast<String>() ?? [],
                           ),
                         ),
                       );
@@ -78,8 +79,8 @@ class FirstWidgetInterpretLab extends ConsumerWidget {
                   ? null
                   : "${userData.medicalHistoryList}"),
           // allowFileSelect: true,
-          selectButtonText: 'Select Report Image',
-          analyzeButtonText: 'Analyze Report',
+          selectButtonText: 'Select Result',
+          analyzeButtonText: 'Analyze Result',
           maxImages: 4,
           onResponse: (result) {
             if (result != null) {
@@ -93,7 +94,8 @@ class FirstWidgetInterpretLab extends ConsumerWidget {
                     recommendations:
                         result['recommendations']?.cast<String>() ?? [],
                     followUpSearchTerms:
-                        result['suggestions']?.cast<String>() ?? [],citations: result['citations']?.cast<String>() ?? [],
+                        result['suggestions']?.cast<String>() ?? [],
+                    citations: result['citations']?.cast<String>() ?? [],
                   ),
                 ),
               );

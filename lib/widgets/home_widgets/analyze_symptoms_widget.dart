@@ -1,8 +1,12 @@
 import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
+import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
+import 'package:anecdotal/services/iap/singleton.dart';
 import 'package:anecdotal/utils/constants/ai_prompts.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
+import 'package:anecdotal/utils/constants/writeups.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/medical_history_view.dart';
 import 'package:anecdotal/views/report_view.dart';
@@ -19,8 +23,9 @@ class FirstWidgetSymptomChecker extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final buttonLoadingState = ref.watch(chatInputProvider);
-
     final uid = FirebaseAuth.instance.currentUser?.uid;
+    final databaseService = DatabaseService(uid: uid!);
+
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
     Future<void> handleSend(
       BuildContext context,
@@ -115,8 +120,16 @@ class FirstWidgetSymptomChecker extends ConsumerWidget {
           buttonLoadingState.isAnalyzing
               ? const MySpinKitWaveSpinner()
               : ElevatedButton.icon(
-                  onPressed: () {
-                    handleSend(context);
+                  onPressed: () async {
+                    await databaseService.incrementUsageCount(
+                        uid, userAiGeneralTextUsageCount);
+                    await databaseService.incrementUsageCount(
+                        uid, userAiTextUsageCount);
+                    userData.aiGeneralTextUsageCount >= 3 &&
+                            appIAPStatus.isPro == false
+                        ? MyReusableFunctions.showPremiumDialog(
+                            context: context, message: freeAiUsageExceeded)
+                        : await handleSend(context);
                   },
                   label: const Text("Generate A Report For Your Doctor"),
                   icon: const Icon(

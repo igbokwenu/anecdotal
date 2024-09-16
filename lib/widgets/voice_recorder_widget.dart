@@ -1,13 +1,21 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:anecdotal/providers/user_data_provider.dart';
+import 'package:anecdotal/services/database_service.dart';
+import 'package:anecdotal/services/iap/singleton.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
+import 'package:anecdotal/utils/constants/writeups.dart';
+import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 
-class Recorder extends StatefulWidget {
+class Recorder extends ConsumerStatefulWidget {
   final Function(String path) onStop;
   final VoidCallback? onStart;
 
@@ -18,10 +26,10 @@ class Recorder extends StatefulWidget {
   });
 
   @override
-  State<Recorder> createState() => _RecorderState();
+  ConsumerState<Recorder> createState() => _RecorderState();
 }
 
-class _RecorderState extends State<Recorder> {
+class _RecorderState extends ConsumerState<Recorder> {
   late final AudioRecorder _audioRecorder;
   RecordState _recordState = RecordState.stop;
   StreamSubscription<RecordState>? _recordSub;
@@ -76,8 +84,20 @@ class _RecorderState extends State<Recorder> {
 
   @override
   Widget build(BuildContext context) {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final databaseService = DatabaseService(uid: uid!);
+    final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+
     return GestureDetector(
-      onTap: _toggleListening,
+      onTap: () async {
+        await databaseService.incrementUsageCount(
+            uid, userAiGeneralMediaUsageCount);
+        await databaseService.incrementUsageCount(uid, userAiMediaUsageCount);
+        userData!.aiGeneralMediaUsageCount >= 3 && appIAPStatus.isPro == false
+            ? MyReusableFunctions.showPremiumDialog(
+                context: context, message: freeAiUsageExceeded)
+            : _toggleListening();
+      },
       child: SizedBox(
         width: 50,
         height: 50,

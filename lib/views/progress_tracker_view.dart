@@ -316,14 +316,12 @@ class ProgressTrackerAppState extends ConsumerState<ProgressTracker> {
                                     notes: entry['notes'],
                                   )),
                                 ),
-                              ))
-                          ,
+                              )),
                       const SizedBox(height: 10),
                       Center(
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.of(context)
-                                .pushReplacement(MaterialPageRoute(
+                            Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const VisualizeProgress(),
                             ));
                           },

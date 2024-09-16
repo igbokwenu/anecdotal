@@ -1,4 +1,5 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
+import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/iap/singleton.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
@@ -46,6 +47,8 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
     final chatInputState = ref.watch(chatInputProvider);
     final theme = Theme.of(context);
     final uid = FirebaseAuth.instance.currentUser?.uid;
+
+    final databaseService = DatabaseService(uid: uid!);
 
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
 
@@ -493,7 +496,9 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                     chatInputState.isProcessingAudio
                         ? myEmptySizedBox()
                         : ChatInputWidget(
-                            onSend: (message) => handleSend(context, message),
+                            onSend: (message) async {
+                              await handleSend(context, message);
+                            },
                           ),
                     mySpacing(),
                   ],

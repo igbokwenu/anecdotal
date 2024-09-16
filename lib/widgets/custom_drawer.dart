@@ -70,25 +70,6 @@ class CustomDrawer extends StatelessWidget {
               // if (Platform.isAndroid)
               ListTile(
                 onTap: () async {
-                  // Offerings? _offerings;
-
-                  // Future<void> fetchData() async {
-                  //   Offerings? offerings;
-                  //   try {
-                  //     offerings = await Purchases.getOfferings();
-                  //   } on PlatformException catch (e) {
-                  //     debugPrint(e.toString());
-                  //   }
-                  // }
-
-                  // await fetchData();
-
-                  // await Purchases.getCustomerInfo();
-                  await Purchases.invalidateCustomerInfoCache();
-                  await Purchases.syncPurchases();
-                  await Purchases.getCustomerInfo();
-
-                  print("Success ${appIAPStatus.isPro}");
                   appIAPStatus.isPro == true
                       ? MyReusableFunctions.myReusableCustomDialog(
                           context: context,

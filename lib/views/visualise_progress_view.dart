@@ -1,8 +1,10 @@
 import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
+import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/utils/constants/ai_prompts.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
+import 'package:anecdotal/views/progress_tracker_view.dart';
 import 'package:anecdotal/views/report_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -96,12 +98,12 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
                 Text(
                     'Date: ${DateFormat('yyyy-MM-dd HH:mm').format(entry.timestamp)}',
                     style: Theme.of(context).textTheme.titleMedium),
-                Text('Feeling ${entry.percentage.toStringAsFixed(1)}% better',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(color: Theme.of(context).primaryColor)),
-                const SizedBox(height: 16),
+                const SizedBox(height: 6),
+                Text(
+                  'Feeling ${entry.percentage.toStringAsFixed(1)}% better',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+                const SizedBox(height: 6),
                 Text('Tasks In Progress:',
                     style: Theme.of(context)
                         .textTheme
@@ -215,8 +217,26 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
               ? const MySpinKitWaveSpinner()
               : ElevatedButton.icon(
                   onPressed: () {
-                    print("Sending");
-                    handleSend(context);
+                    MyReusableFunctions.myReusableCustomDialog(
+                        context: context,
+                        message:
+                            "You need to have at least 20 recorded progress to enable this feature.",
+                        actions: [
+                          TextButton.icon(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  const ProgressTracker(),
+                                ),
+                              );
+                            },
+                            label: const Text("Record Progress"),
+                            icon: const Icon(Icons.edit_note),
+                          ),
+                        ]);
+                    // handleSend(context);
                   },
                   label: const Text("Analyze Your Journey"),
                   icon: const Icon(Icons.auto_awesome),

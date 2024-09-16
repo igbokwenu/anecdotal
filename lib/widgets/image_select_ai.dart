@@ -1,8 +1,10 @@
 import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
+import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/services/iap/singleton.dart';
 import 'package:anecdotal/utils/constants/ai_prompts.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/constants/writeups.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/report_view.dart';
@@ -105,6 +107,8 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
     final buttonLoadingState = ref.watch(chatInputProvider);
 
     final uid = FirebaseAuth.instance.currentUser?.uid;
+
+    final databaseService = DatabaseService(uid: uid!);
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
 
     Future<void> handleSend(
@@ -112,57 +116,55 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
       String forWho,
     ) async {
       if (!kIsWeb) {
-        if (Platform.isAndroid) {
-          if (appIAPStatus.isPro == false) {
-            MyReusableFunctions.showPremiumDialog(
-                context: context, message: premiumSpeechAnalyzeButton);
-          } else {
-            MyReusableFunctions.showProcessingToast();
-            ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
-            final response = await GeminiService.analyzeImages(
-              images: _selectedFiles,
-              prompt: widget.isLabTest
-                  ? sendLabAnalysisPrompt(
-                      symptoms: userData!.symptomsList.isEmpty
-                          ? null
-                          : "${userData.symptomsList}",
-                      history: userData.medicalHistoryList.isEmpty
-                          ? null
-                          : "${userData.medicalHistoryList}",
-                      externalReport: forWho,
-                    )
-                  : sendHouseImageAnalysisPrompt(
-                      prompt: userData!.symptomsList.isEmpty
-                          ? null
-                          : "Here is a previously disclosed list of symptoms experienced: ${userData.symptomsList}. And previously disclosed health history: ${userData.medicalHistoryList}",
-                      externalReport: forWho,
-                    ),
-            );
-
-            if (response != null) {
-              ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ReportView(
-                    summaryContent:
-                        response['summary'] ?? 'No summary available.',
-                    keyInsights: response['insights']?.cast<String>() ?? [],
-                    recommendations:
-                        response['recommendations']?.cast<String>() ?? [],
-                    followUpSearchTerms:
-                        response['suggestions']?.cast<String>() ?? [],
-                    citations: response['citations']?.cast<String>() ?? [],
-                    title: 'Symptom Analysis',
+        if (appIAPStatus.isPro == false) {
+          MyReusableFunctions.showPremiumDialog(
+              context: context, message: premiumSpeechAnalyzeButton);
+        } else {
+          MyReusableFunctions.showProcessingToast();
+          ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
+          final response = await GeminiService.analyzeImages(
+            images: _selectedFiles,
+            prompt: widget.isLabTest
+                ? sendLabAnalysisPrompt(
+                    symptoms: userData!.symptomsList.isEmpty
+                        ? null
+                        : "${userData.symptomsList}",
+                    history: userData.medicalHistoryList.isEmpty
+                        ? null
+                        : "${userData.medicalHistoryList}",
+                    externalReport: forWho,
+                  )
+                : sendHouseImageAnalysisPrompt(
+                    prompt: userData!.symptomsList.isEmpty
+                        ? null
+                        : "Here is a previously disclosed list of symptoms experienced: ${userData.symptomsList}. And previously disclosed health history: ${userData.medicalHistoryList}",
+                    externalReport: forWho,
                   ),
+          );
+
+          if (response != null) {
+            ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ReportView(
+                  summaryContent:
+                      response['summary'] ?? 'No summary available.',
+                  keyInsights: response['insights']?.cast<String>() ?? [],
+                  recommendations:
+                      response['recommendations']?.cast<String>() ?? [],
+                  followUpSearchTerms:
+                      response['suggestions']?.cast<String>() ?? [],
+                  citations: response['citations']?.cast<String>() ?? [],
+                  title: 'Symptom Analysis',
                 ),
-              );
-            } else {
-              ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
-              MyReusableFunctions.showCustomToast(
-                  description: "No response received.");
-              print("No response received.");
-            }
+              ),
+            );
+          } else {
+            ref.read(chatInputProvider.notifier).setIsAnalyzing(false);
+            MyReusableFunctions.showCustomToast(
+                description: "No response received.");
+            print("No response received.");
           }
         }
       }
@@ -215,8 +217,19 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
         ],
         mySpacing(spacing: 16),
         ElevatedButton.icon(
-          onPressed:
-              _selectedFiles.isEmpty || _isAnalyzing ? null : _analyzeImages,
+          onPressed: _selectedFiles.isEmpty || _isAnalyzing
+              ? null
+              : () async {
+                  await databaseService.incrementUsageCount(
+                      uid, userAiGeneralMediaUsageCount);
+                  await databaseService.incrementUsageCount(
+                      uid, userAiMediaUsageCount);
+                  userData!.aiGeneralMediaUsageCount >= 3 &&
+                          appIAPStatus.isPro == false
+                      ? MyReusableFunctions.showPremiumDialog(
+                          context: context, message: freeAiUsageExceeded)
+                      : await _analyzeImages();
+                },
           label: _isAnalyzing
               ? const MySpinKitWaveSpinner(size: 40)
               : Text(widget.allowFileSelect

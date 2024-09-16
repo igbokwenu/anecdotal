@@ -1,12 +1,19 @@
 import 'dart:io';
+import 'package:anecdotal/providers/user_data_provider.dart';
+import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
+import 'package:anecdotal/services/iap/singleton.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
+import 'package:anecdotal/utils/constants/writeups.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 
-class CameraWidget extends StatefulWidget {
+class CameraWidget extends ConsumerStatefulWidget {
   final String prompt;
   final Function(Map<String, dynamic>?) onResponse;
   final VoidCallback onComplete;
@@ -19,10 +26,10 @@ class CameraWidget extends StatefulWidget {
   });
 
   @override
-  State<CameraWidget> createState() => _CameraWidgetState();
+  ConsumerState<CameraWidget> createState() => _CameraWidgetState();
 }
 
-class _CameraWidgetState extends State<CameraWidget> {
+class _CameraWidgetState extends ConsumerState<CameraWidget> {
   final FlashMode _flashMode = FlashMode.auto;
   final double _zoom = 0.0;
   File? _capturedImage;
@@ -30,6 +37,10 @@ class _CameraWidgetState extends State<CameraWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final databaseService = DatabaseService(uid: uid!);
+    final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -41,20 +52,30 @@ class _CameraWidgetState extends State<CameraWidget> {
               zoom: _zoom,
             ),
             onMediaCaptureEvent: (event) async {
-              if (event.isPicture &&
-                  event.status == MediaCaptureStatus.success) {
-                event.captureRequest.when(
-                  single: (single) async {
-                    if (single.file != null) {
-                      setState(() {
-                        _isLoading = true;
-                        _capturedImage = File(single.file!.path);
-                      });
-                      await _analyzeCapturedImage();
-                    }
-                  },
-                  multiple: (multiple) {},
-                );
+              await databaseService.incrementUsageCount(
+                  uid, userAiGeneralMediaUsageCount);
+              await databaseService.incrementUsageCount(
+                  uid, userAiMediaUsageCount);
+              if (userData!.aiGeneralMediaUsageCount >= 3 &&
+                  appIAPStatus.isPro == false) {
+                MyReusableFunctions.showPremiumDialog(
+                    context: context, message: freeAiUsageExceeded);
+              } else {
+                if (event.isPicture &&
+                    event.status == MediaCaptureStatus.success) {
+                  event.captureRequest.when(
+                    single: (single) async {
+                      if (single.file != null) {
+                        setState(() {
+                          _isLoading = true;
+                          _capturedImage = File(single.file!.path);
+                        });
+                        await _analyzeCapturedImage();
+                      }
+                    },
+                    multiple: (multiple) {},
+                  );
+                }
               }
             },
             saveConfig: SaveConfig.photo(
