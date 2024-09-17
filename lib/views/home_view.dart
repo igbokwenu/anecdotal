@@ -43,12 +43,6 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    RevenueCatService.checkAndSetIAPStatus();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final chatInputState = ref.watch(chatInputProvider);
     final theme = Theme.of(context);

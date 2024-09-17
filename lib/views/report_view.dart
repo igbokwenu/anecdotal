@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/services/iap/singleton.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/constants/writeups.dart';
@@ -7,13 +8,15 @@ import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class ReportView extends StatefulWidget {
+class ReportView extends ConsumerStatefulWidget {
   final String summaryContent;
   final List<String> keyInsights;
   final List<String> recommendations;
@@ -36,15 +39,17 @@ class ReportView extends StatefulWidget {
   });
 
   @override
-  State<ReportView> createState() => _ReportViewState();
+  ConsumerState<ReportView> createState() => _ReportViewState();
 }
 
 bool _isSaved = false;
 
-class _ReportViewState extends State<ReportView> {
+class _ReportViewState extends ConsumerState<ReportView> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final iapStatus = ref.watch(iapProvider);
+    ref.read(iapProvider.notifier).checkAndSetIAPStatus();
 
     List<Widget> buildCitationLinks(
         List<String> dynamicCitations, List<String>? manualCitations) {
@@ -112,6 +117,173 @@ class _ReportViewState extends State<ReportView> {
           .toList();
     }
 
+    Future<void> _saveAndSharePDF(BuildContext context, bool share) async {
+      final pdf = pw.Document();
+      final subject = widget.name ?? "Subject Anonymous";
+
+      // Load image from assets
+      final imageBytes = await rootBundle.load(logoAssetImageUrlNoTagLine);
+      final image = pw.MemoryImage(imageBytes.buffer.asUint8List());
+
+      // Get the current date and time
+      final now = DateTime.now();
+      final formattedDate = DateFormat('yyyy-MM-dd_HH-mm-ss').format(now);
+      final formattedDateWithoutTime = DateFormat('yyyy-MM-dd').format(now);
+
+      // Create file name with current date and time
+      final fileName = "report_anecdotal_$formattedDate.pdf";
+
+      pdf.addPage(
+        pw.MultiPage(
+          pageFormat: PdfPageFormat.a4,
+          build: (pw.Context context) => [
+            pw.Center(
+              child: pw.Container(
+                alignment: pw.Alignment.center,
+                width: 130,
+                height: 130,
+                decoration: pw.BoxDecoration(
+                  shape: pw.BoxShape.circle,
+                  border: pw.Border.all(
+                    color: PdfColors.teal,
+                    width: 4.0,
+                  ),
+                  image: pw.DecorationImage(
+                    fit: pw.BoxFit.contain,
+                    image: image,
+                  ),
+                ),
+              ),
+            ),
+            pw.SizedBox(height: 10),
+            pw.Center(
+              child: pw.Text(
+                'A Personalized Health Analysis Platform',
+                textAlign: pw.TextAlign.center,
+                style: pw.TextStyle(
+                  color: PdfColors.teal,
+                  fontWeight: pw.FontWeight.bold,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+            pw.SizedBox(height: 10),
+            pw.UrlLink(
+              child: pw.Text(
+                'Visit our website: www.anecdotalhq.web.app',
+                style: pw.TextStyle(
+                  color: PdfColors.teal,
+                  fontWeight: pw.FontWeight.bold,
+                  fontSize: 12,
+                  fontStyle: pw.FontStyle.italic,
+                ),
+              ),
+              destination: "https://anecdotalhq.web.app/download",
+            ),
+            pw.SizedBox(height: 10),
+            pw.Text('Report Created For: $subject'),
+            pw.SizedBox(height: 5),
+            pw.Text('Date: $formattedDateWithoutTime'),
+            pw.SizedBox(height: 20),
+            pw.Text(
+              'Introduction:',
+              style: pw.TextStyle(
+                color: PdfColors.teal,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
+            pw.Text(widget.summaryContent),
+            pw.SizedBox(height: 10),
+            pw.Text(
+              'Key Insights:',
+              style: pw.TextStyle(
+                color: PdfColors.teal,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
+            ...widget.keyInsights.map((insight) => pw.Bullet(text: insight)),
+            pw.SizedBox(height: 10),
+            pw.Text(
+              'Recommendations:',
+              style: pw.TextStyle(
+                color: PdfColors.teal,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
+            ...widget.recommendations
+                .map((recommendation) => pw.Bullet(text: recommendation)),
+            pw.SizedBox(height: 10),
+            pw.Text(
+              'Citations:',
+              style: pw.TextStyle(
+                color: PdfColors.teal,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
+            ...widget.citations.map(
+              (citation) => pw.Padding(
+                padding: const pw.EdgeInsets.symmetric(vertical: 5),
+                child: pw.UrlLink(
+                  child: pw.Text(
+                    citation,
+                  ),
+                  destination: citation,
+                ),
+              ),
+            ),
+            pw.SizedBox(height: 10),
+            pw.Text(
+              'Follow Up Search Terms:',
+              style: pw.TextStyle(
+                color: PdfColors.teal,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
+            ...widget.followUpSearchTerms.map((term) => pw.Bullet(text: term)),
+          ],
+        ),
+      );
+
+      if (!kIsWeb) {
+        if (!iapStatus.isPro) {
+          MyReusableFunctions.showPremiumDialog(
+              context: context, message: premiumSpeechPDFAccess);
+        } else {
+          try {
+            final output = await getTemporaryDirectory();
+            final file = File("${output.path}/$fileName");
+            await file.writeAsBytes(await pdf.save());
+
+            if (share) {
+              final xFile = XFile(file.path);
+
+              // Ensure the context and the RenderBox are available
+              final RenderBox? box = context.findRenderObject() as RenderBox?;
+
+              await Share.shareXFiles(
+                [xFile],
+                text: 'Anecdotal Report',
+                sharePositionOrigin: box!.localToGlobal(Offset.zero) &
+                    box.size, // Required for iPad
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('PDF saved to ${file.path}')),
+              );
+
+              setState(() {
+                _isSaved = true;
+              });
+            }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error creating PDF: $e')),
+            );
+          }
+        }
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: MyAppBarTitleWithAI(
@@ -121,17 +293,16 @@ class _ReportViewState extends State<ReportView> {
             ? []
             : [
                 if (!kIsWeb)
-                  if (Platform.isAndroid)
-                    _isSaved
-                        ? const Padding(
-                            padding: EdgeInsets.only(right: 8.0),
-                            child: Icon(Icons.check_circle),
-                          )
-                        : IconButton(
-                            icon: const Icon(Icons.save),
-                            onPressed: () =>
-                                _saveAndSharePDF(context, false), // Save PDF
-                          ),
+                  _isSaved
+                      ? const Padding(
+                          padding: EdgeInsets.only(right: 8.0),
+                          child: Icon(Icons.check_circle),
+                        )
+                      : IconButton(
+                          icon: const Icon(Icons.save),
+                          onPressed: () =>
+                              _saveAndSharePDF(context, false), // Save PDF
+                        ),
               ],
       ),
       body: SingleChildScrollView(
@@ -139,15 +310,23 @@ class _ReportViewState extends State<ReportView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (!kIsWeb)
-              if (Platform.isIOS)
+              if (Platform.isIOS) ...[
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(top: 8.0, left: 8, right: 8),
                   child: Text(
                     medicalDisclaimer,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
+                Center(
+                  child: TextButton.icon(
+                    onPressed: () => _showSourcesAndCitationsDialog(context),
+                    label: const Text("View Sources And Citations"),
+                    icon: const Icon(Icons.link_rounded),
+                  ),
+                )
+              ],
             _buildSection(
               title: 'Summary',
               icon: Icons.notes,
@@ -167,14 +346,15 @@ class _ReportViewState extends State<ReportView> {
               children: _buildToDoItems(widget.recommendations),
             ),
             _buildSection(
-              title: 'Citations',
+              title: 'Sources & Citations',
               icon: Icons.link,
               color: theme.colorScheme.primaryFixedDim,
               children: buildCitationLinks(
-                  widget.citations,
-                  widget.enableManualCitations
-                      ? ["https://www.cirsx.com/reference-papers"]
-                      : []),
+                widget.citations,
+                widget.enableManualCitations
+                    ? ["https://www.cirsx.com/reference-papers"]
+                    : [],
+              ),
             ),
             _buildSection(
               title: 'Follow Up Search Terms',
@@ -192,188 +372,22 @@ class _ReportViewState extends State<ReportView> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 if (!kIsWeb)
-                  if (Platform.isAndroid)
-                    _isSaved
-                        ? myEmptySizedBox()
-                        : IconButton(
-                            icon: const Icon(Icons.save),
-                            onPressed: () =>
-                                _saveAndSharePDF(context, false), // Save PDF
-                          ),
-                IconButton(
-                  icon: const Icon(Icons.share),
-                  onPressed: () => _saveAndSharePDF(context, true), // Share PDF
-                ),
+                  _isSaved
+                      ? myEmptySizedBox()
+                      : IconButton(
+                          icon: const Icon(Icons.save),
+                          onPressed: () =>
+                              _saveAndSharePDF(context, false), // Save PDF
+                        ),
+                if (Platform.isAndroid)
+                  IconButton(
+                    icon: const Icon(Icons.share),
+                    onPressed: () =>
+                        _saveAndSharePDF(context, true), // Share PDF
+                  ),
               ],
             ),
     );
-  }
-
-  Future<void> _saveAndSharePDF(BuildContext context, bool share) async {
-    final pdf = pw.Document();
-    final subject = widget.name ?? "Subject Anonymous";
-
-    // Load image from assets
-    final imageBytes = await rootBundle.load(logoAssetImageUrlNoTagLine);
-    final image = pw.MemoryImage(imageBytes.buffer.asUint8List());
-
-    // Get the current date and time
-    final now = DateTime.now();
-    final formattedDate = DateFormat('yyyy-MM-dd_HH-mm-ss').format(now);
-    final formattedDateWithoutTime = DateFormat('yyyy-MM-dd').format(now);
-
-    // Create file name with current date and time
-    final fileName = "report_anecdotal_$formattedDate.pdf";
-
-    pdf.addPage(
-      pw.MultiPage(
-        pageFormat: PdfPageFormat.a4,
-        build: (pw.Context context) => [
-          pw.Center(
-            child: pw.Container(
-              alignment: pw.Alignment.center,
-              width: 130,
-              height: 130,
-              decoration: pw.BoxDecoration(
-                shape: pw.BoxShape.circle,
-                border: pw.Border.all(
-                  color: PdfColors.teal,
-                  width: 4.0,
-                ),
-                image: pw.DecorationImage(
-                  fit: pw.BoxFit.contain,
-                  image: image,
-                ),
-              ),
-            ),
-          ),
-          pw.SizedBox(height: 10),
-          pw.Center(
-            child: pw.Text(
-              'A Personalized Health Analysis Platform',
-              textAlign: pw.TextAlign.center,
-              style: pw.TextStyle(
-                color: PdfColors.teal,
-                fontWeight: pw.FontWeight.bold,
-                fontSize: 25,
-              ),
-            ),
-          ),
-          pw.SizedBox(height: 10),
-          pw.UrlLink(
-            child: pw.Text(
-              'Visit our website: www.anecdotalhq.web.app',
-              style: pw.TextStyle(
-                color: PdfColors.teal,
-                fontWeight: pw.FontWeight.bold,
-                fontSize: 12,
-                fontStyle: pw.FontStyle.italic,
-              ),
-            ),
-            destination: "https://anecdotalhq.web.app/download",
-          ),
-          pw.SizedBox(height: 10),
-          pw.Text('Report Created For: $subject'),
-          pw.SizedBox(height: 5),
-          pw.Text('Date: $formattedDateWithoutTime'),
-          pw.SizedBox(height: 20),
-          pw.Text(
-            'Introduction:',
-            style: pw.TextStyle(
-              color: PdfColors.teal,
-              fontWeight: pw.FontWeight.bold,
-            ),
-          ),
-          pw.Text(widget.summaryContent),
-          pw.SizedBox(height: 10),
-          pw.Text(
-            'Key Insights:',
-            style: pw.TextStyle(
-              color: PdfColors.teal,
-              fontWeight: pw.FontWeight.bold,
-            ),
-          ),
-          ...widget.keyInsights.map((insight) => pw.Bullet(text: insight)),
-          pw.SizedBox(height: 10),
-          pw.Text(
-            'Recommendations:',
-            style: pw.TextStyle(
-              color: PdfColors.teal,
-              fontWeight: pw.FontWeight.bold,
-            ),
-          ),
-          ...widget.recommendations
-              .map((recommendation) => pw.Bullet(text: recommendation)),
-          pw.SizedBox(height: 10),
-          pw.Text(
-            'Citations:',
-            style: pw.TextStyle(
-              color: PdfColors.teal,
-              fontWeight: pw.FontWeight.bold,
-            ),
-          ),
-          ...widget.citations.map(
-            (citation) => pw.Padding(
-              padding: const pw.EdgeInsets.symmetric(vertical: 5),
-              child: pw.UrlLink(
-                child: pw.Text(
-                  citation,
-                ),
-                destination: citation,
-              ),
-            ),
-          ),
-          pw.SizedBox(height: 10),
-          pw.Text(
-            'Follow Up Search Terms:',
-            style: pw.TextStyle(
-              color: PdfColors.teal,
-              fontWeight: pw.FontWeight.bold,
-            ),
-          ),
-          ...widget.followUpSearchTerms.map((term) => pw.Bullet(text: term)),
-        ],
-      ),
-    );
-
-    if (!kIsWeb) {
-      if (appIAPStatus.isPro == false) {
-        MyReusableFunctions.showPremiumDialog(
-            context: context, message: premiumSpeechPDFAccess);
-      } else {
-        try {
-          final output = await getTemporaryDirectory();
-          final file = File("${output.path}/$fileName");
-          await file.writeAsBytes(await pdf.save());
-
-          if (share) {
-            final xFile = XFile(file.path);
-
-            // Ensure the context and the RenderBox are available
-            final RenderBox? box = context.findRenderObject() as RenderBox?;
-
-            await Share.shareXFiles(
-              [xFile],
-              text: 'Anecdotal Report',
-              sharePositionOrigin: box!.localToGlobal(Offset.zero) &
-                  box.size, // Required for iPad
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('PDF saved to ${file.path}')),
-            );
-
-            setState(() {
-              _isSaved = true;
-            });
-          }
-        } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error creating PDF: $e')),
-          );
-        }
-      }
-    }
   }
 
   Widget _buildSection({
@@ -487,6 +501,58 @@ class _ReportViewState extends State<ReportView> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showSourcesAndCitationsDialog(BuildContext context) {
+    // Combine dynamic citations with manual citations if enabled
+    List<String> allCitations = [...widget.citations];
+    if (widget.enableManualCitations) {
+      allCitations.add("https://www.cirsx.com/reference-papers");
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Sources & Citations'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: allCitations.map((citation) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: InkWell(
+                    onTap: () async {
+                      if (await canLaunchUrl(Uri.parse(citation))) {
+                        await launchUrl(Uri.parse(citation));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Could not launch $citation')),
+                        );
+                      }
+                    },
+                    child: Text(
+                      citation,
+                      style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

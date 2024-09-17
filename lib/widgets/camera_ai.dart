@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
@@ -40,6 +41,8 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final databaseService = DatabaseService(uid: uid!);
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+    final iapStatus = ref.watch(iapProvider);
+    ref.read(iapProvider.notifier).checkAndSetIAPStatus();
 
     return Scaffold(
       body: Stack(
@@ -56,8 +59,8 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
                   uid, userAiGeneralMediaUsageCount);
               await databaseService.incrementUsageCount(
                   uid, userAiMediaUsageCount);
-              if (userData!.aiGeneralMediaUsageCount >= 3 &&
-                  appIAPStatus.isPro == false) {
+              if (userData!.aiGeneralMediaUsageCount >= freeLimit &&
+                  !iapStatus.isPro) {
                 MyReusableFunctions.showPremiumDialog(
                     context: context, message: freeAiUsageExceeded);
               } else {

@@ -5,12 +5,14 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'dart:convert';
 
 class GeminiService {
+
+  
   static Future<Map<String, dynamic>?> sendTextPrompt({
     required String message,
     String? preferredModel,
   }) async {
     final model = GenerativeModel(
-      model: preferredModel ?? geminiProModel,
+      model: preferredModel ?? geminiFlashModel,
       apiKey: geminiApiKey,
       generationConfig: GenerationConfig(
         responseMimeType: "application/json",

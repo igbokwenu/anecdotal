@@ -101,3 +101,5 @@ const String userAiTextUsageCount = 'aiTextUsageCount';
 const String userAiGeneralMediaUsageCount = 'aiGeneralMediaUsageCount';
 const String userAiGeneralTextUsageCount = 'aiGeneralTextUsageCount';
 const String userHealingJourneyMap = 'healingJourneyMap';
+
+const int freeLimit = 3;

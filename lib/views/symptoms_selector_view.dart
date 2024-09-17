@@ -1,4 +1,5 @@
 import 'package:anecdotal/providers/button_state_providers.dart';
+import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
@@ -29,12 +30,11 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
   Widget build(BuildContext context) {
     final buttonLoadingState = ref.watch(chatInputProvider);
     final uid = FirebaseAuth.instance.currentUser?.uid;
-
     final databaseService = DatabaseService(uid: uid!);
-
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
-
     List<String> alreadySelectedSymptoms = userData!.symptomsList;
+    final iapStatus = ref.watch(iapProvider);
+    ref.read(iapProvider.notifier).checkAndSetIAPStatus();
 
     // Symptoms lists by category
     Map<String, List<String>> symptoms = {
@@ -195,21 +195,20 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
       floatingActionButton: buttonLoadingState.isAnalyzing
           ? const MySpinKitWaveSpinner()
           : ElevatedButton.icon(
-              onPressed:
-                  selectedSymptoms.isEmpty && userData.symptomsList.isEmpty
-                      ? null
-                      : () async {
-                          await databaseService.incrementUsageCount(
-                              uid, userAiGeneralTextUsageCount);
-                          await databaseService.incrementUsageCount(
-                              uid, userAiTextUsageCount);
-                          userData.aiGeneralTextUsageCount >= 3 && appIAPStatus.isPro == false
-                              ? MyReusableFunctions.showPremiumDialog(
-                                  context: context,
-                                  message: freeAiUsageExceeded)
-                              : await handleSend(context);
-                          print(selectedSymptoms);
-                        },
+              onPressed: selectedSymptoms.isEmpty &&
+                      userData.symptomsList.isEmpty
+                  ? null
+                  : () async {
+                      await databaseService.incrementUsageCount(
+                          uid, userAiGeneralTextUsageCount);
+                      await databaseService.incrementUsageCount(
+                          uid, userAiTextUsageCount);
+                      userData.aiGeneralTextUsageCount >= freeLimit && !iapStatus.isPro
+                          ? MyReusableFunctions.showPremiumDialog(
+                              context: context, message: freeAiUsageExceeded)
+                          : await handleSend(context);
+                      print(selectedSymptoms);
+                    },
               label: const Text('Analyze Symptoms'),
               icon: const Icon(Icons.auto_awesome),
             ),

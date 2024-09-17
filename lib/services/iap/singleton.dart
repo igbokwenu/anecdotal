@@ -38,41 +38,41 @@ class IAPNotifier extends StateNotifier<IAPState> {
   }
 }
 
-class AppData {
-  static final AppData _appData = AppData._internal();
+// class AppData {
+//   static final AppData _appData = AppData._internal();
 
-  bool? isPro = false;
-  String appUserID = '';
+//   bool? isPro = false;
+//   String appUserID = '';
 
-  factory AppData() {
-    return _appData;
-  }
-  AppData._internal();
-}
+//   factory AppData() {
+//     return _appData;
+//   }
+//   AppData._internal();
+// }
 
-CustomerInfo? customerInfo;
-final appIAPStatus = AppData();
+// CustomerInfo? customerInfo;
+// final appIAPStatus = AppData();
 
-class RevenueCatService {
-  //This code checks if the user is a pro user. if user is pro, it sets the appIAPStatus to true
-  static Future<void> checkAndSetIAPStatus() async {
-    CustomerInfo purchaserInfo;
-    try {
-      purchaserInfo = await Purchases.getCustomerInfo();
-      if (kDebugMode) {
-        debugPrint('Yo, check this out:\n ${purchaserInfo.toString()}');
-      }
+// class RevenueCatService {
+//   //This code checks if the user is a pro user. if user is pro, it sets the appIAPStatus to true
+//   static Future<void> checkAndSetIAPStatus() async {
+//     CustomerInfo purchaserInfo;
+//     try {
+//       purchaserInfo = await Purchases.getCustomerInfo();
+//       if (kDebugMode) {
+//         debugPrint('Yo, check this out:\n ${purchaserInfo.toString()}');
+//       }
 
-      if (purchaserInfo.entitlements.all[entitlementID] != null) {
-        appIAPStatus.isPro =
-            purchaserInfo.entitlements.all[entitlementID]?.isActive;
-      } else {
-        appIAPStatus.isPro = false;
-      }
-    } on PlatformException catch (e) {
-      debugPrint(e.toString());
-    }
+//       if (purchaserInfo.entitlements.all[entitlementID] != null) {
+//         appIAPStatus.isPro =
+//             purchaserInfo.entitlements.all[entitlementID]?.isActive;
+//       } else {
+//         appIAPStatus.isPro = false;
+//       }
+//     } on PlatformException catch (e) {
+//       debugPrint(e.toString());
+//     }
 
-    debugPrint('#### is user pro? ${appIAPStatus.isPro}');
-  }
-}
+//     debugPrint('#### is user pro? ${appIAPStatus.isPro}');
+//   }
+// }

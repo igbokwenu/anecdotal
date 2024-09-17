@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/iap/singleton.dart';
@@ -87,13 +88,15 @@ class _RecorderState extends ConsumerState<Recorder> {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final databaseService = DatabaseService(uid: uid!);
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+    final iapStatus = ref.watch(iapProvider);
+    ref.read(iapProvider.notifier).checkAndSetIAPStatus();
 
     return GestureDetector(
       onTap: () async {
         await databaseService.incrementUsageCount(
             uid, userAiGeneralMediaUsageCount);
         await databaseService.incrementUsageCount(uid, userAiMediaUsageCount);
-        userData!.aiGeneralMediaUsageCount >= 3 && appIAPStatus.isPro == false
+        userData!.aiGeneralMediaUsageCount >= freeLimit && !iapStatus.isPro
             ? MyReusableFunctions.showPremiumDialog(
                 context: context, message: freeAiUsageExceeded)
             : _toggleListening();

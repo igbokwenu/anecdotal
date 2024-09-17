@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:anecdotal/providers/button_state_providers.dart';
+import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/iap/singleton.dart';
@@ -58,6 +59,8 @@ class ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final databaseService = DatabaseService(uid: uid!);
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+    final iapStatus = ref.watch(iapProvider);
+    ref.read(iapProvider.notifier).checkAndSetIAPStatus();
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
@@ -113,8 +116,8 @@ class ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
                         uid, userAiGeneralTextUsageCount);
                     await databaseService.incrementUsageCount(
                         uid, userAiTextUsageCount);
-                    userData!.aiGeneralTextUsageCount >= 3 &&
-                            appIAPStatus.isPro == false
+                    userData!.aiGeneralTextUsageCount >= freeLimit &&
+                            !iapStatus.isPro
                         ? MyReusableFunctions.showPremiumDialog(
                             context: context, message: freeAiUsageExceeded)
                         : _handleSubmitted(_controller.text);

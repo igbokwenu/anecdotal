@@ -198,10 +198,7 @@ class MyReusableFunctions {
                 onPressed: () async {
                   Navigator.of(context).pop();
                   if (!kIsWeb) {
-                    //TODO: Remove Android Condition
-                    if (Platform.isAndroid) {
-                      await RevenueCatUI.presentPaywall();
-                    }
+                    await RevenueCatUI.presentPaywall();
                   }
                 },
                 child: Text(

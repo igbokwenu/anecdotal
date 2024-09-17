@@ -1,4 +1,5 @@
 import 'package:anecdotal/providers/button_state_providers.dart';
+import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
@@ -105,18 +106,18 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
   @override
   Widget build(BuildContext context) {
     final buttonLoadingState = ref.watch(chatInputProvider);
-
     final uid = FirebaseAuth.instance.currentUser?.uid;
-
     final databaseService = DatabaseService(uid: uid!);
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+    final iapStatus = ref.watch(iapProvider);
+    ref.read(iapProvider.notifier).checkAndSetIAPStatus();
 
     Future<void> handleSend(
       BuildContext context,
       String forWho,
     ) async {
       if (!kIsWeb) {
-        if (appIAPStatus.isPro == false) {
+        if (!iapStatus.isPro) {
           MyReusableFunctions.showPremiumDialog(
               context: context, message: premiumSpeechAnalyzeButton);
         } else {
@@ -224,8 +225,8 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
                       uid, userAiGeneralMediaUsageCount);
                   await databaseService.incrementUsageCount(
                       uid, userAiMediaUsageCount);
-                  userData!.aiGeneralMediaUsageCount >= 3 &&
-                          appIAPStatus.isPro == false
+                  userData!.aiGeneralMediaUsageCount >= freeLimit &&
+                          !iapStatus.isPro
                       ? MyReusableFunctions.showPremiumDialog(
                           context: context, message: freeAiUsageExceeded)
                       : await _analyzeImages();
