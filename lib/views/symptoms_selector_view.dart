@@ -67,6 +67,9 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
 
       MyReusableFunctions.showProcessingToast();
       ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
+      await databaseService.incrementUsageCount(
+          uid, userAiGeneralTextUsageCount);
+      await databaseService.incrementUsageCount(uid, userAiTextUsageCount);
 
       // Flatten selectedSymptoms into a list of strings
       List<String> formattedSelectedSymptoms =
@@ -195,20 +198,18 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
       floatingActionButton: buttonLoadingState.isAnalyzing
           ? const MySpinKitWaveSpinner()
           : ElevatedButton.icon(
-              onPressed: selectedSymptoms.isEmpty &&
-                      userData.symptomsList.isEmpty
-                  ? null
-                  : () async {
-                      await databaseService.incrementUsageCount(
-                          uid, userAiGeneralTextUsageCount);
-                      await databaseService.incrementUsageCount(
-                          uid, userAiTextUsageCount);
-                      userData.aiGeneralTextUsageCount >= freeLimit && !iapStatus.isPro
-                          ? MyReusableFunctions.showPremiumDialog(
-                              context: context, message: freeAiUsageExceeded)
-                          : await handleSend(context);
-                      print(selectedSymptoms);
-                    },
+              onPressed:
+                  selectedSymptoms.isEmpty && userData.symptomsList.isEmpty
+                      ? null
+                      : () async {
+                          userData.aiGeneralTextUsageCount >= freeLimit &&
+                                  !iapStatus.isPro
+                              ? MyReusableFunctions.showPremiumDialog(
+                                  context: context,
+                                  message: freeAiUsageExceeded)
+                              : await handleSend(context);
+                          print(selectedSymptoms);
+                        },
               label: const Text('Analyze Symptoms'),
               icon: const Icon(Icons.auto_awesome),
             ),

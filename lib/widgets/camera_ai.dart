@@ -44,6 +44,24 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
     final iapStatus = ref.watch(iapProvider);
     ref.read(iapProvider.notifier).checkAndSetIAPStatus();
 
+    Future<void> analyzeCapturedImage() async {
+      if (_capturedImage != null) {
+        MyReusableFunctions.showProcessingToast();
+        await databaseService.incrementUsageCount(
+            uid, userAiGeneralMediaUsageCount);
+        await databaseService.incrementUsageCount(uid, userAiMediaUsageCount);
+        final response = await GeminiService.analyzeImages(
+          images: [_capturedImage!],
+          prompt: widget.prompt,
+        );
+        widget.onResponse(response);
+        widget.onComplete();
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+
     return Scaffold(
       body: Stack(
         children: [
@@ -55,10 +73,6 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
               zoom: _zoom,
             ),
             onMediaCaptureEvent: (event) async {
-              await databaseService.incrementUsageCount(
-                  uid, userAiGeneralMediaUsageCount);
-              await databaseService.incrementUsageCount(
-                  uid, userAiMediaUsageCount);
               if (userData!.aiGeneralMediaUsageCount >= freeLimit &&
                   !iapStatus.isPro) {
                 MyReusableFunctions.showPremiumDialog(
@@ -73,7 +87,7 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
                           _isLoading = true;
                           _capturedImage = File(single.file!.path);
                         });
-                        await _analyzeCapturedImage();
+                        await analyzeCapturedImage();
                       }
                     },
                     multiple: (multiple) {},
@@ -123,20 +137,5 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
         ],
       ),
     );
-  }
-
-  Future<void> _analyzeCapturedImage() async {
-    if (_capturedImage != null) {
-      MyReusableFunctions.showProcessingToast();
-      final response = await GeminiService.analyzeImages(
-        images: [_capturedImage!],
-        prompt: widget.prompt,
-      );
-      widget.onResponse(response);
-      widget.onComplete();
-      setState(() {
-        _isLoading = false;
-      });
-    }
   }
 }

@@ -5,29 +5,29 @@ import 'dart:io';
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
-import 'package:anecdotal/views/about_view.dart';
 import 'package:anecdotal/views/download_view.dart';
-
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 
-class SignInScreen extends StatefulWidget {
+class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
 
   @override
   _SignInScreenState createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends ConsumerState<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
   final _authService = AuthService();
+  bool isButtonLoading = false;
 
   @override
   void initState() {
@@ -42,6 +42,12 @@ class _SignInScreenState extends State<SignInScreen> {
     super.dispose();
   }
 
+  void changeButtonLoadingState() {
+    setState(() {
+      isButtonLoading = !isButtonLoading;
+    });
+  }
+
   Future<void> _loadSavedEmail() async {
     final prefs = await SharedPreferences.getInstance();
     final savedEmail = prefs.getString('email');
@@ -52,35 +58,43 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Future<void> _signInWithEmailAndPassword() async {
     if (_formKey.currentState!.validate()) {
+      changeButtonLoadingState();
       try {
         await _authService.signInWithEmailAndPassword(
           _emailController.text.trim(),
           _passwordController.text.trim(),
         );
+        changeButtonLoadingState();
         Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
         // Navigate to the home screen
       } on FirebaseAuthException {
-        // Handle sign-in error
+        changeButtonLoadingState();
       }
     }
   }
 
   Future<void> _signInWithGoogle() async {
+    changeButtonLoadingState();
     try {
       await _authService.signInWithGoogle();
+
+      changeButtonLoadingState();
       Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
       // Navigate to the home screen
     } on FirebaseAuthException {
-      // Handle sign-in error
+      changeButtonLoadingState();
     }
   }
 
   Future<void> _signInAnonymously() async {
+    changeButtonLoadingState();
     try {
       await _authService.signInAnonymously();
+      changeButtonLoadingState();
       Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
       // Navigate to the home screen
     } on FirebaseAuthException catch (e) {
+      changeButtonLoadingState();
       MyReusableFunctions.showCustomToast(
         description: "Error: $e",
         type: ToastificationType.error,
@@ -99,7 +113,8 @@ class _SignInScreenState extends State<SignInScreen> {
         ? const DownloadPage()
         : Scaffold(
             appBar: AppBar(
-              title: const Center(child: Text('Sign In')),
+              title: const Center(
+                  child: MyAppBarTitleWithAI(title: "Welcome To Anecdotal AI")),
             ),
             body: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -167,39 +182,47 @@ class _SignInScreenState extends State<SignInScreen> {
                           child: const Text('Forgot Password'),
                         ),
                       ),
-                      ElevatedButton.icon(
-                        onPressed: _signInWithEmailAndPassword,
-                        label: const Text('Sign In'),
-                        icon: const Icon(Icons.auto_awesome),
-                      ),
-                      mySpacing(spacing: 25),
-                      const Divider(
-                        height: 10,
-                        indent: 60,
-                        endIndent: 60,
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.pushNamed(context, AppRoutes.signUp);
-                        },
-                        label: const Text('Create Account'),
-                        icon: const Icon(Icons.person_add),
-                      ),
-                      mySpacing(),
-                      ElevatedButton.icon(
-                        onPressed: _signInAnonymously,
-                        label: const Text('Continue Anonymously'),
-                        icon: const Icon(Icons.visibility_off),
-                      ),
-                      if (!kIsWeb)
-                        if (Platform.isAndroid) ...[
-                          const SizedBox(height: 16.0),
-                          OutlinedButton.icon(
-                            onPressed: _signInWithGoogle,
-                            icon: const Icon(Icons.person),
-                            label: const Text('Sign In with Google'),
-                          ),
-                        ],
+                      isButtonLoading
+                          ? const MySpinKitWaveSpinner()
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                ElevatedButton.icon(
+                                  onPressed: _signInWithEmailAndPassword,
+                                  label: const Text('Sign In'),
+                                  icon: const Icon(Icons.auto_awesome),
+                                ),
+                                mySpacing(spacing: 25),
+                                const Divider(
+                                  height: 10,
+                                  indent: 60,
+                                  endIndent: 60,
+                                ),
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                        context, AppRoutes.signUp);
+                                  },
+                                  label: const Text('Create Account'),
+                                  icon: const Icon(Icons.person_add),
+                                ),
+                                mySpacing(),
+                                ElevatedButton.icon(
+                                  onPressed: _signInAnonymously,
+                                  label: const Text('Continue Anonymously'),
+                                  icon: const Icon(Icons.visibility_off),
+                                ),
+                                if (!kIsWeb)
+                                  if (Platform.isAndroid) ...[
+                                    const SizedBox(height: 16.0),
+                                    OutlinedButton.icon(
+                                      onPressed: _signInWithGoogle,
+                                      icon: const Icon(Icons.person),
+                                      label: const Text('Sign In with Google'),
+                                    ),
+                                  ],
+                              ],
+                            ),
                       mySpacing(),
                       const Align(
                         alignment: Alignment.bottomCenter,

@@ -196,8 +196,8 @@ class MyReusableFunctions {
               ),
               TextButton(
                 onPressed: () async {
-                  Navigator.of(context).pop();
                   if (!kIsWeb) {
+                    Navigator.of(context).pop();
                     await RevenueCatUI.presentPaywall();
                   }
                 },

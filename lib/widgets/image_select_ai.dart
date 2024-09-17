@@ -78,31 +78,6 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
     }
   }
 
-  Future<void> _analyzeImages() async {
-    if (_selectedFiles.isEmpty) return;
-
-    setState(() {
-      _isAnalyzing = true;
-    });
-
-    try {
-      final response = await GeminiService.analyzeImages(
-        images: _selectedFiles,
-        prompt: widget.prompt,
-      );
-
-      widget.onResponse(response);
-    } catch (e) {
-      print('Error analyzing images: $e');
-      widget.onResponse(null);
-    } finally {
-      setState(() {
-        _isAnalyzing = false;
-        // _selectedFiles.clear(); // Clear the selected files after analysis
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final buttonLoadingState = ref.watch(chatInputProvider);
@@ -111,6 +86,34 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
     final iapStatus = ref.watch(iapProvider);
     ref.read(iapProvider.notifier).checkAndSetIAPStatus();
+
+    Future<void> _analyzeImages() async {
+      if (_selectedFiles.isEmpty) return;
+
+      setState(() {
+        _isAnalyzing = true;
+      });
+
+      try {
+        await databaseService.incrementUsageCount(
+            uid, userAiGeneralMediaUsageCount);
+        await databaseService.incrementUsageCount(uid, userAiMediaUsageCount);
+        final response = await GeminiService.analyzeImages(
+          images: _selectedFiles,
+          prompt: widget.prompt,
+        );
+
+        widget.onResponse(response);
+      } catch (e) {
+        print('Error analyzing images: $e');
+        widget.onResponse(null);
+      } finally {
+        setState(() {
+          _isAnalyzing = false;
+          // _selectedFiles.clear(); // Clear the selected files after analysis
+        });
+      }
+    }
 
     Future<void> handleSend(
       BuildContext context,
@@ -221,10 +224,6 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
           onPressed: _selectedFiles.isEmpty || _isAnalyzing
               ? null
               : () async {
-                  await databaseService.incrementUsageCount(
-                      uid, userAiGeneralMediaUsageCount);
-                  await databaseService.incrementUsageCount(
-                      uid, userAiMediaUsageCount);
                   userData!.aiGeneralMediaUsageCount >= freeLimit &&
                           !iapStatus.isPro
                       ? MyReusableFunctions.showPremiumDialog(

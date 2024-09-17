@@ -64,6 +64,7 @@ const googleApiKey = 'goog_vsEPEYPdkWRUGqBiNyaGMjSqHbt';
 const appleApiKey = 'appl_kpeYPMlCLVQCfwiuRuBdPOfYaLL';
 const amazonApiKey = '';
 const entitlementID = 'pro';
+const entitlementIdAndroid = 'android';
 
 //User database reference:
 

@@ -35,6 +35,9 @@ class FirstWidgetSymptomChecker extends ConsumerWidget {
     ) async {
       MyReusableFunctions.showProcessingToast();
       ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
+      await databaseService.incrementUsageCount(
+          uid, userAiGeneralTextUsageCount);
+      await databaseService.incrementUsageCount(uid, userAiTextUsageCount);
       final response = await GeminiService.sendTextPrompt(
         message: sendSymptomAnalysisPrompt(
           symptoms: "${userData!.symptomsList}",
@@ -124,10 +127,6 @@ class FirstWidgetSymptomChecker extends ConsumerWidget {
               ? const MySpinKitWaveSpinner()
               : ElevatedButton.icon(
                   onPressed: () async {
-                    await databaseService.incrementUsageCount(
-                        uid, userAiGeneralTextUsageCount);
-                    await databaseService.incrementUsageCount(
-                        uid, userAiTextUsageCount);
                     userData.aiGeneralTextUsageCount >= freeLimit &&
                             !iapStatus.isPro
                         ? MyReusableFunctions.showPremiumDialog(

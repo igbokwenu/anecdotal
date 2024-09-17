@@ -252,7 +252,7 @@ class MyAnimatedText2 extends StatelessWidget {
     return AnimatedTextKit(
       animatedTexts: [
         ColorizeAnimatedText(
-          "Doing some AI magic, please wait...",
+          "Doing some Analysis, please wait...",
           textStyle: colorizeTextStyle,
           colors: colorizeColors,
         ),

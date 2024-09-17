@@ -72,8 +72,7 @@ class CustomDrawer extends ConsumerWidget {
                   title: const Text('Community Chat'),
                 ),
             if (!kIsWeb)
-              //TODO: Remove Android Condition
-              // if (Platform.isAndroid)
+
               ListTile(
                 onTap: () async {
                   iapStatus.isPro
@@ -125,10 +124,7 @@ class CustomDrawer extends ConsumerWidget {
               leading: const Icon(Icons.logout_rounded),
               title: const Text('Sign Out'),
             ),
-            PrivacyAndTermsButton(
-              showDownload:
-                  userEmail == 'increasedwisdom@gmail.com' ? true : false,
-            ),
+            const PrivacyAndTermsButton(),
           ],
         ),
       ),

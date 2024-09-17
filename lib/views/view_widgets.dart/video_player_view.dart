@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
 
-class YouTubeShortsWidget extends StatefulWidget {
+class VideoPlayerWidget extends StatefulWidget {
   final String videoUrl;
   final double aspectRatio;
   final double width;
   final double height;
 
-  const YouTubeShortsWidget({
+  const VideoPlayerWidget({
     Key? key,
     required this.videoUrl,
     this.aspectRatio = 9 / 16,
@@ -17,10 +17,10 @@ class YouTubeShortsWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _YouTubeShortsWidgetState createState() => _YouTubeShortsWidgetState();
+  _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
 }
 
-class _YouTubeShortsWidgetState extends State<YouTubeShortsWidget> {
+class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late VideoPlayerController _videoPlayerController;
   ChewieController? _chewieController;
   String _errorMessage = '';
