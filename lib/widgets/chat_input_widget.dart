@@ -40,6 +40,19 @@ class ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
     super.dispose();
   }
 
+  void _handleSubmitted(String text) async {
+    if (text.isNotEmpty) {
+      // Dismiss the keyboard
+      FocusScope.of(context).unfocus();
+
+      ref.read(chatInputProvider.notifier).setIsSending(true);
+      await widget.onSend(text);
+      ref.read(chatInputProvider.notifier).setIsSending(false);
+      _controller.clear();
+      ref.read(chatInputProvider.notifier).setIsComposing(false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final chatInputState = ref.watch(chatInputProvider);
@@ -48,29 +61,6 @@ class ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
     final iapStatus = ref.watch(iapProvider);
     ref.read(iapProvider.notifier).checkAndSetIAPStatus();
-
-    void handleSubmitted(String text) async {
-      if (text.isNotEmpty) {
-        // Dismiss the keyboard
-        FocusScope.of(context).unfocus();
-
-        if (userData!.aiGeneralTextUsageCount >= freeLimit &&
-            !iapStatus.isPro) {
-          MyReusableFunctions.showPremiumDialog(
-              context: context, message: freeAiUsageExceeded);
-        } else {
-          await databaseService.incrementUsageCount(
-              uid, userAiGeneralTextUsageCount);
-          await databaseService.incrementUsageCount(uid, userAiTextUsageCount);
-
-          ref.read(chatInputProvider.notifier).setIsSending(true);
-          await widget.onSend(text);
-          ref.read(chatInputProvider.notifier).setIsSending(false);
-          _controller.clear();
-          ref.read(chatInputProvider.notifier).setIsComposing(false);
-        }
-      }
-    }
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
@@ -95,10 +85,9 @@ class ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
                     .read(chatInputProvider.notifier)
                     .setIsComposing(text.isNotEmpty);
               },
-              //TODO: Implement onSubmitted
               onSubmitted:
                   chatInputState.isComposing && !chatInputState.isSending
-                      ? handleSubmitted
+                      ? _handleSubmitted
                       : null,
               enabled: !chatInputState.isSending,
               decoration: InputDecoration(
@@ -123,7 +112,11 @@ class ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
                     color: Theme.of(context).colorScheme.secondary),
             onPressed: chatInputState.isComposing && !chatInputState.isSending
                 ? () async {
-                    handleSubmitted(_controller.text);
+                    userData!.aiGeneralTextUsageCount >= freeLimit &&
+                            !iapStatus.isPro
+                        ? MyReusableFunctions.showPremiumDialog(
+                            context: context, message: freeAiUsageExceeded)
+                        : _handleSubmitted(_controller.text);
                   }
                 : null,
           ),

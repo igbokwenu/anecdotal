@@ -29,7 +29,7 @@ class DownloadPage extends StatelessWidget {
           'Get the app now and start your journey to better health!',
       'playStoreUrl':
           'https://play.google.com/store/apps/details?id=com.increasedw.anecdotal',
-      'appStoreUrl': 'https://testflight.apple.com/join/2aWq4CRM',
+      'appStoreUrl': 'https://apps.apple.com/app/anecdotal-ai/id6670702224',
     };
 
     return Scaffold(

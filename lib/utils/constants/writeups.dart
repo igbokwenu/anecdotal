@@ -33,4 +33,4 @@ const String premiumSpeechAnalyzeHistory =
     "Unlock premium to analyze your health journey, discover patterns, and gain insights into the activities that have most improved your well-being.";
 
 const String freeAiUsageExceeded =
-    'You have exceeded your free limit and need a premium subscription to proceed';
+    "Oops, you've reached your free usage! AI magic comes at a cost, and a premium subscription helps us keep it going for you.";

@@ -1,6 +1,7 @@
 import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
+import 'package:anecdotal/services/chatgpt_ai_service.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/services/iap/singleton.dart';
@@ -80,7 +81,7 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
           [...alreadySelectedSymptoms, ...formattedSelectedSymptoms].toList();
 
       // Send allSelectedSymptoms to GeminiService
-      final response = await GeminiService.sendTextPrompt(
+      final response = await ChatGPTService.sendTextPrompt(
         message: sendSymptomAnalysisPrompt(
             symptoms: "$allSelectedSymptoms",
             history: userData.medicalHistoryList.isEmpty
