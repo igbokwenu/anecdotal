@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 
 class YouTubeShortsWidget extends StatefulWidget {
   final String videoUrl;
@@ -10,9 +11,9 @@ class YouTubeShortsWidget extends StatefulWidget {
   const YouTubeShortsWidget({
     Key? key,
     required this.videoUrl,
-    this.aspectRatio = 9 / 16, // Default aspect ratio for portrait mode
-    this.width = 300, // Default width for the video container
-    this.height = 533, // Default height for the video container
+    this.aspectRatio = 9 / 16,
+    this.width = 300,
+    this.height = 533,
   }) : super(key: key);
 
   @override
@@ -20,21 +21,48 @@ class YouTubeShortsWidget extends StatefulWidget {
 }
 
 class _YouTubeShortsWidgetState extends State<YouTubeShortsWidget> {
-  late YoutubePlayerController _controller;
+  late VideoPlayerController _videoPlayerController;
+  ChewieController? _chewieController;
+  String _errorMessage = '';
+  String _debugInfo = '';
 
   @override
   void initState() {
     super.initState();
-    _controller = YoutubePlayerController.fromVideoId(
-      videoId: YoutubePlayerController.convertUrlToId(widget.videoUrl) ?? '',
-      params: const YoutubePlayerParams(
-        showFullscreenButton: true,
-        mute: false,
+    _initializePlayer();
+  }
+
+  Future<void> _initializePlayer() async {
+    try {
+      _videoPlayerController =
+          VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
+      await _videoPlayerController.initialize();
+
+      _chewieController = ChewieController(
+        videoPlayerController: _videoPlayerController,
+        aspectRatio: widget.aspectRatio,
+        autoPlay: false,
+        looping: false,
         showControls: true,
-        loop: false,
-        enableCaption: false,
-      ),
-    );
+        allowFullScreen: true,
+        allowMuting: true,
+        errorBuilder: (context, errorMessage) {
+          return Center(
+            child: Text(
+              errorMessage,
+              style: TextStyle(color: Colors.white),
+            ),
+          );
+        },
+      );
+
+      setState(() {});
+    } catch (error) {
+      print('Error initializing video: $error');
+      setState(() {
+        _errorMessage = 'Error loading video: $error';
+      });
+    }
   }
 
   @override
@@ -43,34 +71,31 @@ class _YouTubeShortsWidgetState extends State<YouTubeShortsWidget> {
       width: widget.width,
       height: widget.height,
       decoration: BoxDecoration(
-        color: Theme.of(context)
-            .appBarTheme
-            .backgroundColor, // Set background color from theme
-        borderRadius: BorderRadius.circular(20), // Rounded corners
+        color: Theme.of(context).appBarTheme.backgroundColor,
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: Theme.of(context)
-              .appBarTheme
-              .backgroundColor!, // Border color matching the container background
-          width: 4, // Border width
+          color: Theme.of(context).appBarTheme.backgroundColor!,
+          width: 4,
         ),
       ),
       child: ClipRRect(
-        borderRadius:
-            BorderRadius.circular(20), // Same rounded corners for the video
-        child: YoutubePlayerScaffold(
-          controller: _controller,
-          aspectRatio: widget.aspectRatio,
-          builder: (context, player) {
-            return player;
-          },
-        ),
+        borderRadius: BorderRadius.circular(20),
+        child: _chewieController != null &&
+                _chewieController!.videoPlayerController.value.isInitialized
+            ? Chewie(controller: _chewieController!)
+            : Center(
+                child: _errorMessage.isNotEmpty
+                    ? Text(_errorMessage, textAlign: TextAlign.center)
+                    : const CircularProgressIndicator(),
+              ),
       ),
     );
   }
 
   @override
   void dispose() {
-    _controller.close();
+    _videoPlayerController.dispose();
+    _chewieController?.dispose();
     super.dispose();
   }
 }
