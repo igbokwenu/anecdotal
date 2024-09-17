@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
+import 'package:anecdotal/views/about_view.dart';
+import 'package:anecdotal/views/download_view.dart';
 
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:flutter/foundation.dart';
@@ -93,121 +95,124 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Center(child: Text('Sign In')),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const MyCircularImage(
-                  imageUrl: logoAssetImageUrlNoTagLine,
-                  size: 120,
-                ),
-                mySpacing(),
-                Text(
-                  "You're not alone in your healing journey. Anecdotal is a safe space to track your progress, explore resources, and connect with others who understand what you're going through 🤍",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
-                mySpacing(spacing: 20),
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty || !value.contains('@')) {
-                      return 'Please enter a valid email address';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16.0),
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: _obscurePassword,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: const OutlineInputBorder(),
-                    suffixIcon: IconButton(
-                      icon: Icon(_obscurePassword
-                          ? Icons.visibility_off
-                          : Icons.visibility),
-                      onPressed: () {
-                        setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        });
-                      },
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value!.length < 6) {
-                      return 'Password must be at least 6 characters long';
-                    }
-                    return null;
-                  },
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: _navigateToPasswordRecovery,
-                    child: const Text('Forgot Password'),
-                  ),
-                ),
-                ElevatedButton.icon(
-                  onPressed: _signInWithEmailAndPassword,
-                  label: const Text('Sign In'),
-                  icon: const Icon(Icons.auto_awesome),
-                ),
-                mySpacing(spacing: 25),
-                const Divider(
-                  height: 10,
-                  indent: 60,
-                  endIndent: 60,
-                ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.signUp);
-                  },
-                  label: const Text('Create Account'),
-                  icon: const Icon(Icons.person_add),
-                ),
-                mySpacing(),
-                ElevatedButton.icon(
-                  onPressed: _signInAnonymously,
-                  label: const Text('Continue Anonymously'),
-                  icon: const Icon(Icons.visibility_off),
-                ),
-                if (!kIsWeb)
-                  if (Platform.isAndroid) ...[
-                    const SizedBox(height: 16.0),
-                    OutlinedButton.icon(
-                      onPressed: _signInWithGoogle,
-                      icon: const Icon(Icons.person),
-                      label: const Text('Sign In with Google'),
-                    ),
-                  ],
-                mySpacing(),
-                const Align(
-                  alignment: Alignment.bottomCenter,
-                  child: PrivacyAndTermsButton(
-                    showAbout: true, showDownload: true,
-                  ),
-                ),
-              ],
+    return kIsWeb
+        ? const DownloadPage()
+        : Scaffold(
+            appBar: AppBar(
+              title: const Center(child: Text('Sign In')),
             ),
-          ),
-        ),
-      ),
-    );
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const MyCircularImage(
+                        imageUrl: logoAssetImageUrlNoTagLine,
+                        size: 120,
+                      ),
+                      mySpacing(),
+                      Text(
+                        "You're not alone in your healing journey. Anecdotal is a safe space to track your progress, explore resources, and connect with others who understand what you're going through 🤍",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
+                      mySpacing(spacing: 20),
+                      TextFormField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                          labelText: 'Email',
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty || !value.contains('@')) {
+                            return 'Please enter a valid email address';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16.0),
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: _obscurePassword,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          border: const OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            icon: Icon(_obscurePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value!.length < 6) {
+                            return 'Password must be at least 6 characters long';
+                          }
+                          return null;
+                        },
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: _navigateToPasswordRecovery,
+                          child: const Text('Forgot Password'),
+                        ),
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: _signInWithEmailAndPassword,
+                        label: const Text('Sign In'),
+                        icon: const Icon(Icons.auto_awesome),
+                      ),
+                      mySpacing(spacing: 25),
+                      const Divider(
+                        height: 10,
+                        indent: 60,
+                        endIndent: 60,
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pushNamed(context, AppRoutes.signUp);
+                        },
+                        label: const Text('Create Account'),
+                        icon: const Icon(Icons.person_add),
+                      ),
+                      mySpacing(),
+                      ElevatedButton.icon(
+                        onPressed: _signInAnonymously,
+                        label: const Text('Continue Anonymously'),
+                        icon: const Icon(Icons.visibility_off),
+                      ),
+                      if (!kIsWeb)
+                        if (Platform.isAndroid) ...[
+                          const SizedBox(height: 16.0),
+                          OutlinedButton.icon(
+                            onPressed: _signInWithGoogle,
+                            icon: const Icon(Icons.person),
+                            label: const Text('Sign In with Google'),
+                          ),
+                        ],
+                      mySpacing(),
+                      const Align(
+                        alignment: Alignment.bottomCenter,
+                        child: PrivacyAndTermsButton(
+                          showAbout: true,
+                          showDownload: true,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
   }
 }

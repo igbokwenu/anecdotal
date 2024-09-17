@@ -1,6 +1,8 @@
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
+import 'package:anecdotal/views/view_widgets.dart/youtube_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
+import 'package:anecdotal/widgets/theme_toggle_button.dart';
 import 'package:flutter/material.dart';
 
 class DownloadPage extends StatelessWidget {
@@ -11,7 +13,15 @@ class DownloadPage extends StatelessWidget {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Center(
+          child: MyAppBarTitleWithAI(title: "Meet Anecdotal AI"),
+        ),
+        actions: const [
+          ThemeToggle(),
+          SizedBox(width: 10),
+        ],
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -20,29 +30,19 @@ class DownloadPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // const SizedBox(height: 10),
-                // Text(
-                //   'Anecdotal',
-                //   style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                //         fontWeight: FontWeight.bold,
-                //         color: Theme.of(context).colorScheme.primary,
-                //       ),
-                // ),
-                mySpacing(),
-                const MyCircularImage(
-                  imageUrl: logoAssetImageUrlNoTagLine,
-                  size: 180,
+                Text(
+                  'Watch Our Demo Video',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                  textAlign: TextAlign.center,
                 ),
-                // const SizedBox(height: 20),
-                // ClipRRect(
-                //   borderRadius: BorderRadius.circular(20),
-                //   child: Image.asset(
-                //     'assets/images/mockup.PNG',
-                //     height: 300,
-                //     width: double.infinity,
-                //     fit: BoxFit.contain,
-                //   ),
-                // ),
+                mySpacing(),
+                const YouTubeShortsWidget(
+                    videoUrl:
+                        'https://youtu.be/vn_v-qgZrgo?si=9Guxb38ZbGG0R8dx',
+                    width: 150,
+                    height: 266.5),
                 const SizedBox(height: 20),
                 Text(
                   'Your Personal Health Companion',
@@ -51,10 +51,9 @@ class DownloadPage extends StatelessWidget {
                       ),
                   textAlign: TextAlign.center,
                 ),
-
                 const SizedBox(height: 10),
                 Text(
-                  'Anecdotal is your companion app for managing chronic illness. '
+                  'Anecdotal AI is your companion app for managing chronic illness. '
                   'Track and evaluate symptoms, investigate your home, get personalized health insights, and connect with others '
                   'who share your journey. Available now on Android and iOS.',
                   style: Theme.of(context).textTheme.bodyLarge,
@@ -93,6 +92,11 @@ class DownloadPage extends StatelessWidget {
                       .bodyLarge
                       ?.copyWith(fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
+                ),
+                mySpacing(),
+                const MyCircularImage(
+                  imageUrl: logoAssetImageUrlNoTagLine,
+                  size: 100,
                 ),
                 mySpacing(),
                 const Divider(),
