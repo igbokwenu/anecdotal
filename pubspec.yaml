@@ -50,7 +50,7 @@ dependencies:
   pdf: ^3.11.1
   printing: ^5.13.2
   share_plus: ^10.0.2
-  youtube_player_iframe: ^5.1.5
+  youtube_player_iframe: ^5.0.0
 
 
 dev_dependencies:
@@ -71,7 +71,7 @@ flutter_icons:
   ios: true
   web:
    generate: true
-   image_path: "assets/images/anecdotal_512.png"
+   image_path: "assets/images/anecdotal_rounded_tag.png"
    
 flutter:
   uses-material-design: true
