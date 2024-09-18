@@ -60,6 +60,7 @@ class DownloadPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        mySpacing(spacing: 40),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -113,12 +114,10 @@ class DownloadPage extends StatelessWidget {
         ),
         const Divider(),
         mySpacing(),
-        SizedBox(
-          width: 300,
-          height: 533,
-          child: VideoPlayerWidget(
-            videoUrl: content['videoUrl']!,
-          ),
+        VideoPlayerWidget(
+          videoUrl: content['videoUrl']!,
+          height: 469,
+          width: 264,
         ),
       ],
     );
@@ -133,9 +132,9 @@ class DownloadPage extends StatelessWidget {
         mySpacing(spacing: 30),
         const MyCircularImage(
           imageUrl: logoAssetImageUrlNoTagLine,
-          size: 180,
+          size: 200,
         ),
-        mySpacing(),
+        mySpacing(spacing: 20),
         Text(
           content['appTitle']!,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(

@@ -43,9 +43,10 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
         aspectRatio: widget.aspectRatio,
         autoPlay: false,
         looping: false,
-        showControls: true,
+        // showControls: true,
         allowFullScreen: true,
         allowMuting: true,
+        showOptions: false,
         errorBuilder: (context, errorMessage) {
           return Center(
             child: Text(
