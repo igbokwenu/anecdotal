@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/services/auth_service.dart';
-import 'package:anecdotal/services/iap/singleton.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
@@ -11,7 +10,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 
 class CustomDrawer extends ConsumerWidget {

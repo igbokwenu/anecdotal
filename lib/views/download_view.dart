@@ -6,7 +6,7 @@ import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:anecdotal/widgets/theme_toggle_button.dart';
 
 class DownloadPage extends StatelessWidget {
-  const DownloadPage({Key? key}) : super(key: key);
+  const DownloadPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class DownloadPage extends StatelessWidget {
               'Track and evaluate symptoms, investigate your home, get personalized health insights, and connect with others '
               'who share your journey. Available now on Android and iOS.',
       'callToAction':
-          'Get the app now and start your journey to better health!',
+          'Download the app today and jump-start your healing journey!',
       'playStoreUrl':
           'https://play.google.com/store/apps/details?id=com.increasedw.anecdotal',
       'appStoreUrl': 'https://apps.apple.com/app/anecdotal-ai/id6670702224',

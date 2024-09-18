@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:anecdotal/providers/iap_provider.dart';
-import 'package:anecdotal/services/iap/singleton.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/constants/writeups.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
@@ -117,7 +116,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
           .toList();
     }
 
-    Future<void> _saveAndSharePDF(BuildContext context, bool share) async {
+    Future<void> saveAndSharePDF(BuildContext context, bool share) async {
       final pdf = pw.Document();
       final subject = widget.name ?? "Subject Anonymous";
 
@@ -301,7 +300,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
                       : IconButton(
                           icon: const Icon(Icons.save),
                           onPressed: () =>
-                              _saveAndSharePDF(context, false), // Save PDF
+                              saveAndSharePDF(context, false), // Save PDF
                         ),
               ],
       ),
@@ -377,13 +376,13 @@ class _ReportViewState extends ConsumerState<ReportView> {
                       : IconButton(
                           icon: const Icon(Icons.save),
                           onPressed: () =>
-                              _saveAndSharePDF(context, false), // Save PDF
+                              saveAndSharePDF(context, false), // Save PDF
                         ),
                 if (Platform.isAndroid)
                   IconButton(
                     icon: const Icon(Icons.share),
                     onPressed: () =>
-                        _saveAndSharePDF(context, true), // Share PDF
+                        saveAndSharePDF(context, true), // Share PDF
                   ),
               ],
             ),
@@ -515,7 +514,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Sources & Citations'),
+          title: const Text('Sources & Citations'),
           content: SingleChildScrollView(
             child: ListBody(
               children: allCitations.map((citation) {
@@ -533,7 +532,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
                     },
                     child: Text(
                       citation,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.blue,
                         decoration: TextDecoration.underline,
                       ),
@@ -545,7 +544,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Close'),
+              child: const Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

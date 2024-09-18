@@ -9,12 +9,12 @@ class VideoPlayerWidget extends StatefulWidget {
   final double height;
 
   const VideoPlayerWidget({
-    Key? key,
+    super.key,
     required this.videoUrl,
     this.aspectRatio = 9 / 16,
     this.width = 300,
     this.height = 533,
-  }) : super(key: key);
+  });
 
   @override
   _VideoPlayerWidgetState createState() => _VideoPlayerWidgetState();
@@ -24,7 +24,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late VideoPlayerController _videoPlayerController;
   ChewieController? _chewieController;
   String _errorMessage = '';
-  String _debugInfo = '';
+  final String _debugInfo = '';
 
   @override
   void initState() {
@@ -51,7 +51,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
           return Center(
             child: Text(
               errorMessage,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           );
         },

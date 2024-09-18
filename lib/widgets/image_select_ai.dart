@@ -3,7 +3,6 @@ import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
-import 'package:anecdotal/services/iap/singleton.dart';
 import 'package:anecdotal/utils/constants/ai_prompts.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/constants/writeups.dart';
@@ -87,7 +86,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
     final iapStatus = ref.watch(iapProvider);
     ref.read(iapProvider.notifier).checkAndSetIAPStatus();
 
-    Future<void> _analyzeImages() async {
+    Future<void> analyzeImages() async {
       if (_selectedFiles.isEmpty) return;
 
       setState(() {
@@ -228,7 +227,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
                           !iapStatus.isPro
                       ? MyReusableFunctions.showPremiumDialog(
                           context: context,)
-                      : await _analyzeImages();
+                      : await analyzeImages();
                 },
           label: _isAnalyzing
               ? const MySpinKitWaveSpinner(size: 40)

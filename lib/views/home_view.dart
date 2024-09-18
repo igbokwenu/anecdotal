@@ -1,6 +1,5 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
-import 'package:anecdotal/services/iap/singleton.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
 import 'package:anecdotal/widgets/home_widgets/first_interpret_lab_widget.dart';
@@ -26,7 +25,6 @@ import 'package:anecdotal/widgets/custom_card_home.dart';
 import 'package:anecdotal/widgets/theme_toggle_button.dart';
 import 'package:anecdotal/widgets/voice_recorder_widget.dart';
 import 'package:flutter/foundation.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 
 class AnecdotalAppHome extends ConsumerStatefulWidget {
   const AnecdotalAppHome({super.key});
@@ -225,7 +223,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                       //   ],
                       // ),
                       Text(
-                        "Anecdotal is built by patients, with the help of compassionate doctors - for those in search of answers and support regarding complex and debilitating chronic conditions like CIRS and Bio-toxin Illness. ",
+                        "Anecdotal AI is built by patients, with the help of compassionate doctors - for those in search of answers and support regarding complex and debilitating chronic conditions like CIRS and Bio-toxin Illness. ",
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall
