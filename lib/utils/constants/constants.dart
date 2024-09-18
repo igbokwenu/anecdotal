@@ -55,7 +55,8 @@ const String logoAssetImageUrlCircular = "assets/images/anecdotal_rounded.png";
 const String logoAssetImageUrlCircularWithTag =
     "assets/images/anecdotal_rounded_tag.png";
 const String logoAssetImageUrlNoTagLine = "assets/images/anecdotal_1000.png";
-const String logoAssetImageUrlOnlyLogo = "assets/images/anecdotal_only_logo.png";
+const String logoAssetImageUrlOnlyLogo =
+    "assets/images/anecdotal_only_logo.png";
 const String logoAssetImageUrlWithTagLine =
     "assets/images/anecdotal_logo_tag_2000.png";
 
@@ -104,4 +105,4 @@ const String userAiGeneralMediaUsageCount = 'aiGeneralMediaUsageCount';
 const String userAiGeneralTextUsageCount = 'aiGeneralTextUsageCount';
 const String userHealingJourneyMap = 'healingJourneyMap';
 
-const int freeLimit = 3;
+const int freeLimit = 5;

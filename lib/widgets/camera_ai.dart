@@ -76,7 +76,7 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
               if (userData!.aiGeneralMediaUsageCount >= freeLimit &&
                   !iapStatus.isPro) {
                 MyReusableFunctions.showPremiumDialog(
-                    context: context, message: freeAiUsageExceeded);
+                    context: context, );
               } else {
                 if (event.isPicture &&
                     event.status == MediaCaptureStatus.success) {

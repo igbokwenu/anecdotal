@@ -98,7 +98,7 @@ class _RecorderState extends ConsumerState<Recorder> {
         await databaseService.incrementUsageCount(uid, userAiMediaUsageCount);
         userData!.aiGeneralMediaUsageCount >= freeLimit && !iapStatus.isPro
             ? MyReusableFunctions.showPremiumDialog(
-                context: context, message: freeAiUsageExceeded)
+                context: context,)
             : _toggleListening();
       },
       child: SizedBox(

@@ -130,7 +130,7 @@ class FirstWidgetSymptomChecker extends ConsumerWidget {
                     userData.aiGeneralTextUsageCount >= freeLimit &&
                             !iapStatus.isPro
                         ? MyReusableFunctions.showPremiumDialog(
-                            context: context, message: freeAiUsageExceeded)
+                            context: context, )
                         : await handleSend(context);
                   },
                   label: const Text("Generate A Report For Your Doctor"),

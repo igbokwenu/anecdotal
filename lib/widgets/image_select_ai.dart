@@ -227,7 +227,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
                   userData!.aiGeneralMediaUsageCount >= freeLimit &&
                           !iapStatus.isPro
                       ? MyReusableFunctions.showPremiumDialog(
-                          context: context, message: freeAiUsageExceeded)
+                          context: context,)
                       : await _analyzeImages();
                 },
           label: _isAnalyzing

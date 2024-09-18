@@ -207,7 +207,7 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
                                   !iapStatus.isPro
                               ? MyReusableFunctions.showPremiumDialog(
                                   context: context,
-                                  message: freeAiUsageExceeded)
+                                  )
                               : await handleSend(context);
                           print(selectedSymptoms);
                         },

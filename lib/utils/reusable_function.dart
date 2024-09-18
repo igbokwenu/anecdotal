@@ -172,7 +172,7 @@ class MyReusableFunctions {
         ),
         content: widget ??
             Text(
-              "This is a premium feature. ${message ?? ''}",
+              "Oops, you've reached your free usage limit for some of our premium features! AI magic comes at a cost, and a premium subscription helps us keep it going for you. ${message ?? ''}",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16, // Adjust the font size as needed

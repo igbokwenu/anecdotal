@@ -115,7 +115,7 @@ class ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
                     userData!.aiGeneralTextUsageCount >= freeLimit &&
                             !iapStatus.isPro
                         ? MyReusableFunctions.showPremiumDialog(
-                            context: context, message: freeAiUsageExceeded)
+                            context: context,)
                         : _handleSubmitted(_controller.text);
                   }
                 : null,
