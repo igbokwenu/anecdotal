@@ -125,16 +125,20 @@ class DownloadPage extends StatelessWidget {
 
   Widget _buildAppInfoSection(
       BuildContext context, bool isDarkMode, Map<String, String> content) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isDesktopOrTablet = screenWidth > 600;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        mySpacing(spacing: 30),
-        const MyCircularImage(
-          imageUrl: logoAssetImageUrlNoTagLine,
-          size: 200,
-        ),
-        mySpacing(spacing: 20),
+        if (isDesktopOrTablet) ...[
+          mySpacing(spacing: 30),
+          const MyCircularImage(
+            imageUrl: logoAssetImageUrlNoTagLine,
+            size: 200,
+          ),
+          mySpacing(spacing: 20),
+        ],
         Text(
           content['appTitle']!,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
