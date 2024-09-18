@@ -157,6 +157,7 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
     const int minimumEntries = 10;
     final iapStatus = ref.watch(iapProvider);
+    const String sectionTitle = 'Visualize Your Journey';
 
     String formatHealingJourneyData(
         List<Map<String, dynamic>> healingJourneyMap) {
@@ -211,7 +212,7 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
               followUpSearchTerms:
                   response['suggestions']?.cast<String>() ?? [],
               citations: response['citations']?.cast<String>() ?? [],
-              title: 'Symptom Analysis',
+              title: sectionTitle,
               enableManualCitations: false,
             ),
           ),
@@ -227,7 +228,7 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
     return Scaffold(
       appBar: AppBar(
         title: const MyAppBarTitleWithAI(
-          title: 'Visualize Your Journey',
+          title: sectionTitle,
         ),
         elevation: 0,
       ),
