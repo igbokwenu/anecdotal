@@ -139,53 +139,54 @@ class ChatGPTService {
       return null;
     }
   }
+
   static Map<String, dynamic> _parseJsonResponse(http.Response response) {
-  try {
-    // Log the raw response for debugging
-    print("Raw response body: ${response.body}");
+    try {
+      // Log the raw response for debugging
+      print("Raw response body: ${response.body}");
 
-    // Attempt to decode the JSON response
-    final decodedResponse = jsonDecode(response.body);
+      // Attempt to decode the JSON response
+      final decodedResponse = jsonDecode(response.body);
 
-    // Extract and structure the response similarly to Gemini's response
-    final choices = decodedResponse['choices'];
-    if (choices != null && choices.isNotEmpty) {
-      final content = choices.first['message']['content'];
-      
-      // Log the content returned by OpenAI for further debugging
-      print("OpenAI content: $content");
+      // Extract and structure the response similarly to Gemini's response
+      final choices = decodedResponse['choices'];
+      if (choices != null && choices.isNotEmpty) {
+        final content = choices.first['message']['content'];
 
-      final jsonResponse = jsonDecode(content);
+        // Log the content returned by OpenAI for further debugging
+        print("OpenAI content: $content");
+
+        final jsonResponse = jsonDecode(content);
+        return {
+          'summary': jsonResponse['summary'] ?? 'No summary available.',
+          'insights': jsonResponse['insights'] ?? [],
+          'recommendations': jsonResponse['recommendations'] ?? [],
+          'suggestions': jsonResponse['suggestions'] ?? [],
+          'citations': jsonResponse['citations'] ?? [],
+        };
+      } else {
+        return {
+          'summary': 'No summary available.',
+          'insights': [],
+          'recommendations': [],
+          'suggestions': [],
+          'citations': [],
+        };
+      }
+    } catch (e) {
+      // Catch and log any JSON format errors
+      print("Error parsing JSON response: $e");
+
+      // Return a default response in case of failure
       return {
-        'summary': jsonResponse['summary'] ?? 'No summary available.',
-        'insights': jsonResponse['insights'] ?? [],
-        'recommendations': jsonResponse['recommendations'] ?? [],
-        'suggestions': jsonResponse['suggestions'] ?? [],
-        'citations': jsonResponse['citations'] ?? [],
-      };
-    } else {
-      return {
-        'summary': 'No summary available.',
+        'summary': 'No summary available due to an error.',
         'insights': [],
         'recommendations': [],
         'suggestions': [],
         'citations': [],
       };
     }
-  } catch (e) {
-    // Catch and log any JSON format errors
-    print("Error parsing JSON response: $e");
-
-    // Return a default response in case of failure
-    return {
-      'summary': 'No summary available due to an error.',
-      'insights': [],
-      'recommendations': [],
-      'suggestions': [],
-      'citations': [],
-    };
   }
-}
 }
 
 class ChatGPTServiceOld {

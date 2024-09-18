@@ -1,1 +1,3 @@
-UX enhancements. Adding AI image search.
+UX enhancements. 
+Improved AI responses
+Minor bug fixes

@@ -81,7 +81,7 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
           [...alreadySelectedSymptoms, ...formattedSelectedSymptoms].toList();
 
       // Send allSelectedSymptoms to GeminiService
-      final response = await ChatGPTService.sendTextPrompt(
+      final response = await GeminiService.sendTextPrompt(
         message: sendSymptomAnalysisPrompt(
             symptoms: "$allSelectedSymptoms",
             history: userData.medicalHistoryList.isEmpty
@@ -207,7 +207,7 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
                                   !iapStatus.isPro
                               ? MyReusableFunctions.showPremiumDialog(
                                   context: context,
-                                  )
+                                )
                               : await handleSend(context);
                           print(selectedSymptoms);
                         },
