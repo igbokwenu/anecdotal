@@ -70,11 +70,10 @@ class CustomDrawer extends ConsumerWidget {
                   title: const Text('Community Chat'),
                 ),
             if (!kIsWeb)
-
               ListTile(
                 onTap: () async {
                   iapStatus.isPro
-                      ? MyReusableFunctions.myReusableCustomDialog(
+                      ? MyReusableFunctions.showCustomDialog(
                           context: context,
                           message: 'You are already a pro user')
                       : await RevenueCatUI.presentPaywall();
@@ -93,7 +92,7 @@ class CustomDrawer extends ConsumerWidget {
             ListTile(
               onTap: () async {
                 authService.isUserAnonymous()
-                    ? MyReusableFunctions.myReusableCustomDialog(
+                    ? MyReusableFunctions.showCustomDialog(
                         context: context,
                         icon: Icons.info,
                         message:

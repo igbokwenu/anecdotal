@@ -178,6 +178,8 @@ String sendHistoryAnalysisPrompt({String? healingJourneyMap}) {
   A doneList showing the activities the user has completed from their to do list.
   A notes section showing notes the user took for the entry.
 
+  You are speaking directly to the user with the data so speak to them empathetically where necessary.
+
   I want you to analyze the data provided in the map and look for insights, patterns, and find things note wordy from the data. Activities that made the user feel good or feel bad etc.
 
   If the maps in the array are less than 50, encourage the user to use the Anecdotal app more often to give you a better data set that you can use to provide valuable insights.

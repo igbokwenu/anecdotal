@@ -1,4 +1,5 @@
 import 'package:anecdotal/providers/button_state_providers.dart';
+import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
@@ -153,8 +154,36 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
   Widget build(BuildContext context) {
     final buttonLoadingState = ref.watch(chatInputProvider);
     final uid = FirebaseAuth.instance.currentUser?.uid;
-
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+    const int minimumEntries = 10;
+    final iapStatus = ref.watch(iapProvider);
+
+    String formatHealingJourneyData(
+        List<Map<String, dynamic>> healingJourneyMap) {
+      StringBuffer buffer = StringBuffer();
+
+      for (var entry in healingJourneyMap) {
+        buffer.writeln("Entry:");
+        buffer.writeln(
+            "  Date: ${DateTime.fromMillisecondsSinceEpoch(entry['timestamp'])}");
+        buffer.writeln("  Feeling ${entry['percentage']}% Better");
+
+        buffer.writeln("  Tasks In Progress:");
+        for (var task in entry['inProgressList']) {
+          buffer.writeln("    - $task");
+        }
+
+        buffer.writeln("  Completed Tasks:");
+        for (var task in entry['doneList']) {
+          buffer.writeln("    - $task");
+        }
+
+        buffer.writeln("  Notes: ${entry['notes']}");
+        buffer.writeln(""); // Empty line for separation
+      }
+
+      return buffer.toString();
+    }
 
     Future<void> handleSend(
       BuildContext context,
@@ -164,7 +193,9 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
 
       final response = await GeminiService.sendTextPrompt(
         message: sendHistoryAnalysisPrompt(
-            healingJourneyMap: "${userData!.healingJourneyMap}"),
+          healingJourneyMap:
+              formatHealingJourneyData(userData!.healingJourneyMap),
+        ),
       );
 
       if (response != null) {
@@ -217,26 +248,29 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
               ? const MySpinKitWaveSpinner()
               : ElevatedButton.icon(
                   onPressed: () {
-                    MyReusableFunctions.myReusableCustomDialog(
-                        context: context,
-                        message:
-                            "You need to have at least 20 recorded progress to enable this feature.",
-                        actions: [
-                          TextButton.icon(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Navigator.pushReplacement(
-                                context,
-                                slideLeftTransitionPageBuilder(
-                                  const ProgressTracker(),
+                    userData!.healingJourneyMap.length < minimumEntries
+                        ? MyReusableFunctions.showCustomDialog(
+                            context: context,
+                            message:
+                                "You need to have at least $minimumEntries recorded progress to enable this feature.",
+                            actions: [
+                                TextButton.icon(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    Navigator.pushReplacement(
+                                      context,
+                                      slideLeftTransitionPageBuilder(
+                                        const ProgressTracker(),
+                                      ),
+                                    );
+                                  },
+                                  label: const Text("Record Progress"),
+                                  icon: const Icon(Icons.edit_note),
                                 ),
-                              );
-                            },
-                            label: const Text("Record Progress"),
-                            icon: const Icon(Icons.edit_note),
-                          ),
-                        ]);
-                    // handleSend(context);
+                              ])
+                        : !iapStatus.isPro
+                            ? MyReusableFunctions.showPremiumDialog
+                            : handleSend(context);
                   },
                   label: const Text("Analyze Your Journey"),
                   icon: const Icon(Icons.auto_awesome),

@@ -51,6 +51,7 @@ dependencies:
   printing: ^5.13.2
   share_plus: ^10.0.2
   chewie: ^1.8.5
+  upgrader: ^11.1.0
 
 
 dev_dependencies:

@@ -1,5 +1,6 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
+import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
 import 'package:anecdotal/widgets/home_widgets/first_interpret_lab_widget.dart';
@@ -25,6 +26,7 @@ import 'package:anecdotal/widgets/custom_card_home.dart';
 import 'package:anecdotal/widgets/theme_toggle_button.dart';
 import 'package:anecdotal/widgets/voice_recorder_widget.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AnecdotalAppHome extends ConsumerStatefulWidget {
   const AnecdotalAppHome({super.key});
@@ -38,6 +40,52 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
 
   void _handleMenuButtonPressed() {
     _advancedDrawerController.showDrawer();
+  }
+
+  void initState() {
+    super.initState();
+    _checkFirstSeen();
+  }
+
+  Future<void> _checkFirstSeen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool _seen = (prefs.getBool('seen') ?? false);
+
+    if (!_seen) {
+      await prefs.setBool('seen', true);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // ignore: prefer_const_constructors
+        MyReusableFunctions.showCustomDialog(
+          context: context,
+          message:
+              'Welcome to Anecdotal AI! We\'re here to support you on your health journey. Take the first step towards healing by sharing your symptoms.',
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Later'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  slideLeftTransitionPageBuilder(
+                    InfoView(
+                      title: symptomSectionHeader,
+                      sectionSummary: symptomSectionSummary,
+                      firstWidget: const FirstWidgetSymptomChecker(),
+                    ),
+                  ),
+                );
+              },
+              child: const Text('Analyze Your Symptoms'),
+            ),
+          ],
+        );
+      });
+    }
   }
 
   @override

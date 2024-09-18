@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -100,7 +99,7 @@ class MyReusableFunctions {
     );
   }
 
-  static Future<void> myReusableCustomDialog({
+  static Future<void> showCustomDialog({
     required BuildContext context,
     Widget? widget,
     IconData? icon,
@@ -121,14 +120,16 @@ class MyReusableFunctions {
           color: dialogIconColor ?? Theme.of(context).iconTheme.color,
         ),
         content: widget ??
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16, // Adjust the font size as needed
-                color:
-                    textColor ?? Theme.of(context).textTheme.bodyLarge?.color,
-                fontWeight: FontWeight.bold,
+            SingleChildScrollView(
+              child: Text(
+                message,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16, // Adjust the font size as needed
+                  color:
+                      textColor ?? Theme.of(context).textTheme.bodyLarge?.color,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
         actions: actions ??
