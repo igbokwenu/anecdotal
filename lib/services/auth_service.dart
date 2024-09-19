@@ -103,10 +103,10 @@ class AuthService {
       // Create user document
       await _createUserDocumentIfNeeded(userCredential.user);
 
-      MyReusableFunctions.showCustomToast(
-        description: "Sign-in successful",
-        type: ToastificationType.success,
-      );
+      // MyReusableFunctions.showCustomToast(
+      //   description: "Sign-in successful",
+      //   type: ToastificationType.success,
+      // );
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
@@ -188,7 +188,6 @@ class AuthService {
 
   // Sign out
   Future<void> signOut() async {
-    MyReusableFunctions.showProcessingToast();
     await _firebaseAuth.signOut();
     await _googleSignIn.signOut();
   }

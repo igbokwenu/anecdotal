@@ -7,6 +7,7 @@ import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
 import 'package:anecdotal/widgets/home_widgets/first_interpret_lab_widget.dart';
 import 'package:anecdotal/widgets/home_widgets/first_investigate_home.dart';
 import 'package:anecdotal/widgets/home_widgets/progress_tracker_widget.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -272,78 +273,87 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                       //   ],
                       // ),
                       mySpacing(spacing: 3),
-                      ImageContainer(
-                        imagePath: homeImageSymptomChecker,
-                        title: 'Symptom Checker',
-                        subtitle: 'Let us help analyze your symptoms',
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            slideLeftTransitionPageBuilder(
-                              InfoView(
-                                title: symptomSectionHeader,
-                                sectionSummary: symptomSectionSummary,
-                                firstWidget: const FirstWidgetSymptomChecker(),
+                      SlideInDown(
+                        child: ImageContainer(
+                          imagePath: homeImageSymptomChecker,
+                          title: 'Symptom Checker',
+                          subtitle: 'Let us help analyze your symptoms',
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              slideLeftTransitionPageBuilder(
+                                InfoView(
+                                  title: symptomSectionHeader,
+                                  sectionSummary: symptomSectionSummary,
+                                  firstWidget:
+                                      const FirstWidgetSymptomChecker(),
+                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                       // Square container
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            ImageContainer(
-                              imagePath: homeImageInvestigateHome,
-                              title: 'Investigate',
-                              subtitle: 'Is your home/office making you sick?',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  slideLeftTransitionPageBuilder(
-                                    InfoView(
-                                      title: investigateSectionHeader,
-                                      sectionSummary: investigateSectionSummary,
-                                      firstWidget: kIsWeb
-                                          ? const Text(
-                                              "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
-                                              textAlign: TextAlign.center,
-                                            )
-                                          : const FirstWidgetInvestigateHome(),
+                            SlideInLeft(
+                              child: ImageContainer(
+                                imagePath: homeImageInvestigateHome,
+                                title: 'Investigate',
+                                subtitle:
+                                    'Is your home/office making you sick?',
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    slideLeftTransitionPageBuilder(
+                                      InfoView(
+                                        title: investigateSectionHeader,
+                                        sectionSummary:
+                                            investigateSectionSummary,
+                                        firstWidget: kIsWeb
+                                            ? const Text(
+                                                "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
+                                                textAlign: TextAlign.center,
+                                              )
+                                            : const FirstWidgetInvestigateHome(),
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                              isSquare: true,
-                              // width: squareSize,
-                              // height: squareSize,
+                                  );
+                                },
+                                isSquare: true,
+                                // width: squareSize,
+                                // height: squareSize,
+                              ),
                             ),
-                            ImageContainer(
-                              imagePath: homeImageInterpretLab,
-                              title: 'Interpret Lab',
-                              subtitle: 'Understand your lab results.',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  slideLeftTransitionPageBuilder(
-                                    InfoView(
-                                      title: interpretLabResultSectionHeader,
-                                      sectionSummary:
-                                          interpretLabResultSectionSummary,
-                                      firstWidget: kIsWeb
-                                          ? const Text(
-                                              "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
-                                              textAlign: TextAlign.center,
-                                            )
-                                          : const FirstWidgetInterpretLab(),
+                            SlideInRight(
+                              child: ImageContainer(
+                                imagePath: homeImageInterpretLab,
+                                title: 'Interpret Lab',
+                                subtitle: 'Understand your lab results.',
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    slideLeftTransitionPageBuilder(
+                                      InfoView(
+                                        title: interpretLabResultSectionHeader,
+                                        sectionSummary:
+                                            interpretLabResultSectionSummary,
+                                        firstWidget: kIsWeb
+                                            ? const Text(
+                                                "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
+                                                textAlign: TextAlign.center,
+                                              )
+                                            : const FirstWidgetInterpretLab(),
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                              isSquare: true,
-                              // width: squareSize,
-                              // height: squareSize,
+                                  );
+                                },
+                                isSquare: true,
+                                // width: squareSize,
+                                // height: squareSize,
+                              ),
                             ),
                           ],
                         ),
@@ -352,39 +362,43 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            ImageContainer(
-                              imagePath: homeImageTrackProgress,
-                              title: 'Track Progress',
-                              subtitle:
-                                  'Find patterns in your healing journey.',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  slideLeftTransitionPageBuilder(
-                                    InfoView(
-                                      title: progressTrackerSectionHeader,
-                                      sectionSummary:
-                                          progressTrackerSectionSummary,
-                                      firstWidget:
-                                          const FirstWidgetProgressTracker(),
+                            FadeInUp(
+                              child: ImageContainer(
+                                imagePath: homeImageTrackProgress,
+                                title: 'Track Progress',
+                                subtitle:
+                                    'Find patterns in your healing journey.',
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    slideLeftTransitionPageBuilder(
+                                      InfoView(
+                                        title: progressTrackerSectionHeader,
+                                        sectionSummary:
+                                            progressTrackerSectionSummary,
+                                        firstWidget:
+                                            const FirstWidgetProgressTracker(),
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                              isSquare: true,
-                              // width: squareSize,
-                              // height: squareSize,
+                                  );
+                                },
+                                isSquare: true,
+                                // width: squareSize,
+                                // height: squareSize,
+                              ),
                             ),
-                            ImageContainer(
-                              imagePath: homeImageAboutUs,
-                              title: 'About Us',
-                              subtitle: 'What is Anecdotal AI all about?',
-                              onTap: () {
-                                Navigator.pushNamed(context, AppRoutes.about);
-                              },
-                              isSquare: true,
-                              // width: squareSize,
-                              // height: squareSize,
+                            FadeInRight(
+                              child: ImageContainer(
+                                imagePath: homeImageAboutUs,
+                                title: 'About Us',
+                                subtitle: 'What is Anecdotal AI all about?',
+                                onTap: () {
+                                  Navigator.pushNamed(context, AppRoutes.about);
+                                },
+                                isSquare: true,
+                                // width: squareSize,
+                                // height: squareSize,
+                              ),
                             ),
                           ],
                         ),
