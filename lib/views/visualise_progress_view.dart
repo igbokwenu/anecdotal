@@ -212,7 +212,7 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
               followUpSearchTerms:
                   response['suggestions']?.cast<String>() ?? [],
               citations: response['citations']?.cast<String>() ?? [],
-              title: sectionTitle,
+              title: "Journey Report",
               enableManualCitations: false,
             ),
           ),
