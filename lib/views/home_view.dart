@@ -1,8 +1,7 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
-import 'package:anecdotal/views/view_widgets.dart/home_rectangular_card_view.dart';
-import 'package:anecdotal/views/view_widgets.dart/home_square_card_widget.dart';
+import 'package:anecdotal/views/view_widgets.dart/home_card_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
 import 'package:anecdotal/widgets/home_widgets/first_interpret_lab_widget.dart';
@@ -12,7 +11,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
-
 import 'dart:io';
 import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/services/animated_navigator.dart';

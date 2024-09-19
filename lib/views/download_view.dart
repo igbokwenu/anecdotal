@@ -22,9 +22,9 @@ class DownloadPage extends StatelessWidget {
           'https://firebasestorage.googleapis.com/v0/b/anecdotalhq.appspot.com/o/general%2Fvideos%2Fanecdotal_ai_demo%20.mp4?alt=media&token=8efda42e-ba51-4dab-af1c-977742086b84',
       'appTitle': 'Your Personal Health Companion',
       'appDescription':
-          'Anecdotal AI is your companion app for managing chronic illness. '
+          'Rethinking healthcare: from profit-driven to patient-centric. Anecdotal AI helps shorten the distance between symptoms and diagnosis of chronic illnesses.'
               'Track and evaluate symptoms, investigate your home, get personalized health insights, and connect with others '
-              'who share your journey. Available now on Android and iOS.',
+              'who share your journey.',
       'callToAction':
           'Download the app today and jump-start your healing journey!',
       'playStoreUrl':

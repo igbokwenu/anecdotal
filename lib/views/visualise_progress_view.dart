@@ -270,7 +270,8 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
                                 ),
                               ])
                         : !iapStatus.isPro
-                            ? MyReusableFunctions.showPremiumDialog
+                            ? MyReusableFunctions.showPremiumDialog(
+                                context: context)
                             : handleSend(context);
                   },
                   label: const Text("Analyze Your Journey"),
