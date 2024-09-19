@@ -178,7 +178,7 @@ String sendHistoryAnalysisPrompt({String? healingJourneyMap}) {
   A doneList showing the activities the user has completed from their to do list.
   A notes section showing notes the user took for the entry.
 
-  You are speaking directly to the user with the data so speak to them empathetically where necessary.
+  You are speaking directly to the user with the data.
 
   I want you to analyze the data provided in the map and look for insights, patterns, and find things note wordy from the data. Activities that made the user feel good or feel bad etc.
 
@@ -194,7 +194,7 @@ String sendHistoryAnalysisPrompt({String? healingJourneyMap}) {
 
   Under suggestions come up with related search terms that the user can input in a search engine to get more helpful information based on the response you gave.
 
-  Under citations provide urls to helpful articles the user can read up on based on your response and suggestions
+  Under citations do not provide any citations
 
   Here is the users data $healingJourneyMap
 
