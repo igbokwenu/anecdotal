@@ -143,7 +143,7 @@ class ProgressTrackerAppState extends ConsumerState<ProgressTracker> {
             return AlertDialog(
               title: const Text('No Change in Progress'),
               content: Text(
-                'You didn\'t change how you are feeling about your health. In your last update you mentioned you were feeling ${_currentPercentage.round()}% better; if this has changed use the slider at the top part of the page to update how you currently feel. Do you want to proceed without changing this?',
+                'You didn\'t change how you are feeling about your health. In your last update you mentioned you were feeling ${_currentPercentage.round()}% better; if this has changed use the slider at the top part of the page to update how you currently feel. \n\nDo you want to proceed without changing this?',
                 textAlign: TextAlign.center,
               ),
               actions: <Widget>[

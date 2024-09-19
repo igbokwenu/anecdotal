@@ -1,6 +1,8 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
+import 'package:anecdotal/views/view_widgets.dart/home_rectangular_card_view.dart';
+import 'package:anecdotal/views/view_widgets.dart/home_square_card_widget.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
 import 'package:anecdotal/widgets/home_widgets/first_interpret_lab_widget.dart';
@@ -239,7 +241,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
         body: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Center(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -251,239 +253,124 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                       //   children: [
                       //     TextButton(
                       //       onPressed: () async {
-                      //         Offerings? offerings0;
-                      //         var offerings = await Purchases.getOfferings();
-                      //         await Purchases.purchasePackage(
-                      //             offerings.current!.monthly!);
-                      //         // await Purchases.invalidateCustomerInfoCache();
 
-                      //         // await Purchases.restorePurchases();
-
-                      //         print("Success ${appIAPStatus.isPro}");
-                      //         // appIAPStatus.isPro == true
-                      //         //     ? MyReusableFunctions.myReusableCustomDialog(
-                      //         //         context: context,
-                      //         //         message: 'You are already a pro user')
-                      //         //     : await RevenueCatUI.presentPaywall();
                       //       },
-                      //       child: Text('Open ${appIAPStatus.isPro == true}'),
+                      //       child: Text('Open '),
                       //     ),
                       //   ],
                       // ),
-                      Text(
-                        "Anecdotal AI is built by patients, with the help of compassionate doctors - for those in search of answers and support regarding complex and debilitating chronic conditions like CIRS and Bio-toxin Illness. ",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
+                      mySpacing(spacing: 3),
+                      ImageContainer(
+                        imagePath: logoAssetImageUrlNoTagLine,
+                        title: 'Symptom Checker',
+                        subtitle: 'Let us help analyze your symptoms',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            slideLeftTransitionPageBuilder(
+                              InfoView(
+                                title: symptomSectionHeader,
+                                sectionSummary: symptomSectionSummary,
+                                firstWidget: const FirstWidgetSymptomChecker(),
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      mySizedBox(),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            CustomCard(
-                              title: 'Symptom Checker',
-                              icon: Icons.health_and_safety,
-                              description:
-                                  "Tell us your symptoms. We could point you in the right direction",
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  slideLeftTransitionPageBuilder(
-                                    InfoView(
-                                      title: symptomSectionHeader,
-                                      sectionSummary: symptomSectionSummary,
-                                      firstWidget:
-                                          const FirstWidgetSymptomChecker(),
-                                    ),
+                      // Square container
+                      Row(
+                        children: [
+                          ImageContainer(
+                            imagePath: logoAssetImageUrlWithTagLine,
+                            title: 'Investigate',
+                            subtitle: 'Is your home making you sick?',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  InfoView(
+                                    title: investigateSectionHeader,
+                                    sectionSummary: investigateSectionSummary,
+                                    firstWidget: kIsWeb
+                                        ? const Text(
+                                            "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
+                                            textAlign: TextAlign.center,
+                                          )
+                                        : const FirstWidgetInvestigateHome(),
                                   ),
-                                );
-                              },
-                              onInfoTapped: () {
-                                _showMessageDialog(
-                                    context, symptomSectionSummary);
-                              },
-                            ),
-                            CustomCard(
-                              title: 'Progress Tracker',
-                              icon: Icons.track_changes,
-                              description:
-                                  'Track your daily treatments, symptoms and feelings',
-                              onTap: () async {
-                                Navigator.push(
-                                  context,
-                                  slideLeftTransitionPageBuilder(
-                                    InfoView(
-                                      title: progressTrackerSectionHeader,
-                                      sectionSummary:
-                                          progressTrackerSectionSummary,
-                                      firstWidget:
-                                          const FirstWidgetProgressTracker(),
-                                    ),
-                                  ),
-                                );
-                              },
-                              onInfoTapped: () {
-                                _showMessageDialog(
-                                  context,
-                                  progressTrackerSectionSummary,
-                                );
-                              },
-                            ),
-                            if (!kIsWeb)
-                              //TODO: Remove Android Condition
-                              if (Platform.isAndroid)
-                                CustomCard(
-                                  title: 'Find a Doctor',
-                                  icon: Icons.location_on,
-                                  description:
-                                      'Find a CIRS trained doctor in your area',
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      slideLeftTransitionPageBuilder(
-                                        InfoView(
-                                          title: findDoctorSectionHeader,
-                                          sectionSummary:
-                                              findDoctorSectionSummary,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  onInfoTapped: () {
-                                    _showMessageDialog(
-                                        context, findDoctorSectionSummary);
-                                  },
                                 ),
-                            // CustomCard(
-                            //   title: 'Spread Awareness',
-                            //   icon: Icons.family_restroom,
-                            //   description:
-                            //       'Share an explainer video with loved ones',
-                            //   onTap: () {
-                            //     Navigator.push(
-                            //       context,
-                            //       slideLeftTransitionPageBuilder(
-                            //         InfoView(
-                            //           title: spreadAwarenessSectionHeader,
-                            //           sectionSummary:
-                            //               spreadAwarenessSectionSummary,
-                            //         ),
-                            //       ),
-                            //     );
-                            //   },
-                            //   onInfoTapped: () {
-                            //     _showMessageDialog(
-                            //         context, spreadAwarenessSectionSummary);
-                            //   },
-                            // ),
-                          ],
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            CustomCard(
-                              title: 'Investigate',
-                              icon: Icons.camera_alt,
-                              description:
-                                  'Take pictures of mold or toxins in your space for analysis',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  slideLeftTransitionPageBuilder(
-                                    InfoView(
-                                      title: investigateSectionHeader,
-                                      sectionSummary: investigateSectionSummary,
-                                      firstWidget: kIsWeb
-                                          ? const Text(
-                                              "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
-                                              textAlign: TextAlign.center,
-                                            )
-                                          : const FirstWidgetInvestigateHome(),
-                                    ),
+                              );
+                            },
+                            isSquare: true,
+                            width: MediaQuery.of(context).size.width / 2 - 16,
+                            height: MediaQuery.of(context).size.width / 2 - 16,
+                          ),
+                          ImageContainer(
+                            imagePath: logoAssetImageUrlWithTagLine,
+                            title: 'Interpret Lab',
+                            subtitle: 'Understand your lab results.',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  InfoView(
+                                    title: interpretLabResultSectionHeader,
+                                    sectionSummary:
+                                        interpretLabResultSectionSummary,
+                                    firstWidget: kIsWeb
+                                        ? const Text(
+                                            "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
+                                            textAlign: TextAlign.center,
+                                          )
+                                        : const FirstWidgetInterpretLab(),
                                   ),
-                                );
-                              },
-                              onInfoTapped: () {
-                                _showMessageDialog(
-                                    context, investigateSectionSummary);
-                              },
-                            ),
-                            CustomCard(
-                              title: 'Interpret Lab',
-                              icon: Icons.biotech_rounded,
-                              description:
-                                  'Get a preliminary assessment of your lab results',
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  slideLeftTransitionPageBuilder(
-                                    InfoView(
-                                      title: interpretLabResultSectionHeader,
-                                      sectionSummary:
-                                          interpretLabResultSectionSummary,
-                                      firstWidget: kIsWeb
-                                          ? const Text(
-                                              "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
-                                              textAlign: TextAlign.center,
-                                            )
-                                          : const FirstWidgetInterpretLab(),
-                                    ),
-                                  ),
-                                );
-                              },
-                              onInfoTapped: () {
-                                _showMessageDialog(
-                                  context,
-                                  interpretLabResultSectionSummary,
-                                );
-                              },
-                            ),
-                            if (!kIsWeb)
-                              //TODO: Remove Android Condition
-                              if (Platform.isAndroid)
-                                CustomCard(
-                                  title: 'Home Remedies',
-                                  icon: Icons.home,
-                                  description:
-                                      'Pocket-friendly healing pathways to get you started',
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      slideLeftTransitionPageBuilder(
-                                        InfoView(
-                                          title: homeRemediesSectionHeader,
-                                          sectionSummary:
-                                              homeRemediesSectionSummary,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  onInfoTapped: () {
-                                    _showMessageDialog(
-                                      context,
-                                      homeRemediesSectionSummary,
-                                    );
-                                  },
                                 ),
-                            // CustomCard(
-                            //   title: 'Lifestyle',
-                            //   icon: Icons.fitness_center,
-                            //   description:
-                            //       'Make helpful lifestyle adjustments to support your recovery',
-                            //   onTap: () {
-                            //     MyReusableFunctions.showCustomToast(
-                            //         description: "Coming Soon. Stay Tuned.");
-                            //   },
-                            //   onInfoTapped: () {},
-                            // ),
-                          ],
-                        ),
+                              );
+                            },
+                            isSquare: true,
+                            width: MediaQuery.of(context).size.width / 2 - 16,
+                            height: MediaQuery.of(context).size.width / 2 - 16,
+                          ),
+                        ],
                       ),
+                      Row(
+                        children: [
+                          ImageContainer(
+                            imagePath: logoAssetImageUrlWithTagLine,
+                            title: 'Track Progress',
+                            subtitle: 'Find patterns in your healing journey.',
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                slideLeftTransitionPageBuilder(
+                                  InfoView(
+                                    title: progressTrackerSectionHeader,
+                                    sectionSummary:
+                                        progressTrackerSectionSummary,
+                                    firstWidget:
+                                        const FirstWidgetProgressTracker(),
+                                  ),
+                                ),
+                              );
+                            },
+                            isSquare: true,
+                            width: MediaQuery.of(context).size.width / 2 - 16,
+                            height: MediaQuery.of(context).size.width / 2 - 16,
+                          ),
+                          ImageContainer(
+                            imagePath: logoAssetImageUrlWithTagLine,
+                            title: 'About Us',
+                            subtitle: 'What is our mission and vision?',
+                            onTap: () {
+                              Navigator.pushNamed(context, AppRoutes.about);
+                            },
+                            isSquare: true,
+                            width: MediaQuery.of(context).size.width / 2 - 16,
+                            height: MediaQuery.of(context).size.width / 2 - 16,
+                          ),
+                        ],
+                      ),
+
                       const SizedBox(height: 180),
                     ],
                   ),
