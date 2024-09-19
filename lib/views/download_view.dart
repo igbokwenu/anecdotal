@@ -34,8 +34,11 @@ class DownloadPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Center(
-          child: MyAppBarTitleWithAI(title: content['title']!),
+          child: MyAppBarTitleWithAI(
+            title: content['title']!,
+          ),
         ),
         actions: const [
           ThemeToggle(),

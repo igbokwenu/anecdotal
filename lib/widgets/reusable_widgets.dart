@@ -264,12 +264,15 @@ class MyAnimatedText2 extends StatelessWidget {
 
 class MyAppBarTitleWithAI extends StatelessWidget {
   final String title;
-  const MyAppBarTitleWithAI({super.key, required this.title});
+  final isCentered;
+  const MyAppBarTitleWithAI(
+      {super.key, required this.title, this.isCentered = false});
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment:
+          isCentered ? MainAxisAlignment.center : MainAxisAlignment.end,
       children: [
         Pulse(
             delay: const Duration(milliseconds: 2000),
