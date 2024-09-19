@@ -9,6 +9,11 @@ class ImageContainer extends StatelessWidget {
   final double? width;
   final double? height;
 
+  // Default sizes
+  static const double defaultRectangleWidth = 340.0;
+  static const double defaultRectangleHeight = 180.0;
+  static const double defaultSquareSize = 170.0;
+
   const ImageContainer({
     Key? key,
     required this.imagePath,
@@ -22,47 +27,63 @@ class ImageContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      child: AspectRatio(
-        aspectRatio: isSquare
-            ? 1
-            : (width != null && height != null ? width! / height! : 16 / 8),
-        child: Container(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double containerWidth = width ??
+            (isSquare
+                ? defaultSquareSize
+                : (constraints.maxWidth > defaultRectangleWidth
+                    ? defaultRectangleWidth
+                    : constraints.maxWidth));
+
+        double containerHeight = height ??
+            (isSquare
+                ? defaultSquareSize
+                : (isSquare ? containerWidth : defaultRectangleHeight));
+
+        return Container(
+          width: containerWidth,
+          height: containerHeight,
           margin: const EdgeInsets.all(8.0),
           child: Material(
             elevation: 4.0,
             borderRadius: BorderRadius.circular(12.0),
-            color: Colors
-                .transparent, // Make the Material transparent for the ripple effect
+            color: Colors.transparent,
             child: InkWell(
-              onTap: onTap,
+              onTap: onTap, // Trigger the callback
+              borderRadius: BorderRadius.circular(12.0),
+              splashColor: Colors.white.withOpacity(0.3),
+              highlightColor: Colors.white.withOpacity(0.1),
               child: Stack(
-                fit: StackFit.expand,
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12.0),
                     child: Image.asset(
                       imagePath,
+                      width: containerWidth,
+                      height: containerHeight,
                       fit: BoxFit.cover,
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.0),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black.withOpacity(0.7),
-                          Colors.transparent,
-                        ],
+                  Positioned.fill(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.0),
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.black.withOpacity(0.7),
+                            Colors.transparent,
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
+                  Positioned(
+                    top: 16,
+                    left: 16,
+                    right: 16,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -89,70 +110,8 @@ class ImageContainer extends StatelessWidget {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-// Usage example:
-class MyHomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    double deviceWidth = MediaQuery.of(context).size.width;
-
-    return Scaffold(
-      appBar: AppBar(title: Text('Image Containers')),
-      body: Column(
-        children: [
-          // Rectangular container
-          ImageContainer(
-            imagePath: 'assets/rectangle_image.jpg',
-            title: 'Rectangular Image',
-            subtitle: 'This is a rectangular container',
-            onTap: () {
-              print('Rectangular container tapped');
-            },
-            width: deviceWidth > 600
-                ? 600
-                : deviceWidth, // Set max width for tablet portrait
-            height: 200,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              // Square container 1
-              ImageContainer(
-                imagePath: 'assets/square_image1.jpg',
-                title: 'Square 1',
-                subtitle: 'Square container',
-                onTap: () {
-                  print('Square container 1 tapped');
-                },
-                isSquare: true,
-                width: deviceWidth > 600
-                    ? 200
-                    : deviceWidth / 2 - 16, // Adjust width for tablets
-                height: deviceWidth > 600
-                    ? 200
-                    : deviceWidth / 2 - 16, // Adjust height for tablets
-              ),
-              // Square container 2
-              ImageContainer(
-                imagePath: 'assets/square_image2.jpg',
-                title: 'Square 2',
-                subtitle: 'Square container',
-                onTap: () {
-                  print('Square container 2 tapped');
-                },
-                isSquare: true,
-                width: deviceWidth > 600 ? 200 : deviceWidth / 2 - 16,
-                height: deviceWidth > 600 ? 200 : deviceWidth / 2 - 16,
-              ),
-            ],
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

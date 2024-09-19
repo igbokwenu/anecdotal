@@ -106,3 +106,9 @@ const String userAiGeneralTextUsageCount = 'aiGeneralTextUsageCount';
 const String userHealingJourneyMap = 'healingJourneyMap';
 
 const int freeLimit = 5;
+
+const homeImageSymptomChecker = 'assets/images/sick_lady_1280_640.jpg';
+const homeImageInvestigateHome = 'assets/images/investigate_home.jpeg';
+const homeImageInterpretLab = 'assets/images/lab_result.jpg';
+const homeImageTrackProgress = 'assets/images/generate_report_lady.jpeg';
+const homeImageAboutUs = 'assets/images/black_woman_doctor.jpeg';

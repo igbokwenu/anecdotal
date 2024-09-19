@@ -95,10 +95,9 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
     final chatInputState = ref.watch(chatInputProvider);
     final theme = Theme.of(context);
     final uid = FirebaseAuth.instance.currentUser?.uid;
-
     final databaseService = DatabaseService(uid: uid!);
-
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+    // final squareSize = MediaQuery.of(context).size.width / 2.1 - 16;
 
     Future<void> handleAudioStop(String path) async {
       ref.read(chatInputProvider.notifier).setIsProcessingAudio(true);
@@ -207,30 +206,45 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
       drawer: CustomDrawer(controller: _advancedDrawerController),
       child: Scaffold(
         appBar: AppBar(
-          title: const Center(
+          title: Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.auto_awesome),
+                Icon(Icons.auto_awesome,
+                    color: Theme.of(context).textTheme.bodyMedium!.color),
                 SizedBox(width: 12),
-                Text('Anecdotal'),
-                Icon(Icons.health_and_safety),
+                Text(
+                  'Anecdotal AI',
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.bodyMedium!.color,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                // Icon(Icons.health_and_safety),
               ],
             ),
           ),
-          leading: IconButton(
-            onPressed: _handleMenuButtonPressed,
-            icon: ValueListenableBuilder<AdvancedDrawerValue>(
-              valueListenable: _advancedDrawerController,
-              builder: (_, value, __) {
-                return AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 250),
-                  child: Icon(
-                    value.visible ? Icons.clear : Icons.menu,
-                    key: ValueKey<bool>(value.visible),
-                  ),
-                );
-              },
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          leading: Theme(
+            data: Theme.of(context).copyWith(
+              iconTheme: IconThemeData(
+                color: Theme.of(context).textTheme.bodyMedium!.color,
+              ), // Change to your preferred color
+            ),
+            child: IconButton(
+              onPressed: _handleMenuButtonPressed,
+              icon: ValueListenableBuilder<AdvancedDrawerValue>(
+                valueListenable: _advancedDrawerController,
+                builder: (_, value, __) {
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    child: Icon(
+                      value.visible ? Icons.clear : Icons.menu,
+                      key: ValueKey<bool>(value.visible),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
           actions: const [
@@ -261,7 +275,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                       // ),
                       mySpacing(spacing: 3),
                       ImageContainer(
-                        imagePath: logoAssetImageUrlNoTagLine,
+                        imagePath: homeImageSymptomChecker,
                         title: 'Symptom Checker',
                         subtitle: 'Let us help analyze your symptoms',
                         onTap: () {
@@ -278,97 +292,104 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                         },
                       ),
                       // Square container
-                      Row(
-                        children: [
-                          ImageContainer(
-                            imagePath: logoAssetImageUrlWithTagLine,
-                            title: 'Investigate',
-                            subtitle: 'Is your home making you sick?',
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                slideLeftTransitionPageBuilder(
-                                  InfoView(
-                                    title: investigateSectionHeader,
-                                    sectionSummary: investigateSectionSummary,
-                                    firstWidget: kIsWeb
-                                        ? const Text(
-                                            "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
-                                            textAlign: TextAlign.center,
-                                          )
-                                        : const FirstWidgetInvestigateHome(),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            ImageContainer(
+                              imagePath: homeImageInvestigateHome,
+                              title: 'Investigate',
+                              subtitle: 'Is your home/office making you sick?',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  slideLeftTransitionPageBuilder(
+                                    InfoView(
+                                      title: investigateSectionHeader,
+                                      sectionSummary: investigateSectionSummary,
+                                      firstWidget: kIsWeb
+                                          ? const Text(
+                                              "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
+                                              textAlign: TextAlign.center,
+                                            )
+                                          : const FirstWidgetInvestigateHome(),
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                            isSquare: true,
-                            width: MediaQuery.of(context).size.width / 2 - 16,
-                            height: MediaQuery.of(context).size.width / 2 - 16,
-                          ),
-                          ImageContainer(
-                            imagePath: logoAssetImageUrlWithTagLine,
-                            title: 'Interpret Lab',
-                            subtitle: 'Understand your lab results.',
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                slideLeftTransitionPageBuilder(
-                                  InfoView(
-                                    title: interpretLabResultSectionHeader,
-                                    sectionSummary:
-                                        interpretLabResultSectionSummary,
-                                    firstWidget: kIsWeb
-                                        ? const Text(
-                                            "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
-                                            textAlign: TextAlign.center,
-                                          )
-                                        : const FirstWidgetInterpretLab(),
+                                );
+                              },
+                              isSquare: true,
+                              // width: squareSize,
+                              // height: squareSize,
+                            ),
+                            ImageContainer(
+                              imagePath: homeImageInterpretLab,
+                              title: 'Interpret Lab',
+                              subtitle: 'Understand your lab results.',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  slideLeftTransitionPageBuilder(
+                                    InfoView(
+                                      title: interpretLabResultSectionHeader,
+                                      sectionSummary:
+                                          interpretLabResultSectionSummary,
+                                      firstWidget: kIsWeb
+                                          ? const Text(
+                                              "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
+                                              textAlign: TextAlign.center,
+                                            )
+                                          : const FirstWidgetInterpretLab(),
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                            isSquare: true,
-                            width: MediaQuery.of(context).size.width / 2 - 16,
-                            height: MediaQuery.of(context).size.width / 2 - 16,
-                          ),
-                        ],
+                                );
+                              },
+                              isSquare: true,
+                              // width: squareSize,
+                              // height: squareSize,
+                            ),
+                          ],
+                        ),
                       ),
-                      Row(
-                        children: [
-                          ImageContainer(
-                            imagePath: logoAssetImageUrlWithTagLine,
-                            title: 'Track Progress',
-                            subtitle: 'Find patterns in your healing journey.',
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                slideLeftTransitionPageBuilder(
-                                  InfoView(
-                                    title: progressTrackerSectionHeader,
-                                    sectionSummary:
-                                        progressTrackerSectionSummary,
-                                    firstWidget:
-                                        const FirstWidgetProgressTracker(),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            ImageContainer(
+                              imagePath: homeImageTrackProgress,
+                              title: 'Track Progress',
+                              subtitle:
+                                  'Find patterns in your healing journey.',
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  slideLeftTransitionPageBuilder(
+                                    InfoView(
+                                      title: progressTrackerSectionHeader,
+                                      sectionSummary:
+                                          progressTrackerSectionSummary,
+                                      firstWidget:
+                                          const FirstWidgetProgressTracker(),
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                            isSquare: true,
-                            width: MediaQuery.of(context).size.width / 2 - 16,
-                            height: MediaQuery.of(context).size.width / 2 - 16,
-                          ),
-                          ImageContainer(
-                            imagePath: logoAssetImageUrlWithTagLine,
-                            title: 'About Us',
-                            subtitle: 'What is our mission and vision?',
-                            onTap: () {
-                              Navigator.pushNamed(context, AppRoutes.about);
-                            },
-                            isSquare: true,
-                            width: MediaQuery.of(context).size.width / 2 - 16,
-                            height: MediaQuery.of(context).size.width / 2 - 16,
-                          ),
-                        ],
+                                );
+                              },
+                              isSquare: true,
+                              // width: squareSize,
+                              // height: squareSize,
+                            ),
+                            ImageContainer(
+                              imagePath: homeImageAboutUs,
+                              title: 'About Us',
+                              subtitle: 'What is Anecdotal AI all about?',
+                              onTap: () {
+                                Navigator.pushNamed(context, AppRoutes.about);
+                              },
+                              isSquare: true,
+                              // width: squareSize,
+                              // height: squareSize,
+                            ),
+                          ],
+                        ),
                       ),
 
                       const SizedBox(height: 180),
