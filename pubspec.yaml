@@ -56,6 +56,10 @@ dependencies:
   country_picker: ^2.0.26
   flutter_chat_ui: ^1.6.15
   flutter_firebase_chat_core: ^1.6.8
+  flutter_chat_types: ^3.6.2
+  open_filex: ^4.5.0
+  uuid: ^4.5.0
+  mime: ^1.0.6
 
 
 dev_dependencies:

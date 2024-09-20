@@ -2,6 +2,7 @@ import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/about_view.dart';
+import 'package:anecdotal/views/chat_view.dart';
 import 'package:anecdotal/views/view_widgets.dart/home_card_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
@@ -410,6 +411,52 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                           ],
                         ),
                       ),
+
+                      if (kDebugMode || kProfileMode)
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              FadeInUp(
+                                child: ImageContainer(
+                                  imagePath: homeImageCommunity,
+                                  title: 'Community Chat',
+                                  subtitle:
+                                      'Connect with others who understand.',
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const ChatPage(),
+                                        ));
+                                  },
+                                  isSquare: true,
+                                  // width: squareSize,
+                                  // height: squareSize,
+                                ),
+                              ),
+                              FadeInRight(
+                                child: ImageContainer(
+                                  imagePath: homeImageAboutUs,
+                                  title: 'About Us',
+                                  subtitle: 'What is Anecdotal AI all about?',
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      slideRightTransitionPageBuilder(
+                                        const AboutPage(),
+                                      ),
+                                    );
+                                    // Navigator.pushNamed(context, AppRoutes.about);
+                                  },
+                                  isSquare: true,
+                                  // width: squareSize,
+                                  // height: squareSize,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
 
                       const SizedBox(height: 180),
                     ],
