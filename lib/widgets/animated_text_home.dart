@@ -36,7 +36,7 @@ class AnimatedText extends StatelessWidget {
                 duration: duration,
               ),
               FadeAnimatedText(
-                "How do I start treatment?",
+                "I have digestive issues.",
                 duration: duration,
               ),
               FadeAnimatedText(

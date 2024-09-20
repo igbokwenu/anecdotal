@@ -14,14 +14,14 @@ import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
-class ChatPage extends StatefulWidget {
-  const ChatPage({super.key});
+class ChatPageNoBackend extends StatefulWidget {
+  const ChatPageNoBackend({super.key});
 
   @override
-  State<ChatPage> createState() => _ChatPageState();
+  State<ChatPageNoBackend> createState() => _ChatPageNoBackendState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageNoBackendState extends State<ChatPageNoBackend> {
   List<types.Message> _messages = [];
   final _user = const types.User(
     id: '82091008-a484-4a89-ae75-a22bf8d6f3ac',
@@ -215,9 +215,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) => SafeArea(
         child: Scaffold(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: Chat(
-            
             messages: _messages,
             onAttachmentPressed: _handleAttachmentPressed,
             onMessageTap: _handleMessageTap,
@@ -226,6 +224,11 @@ class _ChatPageState extends State<ChatPage> {
             showUserAvatars: true,
             showUserNames: true,
             user: _user,
+            theme: DefaultChatTheme(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              inputBackgroundColor:
+                  Theme.of(context).focusColor.withOpacity(0.4),
+            ),
           ),
         ),
       );

@@ -2,6 +2,7 @@ import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/about_view.dart';
+import 'package:anecdotal/views/chat/rooms.dart';
 import 'package:anecdotal/views/chat_view.dart';
 import 'package:anecdotal/views/view_widgets.dart/home_card_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
@@ -412,7 +413,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                         ),
                       ),
 
-                      if (kDebugMode || kProfileMode)
+                     
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
@@ -427,7 +428,8 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => const ChatPage(),
+                                          builder: (context) =>
+                                              const RoomsPage(),
                                         ));
                                   },
                                   isSquare: true,
@@ -435,25 +437,25 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                   // height: squareSize,
                                 ),
                               ),
-                              FadeInRight(
-                                child: ImageContainer(
-                                  imagePath: homeImageAboutUs,
-                                  title: 'About Us',
-                                  subtitle: 'What is Anecdotal AI all about?',
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      slideRightTransitionPageBuilder(
-                                        const AboutPage(),
-                                      ),
-                                    );
-                                    // Navigator.pushNamed(context, AppRoutes.about);
-                                  },
-                                  isSquare: true,
-                                  // width: squareSize,
-                                  // height: squareSize,
-                                ),
-                              ),
+                              // FadeInRight(
+                              //   child: ImageContainer(
+                              //     imagePath: homeImageAboutUs,
+                              //     title: 'About Us',
+                              //     subtitle: 'What is Anecdotal AI all about?',
+                              //     onTap: () {
+                              //       Navigator.push(
+                              //         context,
+                              //         slideRightTransitionPageBuilder(
+                              //           const RoomsPage(),
+                              //         ),
+                              //       );
+                              //       // Navigator.pushNamed(context, AppRoutes.about);
+                              //     },
+                              //     isSquare: true,
+                              //     // width: squareSize,
+                              //     // height: squareSize,
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
