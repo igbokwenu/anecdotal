@@ -4,6 +4,7 @@ import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
+import 'package:anecdotal/views/account_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -22,7 +23,7 @@ class CustomDrawer extends ConsumerWidget {
     final iapStatus = ref.watch(iapProvider);
     ref.read(iapProvider.notifier).checkAndSetIAPStatus();
     final authService = AuthService();
-    final userEmail = FirebaseAuth.instance.currentUser?.email;
+    final user = FirebaseAuth.instance.currentUser;
     return SafeArea(
       child: ListTileTheme(
         child: Column(
@@ -46,7 +47,13 @@ class CustomDrawer extends ConsumerWidget {
             ),
             ListTile(
               onTap: () {
-                Navigator.pushNamed(context, AppRoutes.account);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AccountPage(),
+                  ),
+                );
+                // Navigator.pushNamed(context, AppRoutes.account);
               },
               leading: const Icon(Icons.account_circle_rounded),
               title: const Text('Account'),

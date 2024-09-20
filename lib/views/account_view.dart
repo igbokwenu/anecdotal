@@ -1,117 +1,102 @@
-import 'dart:io';
-
+import 'package:anecdotal/providers/user_data_provider.dart';
+import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
-import 'package:anecdotal/utils/reusable_function.dart';
+import 'package:anecdotal/views/edit_account_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:anecdotal/services/auth_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:anecdotal/models/user_model.dart';
 
-class AccountPage extends StatelessWidget {
-  const AccountPage({super.key});
+class AccountPage extends ConsumerWidget {
+  const AccountPage({
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final userData = ref.watch(anecdotalUserDataProvider(uid));
     final AuthService authService = AuthService();
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Account Details'),
+        title: const Text('Profile'),
+        backgroundColor: Colors.teal,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildProfileSection(),
-            const SizedBox(height: 20),
-            _buildDetailSection(),
-            const SizedBox(height: 20),
-            if (!kIsWeb)
-            //TODO: Remove Android Condition
-              if (Platform.isAndroid) _buildReportCardButton(context),
-            const SizedBox(height: 20),
-            if (authService.isUserAnonymous())
-              Column(
+      body: userData.when(
+        data: (user) {
+          if (user == null) return const Center(child: Text('User not found'));
+
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'You are signed in anonymously. When you sign out, your account and data will be permanently deleted. To preserve your data you can click the (Link Account) button below to link your data to your login credentials.',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                  const Center(
+                    child:
+                        MyCircularImage(imageUrl: logoAssetImageUrlNoTagLine),
                   ),
-                  mySpacing(),
-                  _buildLinkAccountButton(context),
+                  const SizedBox(height: 20),
+                  Text(
+                    '${user.firstName} ${user.lastName}',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    user.email ?? 'No email provided',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 20),
+                  // _buildInfoCard('Country', user.country ?? 'Not specified'),
+                  // const SizedBox(height: 10),
+                  _buildInfoCard('Location', user.state ?? 'Not specified'),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserProfileEditScreen(),
+                        ),
+                      ).then(
+                          (_) => ref.refresh(anecdotalUserDataProvider(uid)));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: const Text(
+                      'Edit Profile',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  if (authService.isUserAnonymous())
+                    Column(
+                      children: [
+                        Text(
+                          'You are signed in anonymously. When you sign out, your account and data will be permanently deleted. To preserve your data you can click the (Link Account) button below to link your data to your login credentials.',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        mySpacing(),
+                        _buildLinkAccountButton(context),
+                      ],
+                    ),
+                  const SizedBox(height: 20),
+                  _buildDeleteAccountButton(context),
                 ],
               ),
-            const SizedBox(height: 20),
-            _buildDeleteAccountButton(context),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // Build profile picture and basic info
-  Widget _buildProfileSection() {
-    User? user = FirebaseAuth.instance.currentUser;
-    return Row(
-      children: [
-        const CircleAvatar(
-          radius: 50,
-          backgroundImage: NetworkImage(
-              'https://via.placeholder.com/150'), // Placeholder for profile picture
-        ),
-        const SizedBox(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              '',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 4),
-            Text(
-              user?.email ?? 'john.doe@anonymous.com', // Replace with real data
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  // Build account details section
-  Widget _buildDetailSection() {
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          ' ', // Replace with real data
-          style: TextStyle(fontSize: 16),
-        ),
-        SizedBox(height: 10),
-        Divider(),
-      ],
-    );
-  }
-
-  Widget _buildReportCardButton(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          MyReusableFunctions.showCustomToast(
-              description: "Coming Soon. Stay Tuned.");
+          );
         },
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.all(16.0),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-        child: const Text(
-          'View Reports',
-          style: TextStyle(fontSize: 16),
-        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(child: Text('Error: $error')),
       ),
     );
   }
@@ -139,7 +124,24 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  // Build "Delete Account" button
+  Widget _buildInfoCard(String title, String value) {
+    return Card(
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('$title: ',
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text(value),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildDeleteAccountButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,

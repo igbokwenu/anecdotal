@@ -53,6 +53,8 @@ dependencies:
   chewie: ^1.8.5
   upgrader: ^11.1.0
   cached_network_image: ^3.4.1
+  country_state_city_picker: ^1.2.8
+  country_picker: ^2.0.26
 
 
 dev_dependencies:
