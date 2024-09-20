@@ -58,7 +58,7 @@ class AccountPage extends ConsumerWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => UserProfileEditScreen(),
+                          builder: (context) => const UserProfileEditScreen(),
                         ),
                       ).then(
                           (_) => ref.refresh(anecdotalUserDataProvider(uid)));
@@ -125,19 +125,17 @@ class AccountPage extends ConsumerWidget {
   }
 
   Widget _buildInfoCard(String title, String value) {
-    return Card(
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('$title: ',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            Text(value),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.pin_drop_rounded),
+          Text(' $title: ',
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          Text(value),
+        ],
       ),
     );
   }

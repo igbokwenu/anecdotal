@@ -1,6 +1,7 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
+import 'package:anecdotal/views/about_view.dart';
 import 'package:anecdotal/views/view_widgets.dart/home_card_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
@@ -281,8 +282,8 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              slideLeftTransitionPageBuilder(
-                                InfoView(
+                              MaterialPageRoute(
+                                builder: (context) => InfoView(
                                   title: symptomSectionHeader,
                                   sectionSummary: symptomSectionSummary,
                                   firstWidget:
@@ -307,8 +308,8 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    slideLeftTransitionPageBuilder(
-                                      InfoView(
+                                    MaterialPageRoute(
+                                      builder: (context) => InfoView(
                                         title: investigateSectionHeader,
                                         sectionSummary:
                                             investigateSectionSummary,
@@ -335,19 +336,20 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    slideLeftTransitionPageBuilder(
-                                      InfoView(
-                                        title: interpretLabResultSectionHeader,
-                                        sectionSummary:
-                                            interpretLabResultSectionSummary,
-                                        firstWidget: kIsWeb
-                                            ? const Text(
-                                                "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
-                                                textAlign: TextAlign.center,
-                                              )
-                                            : const FirstWidgetInterpretLab(),
-                                      ),
-                                    ),
+                                    MaterialPageRoute(
+                                        builder: (context) => InfoView(
+                                              title:
+                                                  interpretLabResultSectionHeader,
+                                              sectionSummary:
+                                                  interpretLabResultSectionSummary,
+                                              firstWidget: kIsWeb
+                                                  ? const Text(
+                                                      "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    )
+                                                  : const FirstWidgetInterpretLab(),
+                                            )),
                                   );
                                 },
                                 isSquare: true,
@@ -370,17 +372,16 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                     'Find patterns in your healing journey.',
                                 onTap: () {
                                   Navigator.push(
-                                    context,
-                                    slideLeftTransitionPageBuilder(
-                                      InfoView(
-                                        title: progressTrackerSectionHeader,
-                                        sectionSummary:
-                                            progressTrackerSectionSummary,
-                                        firstWidget:
-                                            const FirstWidgetProgressTracker(),
-                                      ),
-                                    ),
-                                  );
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => InfoView(
+                                          title: progressTrackerSectionHeader,
+                                          sectionSummary:
+                                              progressTrackerSectionSummary,
+                                          firstWidget:
+                                              const FirstWidgetProgressTracker(),
+                                        ),
+                                      ));
                                 },
                                 isSquare: true,
                                 // width: squareSize,
@@ -393,7 +394,13 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                 title: 'About Us',
                                 subtitle: 'What is Anecdotal AI all about?',
                                 onTap: () {
-                                  Navigator.pushNamed(context, AppRoutes.about);
+                                  Navigator.push(
+                                    context,
+                                    slideRightTransitionPageBuilder(
+                                      const AboutPage(),
+                                    ),
+                                  );
+                                  // Navigator.pushNamed(context, AppRoutes.about);
                                 },
                                 isSquare: true,
                                 // width: squareSize,

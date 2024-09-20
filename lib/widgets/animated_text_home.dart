@@ -28,11 +28,11 @@ class AnimatedText extends StatelessWidget {
                 speed: typerDuration,
               ),
               FadeAnimatedText(
-                'I am having muscle spasms.',
+                'I get muscle spasms sometimes.',
                 duration: duration,
               ),
               FadeAnimatedText(
-                'I am having food intolerance.',
+                'I experience food intolerance.',
                 duration: duration,
               ),
               FadeAnimatedText(
@@ -40,7 +40,7 @@ class AnimatedText extends StatelessWidget {
                 duration: duration,
               ),
               FadeAnimatedText(
-                'My eye lids are twitching.',
+                'I feel extremely fatigued',
                 duration: duration,
               ),
               FadeAnimatedText(
@@ -52,7 +52,7 @@ class AnimatedText extends StatelessWidget {
                 duration: duration,
               ),
               FadeAnimatedText(
-                "How do I know I have mold illness?",
+                "What is causing my symptoms?",
                 duration: duration,
               ),
               FadeAnimatedText(

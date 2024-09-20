@@ -53,7 +53,7 @@
 			<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		</array>
 		<key>UIRequiresFullScreen</key>
-        <true/>
+		<true/>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
