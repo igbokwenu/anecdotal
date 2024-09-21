@@ -5,6 +5,7 @@ import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/account_view.dart';
+import 'package:anecdotal/views/chat/rooms.dart';
 import 'package:anecdotal/views/community_chat/community_chat_utils.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -67,8 +68,6 @@ class CustomDrawer extends ConsumerWidget {
               title: const Text('About'),
             ),
             if (!kIsWeb)
-              //TODO: Remove Android Condition
-
               ListTile(
                 onTap: () {
                   CommunityChatUtils.navigateToCommunityChat(context);
@@ -76,6 +75,20 @@ class CustomDrawer extends ConsumerWidget {
                 leading: const Icon(Icons.groups),
                 title: const Text('Community Chat'),
               ),
+            if (!kIsWeb)
+              if (Platform.isAndroid)
+                ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RoomsPage(),
+                      ),
+                    );
+                  },
+                  leading: const Icon(Icons.mail),
+                  title: const Text('Private Messages'),
+                ),
             if (!kIsWeb)
               ListTile(
                 onTap: () async {

@@ -24,6 +24,7 @@ class AuthService {
           fieldName: userEmail,
           newValue: _firebaseAuth.currentUser?.email ?? '',
         );
+        await databaseService.fetchUserCountryAndSaveToFirebase();
       }
     }
   }

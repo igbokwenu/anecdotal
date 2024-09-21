@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
@@ -7,11 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:anecdotal/models/user_model.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class UserProfileEditScreen extends ConsumerStatefulWidget {
-  const UserProfileEditScreen({
-    super.key,
-  });
+  const UserProfileEditScreen({Key? key}) : super(key: key);
 
   @override
   _UserProfileEditScreenState createState() => _UserProfileEditScreenState();
@@ -23,6 +24,8 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
   late TextEditingController _lastNameController;
   late TextEditingController _countryController;
   late TextEditingController _stateController;
+  File? _imageFile;
+  bool _isUploading = false;
 
   @override
   void initState() {
@@ -42,34 +45,76 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
     super.dispose();
   }
 
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+      await _uploadImage();
+    }
+  }
+
+  Future<void> _uploadImage() async {
+    if (_imageFile == null) return;
+
+    setState(() {
+      _isUploading = true;
+    });
+
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('general/profile_pictures/$uid.jpg');
+      await ref.putFile(_imageFile!);
+      final url = await ref.getDownloadURL();
+
+      await FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'profilePicUrl': url,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile picture updated successfully')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error updating profile picture: $e')),
+      );
+    } finally {
+      setState(() {
+        _isUploading = false;
+      });
+    }
+  }
+
+  Future<void> _updateUserData() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        final uid = FirebaseAuth.instance.currentUser?.uid;
+        await FirebaseFirestore.instance.collection('users').doc(uid).update({
+          'firstName': _firstNameController.text,
+          'lastName': _lastNameController.text,
+          'country': _countryController.text,
+          'state': _stateController.text,
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile updated successfully')),
+        );
+        Navigator.pop(context);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error updating profile: $e')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final userData = ref.watch(anecdotalUserDataProvider(uid));
-
-    Future<void> _updateUserData() async {
-      if (_formKey.currentState!.validate()) {
-        try {
-          // Add this to debug
-          print('Updating country: ${_countryController.text}');
-
-          await FirebaseFirestore.instance.collection('users').doc(uid).update({
-            'firstName': _firstNameController.text,
-            'lastName': _lastNameController.text,
-            'country': _countryController.text,
-            'state': _stateController.text,
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Profile updated successfully')),
-          );
-          Navigator.pop(context); // Return to the view screen
-        } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error updating profile: $e')),
-          );
-        }
-      }
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -94,9 +139,29 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 20),
-                    const Center(
-                      child:
-                          MyCircularImage(imageUrl: logoAssetImageUrlNoTagLine),
+                    Center(
+                      child: Stack(
+                        children: [
+                          CircleAvatar(
+                            radius: 80,
+                            backgroundImage: NetworkImage(
+                                '${user.profilePicUrl!.isEmpty ? anecdotalLogoUrl : user.profilePicUrl}'),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: _isUploading
+                                ? const MySpinKitWaveSpinner()
+                                : IconButton(
+                                    icon: const Icon(
+                                      Icons.add_a_photo_rounded,
+                                      size: 35,
+                                    ),
+                                    onPressed: _pickImage,
+                                  ),
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
@@ -133,46 +198,43 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
                       },
                     ),
                     const SizedBox(height: 16),
-                    // TextFormField(
-                    //   controller: _countryController,
-                    //   decoration: InputDecoration(
-                    //     labelText: 'Country',
-                    //     border: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(12),
-                    //     ),
-                    //     prefixIcon: const Icon(Icons.flag),
-                    //     suffixIcon: IconButton(
-                    //       icon: const Icon(Icons.arrow_drop_down),
-                    //       onPressed: () {
-                    //         showCountryPicker(
-                    //           context: context,
-                    //           showPhoneCode: false,
-                    //           onSelect: (Country country) {
-                    //             setState(() {
-                    //               _countryController.text = country.name;
-                    //             });
-                    //             print(
-                    //                 'Selected country: ${country.displayName}');
-                    //           },
-                    //         );
-                    //       },
-                    //     ),
-                    //   ),
-                    //   readOnly: true,
-                    //   onTap: () {
-                    //     showCountryPicker(
-                    //       context: context,
-                    //       showPhoneCode: false,
-                    //       onSelect: (Country country) {
-                    //         setState(() {
-                    //           _countryController.text = country.name;
-                    //         });
-                    //         print('Selected country: ${country.displayName}');
-                    //       },
-                    //     );
-                    //   },
-                    // ),
-                    // const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _countryController,
+                      decoration: InputDecoration(
+                        labelText: 'Country',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        prefixIcon: const Icon(Icons.flag),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.arrow_drop_down),
+                          onPressed: () {
+                            showCountryPicker(
+                              context: context,
+                              showPhoneCode: false,
+                              onSelect: (Country country) {
+                                setState(() {
+                                  _countryController.text = country.name;
+                                });
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      readOnly: true,
+                      onTap: () {
+                        showCountryPicker(
+                          context: context,
+                          showPhoneCode: false,
+                          onSelect: (Country country) {
+                            setState(() {
+                              _countryController.text = country.name;
+                            });
+                          },
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 16),
                     TextFormField(
                       controller: _stateController,
                       decoration: InputDecoration(

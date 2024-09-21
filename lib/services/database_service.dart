@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 class DatabaseService {
   final String uid;
@@ -7,6 +12,28 @@ class DatabaseService {
 
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('users');
+
+  Future<void> fetchUserCountryAndSaveToFirebase(
+      {String? existingCountry}) async {
+    final response = await http.get(Uri.parse('http://ip-api.com/json'));
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = json.decode(response.body);
+      String country = data['country'];
+      String state = data['regionName'];
+
+      try {
+        await userCollection.doc(userIsDiagnosed).update({
+          userCountry: country,
+          userState: state,
+        });
+      } on FirebaseException catch (e) {
+        // Handle the error
+        if (kDebugMode) {
+          print('Error updating fields: $e');
+        }
+      }
+    }
+  }
 
   Future<void> incrementUsageCount(String uid, String field) async {
     final userDoc = FirebaseFirestore.instance.collection('users').doc(uid);
@@ -18,26 +45,25 @@ class DatabaseService {
   }
 
   Future<bool> checkUsageLimitExceeded(String uid) async {
-  final userDoc = FirebaseFirestore.instance.collection('users').doc(uid);
-  final snapshot = await userDoc.get();
-  final data = snapshot.data();
+    final userDoc = FirebaseFirestore.instance.collection('users').doc(uid);
+    final snapshot = await userDoc.get();
+    final data = snapshot.data();
 
-  if (data != null) {
-    final aiMediaUsageCount = data['aiMediaUsageCount'] ?? 0;
-    final aiTextUsageCount = data['aiTextUsageCount'] ?? 0;
-    final aiGeneralMediaUsageCount = data['aiGeneralMediaUsageCount'] ?? 0;
-    final aiGeneralTextUsageCount = data['aiGeneralTextUsageCount'] ?? 0;
+    if (data != null) {
+      final aiMediaUsageCount = data['aiMediaUsageCount'] ?? 0;
+      final aiTextUsageCount = data['aiTextUsageCount'] ?? 0;
+      final aiGeneralMediaUsageCount = data['aiGeneralMediaUsageCount'] ?? 0;
+      final aiGeneralTextUsageCount = data['aiGeneralTextUsageCount'] ?? 0;
 
-    // Check if any count exceeds 3
-    return aiMediaUsageCount > 3 ||
-           aiTextUsageCount > 3 ||
-           aiGeneralMediaUsageCount > 3 ||
-           aiGeneralTextUsageCount > 3;
+      // Check if any count exceeds 3
+      return aiMediaUsageCount > 3 ||
+          aiTextUsageCount > 3 ||
+          aiGeneralMediaUsageCount > 3 ||
+          aiGeneralTextUsageCount > 3;
+    }
+
+    return false;
   }
-  
-  return false;
-}
-
 
   Future<void> addToHealingJourneyMap(Map<String, dynamic> newEntry) async {
     final userRef = userCollection.doc(uid);

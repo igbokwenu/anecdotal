@@ -283,7 +283,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                           children: [
                             FadeInDown(
                               child: ImageContainer(
-                                imagePath: homeImageSymptomChecker,
+                                imagePath: homeImageSymptomCheckerSquare,
                                 title: 'Symptom Checker',
                                 subtitle: 'Let us help analyze your symptoms',
                                 onTap: () {

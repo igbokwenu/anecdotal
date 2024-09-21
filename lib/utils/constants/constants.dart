@@ -110,8 +110,8 @@ const String userHealingJourneyMap = 'healingJourneyMap';
 const int freeLimit = 5;
 
 const homeImageSymptomChecker = 'assets/images/sick_lady_1280_640.jpg';
-const homeImageSymptomCheckerSquare = 'assets/images/feeling_sick.jpg';
-const homeImageSymptomCheckerBlackWoman = 'assets/images/sick_black_woman.jpg';
+const homeImageSymptomCheckerSquare = 'assets/images/feeling_sick.jpeg';
+const homeImageSymptomCheckerBlackWoman = 'assets/images/sick_black_woman.jpeg';
 const homeImageInvestigateHome = 'assets/images/investigate_home.jpeg';
 const homeImageInterpretLab = 'assets/images/lab_result.jpg';
 const homeImageTrackProgress = 'assets/images/generate_report_lady.jpeg';
@@ -120,3 +120,6 @@ const homeImageCommunity = 'assets/images/community.jpeg';
 
 const String communityImageUrl =
     'https://firebasestorage.googleapis.com/v0/b/anecdotalhq.appspot.com/o/general%2Fapp_branding_images%2Fcommunity_avatar.jpeg?alt=media&token=233d4f87-3ac4-409b-a1b6-2df1fbd27487';
+
+const String anecdotalLogoUrl =
+    'https://firebasestorage.googleapis.com/v0/b/anecdotalhq.appspot.com/o/general%2Fapp_branding_images%2Fanecdotal_512.png?alt=media&token=b31737ac-d80d-40a6-9155-9358418a2b14';

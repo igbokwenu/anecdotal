@@ -34,9 +34,12 @@ class AccountPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Center(
-                    child:
-                        MyCircularImage(imageUrl: logoAssetImageUrlNoTagLine),
+                  Center(
+                    child: CircleAvatar(
+                      radius: 80,
+                      backgroundImage: NetworkImage(
+                          '${user.profilePicUrl!.isEmpty ? anecdotalLogoUrl : user.profilePicUrl}'),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Text(

@@ -67,7 +67,7 @@ class _RoomsPageState extends State<RoomsPage> {
       child: CircleAvatar(
         backgroundColor: hasImage ? Colors.transparent : color,
         backgroundImage: hasImage ? NetworkImage(room.imageUrl!) : null,
-        radius: 20,
+        radius: 40,
         child: !hasImage
             ? Text(
                 name.isEmpty ? '' : name[0].toUpperCase(),
@@ -92,7 +92,7 @@ class _RoomsPageState extends State<RoomsPage> {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: const Icon(Icons.person_add),
             onPressed: _user == null
                 ? null
                 : () {
@@ -171,7 +171,10 @@ class _RoomsPageState extends State<RoomsPage> {
                         child: Row(
                           children: [
                             _buildAvatar(room),
-                            Text(room.name ?? ''),
+                            Text(
+                              room.name ?? '',
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
                           ],
                         ),
                       ),
