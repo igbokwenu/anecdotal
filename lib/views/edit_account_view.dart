@@ -136,33 +136,23 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
               child: Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 20),
-                    Center(
-                      child: Stack(
-                        children: [
-                          CircleAvatar(
-                            radius: 80,
-                            backgroundImage: NetworkImage(
-                                '${user.profilePicUrl!.isEmpty ? anecdotalLogoUrl : user.profilePicUrl}'),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: _isUploading
-                                ? const MySpinKitWaveSpinner()
-                                : IconButton(
-                                    icon: const Icon(
-                                      Icons.add_a_photo_rounded,
-                                      size: 35,
-                                    ),
-                                    onPressed: _pickImage,
-                                  ),
-                          ),
-                        ],
-                      ),
+                    CircleAvatar(
+                      radius: 80,
+                      backgroundImage: NetworkImage(
+                          '${user.profilePicUrl!.isEmpty ? anecdotalLogoUrl : user.profilePicUrl}'),
                     ),
+                    _isUploading
+                        ? const MySpinKitWaveSpinner()
+                        : IconButton(
+                            icon: const Icon(
+                              Icons.add_a_photo_rounded,
+                              size: 35,
+                            ),
+                            onPressed: _pickImage,
+                          ),
                     const SizedBox(height: 20),
                     TextFormField(
                       controller: _firstNameController,
@@ -206,33 +196,7 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         prefixIcon: const Icon(Icons.flag),
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.arrow_drop_down),
-                          onPressed: () {
-                            showCountryPicker(
-                              context: context,
-                              showPhoneCode: false,
-                              onSelect: (Country country) {
-                                setState(() {
-                                  _countryController.text = country.name;
-                                });
-                              },
-                            );
-                          },
-                        ),
                       ),
-                      readOnly: true,
-                      onTap: () {
-                        showCountryPicker(
-                          context: context,
-                          showPhoneCode: false,
-                          onSelect: (Country country) {
-                            setState(() {
-                              _countryController.text = country.name;
-                            });
-                          },
-                        );
-                      },
                     ),
                     const SizedBox(height: 16),
                     TextFormField(

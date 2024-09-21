@@ -144,6 +144,7 @@ class AuthService {
       User? user = _firebaseAuth.currentUser;
 
       if (user != null && user.isAnonymous) {
+        final databaseService = DatabaseService(uid: user.uid);
         AuthCredential credential = EmailAuthProvider.credential(
           email: email,
           password: password,
@@ -155,6 +156,12 @@ class AuthService {
 
         // Update Firestore document if necessary (it should already exist)
         await _createUserDocumentIfNeeded(userCredential.user);
+
+        await databaseService.updateAnyUserData(
+          fieldName: userEmail,
+          newValue: _firebaseAuth.currentUser?.email ?? '',
+        );
+        await databaseService.fetchUserCountryAndSaveToFirebase();
 
         // Save email to shared preferences
         final prefs = await SharedPreferences.getInstance();
@@ -201,12 +208,12 @@ class AuthService {
       User? user = _firebaseAuth.currentUser;
 
       if (user != null) {
+        // Delete the user from Firebase Authentication
+        await user.delete();
+
         // Delete the user's document in Firestore
         final databaseService = DatabaseService(uid: user.uid);
         await databaseService.userCollection.doc(user.uid).delete();
-
-        // Delete the user from Firebase Authentication
-        await user.delete();
 
         MyReusableFunctions.showCustomToast(
           description: "Your account and user data was deleted successfully",

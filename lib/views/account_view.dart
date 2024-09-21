@@ -48,13 +48,13 @@ class AccountPage extends ConsumerWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    user.email ?? 'No email provided',
+                    '${user.email!.isEmpty ? 'No email provided' : user.email}',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 20),
                   // _buildInfoCard('Country', user.country ?? 'Not specified'),
                   // const SizedBox(height: 10),
-                  _buildInfoCard('Location', user.state ?? 'Not specified'),
+                  _buildInfoCard('Location', '${user.state}, ${user.country}'),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {

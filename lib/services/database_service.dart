@@ -22,7 +22,8 @@ class DatabaseService {
       String state = data['regionName'];
 
       try {
-        await userCollection.doc(userIsDiagnosed).update({
+        print("State: $state, Country: $country");
+        await userCollection.doc(uid).update({
           userCountry: country,
           userState: state,
         });
