@@ -17,11 +17,13 @@ String symptomSectionSummary =
 
 String progressTrackerSectionHeader = "Track Your Progress";
 String progressTrackerSectionSummary =
-    "Monitor how your symptoms evolve over time. By tracking your daily or weekly progress, you can better understand the effectiveness of any treatments or lifestyle changes you've implemented. Consistent tracking can provide valuable insights into your health journey.";
+    """Record how your well-being evolves over time. By logging your daily or weekly activities and progress, you can gain a clearer understanding of how effective your treatments or lifestyle changes have been. 
+    
+Consistent tracking allows our AI tool to provide insightful summaries of your wellness journey, or you can dive deeper by chatting with your personal history to gain tailored insights.""";
 
 String investigateSectionHeader = "Investigate Your Space";
 String investigateSectionSummary =
-    "Learn more about how your surroundings might be contributing to your condition. This section helps you identify potential environmental triggers like mold, dampness, or other harmful factors that could be affecting your health. Investigate and take steps to create a safer living space. You can either capture your surrounding using the camera or upload and analyze images for a specialized AI powered image analysis on potential mold growth that could make you sick.";
+    "Learn more about how your surroundings might be contributing to your condition. This section helps you identify potential environmental triggers like mold, dampness, or other harmful factors that could be affecting your health. Investigate and take steps to create a safer living space. You can either capture your surrounding using the camera or upload and analyze images for a specialized AI powered image analysis on potential toxins that could make you sick.";
 
 String homeRemediesSectionHeader = "Explore Home Remedies";
 String homeRemediesSectionSummary =
@@ -108,8 +110,13 @@ const String userHealingJourneyMap = 'healingJourneyMap';
 const int freeLimit = 5;
 
 const homeImageSymptomChecker = 'assets/images/sick_lady_1280_640.jpg';
+const homeImageSymptomCheckerSquare = 'assets/images/feeling_sick.jpg';
+const homeImageSymptomCheckerBlackWoman = 'assets/images/sick_black_woman.jpg';
 const homeImageInvestigateHome = 'assets/images/investigate_home.jpeg';
 const homeImageInterpretLab = 'assets/images/lab_result.jpg';
 const homeImageTrackProgress = 'assets/images/generate_report_lady.jpeg';
 const homeImageAboutUs = 'assets/images/black_woman_doctor.jpeg';
 const homeImageCommunity = 'assets/images/community.jpeg';
+
+const String communityImageUrl =
+    'https://firebasestorage.googleapis.com/v0/b/anecdotalhq.appspot.com/o/general%2Fapp_branding_images%2Fcommunity_avatar.jpeg?alt=media&token=233d4f87-3ac4-409b-a1b6-2df1fbd27487';

@@ -4,6 +4,7 @@ import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/about_view.dart';
 import 'package:anecdotal/views/chat/rooms.dart';
 import 'package:anecdotal/views/chat_view.dart';
+import 'package:anecdotal/views/community_chat/community_chat_utils.dart';
 import 'package:anecdotal/views/view_widgets.dart/home_card_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
@@ -46,6 +47,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
     _advancedDrawerController.showDrawer();
   }
 
+  @override
   void initState() {
     super.initState();
     _checkFirstSeen();
@@ -276,24 +278,42 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                       //   ],
                       // ),
                       mySpacing(spacing: 3),
-                      SlideInDown(
-                        child: ImageContainer(
-                          imagePath: homeImageSymptomChecker,
-                          title: 'Symptom Checker',
-                          subtitle: 'Let us help analyze your symptoms',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => InfoView(
-                                  title: symptomSectionHeader,
-                                  sectionSummary: symptomSectionSummary,
-                                  firstWidget:
-                                      const FirstWidgetSymptomChecker(),
-                                ),
+                      SingleChildScrollView(
+                        child: Row(
+                          children: [
+                            SlideInDown(
+                              child: ImageContainer(
+                                imagePath: homeImageSymptomChecker,
+                                title: 'Symptom Checker',
+                                subtitle: 'Let us help analyze your symptoms',
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => InfoView(
+                                        title: symptomSectionHeader,
+                                        sectionSummary: symptomSectionSummary,
+                                        firstWidget:
+                                            const FirstWidgetSymptomChecker(),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                isSquare: true,
                               ),
-                            );
-                          },
+                            ),
+                            FadeInUp(
+                              child: ImageContainer(
+                                imagePath: homeImageCommunity,
+                                title: 'Community Chat',
+                                subtitle: 'Connect with others who understand.',
+                                onTap: () {
+                                  ChatUtils.navigateToCommunityChat(context);
+                                },
+                                isSquare: true,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       // Square container
@@ -412,53 +432,6 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                           ],
                         ),
                       ),
-
-                     
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              FadeInUp(
-                                child: ImageContainer(
-                                  imagePath: homeImageCommunity,
-                                  title: 'Community Chat',
-                                  subtitle:
-                                      'Connect with others who understand.',
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const RoomsPage(),
-                                        ));
-                                  },
-                                  isSquare: true,
-                                  // width: squareSize,
-                                  // height: squareSize,
-                                ),
-                              ),
-                              // FadeInRight(
-                              //   child: ImageContainer(
-                              //     imagePath: homeImageAboutUs,
-                              //     title: 'About Us',
-                              //     subtitle: 'What is Anecdotal AI all about?',
-                              //     onTap: () {
-                              //       Navigator.push(
-                              //         context,
-                              //         slideRightTransitionPageBuilder(
-                              //           const RoomsPage(),
-                              //         ),
-                              //       );
-                              //       // Navigator.pushNamed(context, AppRoutes.about);
-                              //     },
-                              //     isSquare: true,
-                              //     // width: squareSize,
-                              //     // height: squareSize,
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                        ),
 
                       const SizedBox(height: 180),
                     ],
