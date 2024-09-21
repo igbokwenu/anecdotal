@@ -47,7 +47,7 @@ class _RoomsPageState extends State<RoomsPage> {
   Widget _buildAvatar(types.Room room) {
     var color = Colors.transparent;
 
-    if (room.type == types.RoomType.direct) {
+    if (room.type == types.RoomType.group) {
       try {
         final otherUser = room.users.firstWhere(
           (u) => u.id != _user!.uid,
