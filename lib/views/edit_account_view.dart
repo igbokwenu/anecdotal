@@ -144,6 +144,7 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
                       backgroundImage: NetworkImage(
                           '${user.profilePicUrl!.isEmpty ? anecdotalLogoUrl : user.profilePicUrl}'),
                     ),
+                    mySpacing(),
                     _isUploading
                         ? const MySpinKitWaveSpinner()
                         : IconButton(
