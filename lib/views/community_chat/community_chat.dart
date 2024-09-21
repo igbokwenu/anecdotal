@@ -1,6 +1,7 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
+import 'package:anecdotal/views/chat/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -234,6 +235,27 @@ class _CommunityChatPageState extends ConsumerState<CommunityChatPage> {
     });
   }
 
+  Widget _avatarBuilder(types.User user) {
+    final color = getUserAvatarNameColor(user);
+    final hasImage = user.imageUrl != null && user.imageUrl!.isNotEmpty;
+    final name = getUserName(user);
+
+    return Container(
+      margin: const EdgeInsets.only(right: 8),
+      child: CircleAvatar(
+        backgroundColor: hasImage ? Colors.transparent : color,
+        backgroundImage: hasImage ? NetworkImage(user.imageUrl!) : null,
+        radius: 20,
+        child: !hasImage
+            ? Text(
+                name.isEmpty ? '' : name[0].toUpperCase(),
+                style: const TextStyle(color: Colors.white),
+              )
+            : null,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
@@ -266,6 +288,7 @@ class _CommunityChatPageState extends ConsumerState<CommunityChatPage> {
             ),
             showUserAvatars: true,
             showUserNames: true,
+            avatarBuilder: _avatarBuilder,
             theme: DefaultChatTheme(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               inputBackgroundColor: Colors.black.withOpacity(0.8),

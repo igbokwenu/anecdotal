@@ -106,6 +106,7 @@ const String userAiTextUsageCount = 'aiTextUsageCount';
 const String userAiGeneralMediaUsageCount = 'aiGeneralMediaUsageCount';
 const String userAiGeneralTextUsageCount = 'aiGeneralTextUsageCount';
 const String userHealingJourneyMap = 'healingJourneyMap';
+const String userDevice = 'device';
 
 const int freeLimit = 5;
 

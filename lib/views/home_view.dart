@@ -277,8 +277,9 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                       //     ),
                       //   ],
                       // ),
-                      mySpacing(spacing: 3),
+                      // mySpacing(spacing: 3),
                       SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
                             FadeInDown(
@@ -317,7 +318,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                           ],
                         ),
                       ),
-                      // Square container
+
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(

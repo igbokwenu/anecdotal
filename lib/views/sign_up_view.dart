@@ -1,8 +1,11 @@
 // sign_up_screen.dart
+import 'dart:io';
+
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 
 import 'package:anecdotal/widgets/reusable_widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -43,6 +46,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
         await _signUpWithEmailAndPassword();
       }
       Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    try {
+      await _authService.signInWithGoogle();
+
+      Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
+      // Navigate to the home screen
+    } on FirebaseAuthException {
+      print('crap');
     }
   }
 
@@ -156,6 +170,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   icon: const Icon(Icons.auto_awesome),
                 ),
                 mySpacing(),
+                if (!kIsWeb)
+                  if (Platform.isAndroid) ...[
+                    const SizedBox(height: 16.0),
+                    OutlinedButton.icon(
+                      onPressed: _signInWithGoogle,
+                      icon: const Icon(Icons.person),
+                      label: const Text('Sign In with Google'),
+                    ),
+                  ],
                 const Align(
                   alignment: Alignment.bottomCenter,
                   child: PrivacyAndTermsButton(

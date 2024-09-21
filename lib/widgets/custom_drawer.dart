@@ -76,7 +76,7 @@ class CustomDrawer extends ConsumerWidget {
                 title: const Text('Community Chat'),
               ),
             if (!kIsWeb)
-              if (Platform.isAndroid)
+              if (kDebugMode || kProfileMode)
                 ListTile(
                   onTap: () {
                     Navigator.push(
@@ -87,7 +87,7 @@ class CustomDrawer extends ConsumerWidget {
                     );
                   },
                   leading: const Icon(Icons.mail),
-                  title: const Text('Private Messages'),
+                  title: const Text('Private Chat'),
                 ),
             if (!kIsWeb)
               ListTile(
