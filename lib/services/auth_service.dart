@@ -240,4 +240,51 @@ class AuthService {
     }
     return false;
   }
+
+    Future<UserCredential?> linkAnonymousAccountWithGoogle() async {
+    MyReusableFunctions.showProcessingToast();
+    try {
+      User? user = _firebaseAuth.currentUser;
+
+      if (user != null && user.isAnonymous) {
+        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+        final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        // Link anonymous account with Google credential
+        UserCredential userCredential = await user.linkWithCredential(credential);
+
+        final databaseService = DatabaseService(uid: user.uid);
+
+        // Update Firestore document if necessary (it should already exist)
+        await _createUserDocumentIfNeeded(userCredential.user);
+
+        await databaseService.updateAnyUserData(
+          fieldName: userEmail,
+          newValue: _firebaseAuth.currentUser?.email ?? '',
+        );
+        await databaseService.fetchUserCountryAndSaveToFirebase();
+
+        MyReusableFunctions.showCustomToast(
+          description: "Your account was successfully linked with Google 🥰",
+          type: ToastificationType.success,
+        );
+
+        return userCredential;
+      } else {
+        MyReusableFunctions.showCustomToast(
+          description: "User is not anonymous",
+          type: ToastificationType.warning,
+        );
+        return null;
+      }
+    } on FirebaseAuthException catch (e) {
+      MyReusableFunctions.showCustomToast(
+          description: "Error: $e", type: ToastificationType.error);
+      return null;
+    }
+  }
 }

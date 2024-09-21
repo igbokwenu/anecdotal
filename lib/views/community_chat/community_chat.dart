@@ -288,7 +288,7 @@ class _CommunityChatPageState extends ConsumerState<CommunityChatPage> {
             ),
             showUserAvatars: true,
             showUserNames: true,
-            avatarBuilder: _avatarBuilder,
+            // avatarBuilder: _avatarBuilder,
             theme: DefaultChatTheme(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               inputBackgroundColor: Colors.black.withOpacity(0.8),
