@@ -1,6 +1,8 @@
+import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'dart:io';
@@ -9,6 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
@@ -16,7 +19,7 @@ import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CommunityChatPage extends StatefulWidget {
+class CommunityChatPage extends ConsumerStatefulWidget {
   const CommunityChatPage({
     super.key,
     required this.room,
@@ -25,12 +28,13 @@ class CommunityChatPage extends StatefulWidget {
   final types.Room room;
 
   @override
-  State<CommunityChatPage> createState() => _CommunityChatPageState();
+  ConsumerState<CommunityChatPage> createState() => _CommunityChatPageState();
 }
 
-class _CommunityChatPageState extends State<CommunityChatPage> {
+class _CommunityChatPageState extends ConsumerState<CommunityChatPage> {
   bool _isAttachmentUploading = false;
 
+  @override
   void initState() {
     super.initState();
     _checkFirstSeen();
@@ -231,36 +235,46 @@ class _CommunityChatPageState extends State<CommunityChatPage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.black.withOpacity(0.8),
-          systemOverlayStyle: SystemUiOverlayStyle.light,
-          title: const Text('Community Chat'),
-        ),
-        body: StreamBuilder<types.Room>(
-          initialData: widget.room,
-          stream: FirebaseChatCore.instance.room(widget.room.id),
-          builder: (context, snapshot) => StreamBuilder<List<types.Message>>(
-            initialData: const [],
-            stream: FirebaseChatCore.instance.messages(snapshot.data!),
-            builder: (context, snapshot) => Chat(
-              isAttachmentUploading: _isAttachmentUploading,
-              messages: snapshot.data ?? [],
-              onAttachmentPressed: _handleAtachmentPressed,
-              onMessageTap: _handleMessageTap,
-              onPreviewDataFetched: _handlePreviewDataFetched,
-              onSendPressed: _handleSendPressed,
-              user: types.User(
-                id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
-              ),
-              theme: DefaultChatTheme(
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                inputBackgroundColor: Colors.black.withOpacity(0.8),
-              ),
+  Widget build(BuildContext context) {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.8),
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        title: const Text('Community Chat'),
+      ),
+      body: StreamBuilder<types.Room>(
+        initialData: widget.room,
+        stream: FirebaseChatCore.instance.room(widget.room.id),
+        builder: (context, snapshot) => StreamBuilder<List<types.Message>>(
+          initialData: const [],
+          stream: FirebaseChatCore.instance.messages(snapshot.data!),
+          builder: (context, snapshot) => Chat(
+            isAttachmentUploading: _isAttachmentUploading,
+            messages: snapshot.data ?? [],
+            onAttachmentPressed: _handleAtachmentPressed,
+            onMessageTap: _handleMessageTap,
+            onPreviewDataFetched: _handlePreviewDataFetched,
+            onSendPressed: _handleSendPressed,
+            user: types.User(
+              id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
+              firstName: userData!.firstName,
+              lastName: userData.lastName,
+              imageUrl: userData.profilePicUrl,
+            ),
+            showUserAvatars: true,
+            showUserNames: true,
+            theme: DefaultChatTheme(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              inputBackgroundColor: Colors.black.withOpacity(0.8),
             ),
           ),
         ),
-      );
+      ),
+    );
+  }
 }
 
 Future<types.Room> joinCommunityChat() async {

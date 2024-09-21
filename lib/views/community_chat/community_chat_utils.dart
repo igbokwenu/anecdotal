@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_firebase_chat_core/flutter_firebase_chat_core.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
-class ChatUtils {
+class CommunityChatUtils {
   static Future<types.Room> joinCommunityChat() async {
     final user = FirebaseChatCore.instance.firebaseUser;
     if (user == null) throw Exception('User is not authenticated');

@@ -281,7 +281,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                       SingleChildScrollView(
                         child: Row(
                           children: [
-                            SlideInDown(
+                            FadeInDown(
                               child: ImageContainer(
                                 imagePath: homeImageSymptomChecker,
                                 title: 'Symptom Checker',
@@ -302,13 +302,14 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                 isSquare: true,
                               ),
                             ),
-                            FadeInUp(
+                            FadeInDown(
                               child: ImageContainer(
                                 imagePath: homeImageCommunity,
                                 title: 'Community Chat',
                                 subtitle: 'Connect with others who understand.',
                                 onTap: () {
-                                  ChatUtils.navigateToCommunityChat(context);
+                                  CommunityChatUtils.navigateToCommunityChat(
+                                      context);
                                 },
                                 isSquare: true,
                               ),
@@ -321,36 +322,29 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            SlideInLeft(
+                            FadeInLeft(
                               child: ImageContainer(
-                                imagePath: homeImageInvestigateHome,
-                                title: 'Investigate',
+                                imagePath: homeImageTrackProgress,
+                                title: 'Track Progress',
                                 subtitle:
-                                    'Is your home/office making you sick?',
+                                    'Find patterns in your healing journey.',
                                 onTap: () {
                                   Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => InfoView(
-                                        title: investigateSectionHeader,
-                                        sectionSummary:
-                                            investigateSectionSummary,
-                                        firstWidget: kIsWeb
-                                            ? const Text(
-                                                "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
-                                                textAlign: TextAlign.center,
-                                              )
-                                            : const FirstWidgetInvestigateHome(),
-                                      ),
-                                    ),
-                                  );
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => InfoView(
+                                          title: progressTrackerSectionHeader,
+                                          sectionSummary:
+                                              progressTrackerSectionSummary,
+                                          firstWidget:
+                                              const FirstWidgetProgressTracker(),
+                                        ),
+                                      ));
                                 },
                                 isSquare: true,
-                                // width: squareSize,
-                                // height: squareSize,
                               ),
                             ),
-                            SlideInRight(
+                            FadeInRight(
                               child: ImageContainer(
                                 imagePath: homeImageInterpretLab,
                                 title: 'Interpret Lab',
@@ -388,29 +382,32 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                           children: [
                             FadeInUp(
                               child: ImageContainer(
-                                imagePath: homeImageTrackProgress,
-                                title: 'Track Progress',
+                                imagePath: homeImageInvestigateHome,
+                                title: 'Investigate',
                                 subtitle:
-                                    'Find patterns in your healing journey.',
+                                    'Is your home/office making you sick?',
                                 onTap: () {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => InfoView(
-                                          title: progressTrackerSectionHeader,
-                                          sectionSummary:
-                                              progressTrackerSectionSummary,
-                                          firstWidget:
-                                              const FirstWidgetProgressTracker(),
-                                        ),
-                                      ));
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => InfoView(
+                                        title: investigateSectionHeader,
+                                        sectionSummary:
+                                            investigateSectionSummary,
+                                        firstWidget: kIsWeb
+                                            ? const Text(
+                                                "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
+                                                textAlign: TextAlign.center,
+                                              )
+                                            : const FirstWidgetInvestigateHome(),
+                                      ),
+                                    ),
+                                  );
                                 },
                                 isSquare: true,
-                                // width: squareSize,
-                                // height: squareSize,
                               ),
                             ),
-                            FadeInRight(
+                            FadeInUp(
                               child: ImageContainer(
                                 imagePath: homeImageAboutUs,
                                 title: 'About Us',
@@ -425,8 +422,6 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                   // Navigator.pushNamed(context, AppRoutes.about);
                                 },
                                 isSquare: true,
-                                // width: squareSize,
-                                // height: squareSize,
                               ),
                             ),
                           ],
