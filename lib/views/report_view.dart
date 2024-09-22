@@ -48,9 +48,8 @@ class ReportView extends ConsumerStatefulWidget {
   ConsumerState<ReportView> createState() => _ReportViewState();
 }
 
-bool _isSaved = false;
-
 class _ReportViewState extends ConsumerState<ReportView> {
+  bool _isSaved = false;
   bool _isSaving = false;
   @override
   Widget build(BuildContext context) {
@@ -125,15 +124,27 @@ class _ReportViewState extends ConsumerState<ReportView> {
     }
 
     Future<void> saveAndSharePDF(BuildContext context, bool share) async {
-      setState(() {
-        _isSaving = true;
-      });
       final uid = FirebaseAuth.instance.currentUser?.uid;
       final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
       final pdf = pw.Document();
       final subject = userData!.lastName!.isEmpty
           ? "Subject Anonymous"
           : "${userData.firstName} ${userData.lastName}";
+
+      String getUserType(String type) {
+        switch (type) {
+          case userSymptomReportPdfUrls:
+            return 'symptom_analysis';
+          case userLabReportPdfUrls:
+            return 'lab_result_analysis';
+          case userHomeReportPdfUrls:
+            return 'home_report_analysis';
+          case userGeneralReportPdfUrls:
+            return 'general_report';
+          default:
+            return 'report';
+        }
+      }
 
       // Load image from assets
       final imageBytes = await rootBundle.load(logoAssetImageUrlNoTagLine);
@@ -145,7 +156,8 @@ class _ReportViewState extends ConsumerState<ReportView> {
       final formattedDateWithoutTime = DateFormat('yyyy-MM-dd').format(now);
 
       // Create file name with current date and time
-      final fileName = "report_anecdotal_$formattedDate.pdf";
+      final fileName =
+          "${getUserType(widget.reportType)}_anecdotalAI_$formattedDate.pdf";
 
       pdf.addPage(
         pw.MultiPage(
@@ -282,58 +294,73 @@ class _ReportViewState extends ConsumerState<ReportView> {
                     box.size, // Required for iPad
               );
             } else {
-                  // Upload to Firebase Storage
-          final storageRef = FirebaseStorage.instance
-              .ref()
-              .child('reports/$uid/$fileName');
-          await storageRef.putData(bytes);
+              setState(() {
+                _isSaving = true;
+              });
+              // Upload to Firebase Storage
+              final storageRef = FirebaseStorage.instance
+                  .ref()
+                  .child('user_data/$uid/$fileName');
+              await storageRef.putData(bytes);
 
-          // Get download URL
-          final downloadURL = await storageRef.getDownloadURL();
+              // Get download URL
+              final downloadURL = await storageRef.getDownloadURL();
 
-          // Update Firestore
-          final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
-          await userRef.update({
-            widget.reportType: FieldValue.arrayUnion([downloadURL]),
-          });
+              // Update Firestore
+              final userRef =
+                  FirebaseFirestore.instance.collection('users').doc(uid);
+              await userRef.update({
+                widget.reportType: FieldValue.arrayUnion([downloadURL]),
+              });
 
-          // Show success dialog
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Report Saved'),
-                content: const Text('Your report has been saved successfully.'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('OK'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  TextButton(
-                    child: const Text('View Reports'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ViewReports()),
-                      );
-                    },
-                  ),
-                ],
+              // Show success dialog
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Report Saved'),
+                    content:
+                        const Text('Your report has been saved successfully.'),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('OK'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: const Text('View Reports'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ViewReports()),
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
               );
-            },
-          );
-        }
+            }
 
-        setState(() {
-          _isSaving = false;
-        });
-      } catch (e) {
-        setState(() {
-          _isSaving = false;
-        });
+            setState(() {
+              _isSaving = false;
+            });
+            setState(() {
+              _isSaved = true;
+            });
+          } catch (e) {
+            setState(() {
+              _isSaving = false;
+            });
+            setState(() {
+              _isSaved = true;
+            });
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Error processing PDF: $e')),
+            );
           }
         }
       }
@@ -353,11 +380,18 @@ class _ReportViewState extends ConsumerState<ReportView> {
                           padding: EdgeInsets.only(right: 8.0),
                           child: Icon(Icons.check_circle),
                         )
-                      : IconButton(
-                          icon: const Icon(Icons.save),
-                          onPressed: () =>
-                              saveAndSharePDF(context, false), // Save PDF
-                        ),
+                      : _isSaving
+                          ? const Padding(
+                              padding: EdgeInsets.only(right: 8.0),
+                              child: MySpinKitWaveSpinner(
+                                size: 35,
+                              ),
+                            )
+                          : IconButton(
+                              icon: const Icon(Icons.save),
+                              onPressed: () =>
+                                  saveAndSharePDF(context, false), // Save PDF
+                            ),
               ],
       ),
       body: SingleChildScrollView(
@@ -429,13 +463,19 @@ class _ReportViewState extends ConsumerState<ReportView> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 if (!kIsWeb)
-                  _isSaved
-                      ? myEmptySizedBox()
-                      : IconButton(
-                          icon: const Icon(Icons.save),
-                          onPressed: () =>
-                              saveAndSharePDF(context, false), // Save PDF
-                        ),
+                  _isSaving
+                      ? const MySpinKitWaveSpinner(
+                          size: 25,
+                        )
+                      : _isSaved
+                          ? myEmptySizedBox()
+                          : IconButton(
+                              icon: const Icon(
+                                Icons.save,
+                              ),
+                              onPressed: () =>
+                                  saveAndSharePDF(context, false), // Save PDF
+                            ),
                 if (Platform.isAndroid)
                   IconButton(
                     icon: const Icon(Icons.share),

@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:path/path.dart' as path;
 
 class ViewReports extends StatelessWidget {
+  const ViewReports({super.key});
+
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
@@ -17,19 +21,19 @@ class ViewReports extends StatelessWidget {
           title: const Text('My Reports'),
           bottom: const TabBar(
             tabs: [
-              Tab(text: 'General'),
               Tab(text: 'Symptom'),
               Tab(text: 'Lab'),
               Tab(text: 'Space'),
+              Tab(text: 'Others'),
             ],
           ),
         ),
         body: const TabBarView(
           children: [
-            ReportList(reportType: userGeneralReportPdfUrls),
             ReportList(reportType: userSymptomReportPdfUrls),
             ReportList(reportType: userLabReportPdfUrls),
             ReportList(reportType: userHomeReportPdfUrls),
+            ReportList(reportType: userGeneralReportPdfUrls),
           ],
         ),
       ),
@@ -65,22 +69,31 @@ class ReportList extends StatelessWidget {
           return const Center(child: Text('No reports found'));
         }
 
+        // Reverse the list to display items from last to first
+        final reversedReportUrls = reportUrls.reversed.toList();
+
         return ListView.builder(
-          itemCount: reportUrls.length,
+          itemCount: reversedReportUrls.length,
           itemBuilder: (context, index) {
-            final url = reportUrls[index];
+            final url = reversedReportUrls[index];
+            final fileName = _extractFileName(url);
             return ListTile(
               title: Text('Report ${index + 1}'),
-              subtitle: Text(url),
+              subtitle: Text(fileName),
+              onTap: () => _viewReport(context, url),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
                     icon: const Icon(Icons.remove_red_eye),
-                    onPressed: () => _viewReport(url),
+                    onPressed: () => _viewReport(context, url),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.delete),
+                    icon: const Icon(Icons.file_download),
+                    onPressed: () => _downloadReport(url),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.red),
                     onPressed: () => _deleteReport(context, uid!, url),
                   ),
                 ],
@@ -92,7 +105,20 @@ class ReportList extends StatelessWidget {
     );
   }
 
-  void _viewReport(String url) async {
+  String _extractFileName(String url) {
+    return path.basename(Uri.decodeFull(url));
+  }
+
+  void _viewReport(BuildContext context, String url) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PDFViewerPage(url: url),
+      ),
+    );
+  }
+
+  void _downloadReport(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -119,5 +145,25 @@ class ReportList extends StatelessWidget {
         SnackBar(content: Text('Error deleting report: $e')),
       );
     }
+  }
+}
+
+class PDFViewerPage extends StatelessWidget {
+  final String url;
+
+  const PDFViewerPage({Key? key, required this.url}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_extractFileName(url)),
+      ),
+      body: SfPdfViewer.network(url),
+    );
+  }
+
+  String _extractFileName(String url) {
+    return path.basename(Uri.decodeFull(url));
   }
 }

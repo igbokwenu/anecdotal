@@ -63,9 +63,8 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
 
     try {
       final uid = FirebaseAuth.instance.currentUser?.uid;
-      final ref = FirebaseStorage.instance
-          .ref()
-          .child('general/profile_pictures/$uid.jpg');
+      final ref =
+          FirebaseStorage.instance.ref().child('user_data/$uid/$uid.jpg');
       await ref.putFile(_imageFile!);
       final url = await ref.getDownloadURL();
 
