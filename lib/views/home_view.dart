@@ -64,7 +64,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
         MyReusableFunctions.showCustomDialog(
           context: context,
           message:
-              'Welcome to Anecdotal AI! We\'re here to support you on your health journey. Take the first step towards healing by sharing your symptoms.',
+              'Welcome to Anecdotal AI! We\'re here to support you on your wellness journey. Take the first step towards healing by sharing any symptoms you might be experiencing.',
           actions: [
             TextButton(
               onPressed: () {
@@ -86,7 +86,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                   ),
                 );
               },
-              child: const Text('Analyze Your Symptoms'),
+              child: const Text('Analyze Symptoms'),
             ),
           ],
         );
