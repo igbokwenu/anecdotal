@@ -72,7 +72,8 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
       final url = await ref.getDownloadURL();
 
       await FirebaseFirestore.instance.collection('users').doc(uid).update({
-        'profilePicUrl': url,
+        userProfilePicUrl: url,
+        userImageUrlForChat: url,
       });
 
       ScaffoldMessenger.of(context).showSnackBar(

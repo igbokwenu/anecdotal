@@ -300,7 +300,7 @@ class _CommunityChatPageState extends ConsumerState<CommunityChatPage> {
               id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
               firstName: userData!.firstName,
               lastName: userData.lastName,
-              // imageUrl: userData.profilePicUrl,
+              imageUrl: userData.profilePicUrl,
             ),
             showUserAvatars: true,
             showUserNames: true,

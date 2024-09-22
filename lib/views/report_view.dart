@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:anecdotal/providers/iap_provider.dart';
+import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/constants/writeups.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -117,8 +119,12 @@ class _ReportViewState extends ConsumerState<ReportView> {
     }
 
     Future<void> saveAndSharePDF(BuildContext context, bool share) async {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
       final pdf = pw.Document();
-      final subject = widget.name ?? "Subject Anonymous";
+      final subject = userData!.lastName!.isEmpty
+          ? "Subject Anonymous"
+          : "${userData.firstName} ${userData.lastName}";
 
       // Load image from assets
       final imageBytes = await rootBundle.load(logoAssetImageUrlNoTagLine);
@@ -169,7 +175,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
             pw.SizedBox(height: 10),
             pw.UrlLink(
               child: pw.Text(
-                'Visit our website: www.anecdotalhq.web.app',
+                'Website: www.anecdotalhq.web.app',
                 style: pw.TextStyle(
                   color: PdfColors.teal,
                   fontWeight: pw.FontWeight.bold,
@@ -326,6 +332,8 @@ class _ReportViewState extends ConsumerState<ReportView> {
                   ),
                 )
               ],
+            mySpacing(spacing: 2),
+            _buildHeader(context),
             _buildSection(
               title: 'Summary',
               icon: Icons.notes,
@@ -478,22 +486,26 @@ class _ReportViewState extends ConsumerState<ReportView> {
   }
 
   Widget _buildHeader(BuildContext context) {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+    final now = DateTime.now();
+    final formattedDateWithoutTime = DateFormat('yyyy-MM-dd').format(now);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.name != null
-                ? 'Report Created For: \n ${widget.name}'
-                : 'Report Created For: \n Identity Protected',
+            userData!.lastName!.isEmpty
+                ? "Report created for: Name Not Provided"
+                : "Report created for: ${userData.firstName} ${userData.lastName}",
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.labelMedium!.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
           ),
           Text(
-            'Last updated: September 11, 2024',
+            'Created on: $formattedDateWithoutTime',
             style: Theme.of(context).textTheme.labelMedium!.copyWith(
                   fontStyle: FontStyle.italic,
                 ),
