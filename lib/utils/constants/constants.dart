@@ -101,6 +101,7 @@ const String userSymptomReportImageUrls = 'symptomReportImageUrls';
 const String userHomeReportPdfUrls = 'homeReportPdfUrls';
 const String userLabReportPdfUrls = 'labReportPdfUrls';
 const String userSymptomReportPdfUrls = 'symptomReportPdfUrls';
+const String userGeneralReportPdfUrls = 'generalReportPdfUrls';
 const String userMedicalHistoryList = 'medicalHistoryList';
 const String userAiMediaUsageCount = 'aiMediaUsageCount';
 const String userAiTextUsageCount = 'aiTextUsageCount';
@@ -109,6 +110,7 @@ const String userAiGeneralTextUsageCount = 'aiGeneralTextUsageCount';
 const String userHealingJourneyMap = 'healingJourneyMap';
 const String userDevice = 'device';
 const String userWatchedVideoUrls = 'watchedVideoUrls';
+const String userTimeStamp = 'timeStamp';
 
 const int freeLimit = 5;
 

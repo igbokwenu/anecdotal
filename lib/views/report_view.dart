@@ -26,6 +26,7 @@ class ReportView extends ConsumerStatefulWidget {
   final String? title;
   final String? name;
   final bool enableManualCitations;
+    final String reportType;
 
   const ReportView({
     super.key,
@@ -34,6 +35,7 @@ class ReportView extends ConsumerStatefulWidget {
     required this.recommendations,
     required this.followUpSearchTerms,
     required this.citations,
+    required this.reportType,
     this.title,
     this.name,
     this.enableManualCitations = true,
@@ -258,6 +260,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
             final output = await getTemporaryDirectory();
             final file = File("${output.path}/$fileName");
             await file.writeAsBytes(await pdf.save());
+            
 
             if (share) {
               final xFile = XFile(file.path);

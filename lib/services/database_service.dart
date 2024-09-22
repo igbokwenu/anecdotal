@@ -133,6 +133,7 @@ class DatabaseService {
       userHomeReportPdfUrls: [],
       userLabReportPdfUrls: [],
       userSymptomReportPdfUrls: [],
+      userGeneralReportPdfUrls: [],
       userMedicalHistoryList: [],
       userAiMediaUsageCount: 0,
       userAiTextUsageCount: 0,
@@ -141,6 +142,7 @@ class DatabaseService {
       userHealingJourneyMap: [],
       userDevice: Platform.isAndroid ? 'Android' : 'iOS',
       userWatchedVideoUrls: [],
+      userTimeStamp: FieldValue.serverTimestamp(),
     });
   }
 }
