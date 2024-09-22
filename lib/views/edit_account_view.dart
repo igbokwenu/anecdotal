@@ -138,7 +138,13 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 20),
+                    mySpacing(),
+                    const Text(
+                      'Note: Your profile picture will be visible in chat rooms.',
+                      style: TextStyle(fontSize: 12),
+                      textAlign: TextAlign.center,
+                    ),
+                    mySpacing(),
                     CircleAvatar(
                       radius: 80,
                       backgroundImage: NetworkImage(

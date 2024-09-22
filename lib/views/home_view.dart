@@ -271,7 +271,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                       //   children: [
                       //     TextButton(
                       //       onPressed: () async {
-
+                           
                       //       },
                       //       child: Text('Open '),
                       //     ),
@@ -318,7 +318,6 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                           ],
                         ),
                       ),
-
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -428,7 +427,6 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                           ],
                         ),
                       ),
-
                       const SizedBox(height: 180),
                     ],
                   ),

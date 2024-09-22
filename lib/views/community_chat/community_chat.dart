@@ -2,6 +2,7 @@ import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/chat/utils.dart';
+import 'package:anecdotal/views/edit_account_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -44,6 +45,8 @@ class _CommunityChatPageState extends ConsumerState<CommunityChatPage> {
   Future<void> _checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _seen = (prefs.getBool('seen_chat') ?? false);
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
 
     if (!_seen) {
       await prefs.setBool('seen_chat', true);
@@ -52,8 +55,21 @@ class _CommunityChatPageState extends ConsumerState<CommunityChatPage> {
         MyReusableFunctions.showCustomDialog(
           context: context,
           message:
-              'Welcome to our community chat! The rules are simple: \n\nTreat others the way you want to be treated. \nSpeak to others the way you want to be spoken to. \nSupport others the way you want to be supported. \n\n❤️',
+              'Welcome to our community chat! The rules are simple: \n\nTreat others the way you want to be treated. \nSpeak to others the way you want to be spoken to. \nSupport others the way you want to be supported. \n\n❤️ ${userData!.lastName!.isEmpty ? '\n\nNote: Your display name is ${userData.firstName}. You can change it in your profile.' : ''}',
           actions: [
+            if (userData.lastName!.isEmpty)
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UserProfileEditScreen(),
+                    ),
+                  );
+                },
+                child: const Text('Edit Profile'),
+              ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
@@ -284,7 +300,7 @@ class _CommunityChatPageState extends ConsumerState<CommunityChatPage> {
               id: FirebaseChatCore.instance.firebaseUser?.uid ?? '',
               firstName: userData!.firstName,
               lastName: userData.lastName,
-              imageUrl: userData.profilePicUrl,
+              // imageUrl: userData.profilePicUrl,
             ),
             showUserAvatars: true,
             showUserNames: true,

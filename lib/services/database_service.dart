@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:anecdotal/utils/constants/constants.dart';
+import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -103,7 +104,7 @@ class DatabaseService {
 
   Future<void> createUserDocument() async {
     return await updateUserDocument({
-      userFirstName: '',
+      userFirstName: MyReusableFunctions.generateRandomUsername(),
       userLastName: '',
       userCountry: '',
       userState: '',
@@ -138,7 +139,8 @@ class DatabaseService {
       userAiGeneralMediaUsageCount: 0,
       userAiGeneralTextUsageCount: 0,
       userHealingJourneyMap: [],
-      userDevice: Platform.isAndroid ? 'Android': 'iOS',
+      userDevice: Platform.isAndroid ? 'Android' : 'iOS',
+      userWatchedVideoUrls: [],
     });
   }
 }

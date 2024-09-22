@@ -51,12 +51,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void> _signInWithGoogle() async {
     try {
-      await _authService.signInWithGoogle();
-
+      if (_authService.isUserAnonymous()) {
+        // Link the anonymous account with Google
+        await _authService.linkAnonymousAccountWithGoogle();
+      } else {
+        // Proceed with normal Google sign-in
+        await _authService.signInWithGoogle();
+      }
       Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
-      // Navigate to the home screen
-    } on FirebaseAuthException {
-      print('crap');
+    } on FirebaseAuthException catch (e) {
+      print('Error: $e');
     }
   }
 
@@ -176,7 +180,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     OutlinedButton.icon(
                       onPressed: _signInWithGoogle,
                       icon: const Icon(Icons.person),
-                      label: const Text('Sign In with Google'),
+                      label: Text(_authService.isUserAnonymous()
+                          ? 'Link with Google'
+                          : 'Sign In with Google'),
                     ),
                   ],
                 const Align(

@@ -1,5 +1,6 @@
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -208,6 +209,14 @@ class AuthService {
       User? user = _firebaseAuth.currentUser;
 
       if (user != null) {
+        //Remove user from community chat
+        await FirebaseFirestore.instance
+            .collection('rooms')
+            .doc(communityRoomId)
+            .update({
+          'userIds': FieldValue.arrayRemove([user.uid]),
+        });
+
         // Delete the user from Firebase Authentication
         await user.delete();
 
@@ -241,35 +250,36 @@ class AuthService {
     return false;
   }
 
-    Future<UserCredential?> linkAnonymousAccountWithGoogle() async {
+// Method to link anonymous account with Google
+  Future<UserCredential?> linkAnonymousAccountWithGoogle() async {
     MyReusableFunctions.showProcessingToast();
     try {
       User? user = _firebaseAuth.currentUser;
 
       if (user != null && user.isAnonymous) {
         final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-        final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser!.authentication;
         final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
 
         // Link anonymous account with Google credential
-        UserCredential userCredential = await user.linkWithCredential(credential);
+        UserCredential userCredential =
+            await user.linkWithCredential(credential);
 
+        // Update Firestore document
         final databaseService = DatabaseService(uid: user.uid);
-
-        // Update Firestore document if necessary (it should already exist)
-        await _createUserDocumentIfNeeded(userCredential.user);
-
         await databaseService.updateAnyUserData(
           fieldName: userEmail,
-          newValue: _firebaseAuth.currentUser?.email ?? '',
+          newValue: userCredential.user?.email ?? '',
         );
         await databaseService.fetchUserCountryAndSaveToFirebase();
 
         MyReusableFunctions.showCustomToast(
-          description: "Your account was successfully linked with Google 🥰",
+          description:
+              "Your account was successfully linked with Google Login 🥰",
           type: ToastificationType.success,
         );
 

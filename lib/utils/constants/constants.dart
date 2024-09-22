@@ -107,6 +107,7 @@ const String userAiGeneralMediaUsageCount = 'aiGeneralMediaUsageCount';
 const String userAiGeneralTextUsageCount = 'aiGeneralTextUsageCount';
 const String userHealingJourneyMap = 'healingJourneyMap';
 const String userDevice = 'device';
+const String userWatchedVideoUrls = 'watchedVideoUrls';
 
 const int freeLimit = 5;
 
@@ -124,3 +125,5 @@ const String communityImageUrl =
 
 const String anecdotalLogoUrl =
     'https://firebasestorage.googleapis.com/v0/b/anecdotalhq.appspot.com/o/general%2Fapp_branding_images%2Fanecdotal_512.png?alt=media&token=b31737ac-d80d-40a6-9155-9358418a2b14';
+
+const String communityRoomId = 'd6dFUDSPtW4bucnUIhkx';

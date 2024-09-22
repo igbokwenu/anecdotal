@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -214,4 +216,30 @@ class MyReusableFunctions {
       ),
     );
   }
+ 
+
+static String generateRandomUsername() {
+  // List of name prefixes
+final List<String> namePrefixes = [
+  "Shadow", "Mystery", "Wanderer", "Specter", "Phantom", "Echo", 
+  "Nomad", "Ghost", "Cipher", "Drifter", "Nebula", "Whisper", 
+  "Rogue", "Unknown", "Enigma", "Veil", "Chimera", 
+  "Orbit", "Silent", "Anon", "Guest", "Mysterious", 
+  "Incog", "Whispr", "Lurker", "Mystic"
+];
+
+
+  // Create a random number generator
+  final Random random = Random();
+
+  // Get a random name prefix from the list
+  String randomPrefix = namePrefixes[random.nextInt(namePrefixes.length)];
+
+  // Generate a random 5-digit number
+  String randomNumber = (random.nextInt(90000) + 10000).toString();
+
+  // Combine the prefix with the random number
+  return '$randomPrefix-$randomNumber';
+}
+
 }
