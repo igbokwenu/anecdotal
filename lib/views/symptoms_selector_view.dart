@@ -105,7 +105,7 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
               followUpSearchTerms:
                   response['suggestions']?.cast<String>() ?? [],
               citations: response['citations']?.cast<String>() ?? [],
-              title: 'Symptom Analysis',
+              title: 'Symptom Analysis', reportType: userSymptomReportPdfUrls,
             ),
           ),
         );

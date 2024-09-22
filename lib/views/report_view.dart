@@ -4,8 +4,11 @@ import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/constants/writeups.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
+import 'package:anecdotal/views/view_reports_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,7 +29,7 @@ class ReportView extends ConsumerStatefulWidget {
   final String? title;
   final String? name;
   final bool enableManualCitations;
-    final String reportType;
+  final String reportType;
 
   const ReportView({
     super.key,
@@ -48,6 +51,7 @@ class ReportView extends ConsumerStatefulWidget {
 bool _isSaved = false;
 
 class _ReportViewState extends ConsumerState<ReportView> {
+  bool _isSaving = false;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -121,6 +125,9 @@ class _ReportViewState extends ConsumerState<ReportView> {
     }
 
     Future<void> saveAndSharePDF(BuildContext context, bool share) async {
+      setState(() {
+        _isSaving = true;
+      });
       final uid = FirebaseAuth.instance.currentUser?.uid;
       final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
       final pdf = pw.Document();
@@ -257,10 +264,10 @@ class _ReportViewState extends ConsumerState<ReportView> {
               context: context, message: premiumSpeechPDFAccess);
         } else {
           try {
+            final bytes = await pdf.save();
             final output = await getTemporaryDirectory();
             final file = File("${output.path}/$fileName");
             await file.writeAsBytes(await pdf.save());
-            
 
             if (share) {
               final xFile = XFile(file.path);
@@ -275,18 +282,58 @@ class _ReportViewState extends ConsumerState<ReportView> {
                     box.size, // Required for iPad
               );
             } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('PDF saved to ${file.path}')),
-              );
+                  // Upload to Firebase Storage
+          final storageRef = FirebaseStorage.instance
+              .ref()
+              .child('reports/$uid/$fileName');
+          await storageRef.putData(bytes);
 
-              setState(() {
-                _isSaved = true;
-              });
-            }
-          } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error creating PDF: $e')),
-            );
+          // Get download URL
+          final downloadURL = await storageRef.getDownloadURL();
+
+          // Update Firestore
+          final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
+          await userRef.update({
+            widget.reportType: FieldValue.arrayUnion([downloadURL]),
+          });
+
+          // Show success dialog
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Report Saved'),
+                content: const Text('Your report has been saved successfully.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('View Reports'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ViewReports()),
+                      );
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+
+        setState(() {
+          _isSaving = false;
+        });
+      } catch (e) {
+        setState(() {
+          _isSaving = false;
+        });
           }
         }
       }

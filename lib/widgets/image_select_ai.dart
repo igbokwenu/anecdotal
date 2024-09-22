@@ -160,6 +160,9 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
                       response['suggestions']?.cast<String>() ?? [],
                   citations: response['citations']?.cast<String>() ?? [],
                   title: 'Symptom Analysis',
+                  reportType: widget.isLabTest
+                      ? userLabReportPdfUrls
+                      : userHomeReportPdfUrls,
                 ),
               ),
             );
@@ -226,7 +229,8 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
                   userData!.aiGeneralMediaUsageCount >= freeLimit &&
                           !iapStatus.isPro
                       ? MyReusableFunctions.showPremiumDialog(
-                          context: context,)
+                          context: context,
+                        )
                       : await analyzeImages();
                 },
           label: _isAnalyzing

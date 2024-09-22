@@ -127,6 +127,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                 followUpSearchTerms:
                     response['suggestions']?.cast<String>() ?? [],
                 citations: response['citations']?.cast<String>() ?? [],
+                reportType: userGeneralReportPdfUrls,
               ),
             ),
           );
@@ -166,6 +167,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
               followUpSearchTerms:
                   response['suggestions']?.cast<String>() ?? [],
               citations: response['citations']?.cast<String>() ?? [],
+              reportType: userGeneralReportPdfUrls,
             ),
           ),
         );

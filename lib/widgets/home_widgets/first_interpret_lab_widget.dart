@@ -1,6 +1,7 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/utils/constants/ai_prompts.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/views/report_view.dart';
 import 'package:anecdotal/widgets/camera_ai.dart';
 import 'package:anecdotal/widgets/image_select_ai.dart';
@@ -47,7 +48,7 @@ class FirstWidgetInterpretLab extends ConsumerWidget {
                             followUpSearchTerms:
                                 result['suggestions']?.cast<String>() ?? [],
                             citations:
-                                result['citations']?.cast<String>() ?? [],
+                                result['citations']?.cast<String>() ?? [], reportType: userLabReportPdfUrls,
                           ),
                         ),
                       );
@@ -95,7 +96,7 @@ class FirstWidgetInterpretLab extends ConsumerWidget {
                         result['recommendations']?.cast<String>() ?? [],
                     followUpSearchTerms:
                         result['suggestions']?.cast<String>() ?? [],
-                    citations: result['citations']?.cast<String>() ?? [],
+                    citations: result['citations']?.cast<String>() ?? [], reportType: userLabReportPdfUrls,
                   ),
                 ),
               );

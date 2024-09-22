@@ -4,6 +4,7 @@ import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/utils/constants/ai_prompts.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/progress_tracker_view.dart';
 import 'package:anecdotal/views/report_view.dart';
@@ -213,7 +214,7 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
                   response['suggestions']?.cast<String>() ?? [],
               citations: response['citations']?.cast<String>() ?? [],
               title: "Journey Report",
-              enableManualCitations: false,
+              enableManualCitations: false, reportType: userGeneralReportPdfUrls,
             ),
           ),
         );

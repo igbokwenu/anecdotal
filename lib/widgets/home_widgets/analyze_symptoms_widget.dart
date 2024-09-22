@@ -59,7 +59,7 @@ class FirstWidgetSymptomChecker extends ConsumerWidget {
               followUpSearchTerms:
                   response['suggestions']?.cast<String>() ?? [],
               citations: response['citations']?.cast<String>() ?? [],
-              title: 'Symptom Analysis',
+              title: 'Symptom Analysis', reportType: userSymptomReportPdfUrls,
             ),
           ),
         );

@@ -7,6 +7,7 @@ import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/account_view.dart';
 import 'package:anecdotal/views/chat/rooms.dart';
 import 'package:anecdotal/views/community_chat/community_chat_utils.dart';
+import 'package:anecdotal/views/view_reports_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -89,6 +90,18 @@ class CustomDrawer extends ConsumerWidget {
                   leading: const Icon(Icons.mail),
                   title: const Text('Private Chat'),
                 ),
+            ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ViewReports(),
+                  ),
+                );
+              },
+              leading: const Icon(Icons.file_copy),
+              title: const Text('View Reports'),
+            ),
             if (!kIsWeb)
               ListTile(
                 onTap: () async {
