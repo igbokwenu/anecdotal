@@ -19,6 +19,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CommunityChatPage extends ConsumerStatefulWidget {
@@ -256,22 +257,92 @@ class _CommunityChatPageState extends ConsumerState<CommunityChatPage> {
     final hasImage = user.imageUrl != null && user.imageUrl!.isNotEmpty;
     final name = getUserName(user);
 
-    return Container(
-      margin: const EdgeInsets.only(right: 8),
-      child: CircleAvatar(
-        backgroundColor: hasImage ? Colors.transparent : color,
-        backgroundImage: hasImage ? NetworkImage(user.imageUrl!) : null,
-        radius: 20,
-        child: !hasImage
-            ? Text(
-                name.isEmpty ? '' : name[0].toUpperCase(),
-                style: const TextStyle(color: Colors.white),
-              )
-            : null,
+    return GestureDetector(
+      onTap: () => _showUserProfilePopup(context, user),
+      child: Container(
+        margin: const EdgeInsets.only(right: 8),
+        child: CircleAvatar(
+          backgroundColor: hasImage ? Colors.transparent : color,
+          backgroundImage: hasImage ? NetworkImage(user.imageUrl!) : null,
+          radius: 20,
+          child: !hasImage
+              ? Text(
+                  name.isEmpty ? '' : name[0].toUpperCase(),
+                  style: const TextStyle(color: Colors.white),
+                )
+              : null,
+        ),
       ),
     );
   }
 
+  Future<Map<String, dynamic>?> _getUserData(String userId) async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+      return userDoc.data() as Map<String, dynamic>?;
+    } catch (e) {
+      print('Error fetching user data: $e');
+      return null;
+    }
+  }
+
+
+void _showUserProfilePopup(BuildContext context, types.User user) async {
+  final userData = await _getUserData(user.id);
+  if (userData != null) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  if (user.imageUrl != null) {
+                    _showFullScreenImage(context, user.imageUrl!);
+                  }
+                },
+                child: CircleAvatar(
+                  backgroundImage: user.imageUrl != null ? NetworkImage(user.imageUrl!) : null,
+                  radius: 50,
+                  child: user.imageUrl == null ? Text(user.firstName?[0] ?? '') : null,
+                ),
+              ),
+              SizedBox(height: 16),
+              Text('${userData['firstName']} ${userData['lastName']}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              SizedBox(height: 8),
+              Text(userData['country'] ?? 'Country not specified'),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+void _showFullScreenImage(BuildContext context, String imageUrl) {
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => Dismissible(
+        key: const Key('fullScreenImage'),
+        direction: DismissDirection.vertical,
+        onDismissed: (_) => Navigator.of(context).pop(),
+        child: PhotoView(
+          imageProvider: NetworkImage(imageUrl),
+          minScale: PhotoViewComputedScale.contained,
+          maxScale: PhotoViewComputedScale.covered * 2,
+          backgroundDecoration: const BoxDecoration(
+            color: Colors.black,
+          ),
+        ),
+      ),
+    ),
+  );
+}
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
@@ -304,7 +375,7 @@ class _CommunityChatPageState extends ConsumerState<CommunityChatPage> {
             ),
             showUserAvatars: true,
             showUserNames: true,
-            // avatarBuilder: _avatarBuilder,
+            avatarBuilder: _avatarBuilder,
             theme: DefaultChatTheme(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               inputBackgroundColor: Colors.black.withOpacity(0.8),
