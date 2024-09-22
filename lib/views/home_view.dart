@@ -271,7 +271,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                       //   children: [
                       //     TextButton(
                       //       onPressed: () async {
-                           
+
                       //       },
                       //       child: Text('Open '),
                       //     ),

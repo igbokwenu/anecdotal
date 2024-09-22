@@ -43,7 +43,6 @@ dependencies:
   purchases_flutter: ^8.1.1
   purchases_ui_flutter: ^8.1.1
   freezed_annotation: any
-  permission_handler: ^11.3.1
   intl: ^0.19.0
   timeline_tile: ^2.0.0
   firebase_storage: ^12.3.0
@@ -53,7 +52,6 @@ dependencies:
   chewie: ^1.8.5
   upgrader: ^11.1.0
   cached_network_image: ^3.4.1
-  country_picker: ^2.0.26
   flutter_chat_ui: ^1.6.15
   flutter_firebase_chat_core: ^1.6.8
   flutter_chat_types: ^3.6.2
