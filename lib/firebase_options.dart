@@ -64,6 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '996712058212',
     projectId: 'anecdotalhq',
     storageBucket: 'anecdotalhq.appspot.com',
+    androidClientId: '996712058212-946ltodno574o7h335aqajpq033f1sk1.apps.googleusercontent.com',
+    iosClientId: '996712058212-fjpar7iqhrp9a5v7tohrqdg3j1rqslo6.apps.googleusercontent.com',
     iosBundleId: 'com.increasedw.anecdotal',
   );
 
