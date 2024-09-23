@@ -2,6 +2,7 @@ import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
@@ -209,7 +210,7 @@ class AuthService {
       User? user = _firebaseAuth.currentUser;
 
       if (user != null) {
-        //Remove user from community chat
+        // Remove user from community chat
         await FirebaseFirestore.instance
             .collection('rooms')
             .doc(communityRoomId)
@@ -217,12 +218,21 @@ class AuthService {
           'userIds': FieldValue.arrayRemove([user.uid]),
         });
 
-        // Delete the user from Firebase Authentication
-        await user.delete();
+        // Delete the user's files from Firebase Storage
+        final storageRef =
+            FirebaseStorage.instance.ref().child('user_data/${user.uid}');
+        await storageRef.listAll().then((listResult) async {
+          for (var item in listResult.items) {
+            await item.delete(); // Delete each file
+          }
+        });
 
         // Delete the user's document in Firestore
         final databaseService = DatabaseService(uid: user.uid);
         await databaseService.userCollection.doc(user.uid).delete();
+
+        // Delete the user from Firebase Authentication
+        await user.delete();
 
         MyReusableFunctions.showCustomToast(
           description: "Your account and user data was deleted successfully",

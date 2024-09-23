@@ -61,13 +61,13 @@ class CustomDrawer extends ConsumerWidget {
               leading: const Icon(Icons.account_circle_rounded),
               title: const Text('Account'),
             ),
-            ListTile(
-              onTap: () {
-                Navigator.pushNamed(context, AppRoutes.about);
-              },
-              leading: const Icon(Icons.info),
-              title: const Text('About'),
-            ),
+            // ListTile(
+            //   onTap: () {
+            //     Navigator.pushNamed(context, AppRoutes.about);
+            //   },
+            //   leading: const Icon(Icons.info),
+            //   title: const Text('About'),
+            // ),
             if (!kIsWeb)
               ListTile(
                 onTap: () {

@@ -38,7 +38,7 @@ class AccountPage extends ConsumerWidget {
                     child: CircleAvatar(
                       radius: 80,
                       backgroundImage: NetworkImage(
-                          '${user.profilePicUrl!.isEmpty ? anecdotalLogoUrl : user.profilePicUrl}'),
+                          '${user.profilePicUrl!.isEmpty ? anecdotalMascot2Url : user.profilePicUrl}'),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -183,11 +183,10 @@ class AccountPage extends ConsumerWidget {
             ),
             TextButton(
               onPressed: () async {
-                await authService
-                    .deleteUser(); // Call AuthService delete account
-                Navigator.of(context).pop(); // Close the dialog
-                Navigator.pushReplacementNamed(context,
-                    AppRoutes.authWrapper); // Redirect to login after delete
+                await authService.deleteUser();
+                await authService.signOut();
+                Navigator.of(context).pop();
+                Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
               },
               style: TextButton.styleFrom(
                 foregroundColor: Colors.red, // Button color

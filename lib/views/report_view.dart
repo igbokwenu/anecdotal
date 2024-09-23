@@ -138,7 +138,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
           case userLabReportPdfUrls:
             return 'lab_result_analysis';
           case userHomeReportPdfUrls:
-            return 'home_report_analysis';
+            return 'environmental_report_analysis';
           case userGeneralReportPdfUrls:
             return 'general_report';
           default:

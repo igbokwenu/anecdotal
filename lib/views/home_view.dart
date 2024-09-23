@@ -268,16 +268,9 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     TextButton(
-                      //       onPressed: () async {
-
-                      //       },
-                      //       child: Text('Open '),
-                      //     ),
-                      //   ],
+                      // TextButton(
+                      //   onPressed: () => throw Exception(),
+                      //   child: const Text("Throw Test Exception"),
                       // ),
                       // mySpacing(spacing: 3),
                       SingleChildScrollView(

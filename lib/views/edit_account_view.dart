@@ -146,7 +146,7 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
                     CircleAvatar(
                       radius: 80,
                       backgroundImage: NetworkImage(
-                          '${user.profilePicUrl!.isEmpty ? anecdotalLogoUrl : user.profilePicUrl}'),
+                          '${user.profilePicUrl!.isEmpty ? anecdotalMascotUrl : user.profilePicUrl}'),
                     ),
                     mySpacing(),
                     _isUploading

@@ -51,7 +51,7 @@ class SymptomsDisplay extends ConsumerWidget {
                       ),
                     );
                   },
-                  label: const Text('Add Symptom'),
+                  label: const Text('Add/Analyze Symptom'),
                   icon: const Icon(Icons.add),
                 ),
               ),

@@ -24,10 +24,11 @@ class DatabaseService {
       String state = data['regionName'];
 
       try {
-        print("State: $state, Country: $country");
         await userCollection.doc(uid).update({
           userCountry: country,
           userState: state,
+          userIpCountry: country,
+          userIpState: state,
         });
       } on FirebaseException catch (e) {
         // Handle the error

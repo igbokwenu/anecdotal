@@ -12,6 +12,7 @@ import 'package:anecdotal/views/remember_password_view.dart';
 import 'package:anecdotal/views/sign_up_view.dart';
 import 'package:anecdotal/views/terms_of_service_view.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,12 +21,21 @@ import 'package:toastification/toastification.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 Future<void> main() async {
-    if (!kIsWeb) {
-     setRevenueCatStoreConfig();
+  if (!kIsWeb) {
+    setRevenueCatStoreConfig();
   }
- 
+
   WidgetsFlutterBinding.ensureInitialized();
- if (!kIsWeb) {
+  // Pass all uncaught "fatal" errors from the framework to Crashlytics
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+  if (!kIsWeb) {
     await configureRevenueCatSdk();
   }
 

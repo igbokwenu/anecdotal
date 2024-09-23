@@ -128,7 +128,7 @@ class ProgressTrackerAppState extends ConsumerState<ProgressTracker> {
     );
   }
 
-  Future<void> recordProgress() async {
+  Future<void> recordProgress(String progressMessage) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final dbService = DatabaseService(uid: uid!);
     final userData = ref.read(anecdotalUserDataProvider(uid)).value;
@@ -142,11 +142,11 @@ class ProgressTrackerAppState extends ConsumerState<ProgressTracker> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text(
-                'No Mood Change Detected',
+                'No Mood Change Detected 😐',
                 textAlign: TextAlign.center,
               ),
               content: Text(
-                "It seems your feelings about your well-being haven't changed since your last update. You previously indicated feeling ${_currentPercentage.round()}% better. If your current feelings have shifted, please adjust the slider at the top of the page. \n\nWould you like to continue without updating how you feel about your progress?",
+                "$progressMessage If your current feelings have shifted, please adjust the slider at the top of the page. \n\nWould you like to continue without updating how you feel about your progress?",
                 textAlign: TextAlign.center,
               ),
               actions: <Widget>[
@@ -194,10 +194,41 @@ class ProgressTrackerAppState extends ConsumerState<ProgressTracker> {
     _showProgressRecordedPopup(newEntry);
   }
 
+  String getDynamicProgressMessage(
+      List<Map<String, dynamic>> healingJourneyMap) {
+    if (healingJourneyMap.isEmpty) {
+      return "You haven't recorded any progress yet.";
+    }
+
+    final lastEntry = healingJourneyMap.last;
+    final lastPercentage = lastEntry['percentage'].toDouble();
+
+    if (healingJourneyMap.length == 1) {
+      return "You previously indicated feeling ${lastPercentage.round()}% better.";
+    }
+
+    final secondLastEntry = healingJourneyMap[healingJourneyMap.length - 2];
+    final secondLastPercentage = secondLastEntry['percentage'].toDouble();
+
+    final difference = lastPercentage - secondLastPercentage;
+    final lastEntryDate = DateFormat('MMM d, yyyy')
+        .format(DateTime.fromMillisecondsSinceEpoch(lastEntry['timestamp']));
+
+    if (difference > 0) {
+      return "Looks like how you're feeling improved 🙂 \n\nOn $lastEntryDate, you reported feeling ${lastPercentage.round()}% better, which is ${difference.abs().round()} percent higher than your previous entry.";
+    } else if (difference < 0) {
+      return "You seem to be experiencing some challenges with your wellbeing. \n\nOn $lastEntryDate, you reported feeling ${lastPercentage.round()}% better, which is ${difference.abs().round()} percent lower than your previous entry.";
+    } else {
+      return "Your feeling seems steady. \n\nOn $lastEntryDate, you reported feeling ${lastPercentage.round()}% better, which is the same as your previous entry.";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+    final progressMessage =
+        getDynamicProgressMessage(userData?.healingJourneyMap ?? []);
 
     return Scaffold(
       appBar: AppBar(
@@ -258,7 +289,9 @@ class ProgressTrackerAppState extends ConsumerState<ProgressTracker> {
                   children: [
                     ElevatedButton.icon(
                       label: const Text('Record Progress'),
-                      onPressed: recordProgress,
+                      onPressed: () async {
+                        await recordProgress(progressMessage);
+                      },
                       icon: const Icon(Icons.check),
                     ),
                     ElevatedButton.icon(

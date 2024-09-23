@@ -183,7 +183,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                         ),
                       ),
                       isButtonLoading
-                          ? const MySpinKitWaveSpinner()
+                          ? const Padding(
+                              padding: EdgeInsets.only(bottom: 203.0),
+                              child: MySpinKitWaveSpinner(),
+                            )
                           : Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [

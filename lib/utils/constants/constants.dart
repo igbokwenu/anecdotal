@@ -13,7 +13,7 @@ const String myOpenAIKey =
 //Home Section
 String symptomSectionHeader = "Analyze Your Symptoms";
 String symptomSectionSummary =
-    "Discover if your symptoms might be related to a chronic condition like CIRS or bio-toxins. Simply answer a few questions and select the symptoms that apply to you - and we will provide some insights. \n\nStart by clicking the button below and telling us a bit about yourself. \n\nRemember, this is not medical advice, but a starting point for further discussion with a healthcare professional.";
+    "Discover if your symptoms might be related to a chronic condition like CIRS or bio-toxins. Simply answer a few questions and select the symptoms that apply to you - and we will provide some insights. \n\nStart by clicking the button below and telling us a bit about yourself.";
 
 String progressTrackerSectionHeader = "Track Your Progress";
 String progressTrackerSectionSummary =
@@ -76,6 +76,8 @@ const String userLastName = 'lastName';
 const String userCountry = 'country';
 const String userState = 'state';
 const String userEmail = 'email';
+const String userIpCountry = 'ipCountry';
+const String userIpState = 'ipState';
 const String userProfilePicUrl = 'profilePicUrl';
 const String userImageUrlForChat = 'imageUrl';
 const String userSymptomsList = 'symptoms';
@@ -129,4 +131,9 @@ const String communityImageUrl =
 const String anecdotalLogoUrl =
     'https://firebasestorage.googleapis.com/v0/b/anecdotalhq.appspot.com/o/general%2Fapp_branding_images%2Fanecdotal_512.png?alt=media&token=b31737ac-d80d-40a6-9155-9358418a2b14';
 
+const anecdotalMascotUrl =
+    'https://firebasestorage.googleapis.com/v0/b/anecdotalhq.appspot.com/o/general%2Fapp_branding_images%2Fanecdotal_mascot.jpeg?alt=media&token=dda2fcaa-b806-4063-b3ba-8fb707fbc235';
+
+const anecdotalMascot2Url =
+    'https://firebasestorage.googleapis.com/v0/b/anecdotalhq.appspot.com/o/general%2Fapp_branding_images%2Fanecdotal_mascot2.jpeg?alt=media&token=f0719702-fa9b-4031-80d7-44e615448ed7';
 const String communityRoomId = 'd6dFUDSPtW4bucnUIhkx';
