@@ -124,6 +124,7 @@ class InfoView extends StatelessWidget {
   Widget _buildSuggestions(BuildContext context) {
     return Card(
       margin: const EdgeInsets.all(16),
+      
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
@@ -173,9 +174,7 @@ class InfoView extends StatelessWidget {
   Widget _buildSuggestionButton(BuildContext context,
       {required String title, required IconData icon}) {
     return ElevatedButton.icon(
-      onPressed: () {
-       
-      },
+      onPressed: () {},
       icon: Icon(
         icon,
         color: Theme.of(context).iconTheme.color,

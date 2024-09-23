@@ -21,8 +21,13 @@ class AccountPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
-        backgroundColor: Colors.teal,
+        title: Text(
+          'Profile',
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(fontWeight: FontWeight.bold),
+        ),
       ),
       body: userData.when(
         data: (user) {

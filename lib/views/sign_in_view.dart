@@ -126,22 +126,26 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const MyCircularImage(
-                        imageUrl: logoAssetImageUrlNoTagLine,
+                        imageUrl: anecdotalMascotAssetUrl,
+                        hasBorder: false,
                         size: 120,
                       ),
                       mySpacing(),
                       Text(
-                        "You're not alone in your healing journey. Anecdotal is a safe space to track your progress, explore resources, and connect with others who understand what you're going through 🤍",
+                        "Your safe space to find answers, heal, and connect with others who truly understand 🤍.",
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.labelSmall,
+                        style: Theme.of(context).textTheme.labelLarge,
                       ),
                       mySpacing(spacing: 20),
                       TextFormField(
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Email',
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          prefixIcon: const Icon(Icons.mail),
                         ),
                         validator: (value) {
                           if (value!.isEmpty || !value.contains('@')) {
@@ -156,7 +160,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                         obscureText: _obscurePassword,
                         decoration: InputDecoration(
                           labelText: 'Password',
-                          border: const OutlineInputBorder(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          prefixIcon: const Icon(Icons.lock),
                           suffixIcon: IconButton(
                             icon: Icon(_obscurePassword
                                 ? Icons.visibility_off

@@ -421,25 +421,25 @@ class _ReportViewState extends ConsumerState<ReportView> {
             _buildSection(
               title: 'Summary',
               icon: Icons.notes,
-              color: theme.colorScheme.primary,
+              color: theme.cardTheme.color!,
               children: [_buildParagraph(widget.summaryContent)],
             ),
             _buildSection(
               title: 'Key Insights',
               icon: Icons.lightbulb_outline,
-              color: theme.colorScheme.secondary,
+              color: theme.cardTheme.color!,
               children: _buildBulletPoints(widget.keyInsights),
             ),
             _buildSection(
               title: "Recommendations",
               icon: Icons.list_rounded,
-              color: theme.colorScheme.tertiary,
+              color: theme.cardTheme.color!,
               children: _buildToDoItems(widget.recommendations),
             ),
             _buildSection(
               title: 'Sources & Citations',
               icon: Icons.link,
-              color: theme.colorScheme.primaryFixedDim,
+              color: theme.cardTheme.color!,
               children: buildCitationLinks(
                 widget.citations,
                 widget.enableManualCitations
@@ -450,7 +450,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
             _buildSection(
               title: 'Follow Up Search Terms',
               icon: Icons.directions_run,
-              color: theme.colorScheme.primaryFixedDim,
+              color: theme.cardTheme.color!,
               children: buildSearchTerms(widget.followUpSearchTerms),
             ),
             mySpacing(spacing: 80),

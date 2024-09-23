@@ -137,3 +137,5 @@ const anecdotalMascotUrl =
 const anecdotalMascot2Url =
     'https://firebasestorage.googleapis.com/v0/b/anecdotalhq.appspot.com/o/general%2Fapp_branding_images%2Fanecdotal_mascot2.jpeg?alt=media&token=f0719702-fa9b-4031-80d7-44e615448ed7';
 const String communityRoomId = 'd6dFUDSPtW4bucnUIhkx';
+
+const anecdotalMascotAssetUrl = 'assets/images/anecdotal_mascot.jpeg';

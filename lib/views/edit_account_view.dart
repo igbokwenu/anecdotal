@@ -116,8 +116,13 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile'),
-        backgroundColor: Colors.teal,
+        title: Text(
+          'Edit Profile',
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(fontWeight: FontWeight.bold),
+        ),
       ),
       body: userData.when(
         data: (user) {
