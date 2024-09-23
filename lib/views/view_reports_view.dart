@@ -106,7 +106,10 @@ class ReportList extends StatelessWidget {
   }
 
   String _extractFileName(String url) {
-    return path.basename(Uri.decodeFull(url));
+    // Remove any query parameters from the URL
+    final uri = Uri.parse(url);
+    final cleanUrl = uri.pathSegments.isNotEmpty ? uri.pathSegments.last : url;
+    return path.basename(Uri.decodeFull(cleanUrl));
   }
 
   void _viewReport(BuildContext context, String url) {
@@ -164,6 +167,9 @@ class PDFViewerPage extends StatelessWidget {
   }
 
   String _extractFileName(String url) {
-    return path.basename(Uri.decodeFull(url));
+    // Remove any query parameters from the URL
+    final uri = Uri.parse(url);
+    final cleanUrl = uri.pathSegments.isNotEmpty ? uri.pathSegments.last : url;
+    return path.basename(Uri.decodeFull(cleanUrl));
   }
 }

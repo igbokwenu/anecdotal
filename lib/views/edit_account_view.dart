@@ -148,10 +148,10 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
                       textAlign: TextAlign.center,
                     ),
                     mySpacing(),
-                    CircleAvatar(
+                    CachedCircleAvatar(
+                      imageUrl: user.profilePicUrl ?? '',
                       radius: 80,
-                      backgroundImage: NetworkImage(
-                          '${user.profilePicUrl!.isEmpty ? anecdotalMascotUrl : user.profilePicUrl}'),
+                      fallbackUrl: anecdotalMascotUrl,
                     ),
                     mySpacing(),
                     _isUploading

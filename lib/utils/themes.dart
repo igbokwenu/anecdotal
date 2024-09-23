@@ -3,48 +3,52 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
-        useMaterial3: true,
-        fontFamily: 'Raleway',
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.light(
-          primary: Colors.teal,
-          primaryContainer: Colors.teal[100]!,
-          secondary: Colors.tealAccent[700]!,
-          tertiary: Colors.teal[300]!,
-          surface: Colors.teal[50]!,
-          onPrimary: Colors.white,
-          onSecondary: Colors.white,
-          onSurface: Colors.teal[900]!,
-        ),
-        textTheme: TextTheme(
-          bodyLarge: TextStyle(color: Colors.teal[900]),
-          bodyMedium: TextStyle(color: Colors.teal[900]),
-          titleLarge: const TextStyle(color: Colors.white),
-          titleMedium: TextStyle(color: Colors.teal[800]),
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.teal,
+      useMaterial3: true,
+      fontFamily: 'Raleway',
+      brightness: Brightness.light,
+      colorScheme: ColorScheme.light(
+        primary: Colors.teal,
+        primaryContainer: Colors.teal[100]!,
+        secondary: Colors.tealAccent[700]!,
+        tertiary: Colors.teal[300]!,
+        surface: Colors.teal[50]!,
+        onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onSurface: Colors.teal[900]!,
+      ),
+      textTheme: TextTheme(
+        bodyLarge: TextStyle(color: Colors.teal[900]),
+        bodyMedium: TextStyle(color: Colors.teal[900]),
+        titleLarge: const TextStyle(color: Colors.white),
+        titleMedium: TextStyle(color: Colors.teal[800]),
+      ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.teal,
+        foregroundColor: Colors.white,
+      ),
+      cardTheme: CardTheme(
+        color: Colors.teal[80],
+        elevation: 2,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.teal[300],
           foregroundColor: Colors.white,
         ),
-        cardTheme: CardTheme(
-          color: Colors.teal[80],
-          elevation: 2,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.teal[300],
-            foregroundColor: Colors.white,
-          ),
-        ),
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Colors.tealAccent[700],
-          foregroundColor: Colors.white,
-        ),
-        iconTheme: IconThemeData(
-          color: Colors.teal[600],
-          // size: 24.0,
-        ),
-        tabBarTheme: TabBarTheme());
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Colors.tealAccent[700],
+        foregroundColor: Colors.white,
+      ),
+      iconTheme: IconThemeData(
+        color: Colors.teal[600],
+        // size: 24.0,
+      ),
+      tabBarTheme: const TabBarTheme(
+        labelColor: Colors.white,
+        unselectedLabelColor: Colors.black,
+      ),
+    );
   }
 
   static ThemeData get darkTheme {

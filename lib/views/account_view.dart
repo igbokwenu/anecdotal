@@ -40,12 +40,11 @@ class AccountPage extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Center(
-                    child: CircleAvatar(
-                      radius: 80,
-                      backgroundImage: NetworkImage(
-                          '${user.profilePicUrl!.isEmpty ? anecdotalMascot2Url : user.profilePicUrl}'),
-                    ),
-                  ),
+                      child: CachedCircleAvatar(
+                    imageUrl: user.profilePicUrl ?? '',
+                    radius: 80,
+                    fallbackUrl: anecdotalMascot2Url,
+                  )),
                   const SizedBox(height: 20),
                   Text(
                     '${user.firstName} ${user.lastName}',
