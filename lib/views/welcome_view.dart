@@ -36,15 +36,27 @@ class ConfirmInformationView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // First Name and Last Name
-            _buildTextField(_firstNameController, 'First Name'),
+            _buildTextField(
+              _firstNameController,
+              'First Name',
+              Icons.person,
+            ),
             SizedBox(height: 10),
-            _buildTextField(_lastNameController, 'Last Name'),
+            _buildTextField(
+              _lastNameController,
+              'Last Name',
+              Icons.person_outline,
+            ),
 
             // Country and State
             SizedBox(height: 20),
-            _buildTextField(_countryController, 'Country'),
+            _buildTextField(_countryController, 'Country', Icons.flag),
             SizedBox(height: 10),
-            _buildTextField(_stateController, 'State'),
+            _buildTextField(
+              _stateController,
+              'State',
+              Icons.location_city,
+            ),
 
             // Button to edit symptoms
             SizedBox(height: 20),
@@ -108,12 +120,16 @@ class ConfirmInformationView extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label) {
+  Widget _buildTextField(
+      TextEditingController controller, String label, IconData icon) {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
-        border: OutlineInputBorder(),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        prefixIcon: Icon(icon),
       ),
     );
   }
