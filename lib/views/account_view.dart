@@ -41,12 +41,18 @@ class AccountPage extends ConsumerWidget {
         if (response != null) {
           final firstName = response['firstName'] ?? '';
           final lastName = response['lastName'] ?? '';
-          final symptoms = response['symptoms']?.cast<String>() ?? [];
-          // final country = response['country'] ?? '';
-          // final state = response['state'] ?? '';
-          debugPrint(symptoms);
+
+          // Safely check if 'symptoms' exists and is a List
+          List<String> symptoms = [];
+          if (response['symptoms'] is List) {
+            symptoms = (response['symptoms'] as List)
+                .whereType<String>() // Ensure all items are Strings
+                .toList();
+          }
+
           List<String> filteredSymptoms =
               filterSymptoms(symptoms, allCirsSymptom);
+
           // Save to Firestore
           final uid = FirebaseAuth.instance.currentUser?.uid;
           if (uid != null) {
@@ -56,8 +62,6 @@ class AccountPage extends ConsumerWidget {
               'firstName': firstName,
               'lastName': lastName,
               'symptoms': FieldValue.arrayUnion(filteredSymptoms),
-              // 'country': country,
-              // 'state': state,
             }, SetOptions(merge: true));
           }
 
@@ -66,9 +70,14 @@ class AccountPage extends ConsumerWidget {
             context,
             MaterialPageRoute(
               builder: (context) => ConfirmInformationView(
-                firstName: firstName ?? userData.value!.firstName!,
-                lastName: lastName ?? userData.value!.lastName!,
-                symptoms: symptoms ?? userData.value!.symptomsList,
+                firstName: firstName.isNotEmpty
+                    ? firstName
+                    : userData.value!.firstName!,
+                lastName:
+                    lastName.isNotEmpty ? lastName : userData.value!.lastName!,
+                symptoms: filteredSymptoms.isNotEmpty
+                    ? filteredSymptoms
+                    : userData.value!.symptomsList,
                 country: userData.value!.country!,
                 state: userData.value!.state!,
               ),
