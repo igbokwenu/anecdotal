@@ -44,7 +44,7 @@ class ViewReports extends StatelessWidget {
 class ReportList extends StatelessWidget {
   final String reportType;
 
-  const ReportList({Key? key, required this.reportType}) : super(key: key);
+  const ReportList({super.key, required this.reportType});
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +154,7 @@ class ReportList extends StatelessWidget {
 class PDFViewerPage extends StatelessWidget {
   final String url;
 
-  const PDFViewerPage({Key? key, required this.url}) : super(key: key);
+  const PDFViewerPage({super.key, required this.url});
 
   @override
   Widget build(BuildContext context) {

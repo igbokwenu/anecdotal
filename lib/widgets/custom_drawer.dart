@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/services/auth_service.dart';
@@ -95,7 +94,7 @@ class CustomDrawer extends ConsumerWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ViewReports(),
+                    builder: (context) => const ViewReports(),
                   ),
                 );
               },

@@ -2,8 +2,6 @@ import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/about_view.dart';
-import 'package:anecdotal/views/chat/rooms.dart';
-import 'package:anecdotal/views/chat_view.dart';
 import 'package:anecdotal/views/community_chat/community_chat_utils.dart';
 import 'package:anecdotal/views/view_widgets.dart/home_card_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
@@ -27,7 +25,6 @@ import 'package:anecdotal/views/info_view.dart';
 import 'package:anecdotal/views/report_view.dart';
 import 'package:anecdotal/widgets/animated_text_home.dart';
 import 'package:anecdotal/widgets/chat_input_widget.dart';
-import 'package:anecdotal/widgets/custom_card_home.dart';
 import 'package:anecdotal/widgets/theme_toggle_button.dart';
 import 'package:anecdotal/widgets/voice_recorder_widget.dart';
 import 'package:flutter/foundation.dart';
@@ -55,9 +52,9 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
 
   Future<void> _checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool _seen = (prefs.getBool('seen') ?? false);
+    bool seen = (prefs.getBool('seen') ?? false);
 
-    if (!_seen) {
+    if (!seen) {
       await prefs.setBool('seen', true);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         // ignore: prefer_const_constructors
@@ -218,7 +215,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
               children: [
                 Icon(Icons.auto_awesome,
                     color: Theme.of(context).textTheme.bodyMedium!.color),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 Text(
                   'Anecdotal AI',
                   style: TextStyle(

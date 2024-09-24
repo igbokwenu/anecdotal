@@ -45,11 +45,11 @@ class _CommunityChatPageState extends ConsumerState<CommunityChatPage> {
 
   Future<void> _checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool _seen = (prefs.getBool('seen_chat') ?? false);
+    bool seen = (prefs.getBool('seen_chat') ?? false);
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
 
-    if (!_seen) {
+    if (!seen) {
       await prefs.setBool('seen_chat', true);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         // ignore: prefer_const_constructors
@@ -312,9 +312,9 @@ void _showUserProfilePopup(BuildContext context, types.User user) async {
                   child: user.imageUrl == null ? Text(user.firstName?[0] ?? '') : null,
                 ),
               ),
-              SizedBox(height: 16),
-              Text('${userData['firstName']} ${userData['lastName']}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
+              const SizedBox(height: 16),
+              Text('${userData['firstName']} ${userData['lastName']}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
               Text(userData['country'] ?? 'Country not specified'),
             ],
           ),

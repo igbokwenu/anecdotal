@@ -6,7 +6,6 @@ import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:anecdotal/models/user_model.dart';
 
 class AccountPage extends ConsumerWidget {
   const AccountPage({

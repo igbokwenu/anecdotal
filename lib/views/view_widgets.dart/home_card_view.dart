@@ -15,7 +15,7 @@ class ImageContainer extends StatelessWidget {
   static const double defaultSquareSize = 170.0;
 
   const ImageContainer({
-    Key? key,
+    super.key,
     required this.imagePath,
     required this.title,
     required this.subtitle,
@@ -23,7 +23,7 @@ class ImageContainer extends StatelessWidget {
     this.isSquare = false,
     this.width,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class UserProfileEditScreen extends ConsumerStatefulWidget {
-  const UserProfileEditScreen({Key? key}) : super(key: key);
+  const UserProfileEditScreen({super.key});
 
   @override
   _UserProfileEditScreenState createState() => _UserProfileEditScreenState();

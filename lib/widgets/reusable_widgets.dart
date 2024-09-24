@@ -12,7 +12,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gap/gap.dart';
 
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class CachedCircleAvatar extends StatelessWidget {
@@ -37,11 +36,11 @@ class CachedCircleAvatar extends StatelessWidget {
       ),
       placeholder: (context, url) => CircleAvatar(
         radius: radius,
-        child: MySpinKitWaveSpinner(),
+        child: const MySpinKitWaveSpinner(),
       ),
       errorWidget: (context, url, error) => CircleAvatar(
         radius: radius,
-        child: Icon(Icons.error),
+        child: const Icon(Icons.error),
       ),
     );
   }

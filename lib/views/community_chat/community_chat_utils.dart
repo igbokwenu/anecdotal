@@ -1,5 +1,4 @@
 import 'package:anecdotal/utils/constants/constants.dart';
-import 'package:anecdotal/views/chat/chat.dart';
 import 'package:anecdotal/views/community_chat/community_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
