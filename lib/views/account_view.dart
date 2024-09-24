@@ -1,8 +1,15 @@
+import 'dart:io';
+
+import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/auth_service.dart';
+import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/views/edit_account_view.dart';
+import 'package:anecdotal/views/welcome_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
+import 'package:anecdotal/widgets/voice_recorder_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +24,60 @@ class AccountPage extends ConsumerWidget {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final userData = ref.watch(anecdotalUserDataProvider(uid));
     final AuthService authService = AuthService();
+
+    Future<void> handleAudioStop(String path) async {
+      ref.read(chatInputProvider.notifier).setIsProcessingAudio(true);
+      ref.read(chatInputProvider.notifier).setIsListeningToAudio(false);
+
+      try {
+        final response = await GeminiService.analyzeAudioForSignup(
+            audios: [File(path)],
+            prompt:
+                "Extract user's first name, last name, symptoms, country, and state.");
+
+        if (response != null) {
+          final firstName = response['firstName'] ?? '';
+          final lastName = response['lastName'] ?? '';
+          final symptoms = response['symptoms']?.cast<String>() ?? [];
+          final country = response['country'] ?? '';
+          final state = response['state'] ?? '';
+
+          // Save to Firestore
+          final uid = FirebaseAuth.instance.currentUser?.uid;
+          if (uid != null) {
+            final userDoc =
+                FirebaseFirestore.instance.collection('users').doc(uid);
+            await userDoc.set({
+              'firstName': firstName,
+              'lastName': lastName,
+              'symptoms': symptoms,
+              'country': country,
+              'state': state,
+            }, SetOptions(merge: true));
+          }
+
+          // Navigate to confirm information view
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ConfirmInformationView(
+                firstName: firstName,
+                lastName: lastName,
+                symptoms: symptoms,
+                country: country,
+                state: state,
+              ),
+            ),
+          );
+        } else {
+          _showMessageDialog(context, "No information was extracted.");
+        }
+      } catch (e) {
+        _showMessageDialog(context, "Error: $e");
+      } finally {
+        File(path).delete();
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -45,6 +106,15 @@ class AccountPage extends ConsumerWidget {
                     fallbackUrl: anecdotalMascot2Url,
                   )),
                   const SizedBox(height: 20),
+
+                  Recorder(
+                    onStop: handleAudioStop,
+                    onStart: () {
+                      ref
+                          .read(chatInputProvider.notifier)
+                          .setIsListeningToAudio(true);
+                    },
+                  ),
                   Text(
                     '${user.firstName} ${user.lastName}',
                     style: Theme.of(context).textTheme.headlineSmall,
@@ -104,6 +174,31 @@ class AccountPage extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(child: Text('Error: $error')),
       ),
+    );
+  }
+
+  void _showMessageDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Center(
+            child: Icon(Icons.info_outline_rounded),
+          ),
+          content: Text(
+            message,
+            textAlign: TextAlign.center,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 

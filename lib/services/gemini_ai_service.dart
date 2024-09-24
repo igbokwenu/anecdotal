@@ -38,7 +38,7 @@ class GeminiService {
     }
   }
 
-  static Future<Map<String, dynamic>?> analyzeAudio({
+static Future<Map<String, dynamic>?> analyzeAudioForSignup({
     required List<File> audios,
     required String prompt,
     String? preferredModel,
@@ -52,19 +52,15 @@ class GeminiService {
           properties: {
             "firstName": Schema.string(),
             "lastName": Schema.string(),
-            "gender": Schema.string(),
-            "knownSymptoms": Schema.array(items: Schema.string()),
-            "unknownSymptoms": Schema.array(items: Schema.string()),
+            "symptoms": Schema.array(items: Schema.string()),
             "country": Schema.string(),
             "state": Schema.string(),
-            "recommendations": Schema.array(items: Schema.string()),
           },
         ),
       ),
     );
 
-    final audioBytes =
-        await Future.wait(audios.map((file) => file.readAsBytes()));
+    final audioBytes = await Future.wait(audios.map((file) => file.readAsBytes()));
     List<DataPart> audioParts = [];
     for (var i = 0; i < audios.length; i++) {
       String mimeType = _getMimeType(audios[i].path);
@@ -82,7 +78,6 @@ class GeminiService {
       return null;
     }
   }
-
   static Future<Map<String, dynamic>?> analyzeAudioForHome({
     required List<File> audios,
     required String prompt,

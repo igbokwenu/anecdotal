@@ -516,4 +516,6 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
       },
     );
   }
+
 }
+
