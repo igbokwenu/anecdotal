@@ -5,6 +5,8 @@ import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
+import 'package:anecdotal/utils/constants/methods.dart';
+import 'package:anecdotal/utils/constants/symptom_list.dart';
 import 'package:anecdotal/views/edit_account_view.dart';
 import 'package:anecdotal/views/welcome_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
@@ -24,6 +26,7 @@ class AccountPage extends ConsumerWidget {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final userData = ref.watch(anecdotalUserDataProvider(uid));
     final AuthService authService = AuthService();
+    final chatInputState = ref.watch(chatInputProvider);
 
     Future<void> handleAudioStop(String path) async {
       ref.read(chatInputProvider.notifier).setIsProcessingAudio(true);
@@ -33,15 +36,17 @@ class AccountPage extends ConsumerWidget {
         final response = await GeminiService.analyzeAudioForSignup(
             audios: [File(path)],
             prompt:
-                "Extract user's first name, last name, symptoms, country, and state.");
+                "Extract user's first name, last name and symptoms. When extracting symptoms, strictly list as many symptoms from the provided list that corresponds with any symptoms the user stated. If the user did not share any symptoms, do not return any item from the list. Provided list: $allCirsSymptom");
 
         if (response != null) {
           final firstName = response['firstName'] ?? '';
           final lastName = response['lastName'] ?? '';
           final symptoms = response['symptoms']?.cast<String>() ?? [];
-          final country = response['country'] ?? '';
-          final state = response['state'] ?? '';
-
+          // final country = response['country'] ?? '';
+          // final state = response['state'] ?? '';
+          debugPrint(symptoms);
+          List<String> filteredSymptoms =
+              filterSymptoms(symptoms, allCirsSymptom);
           // Save to Firestore
           final uid = FirebaseAuth.instance.currentUser?.uid;
           if (uid != null) {
@@ -50,9 +55,9 @@ class AccountPage extends ConsumerWidget {
             await userDoc.set({
               'firstName': firstName,
               'lastName': lastName,
-              'symptoms': symptoms,
-              'country': country,
-              'state': state,
+              'symptoms': FieldValue.arrayUnion(filteredSymptoms),
+              // 'country': country,
+              // 'state': state,
             }, SetOptions(merge: true));
           }
 
@@ -61,11 +66,11 @@ class AccountPage extends ConsumerWidget {
             context,
             MaterialPageRoute(
               builder: (context) => ConfirmInformationView(
-                firstName: firstName,
-                lastName: lastName,
-                symptoms: symptoms,
-                country: country,
-                state: state,
+                firstName: firstName ?? userData.value!.firstName!,
+                lastName: lastName ?? userData.value!.lastName!,
+                symptoms: symptoms ?? userData.value!.symptomsList,
+                country: userData.value!.country!,
+                state: userData.value!.state!,
               ),
             ),
           );
@@ -73,8 +78,10 @@ class AccountPage extends ConsumerWidget {
           _showMessageDialog(context, "No information was extracted.");
         }
       } catch (e) {
+        ref.read(chatInputProvider.notifier).setIsProcessingAudio(false);
         _showMessageDialog(context, "Error: $e");
       } finally {
+        ref.read(chatInputProvider.notifier).setIsProcessingAudio(false);
         File(path).delete();
       }
     }
@@ -105,15 +112,38 @@ class AccountPage extends ConsumerWidget {
                     radius: 80,
                     fallbackUrl: anecdotalMascot2Url,
                   )),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 6),
 
-                  Recorder(
-                    onStop: handleAudioStop,
-                    onStart: () {
-                      ref
-                          .read(chatInputProvider.notifier)
-                          .setIsListeningToAudio(true);
-                    },
+                  if (chatInputState.isListeningToAudio)
+                    const MyAnimatedText(
+                        text: "Press stop when you are done speaking"),
+                  if (!chatInputState.isListeningToAudio)
+                    if (!chatInputState.isProcessingAudio)
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.auto_awesome),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          MyAnimatedText(
+                              text: "Click mic to use our AI account set-up"),
+                        ],
+                      ),
+                  chatInputState.isProcessingAudio
+                      ? const MySpinKitWaveSpinner()
+                      : Recorder(
+                          onStop: handleAudioStop,
+                          onStart: () {
+                            ref
+                                .read(chatInputProvider.notifier)
+                                .setIsListeningToAudio(true);
+                          },
+                        ),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 100),
+                    child: Divider(),
                   ),
                   Text(
                     '${user.firstName} ${user.lastName}',

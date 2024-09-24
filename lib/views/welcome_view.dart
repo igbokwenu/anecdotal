@@ -1,6 +1,8 @@
+import 'package:anecdotal/views/symptoms_selector_view.dart';
+import 'package:anecdotal/views/view_symptoms_view.dart';
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class ConfirmInformationView extends StatelessWidget {
   final String firstName;
@@ -21,7 +23,6 @@ class ConfirmInformationView extends StatelessWidget {
   Widget build(BuildContext context) {
     final _firstNameController = TextEditingController(text: firstName);
     final _lastNameController = TextEditingController(text: lastName);
-    final _symptomsController = TextEditingController(text: symptoms.join(', '));
     final _countryController = TextEditingController(text: country);
     final _stateController = TextEditingController(text: state);
 
@@ -32,47 +33,87 @@ class ConfirmInformationView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              controller: _firstNameController,
-              decoration: InputDecoration(labelText: 'First Name'),
-            ),
-            TextField(
-              controller: _lastNameController,
-              decoration: InputDecoration(labelText: 'Last Name'),
-            ),
-            TextField(
-              controller: _symptomsController,
-              decoration: InputDecoration(labelText: 'Symptoms'),
-            ),
-            TextField(
-              controller: _countryController,
-              decoration: InputDecoration(labelText: 'Country'),
-            ),
-            TextField(
-              controller: _stateController,
-              decoration: InputDecoration(labelText: 'State'),
-            ),
+            // First Name and Last Name
+            _buildTextField(_firstNameController, 'First Name'),
+            SizedBox(height: 10),
+            _buildTextField(_lastNameController, 'Last Name'),
+
+            // Country and State
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                // Save the updated info to Firestore
-                final uid = FirebaseAuth.instance.currentUser?.uid;
-                if (uid != null) {
-                  await FirebaseFirestore.instance.collection('users').doc(uid).update({
-                    'firstName': _firstNameController.text,
-                    'lastName': _lastNameController.text,
-                    'symptoms': _symptomsController.text.split(', '),
-                    'country': _countryController.text,
-                    'state': _stateController.text,
-                  });
-                }
-                Navigator.pop(context);
+            _buildTextField(_countryController, 'Country'),
+            SizedBox(height: 10),
+            _buildTextField(_stateController, 'State'),
+
+            // Button to edit symptoms
+            SizedBox(height: 20),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SymptomsDisplay(),
+                  ),
+                );
               },
-              child: Text('Confirm & Save'),
+              icon: Icon(Icons.edit),
+              label: Text('Edit/Analyze Symptoms'),
+            ),
+
+            // Display symptoms in a list format
+            SizedBox(height: 20),
+            Text('Symptoms', style: Theme.of(context).textTheme.titleLarge),
+            SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: symptoms.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(symptoms[index]),
+                    leading: Icon(Icons.check_circle_outline),
+                  );
+                },
+              ),
+            ),
+
+            // Confirm & Save Button
+            SizedBox(height: 20),
+            Center(
+              child: ElevatedButton(
+                onPressed: () async {
+                  // Save the updated info to Firestore
+                  final uid = FirebaseAuth.instance.currentUser?.uid;
+                  if (uid != null) {
+                    await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(uid)
+                        .update({
+                      'firstName': _firstNameController.text,
+                      'lastName': _lastNameController.text,
+                      'symptoms': symptoms,
+                      'country': _countryController.text,
+                      'state': _stateController.text,
+                    });
+                  }
+                  Navigator.pop(context);
+                },
+                child: Text('Confirm & Save'),
+              ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(),
       ),
     );
   }
