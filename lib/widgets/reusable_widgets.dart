@@ -248,6 +248,7 @@ class MyAnimatedText extends StatelessWidget {
       animatedTexts: [
         ColorizeAnimatedText(
           text,
+          textAlign: TextAlign.center,
           textStyle: colorizeTextStyle,
           colors: colorizeColors,
         ),

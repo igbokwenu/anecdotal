@@ -114,6 +114,7 @@ class DatabaseService {
       userToDoList: [],
       userInProgressList: [],
       userDoneList: [],
+      userDeletedTasksList: [],
       userSymptomAnalysis: '',
       userHomeAnalysis: '',
       userProgressAnalysis: '',
@@ -143,6 +144,7 @@ class DatabaseService {
       userDevice: Platform.isAndroid ? 'Android' : 'iOS',
       userWatchedVideoUrls: [],
       userTimeStamp: FieldValue.serverTimestamp(),
+    
     });
   }
 }

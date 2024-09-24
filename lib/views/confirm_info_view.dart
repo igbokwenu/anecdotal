@@ -1,4 +1,3 @@
-import 'package:anecdotal/views/symptoms_selector_view.dart';
 import 'package:anecdotal/views/view_symptoms_view.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

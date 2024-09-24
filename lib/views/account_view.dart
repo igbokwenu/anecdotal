@@ -8,7 +8,7 @@ import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/constants/methods.dart';
 import 'package:anecdotal/utils/constants/symptom_list.dart';
 import 'package:anecdotal/views/edit_account_view.dart';
-import 'package:anecdotal/views/welcome_view.dart';
+import 'package:anecdotal/views/confirm_info_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:anecdotal/widgets/voice_recorder_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,7 +36,7 @@ class AccountPage extends ConsumerWidget {
         final response = await GeminiService.analyzeAudioForSignup(
             audios: [File(path)],
             prompt:
-                "Extract user's first name, last name and symptoms. When extracting symptoms, strictly list as many symptoms from the provided list that corresponds with any symptoms the user stated. If the user did not share any symptoms, do not return any item from the list. Provided list: $allCirsSymptom");
+                "Extract user's first name, last name and symptoms. When extracting symptoms, strictly list as many symptoms from the provided list that specifically aligns with any symptoms the user stated. If the user did not share any symptoms, do not return any item from the list. Provided list: $allCirsSymptom");
 
         if (response != null) {
           final firstName = response['firstName'] ?? '';
@@ -125,7 +125,8 @@ class AccountPage extends ConsumerWidget {
 
                   if (chatInputState.isListeningToAudio)
                     const MyAnimatedText(
-                        text: "Press stop when you are done speaking"),
+                        text:
+                            "Introduce yourself and tell us about your health history andy symptoms you are experiencing (if any). \nPress stop when you are done speaking"),
                   if (!chatInputState.isListeningToAudio)
                     if (!chatInputState.isProcessingAudio)
                       const Row(
@@ -314,7 +315,7 @@ class AccountPage extends ConsumerWidget {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop();
               },
               child: const Text('Cancel'),
             ),

@@ -86,6 +86,7 @@ const String userSymptomsList = 'symptoms';
 const String userToDoList = 'toDo';
 const String userInProgressList = 'inProgress';
 const String userDoneList = 'done';
+const String userDeletedTasksList = 'deletedTasks';
 const String userSymptomAnalysis = 'symptomAnalysis';
 const String userHomeAnalysis = 'homeAnalysis';
 const String userProgressAnalysis = 'progressAnalysis';

@@ -12,6 +12,7 @@ class AnecdotalUserData {
   final List<String> toDoList;
   final List<String> inProgressList;
   final List<String> doneList;
+  final List<String> deletedTasks;
   final String? symptomAnalysis;
   final String? homeAnalysis;
   final String? progressAnalysis;
@@ -49,6 +50,7 @@ class AnecdotalUserData {
     this.toDoList = const [],
     this.inProgressList = const [],
     this.doneList = const [],
+    this.deletedTasks = const [],
     this.symptomAnalysis,
     this.homeAnalysis,
     this.progressAnalysis,
@@ -88,6 +90,7 @@ class AnecdotalUserData {
       toDoList: List<String>.from(data?[userToDoList] ?? []),
       inProgressList: List<String>.from(data?[userInProgressList] ?? []),
       doneList: List<String>.from(data?[userDoneList] ?? []),
+      deletedTasks: List<String>.from(data?[userDeletedTasksList] ?? []),
       symptomAnalysis: data?[userSymptomAnalysis],
       homeAnalysis: data?[userHomeAnalysis],
       progressAnalysis: data?[userProgressAnalysis],

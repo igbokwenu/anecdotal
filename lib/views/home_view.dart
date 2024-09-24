@@ -3,6 +3,7 @@ import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/about_view.dart';
 import 'package:anecdotal/views/community_chat/community_chat_utils.dart';
+import 'package:anecdotal/views/to_do_view.dart';
 import 'package:anecdotal/views/view_widgets.dart/home_card_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
@@ -265,11 +266,17 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // TextButton(
-                      //   onPressed: () => throw Exception(),
-                      //   child: const Text("Throw Test Exception"),
-                      // ),
-                      // mySpacing(spacing: 3),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ToDoScreen(),
+                              ));
+                        },
+                        child: const Text("Throw Test Exception"),
+                      ),
+                      mySpacing(spacing: 3),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -516,6 +523,4 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
       },
     );
   }
-
 }
-

@@ -23,9 +23,6 @@ List<String> allCirsSymptom = [
   ...otherSymptoms,
 ];
 
-
-
-
 //Broken down:
 
 // General/Constitutional Symptoms
@@ -114,7 +111,6 @@ List<String> otherSymptoms = [
   "Prone to frequent infections",
 ];
 
-
 List<String> additionalCirsSymptoms = [
   "Tinnitus (ringing in the ears)",
   "White noise (in ears or head)",
@@ -148,3 +144,37 @@ List<String> additionalCirsSymptoms = [
   "Weakness in the left arm"
 ];
 
+List<String> cirsToDoTasks = [
+  "Rule out Chronic Inflammatory Response Syndrome (CIRS)"
+      // Medical and Health-Related Tasks
+      "Find a CIRS Specialist – Schedule a consultation with a doctor experienced in treating CIRS.",
+  "Complete Lab Tests – Get lab tests done for markers like C4a, MMP-9, and TGF-beta-1.",
+  "Start CIRS Treatment Protocol – Follow the prescribed treatment plan, such as the Shoemaker Protocol or similar.",
+  "Take Medications/Supplements – Follow your doctor’s recommendations for binders (like cholestyramine), anti-inflammatories, or other prescribed supplements.",
+  "Monitor Symptoms Daily – Track your symptoms and any changes to share with your healthcare provider.",
+  "Retest Labs – Schedule follow-up lab tests to monitor progress and adjust treatment as needed.",
+
+  // Environmental Remediation Tasks
+  "Test Home for Mold – Arrange professional mold testing for your home (air and surface tests).",
+  "Mold Remediation – Hire a professional to remediate mold, focusing on cleaning or removing contaminated materials.",
+  "Purchase a HEPA Air Purifier – Use high-quality air purifiers in living spaces to reduce airborne toxins.",
+  "Clean HVAC System – Regularly service and clean HVAC systems to prevent mold growth and contamination.",
+  "Inspect Water Damage – Check home for any signs of water damage or leaks that could lead to mold.",
+
+  // Lifestyle Changes
+  "Follow a Low-Inflammatory Diet – Adopt an anti-inflammatory diet (e.g., avoiding sugar, processed foods, gluten, and dairy).",
+  "Practice Stress Management – Engage in activities like meditation, yoga, or breathing exercises to reduce stress, which can worsen CIRS symptoms.",
+  "Improve Sleep Hygiene – Establish a sleep routine to ensure quality rest, as CIRS can severely affect sleep patterns.",
+  "Detox Support – Incorporate gentle detox practices such as saunas, lymphatic massage, or dry brushing, as recommended by your healthcare provider.",
+
+  // Home and Personal Care Adjustments
+  "Switch to Non-Toxic Products – Use chemical-free cleaning and personal care products to reduce toxin exposure.",
+  "Avoid Water-Damaged Buildings (WDB) – Steer clear of environments that could trigger CIRS symptoms due to mold or water damage.",
+  "Wash Clothes and Linens Regularly – Clean clothes and bedding often to avoid contamination with mold spores or toxins.",
+  "Upgrade to Mold-Resistant Materials – Use mold-resistant paints, sealants, and construction materials during home repairs.",
+
+  // Long-Term Planning
+  "Schedule Regular Health Checkups – Plan for periodic check-ins with your doctor to adjust treatments and check on your progress.",
+  "Educate Family and Friends – Share information about CIRS with your support system so they understand the importance of your treatment and environment.",
+  "Create an Emergency Action Plan – Have a plan in place for flare-ups, including how to address immediate symptoms or evacuate to a safe environment."
+];
