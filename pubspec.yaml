@@ -15,7 +15,7 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   flutter_riverpod: ^2.5.1
-  firebase_core: ^3.4.1
+  firebase_core: ^3.5.0
   animate_do: ^3.3.4
   animated_text_kit: ^4.2.2
   google_generative_ai: ^0.4.6
@@ -31,9 +31,9 @@ dependencies:
   image_picker: ^1.1.2
   file_picker: ^8.0.7
   flutter_advanced_drawer: ^1.3.6
-  cloud_firestore: ^5.4.1
+  cloud_firestore: ^5.4.2
   google_sign_in: ^6.2.1
-  firebase_auth: ^5.2.1
+  firebase_auth: ^5.3.0
   shared_preferences: ^2.3.2
   toastification: ^2.2.0
   url_strategy: ^0.3.0
@@ -45,7 +45,7 @@ dependencies:
   freezed_annotation: any
   intl: ^0.19.0
   timeline_tile: ^2.0.0
-  firebase_storage: ^12.3.0
+  firebase_storage: ^12.3.1
   pdf: ^3.11.1
   printing: ^5.13.2
   share_plus: ^10.0.2
@@ -60,7 +60,7 @@ dependencies:
   mime: ^1.0.6
   photo_view: ^0.15.0
   syncfusion_flutter_pdfviewer: ^27.1.48
-  # firebase_crashlytics: ^4.1.2
+  firebase_crashlytics: ^4.1.2
   firebase_analytics: ^11.3.2
 
 
@@ -75,14 +75,14 @@ dev_dependencies:
   flutter_launcher_icons: ^0.13.1
 flutter_native_splash:
   color: "#212121"
-  image: "assets/images/logo_splash.png"
+  image: "assets/images/logo_call_out.png"
 flutter_icons:
   image_path: "assets/images/logo_512x512.png"
   android: true
   ios: true
   web:
    generate: true
-   image_path: "assets/images/logo_splash.png"
+   image_path: "assets/images/logo_call_out.png"
    
 flutter:
   uses-material-design: true

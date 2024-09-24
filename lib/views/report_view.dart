@@ -147,7 +147,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
       }
 
       // Load image from assets
-      final imageBytes = await rootBundle.load(logoAssetImageUrlNoTagLine);
+      final imageBytes = await rootBundle.load(logoAssetImageUrlSplash);
       final image = pw.MemoryImage(imageBytes.buffer.asUint8List());
 
       // Get the current date and time
@@ -170,10 +170,10 @@ class _ReportViewState extends ConsumerState<ReportView> {
                 height: 130,
                 decoration: pw.BoxDecoration(
                   shape: pw.BoxShape.circle,
-                  border: pw.Border.all(
-                    color: PdfColors.teal,
-                    width: 4.0,
-                  ),
+                  // border: pw.Border.all(
+                  //   color: PdfColors.teal,
+                  //   width: 4.0,
+                  // ),
                   image: pw.DecorationImage(
                     fit: pw.BoxFit.contain,
                     image: image,
@@ -182,18 +182,18 @@ class _ReportViewState extends ConsumerState<ReportView> {
               ),
             ),
             pw.SizedBox(height: 10),
-            pw.Center(
-              child: pw.Text(
-                'A Personalized Health Analysis Platform',
-                textAlign: pw.TextAlign.center,
-                style: pw.TextStyle(
-                  color: PdfColors.teal,
-                  fontWeight: pw.FontWeight.bold,
-                  fontSize: 25,
-                ),
-              ),
-            ),
-            pw.SizedBox(height: 10),
+            // pw.Center(
+            //   child: pw.Text(
+            //     'A Personalized Health Analysis Platform',
+            //     textAlign: pw.TextAlign.center,
+            //     style: pw.TextStyle(
+            //       color: PdfColors.teal,
+            //       fontWeight: pw.FontWeight.bold,
+            //       fontSize: 25,
+            //     ),
+            //   ),
+            // ),
+            // pw.SizedBox(height: 10),
             pw.UrlLink(
               child: pw.Text(
                 'Website: www.anecdotalhq.web.app',
