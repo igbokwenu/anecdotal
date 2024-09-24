@@ -266,16 +266,16 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ToDoScreen(),
-                              ));
-                        },
-                        child: const Text("Throw Test Exception"),
-                      ),
+                      // TextButton(
+                      //   onPressed: () {
+                      //     Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //           builder: (context) => ToDoScreen(),
+                      //         ));
+                      //   },
+                      //   child: const Text("Throw Test Exception"),
+                      // ),
                       mySpacing(spacing: 3),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -345,6 +345,30 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                             ),
                             FadeInRight(
                               child: ImageContainer(
+                                imagePath: homeImageToDo,
+                                title: 'Healing Tasks',
+                                subtitle:
+                                    'Activities to jump start your healing.',
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const ToDoScreen(),
+                                    ),
+                                  );
+                                },
+                                isSquare: true,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            FadeInUp(
+                              child: ImageContainer(
                                 imagePath: homeImageInterpretLab,
                                 title: 'Interpret Lab',
                                 subtitle: 'Understand your lab results.',
@@ -372,13 +396,6 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                 // height: squareSize,
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
                             FadeInUp(
                               child: ImageContainer(
                                 imagePath: homeImageInvestigateHome,
@@ -406,6 +423,13 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                 isSquare: true,
                               ),
                             ),
+                          ],
+                        ),
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
                             FadeInUp(
                               child: ImageContainer(
                                 imagePath: homeImageAboutUs,
@@ -414,7 +438,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    slideRightTransitionPageBuilder(
+                                    slideBottomTransitionPageBuilder(
                                       const AboutPage(),
                                     ),
                                   );
@@ -426,6 +450,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                           ],
                         ),
                       ),
+
                       const SizedBox(height: 180),
                     ],
                   ),

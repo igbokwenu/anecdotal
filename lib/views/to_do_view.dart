@@ -16,8 +16,8 @@ class ToDoScreen extends ConsumerWidget {
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
     final themeStyle = Theme.of(context)
         .textTheme
-        .titleLarge!
-        .copyWith(fontSize: 18, fontWeight: FontWeight.bold);
+        .titleMedium!
+        .copyWith(fontSize: 17, fontWeight: FontWeight.bold);
 
     if (userData == null) {
       return const MySpinKitWaveSpinner();
@@ -40,11 +40,12 @@ class ToDoScreen extends ConsumerWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              mySpacing(),
               const Text(
                 'Your tasks in progress and completed tasks are automatically added whenever you log your progress. This is to enable you to track what works best for you over time.',
                 textAlign: TextAlign.center,
@@ -87,7 +88,6 @@ class ToDoScreen extends ConsumerWidget {
         },
         child: const Icon(Icons.add),
       ),
-      
     );
   }
 

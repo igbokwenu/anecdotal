@@ -144,10 +144,15 @@ List<String> additionalCirsSymptoms = [
   "Weakness in the left arm"
 ];
 
+List<String> toDoSuggestions = [
+  "Rule out Chronic Inflammatory Response Syndrome (CIRS)",
+  "Get lab tests done for markers like C4a, MMP-9, and TGF-beta-1.",
+  "Investigate home or surroundings for environmental toxins (e.g. Mold) that could be problematic",
+];
+
 List<String> cirsToDoTasks = [
-  "Rule out Chronic Inflammatory Response Syndrome (CIRS)"
-      // Medical and Health-Related Tasks
-      "Find a CIRS Specialist – Schedule a consultation with a doctor experienced in treating CIRS.",
+  // Medical and Health-Related Tasks
+  "Find a CIRS Specialist – Schedule a consultation with a doctor experienced in treating CIRS.",
   "Complete Lab Tests – Get lab tests done for markers like C4a, MMP-9, and TGF-beta-1.",
   "Start CIRS Treatment Protocol – Follow the prescribed treatment plan, such as the Shoemaker Protocol or similar.",
   "Take Medications/Supplements – Follow your doctor’s recommendations for binders (like cholestyramine), anti-inflammatories, or other prescribed supplements.",

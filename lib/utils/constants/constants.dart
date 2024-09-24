@@ -87,6 +87,7 @@ const String userToDoList = 'toDo';
 const String userInProgressList = 'inProgress';
 const String userDoneList = 'done';
 const String userDeletedTasksList = 'deletedTasks';
+const String userSuggestedTasksList = 'suggestedTasks';
 const String userSymptomAnalysis = 'symptomAnalysis';
 const String userHomeAnalysis = 'homeAnalysis';
 const String userProgressAnalysis = 'progressAnalysis';
@@ -127,6 +128,7 @@ const homeImageInterpretLab = 'assets/images/lab_result.jpg';
 const homeImageTrackProgress = 'assets/images/generate_report_lady.jpeg';
 const homeImageAboutUs = 'assets/images/black_woman_doctor.jpeg';
 const homeImageCommunity = 'assets/images/community.jpeg';
+const homeImageToDo = 'assets/images/todo_list.jpeg';
 
 const String communityImageUrl =
     'https://firebasestorage.googleapis.com/v0/b/anecdotalhq.appspot.com/o/general%2Fapp_branding_images%2Fcommunity_avatar.jpeg?alt=media&token=233d4f87-3ac4-409b-a1b6-2df1fbd27487';
