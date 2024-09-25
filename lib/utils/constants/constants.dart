@@ -117,6 +117,8 @@ const String userHealingJourneyMap = 'healingJourneyMap';
 const String userDevice = 'device';
 const String userWatchedVideoUrls = 'watchedVideoUrls';
 const String userTimeStamp = 'timeStamp';
+const String userShareJourneyPublicly = 'shareJourneyPublicly';
+const String usersMessagingToken = 'messagingToken';
 
 const int freeLimit = 5;
 

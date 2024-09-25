@@ -146,6 +146,9 @@ class DatabaseService {
       userDevice: Platform.isAndroid ? 'Android' : 'iOS',
       userWatchedVideoUrls: [],
       userTimeStamp: FieldValue.serverTimestamp(),
+      userShareJourneyPublicly: false,
+      usersMessagingToken: [],
+
     });
   }
 }
