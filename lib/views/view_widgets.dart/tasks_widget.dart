@@ -7,6 +7,7 @@ class TaskListWidget extends StatefulWidget {
   final Function(String, String) onMoveTask;
   final Function(String) onDeleteTask;
   final Function(String, String) onEditTask;
+  final bool isDefaultUI;
 
   const TaskListWidget({
     super.key,
@@ -15,6 +16,7 @@ class TaskListWidget extends StatefulWidget {
     required this.onMoveTask,
     required this.onDeleteTask,
     required this.onEditTask,
+    this.isDefaultUI = true,
   });
 
   @override
@@ -22,7 +24,7 @@ class TaskListWidget extends StatefulWidget {
 }
 
 class _TaskListWidgetState extends State<TaskListWidget> {
-  bool isDefaultUI = true;
+  // bool isDefaultUI = true;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +35,9 @@ class _TaskListWidgetState extends State<TaskListWidget> {
             task,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
-          trailing: isDefaultUI
-              ? _defaultButtons(task)
-              : _menuButton(context, task),
+          trailing: widget.isDefaultUI
+              ? _menuButton(context, task)
+              : _defaultButtons(task),
         );
       }).toList(),
     );
@@ -274,4 +276,3 @@ Future<void> editTask(
     );
   }
 }
-

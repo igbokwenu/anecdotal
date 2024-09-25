@@ -7,17 +7,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ToDoScreen extends ConsumerWidget {
+class ToDoScreen extends ConsumerStatefulWidget {
   const ToDoScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ToDoScreen> createState() => _ToDoScreenState();
+}
+
+class _ToDoScreenState extends ConsumerState<ToDoScreen> {
+  bool isDefaultUI = true; // Initially set the default UI as active.
+
+  @override
+  Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
     final themeStyle =
         Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 20);
-
-    bool isDefaultUI = false;
 
     if (userData == null) {
       return const MySpinKitWaveSpinner();
@@ -27,10 +32,24 @@ class ToDoScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const MyAppBarTitleWithAI(title: "Healing Tasks"),
         actions: [
-          Switch(
-            value: isDefaultUI,
-            onChanged: (value) {
-              isDefaultUI = value;
+          IconButton(
+            icon: const Icon(Icons.delete_outline),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DeletedTasksScreen(uid: uid!)),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              !isDefaultUI ? Icons.view_comfy_alt : Icons.view_list,
+            ), // Toggle between two icons
+            onPressed: () {
+              setState(() {
+                isDefaultUI = !isDefaultUI; // Toggle the UI state
+              });
             },
           ),
         ],
@@ -49,6 +68,7 @@ class ToDoScreen extends ConsumerWidget {
               onDeleteTask: (task) => deleteTask(context, uid!, task, 'toDo'),
               onEditTask: (task, newTask) =>
                   editTask(context, uid!, task, newTask, 'toDo'),
+              isDefaultUI: isDefaultUI, // Pass the UI toggle value.
             ),
             const Divider(),
             Text('In Progress', style: themeStyle),
@@ -61,6 +81,7 @@ class ToDoScreen extends ConsumerWidget {
                   deleteTask(context, uid!, task, 'inProgress'),
               onEditTask: (task, newTask) =>
                   editTask(context, uid!, task, newTask, 'inProgress'),
+              isDefaultUI: isDefaultUI, // Pass the UI toggle value.
             ),
             const Divider(),
             Text('Completed', style: themeStyle),
@@ -72,9 +93,16 @@ class ToDoScreen extends ConsumerWidget {
               onDeleteTask: (task) => deleteTask(context, uid!, task, 'done'),
               onEditTask: (task, newTask) =>
                   editTask(context, uid!, task, newTask, 'done'),
+              isDefaultUI: isDefaultUI, // Pass the UI toggle value.
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _addTaskDialog(context, uid!);
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -103,7 +131,9 @@ class ToDoScreen extends ConsumerWidget {
                     child: Text(list),
                   );
                 }).toList(),
-                onChanged: (value) => selectedList = value ?? 'toDo',
+                onChanged: (value) => setState(() {
+                  selectedList = value ?? 'toDo';
+                }),
               ),
             ],
           ),
@@ -115,10 +145,19 @@ class ToDoScreen extends ConsumerWidget {
             TextButton(
               child: const Text('Add'),
               onPressed: () {
-                FirebaseFirestore.instance.collection('users').doc(uid).update({
-                  selectedList: FieldValue.arrayUnion([newTask]),
-                });
-                Navigator.pop(context);
+                if (newTask.isNotEmpty) {
+                  FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(uid)
+                      .update({
+                    selectedList: FieldValue.arrayUnion([newTask]),
+                  });
+                  Navigator.pop(context);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Task name cannot be empty')),
+                  );
+                }
               },
             ),
           ],
