@@ -148,11 +148,11 @@ List<String> toDoSuggestions = [
   "Rule out Chronic Inflammatory Response Syndrome (CIRS) if experiencing chronic symptoms",
   "Use Anecdotal AI to explore your symptoms(if any) and check for potential misdiagnoses.",
   "Investigate home or surroundings for environmental toxins using Anecdotal AI",
-  "Connect with other in the Anecdotal AI community",
+  "Connect with others in the Anecdotal AI community",
   "Learn more about CIRS in the What is CIRS section of the app",
   "Adopt a low-inflammatory diet.",
   "Practice stress management (e.g., meditation, sleep cycle stability etc).",
-  "Relocate from space that has environmental toxins.",
+  "Relocate from space that has no environmental toxins.",
 ];
 
 List<String> cirsToDoTasks = [
