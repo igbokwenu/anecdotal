@@ -243,7 +243,8 @@ class ProgressTrackerAppState extends ConsumerState<ProgressTracker> {
               padding: const EdgeInsets.all(16),
               children: [
                 Text(
-                  'Use the slider below to tell us how you are feeling about your health. 0% means your symptoms are debilitating and 100% means you are symptom free.',
+                  'Use the slider below to tell us how you are feeling about your wellness journey. 0% means your symptoms are debilitating and 100% means you are symptom free.',
+                  textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 Row(

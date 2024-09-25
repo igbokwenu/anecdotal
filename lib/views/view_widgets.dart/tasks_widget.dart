@@ -276,3 +276,68 @@ Future<void> editTask(
     );
   }
 }
+
+ void addTaskDialog(BuildContext context, String uid) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String newTask = '';
+        String selectedList = 'toDo';
+
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text('Add New Task'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        newTask = value.trim();
+                      });
+                    },
+                    decoration: const InputDecoration(labelText: 'Task Name'),
+                  ),
+                  DropdownButton<String>(
+                    value: selectedList,
+                    items: ['toDo', 'inProgress', 'done'].map((list) {
+                      return DropdownMenuItem<String>(
+                        value: list,
+                        child: Text(list),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedList = value ?? 'toDo';
+                      });
+                    },
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                TextButton(
+                  onPressed: newTask.isEmpty
+                      ? null // Disable the button if newTask is empty
+                      : () {
+                          FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(uid)
+                              .update({
+                            selectedList: FieldValue.arrayUnion([newTask]),
+                          });
+                          Navigator.pop(context);
+                        },
+                  child: const Text('Add'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }

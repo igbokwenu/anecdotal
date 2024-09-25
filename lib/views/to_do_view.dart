@@ -1,8 +1,8 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/views/deleted_tasks_view.dart';
+import 'package:anecdotal/views/progress_tracker_view.dart';
 import 'package:anecdotal/views/view_widgets.dart/tasks_widget.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,11 +21,21 @@ class _ToDoScreenState extends ConsumerState<ToDoScreen> {
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
-    final themeStyle =
-        Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 20);
+    final themeStyle = Theme.of(context)
+        .textTheme
+        .titleMedium!
+        .copyWith(fontSize: 18, fontWeight: FontWeight.bold);
 
     if (userData == null) {
       return const MySpinKitWaveSpinner();
+    }
+    Widget headerText(String text) {
+      return Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Text(text, style: themeStyle),
+          ));
     }
 
     return Scaffold(
@@ -33,7 +43,7 @@ class _ToDoScreenState extends ConsumerState<ToDoScreen> {
         title: const MyAppBarTitleWithAI(title: "Healing Tasks"),
         actions: [
           IconButton(
-            icon: const Icon(Icons.delete_outline),
+            icon: const Icon(Icons.restore_from_trash),
             onPressed: () {
               Navigator.push(
                 context,
@@ -57,9 +67,28 @@ class _ToDoScreenState extends ConsumerState<ToDoScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Text(
-                'Note: Your tasks in progress and completed tasks are automatically added whenever you log your progress.'),
-            Text('To-Do', style: themeStyle),
+            const Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 8.0,
+              ),
+              child: Text(
+                'Your completed tasks and tasks in progress are added whenever you update your mood.',
+                textAlign: TextAlign.center,
+              ),
+            ),
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProgressTracker(),
+                  ),
+                );
+              },
+              label: const Text("Update Mood"),
+              icon: const Icon(Icons.edit_note),
+            ),
+            headerText('To-Do'),
             TaskListWidget(
               tasks: userData.toDoList,
               listName: 'toDo',
@@ -71,7 +100,7 @@ class _ToDoScreenState extends ConsumerState<ToDoScreen> {
               isDefaultUI: isDefaultUI, // Pass the UI toggle value.
             ),
             const Divider(),
-            Text('In Progress', style: themeStyle),
+            headerText('In Progress'),
             TaskListWidget(
               tasks: userData.inProgressList,
               listName: 'inProgress',
@@ -84,7 +113,7 @@ class _ToDoScreenState extends ConsumerState<ToDoScreen> {
               isDefaultUI: isDefaultUI, // Pass the UI toggle value.
             ),
             const Divider(),
-            Text('Completed', style: themeStyle),
+            headerText('Done'),
             TaskListWidget(
               tasks: userData.doneList,
               listName: 'done',
@@ -100,69 +129,10 @@ class _ToDoScreenState extends ConsumerState<ToDoScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _addTaskDialog(context, uid!);
+          addTaskDialog(context, uid!);
         },
         child: const Icon(Icons.add),
       ),
-    );
-  }
-
-  void _addTaskDialog(BuildContext context, String uid) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        String newTask = '';
-        String selectedList = 'toDo';
-
-        return AlertDialog(
-          title: const Text('Add New Task'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                onChanged: (value) => newTask = value,
-                decoration: const InputDecoration(labelText: 'Task Name'),
-              ),
-              DropdownButton<String>(
-                value: selectedList,
-                items: ['toDo', 'inProgress', 'done'].map((list) {
-                  return DropdownMenuItem<String>(
-                    value: list,
-                    child: Text(list),
-                  );
-                }).toList(),
-                onChanged: (value) => setState(() {
-                  selectedList = value ?? 'toDo';
-                }),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () => Navigator.pop(context),
-            ),
-            TextButton(
-              child: const Text('Add'),
-              onPressed: () {
-                if (newTask.isNotEmpty) {
-                  FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(uid)
-                      .update({
-                    selectedList: FieldValue.arrayUnion([newTask]),
-                  });
-                  Navigator.pop(context);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Task name cannot be empty')),
-                  );
-                }
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }
