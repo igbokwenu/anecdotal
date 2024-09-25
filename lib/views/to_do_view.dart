@@ -97,7 +97,7 @@ class _ToDoScreenState extends ConsumerState<ToDoScreen> {
               tasks: userData.toDoList,
               listName: 'toDo',
               onMoveTask: (task, toList) =>
-                  moveTask(context, uid!, task, 'toDo', toList),
+                  moveTask(context, uid!, task, 'toDo', toList, !isDefaultUI),
               onDeleteTask: (task) => deleteTask(context, uid!, task, 'toDo'),
               onEditTask: (task, newTask) =>
                   editTask(context, uid!, task, newTask, 'toDo'),
@@ -108,8 +108,8 @@ class _ToDoScreenState extends ConsumerState<ToDoScreen> {
             TaskListWidget(
               tasks: userData.inProgressList,
               listName: 'inProgress',
-              onMoveTask: (task, toList) =>
-                  moveTask(context, uid!, task, 'inProgress', toList),
+              onMoveTask: (task, toList) => moveTask(
+                  context, uid!, task, 'inProgress', toList, !isDefaultUI),
               onDeleteTask: (task) =>
                   deleteTask(context, uid!, task, 'inProgress'),
               onEditTask: (task, newTask) =>
@@ -122,7 +122,7 @@ class _ToDoScreenState extends ConsumerState<ToDoScreen> {
               tasks: userData.doneList,
               listName: 'done',
               onMoveTask: (task, toList) =>
-                  moveTask(context, uid!, task, 'done', toList),
+                  moveTask(context, uid!, task, 'done', toList, !isDefaultUI),
               onDeleteTask: (task) => deleteTask(context, uid!, task, 'done'),
               onEditTask: (task, newTask) =>
                   editTask(context, uid!, task, newTask, 'done'),

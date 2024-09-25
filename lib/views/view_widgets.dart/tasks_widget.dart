@@ -159,7 +159,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
 }
 
 Future<void> moveTask(BuildContext context, String uid, String task,
-    String fromList, String toList) async {
+    String fromList, String toList, bool isCompact) async {
   final userDoc = FirebaseFirestore.instance.collection('users').doc(uid);
   final userSnapshot = await userDoc.get();
 
@@ -177,9 +177,10 @@ Future<void> moveTask(BuildContext context, String uid, String task,
     toList: toTasks,
   });
 
-  // ScaffoldMessenger.of(context).showSnackBar(
-  //   SnackBar(content: Text('Moved to $toList')),
-  // );
+if(isCompact) {  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text('Moved to $toList')),
+  );}
+
 }
 
 Future<void> deleteTask(
