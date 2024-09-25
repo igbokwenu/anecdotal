@@ -148,7 +148,6 @@ class DatabaseService {
       userTimeStamp: FieldValue.serverTimestamp(),
       userShareJourneyPublicly: false,
       usersMessagingToken: [],
-
     });
   }
 }

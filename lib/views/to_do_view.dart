@@ -1,6 +1,10 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
+import 'package:anecdotal/services/database_service.dart';
+import 'package:anecdotal/utils/constants/constants.dart';
+import 'package:anecdotal/utils/constants/symptom_list.dart';
 import 'package:anecdotal/views/deleted_tasks_view.dart';
 import 'package:anecdotal/views/progress_tracker_view.dart';
+import 'package:anecdotal/views/suggested_tasks_view.dart';
 import 'package:anecdotal/views/view_widgets.dart/tasks_widget.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -88,7 +92,7 @@ class _ToDoScreenState extends ConsumerState<ToDoScreen> {
               label: const Text("Update Mood"),
               icon: const Icon(Icons.edit_note),
             ),
-            headerText('To-Do'),
+            headerText('To-Do:'),
             TaskListWidget(
               tasks: userData.toDoList,
               listName: 'toDo',
@@ -100,7 +104,7 @@ class _ToDoScreenState extends ConsumerState<ToDoScreen> {
               isDefaultUI: isDefaultUI, // Pass the UI toggle value.
             ),
             const Divider(),
-            headerText('In Progress'),
+            headerText('In Progress:'),
             TaskListWidget(
               tasks: userData.inProgressList,
               listName: 'inProgress',
@@ -113,7 +117,7 @@ class _ToDoScreenState extends ConsumerState<ToDoScreen> {
               isDefaultUI: isDefaultUI, // Pass the UI toggle value.
             ),
             const Divider(),
-            headerText('Done'),
+            headerText('Done:'),
             TaskListWidget(
               tasks: userData.doneList,
               listName: 'done',
@@ -124,14 +128,48 @@ class _ToDoScreenState extends ConsumerState<ToDoScreen> {
                   editTask(context, uid!, task, newTask, 'done'),
               isDefaultUI: isDefaultUI, // Pass the UI toggle value.
             ),
+            const Divider(),
+            mySpacing(spacing: 70),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          addTaskDialog(context, uid!);
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          IconButton(
+            onPressed: () async {
+              if (userData.suggestedTasks.isEmpty) {
+                final databaseService = DatabaseService(uid: uid!);
+
+                await databaseService.updateAnyUserData(
+                  fieldName: userSuggestedTasksList,
+                  newValue: cirsToDoTasks,
+                );
+              }
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SuggestedTasksScreen(
+                          userId: uid!,
+                        )),
+              );
+            },
+            icon: const Icon(
+              Icons.question_mark,
+              size: 30,
+            ),
+          ),
+          mySpacing(),
+          IconButton(
+            onPressed: () {
+              addTaskDialog(context, uid!);
+            },
+            icon: const Icon(
+              Icons.add,
+              size: 40,
+            ),
+          ),
+        ],
       ),
     );
   }

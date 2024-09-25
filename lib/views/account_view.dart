@@ -252,7 +252,7 @@ class AccountPage extends ConsumerWidget {
           Navigator.pushNamed(context, AppRoutes.signUp);
         },
         style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8.0),
           backgroundColor: Colors.green,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -267,7 +267,7 @@ class AccountPage extends ConsumerWidget {
 
   Widget _buildInfoCard(String title, String value) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(8.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -289,7 +289,7 @@ class AccountPage extends ConsumerWidget {
           _showDeleteConfirmationDialog(context);
         },
         style: OutlinedButton.styleFrom(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8.0),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           side: const BorderSide(color: Colors.red),

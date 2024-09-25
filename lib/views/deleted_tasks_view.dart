@@ -21,24 +21,26 @@ class DeletedTasksScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Deleted Tasks'), actions: [
-        TextButton.icon(
-          icon: const Icon(
-            Icons.delete_forever,
-            color: Colors.red,
-          ),
-          onPressed: () {
-            databaseService.updateAnyUserData(
-              fieldName: userDeletedTasksList,
-              newValue: [],
-            );
-          },
-          label: Text(
-            'Empty',
-            style: TextStyle(color: Colors.red),
-          ),
-        ),
-      ]),
+      appBar: AppBar(
+          title: const MyAppBarTitleWithAI(title: 'Deleted Tasks'),
+          actions: [
+            TextButton.icon(
+              icon: const Icon(
+                Icons.delete_forever,
+                color: Colors.red,
+              ),
+              onPressed: () {
+                databaseService.updateAnyUserData(
+                  fieldName: userDeletedTasksList,
+                  newValue: [],
+                );
+              },
+              label: const Text(
+                'Empty',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ]),
       body: ListView(
         children: userData.deletedTasks.map((task) {
           return ListTile(

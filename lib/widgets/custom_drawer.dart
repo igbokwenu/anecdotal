@@ -1,4 +1,3 @@
-
 import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
@@ -6,6 +5,7 @@ import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/account_view.dart';
 import 'package:anecdotal/views/chat/rooms.dart';
 import 'package:anecdotal/views/community_chat/community_chat_utils.dart';
+import 'package:anecdotal/views/to_do_view.dart';
 import 'package:anecdotal/views/view_reports_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -60,13 +60,13 @@ class CustomDrawer extends ConsumerWidget {
               leading: const Icon(Icons.account_circle_rounded),
               title: const Text('Account'),
             ),
-            // ListTile(
-            //   onTap: () {
-            //     Navigator.pushNamed(context, AppRoutes.about);
-            //   },
-            //   leading: const Icon(Icons.info),
-            //   title: const Text('About'),
-            // ),
+            ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.about);
+              },
+              leading: const Icon(Icons.info),
+              title: const Text('About'),
+            ),
             if (!kIsWeb)
               ListTile(
                 onTap: () {
@@ -89,6 +89,19 @@ class CustomDrawer extends ConsumerWidget {
                   leading: const Icon(Icons.mail),
                   title: const Text('Private Chat'),
                 ),
+            ListTile(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ToDoScreen(),
+                  ),
+                );
+                // Navigator.pushNamed(context, AppRoutes.account);
+              },
+              leading: const Icon(Icons.task),
+              title: const Text('Tasks'),
+            ),
             ListTile(
               onTap: () {
                 Navigator.push(
