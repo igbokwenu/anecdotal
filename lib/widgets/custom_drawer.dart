@@ -100,7 +100,7 @@ class CustomDrawer extends ConsumerWidget {
                 // Navigator.pushNamed(context, AppRoutes.account);
               },
               leading: const Icon(Icons.task),
-              title: const Text('Tasks'),
+              title: const Text('Healing Tasks'),
             ),
             ListTile(
               onTap: () {
