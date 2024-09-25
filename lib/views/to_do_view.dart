@@ -14,10 +14,10 @@ class ToDoScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
-    final themeStyle = Theme.of(context)
-        .textTheme
-        .titleMedium!
-        .copyWith(fontSize: 17, fontWeight: FontWeight.bold);
+    final themeStyle =
+        Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 20);
+
+    bool isDefaultUI = false;
 
     if (userData == null) {
       return const MySpinKitWaveSpinner();
@@ -27,66 +27,54 @@ class ToDoScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const MyAppBarTitleWithAI(title: "Healing Tasks"),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.delete_outline),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => DeletedTasksScreen(uid: uid!)),
-              );
+          Switch(
+            value: isDefaultUI,
+            onChanged: (value) {
+              isDefaultUI = value;
             },
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              mySpacing(),
-              const Text(
-                'Your tasks in progress and completed tasks are automatically added whenever you log your progress. This is to enable you to track what works best for you over time.',
-                textAlign: TextAlign.center,
-              ),
-              Text('To-Do', style: themeStyle),
-              TaskListWidget(
-                tasks: userData.toDoList,
-                listName: 'toDo',
-                onMoveTask: (task, toList) =>
-                    moveTask(context, uid!, task, 'toDo', toList),
-                onDeleteTask: (task) => deleteTask(context, uid!, task, 'toDo'),
-              ),
-              const Divider(),
-              Text('In Progress', style: themeStyle),
-              TaskListWidget(
-                tasks: userData.inProgressList,
-                listName: 'inProgress',
-                onMoveTask: (task, toList) =>
-                    moveTask(context, uid!, task, 'inProgress', toList),
-                onDeleteTask: (task) =>
-                    deleteTask(context, uid!, task, 'inProgress'),
-              ),
-              const Divider(),
-              Text('Completed', style: themeStyle),
-              TaskListWidget(
-                tasks: userData.doneList,
-                listName: 'done',
-                onMoveTask: (task, toList) =>
-                    moveTask(context, uid!, task, 'done', toList),
-                onDeleteTask: (task) => deleteTask(context, uid!, task, 'done'),
-              ),
-            ],
-          ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const Text(
+                'Note: Your tasks in progress and completed tasks are automatically added whenever you log your progress.'),
+            Text('To-Do', style: themeStyle),
+            TaskListWidget(
+              tasks: userData.toDoList,
+              listName: 'toDo',
+              onMoveTask: (task, toList) =>
+                  moveTask(context, uid!, task, 'toDo', toList),
+              onDeleteTask: (task) => deleteTask(context, uid!, task, 'toDo'),
+              onEditTask: (task, newTask) =>
+                  editTask(context, uid!, task, newTask, 'toDo'),
+            ),
+            const Divider(),
+            Text('In Progress', style: themeStyle),
+            TaskListWidget(
+              tasks: userData.inProgressList,
+              listName: 'inProgress',
+              onMoveTask: (task, toList) =>
+                  moveTask(context, uid!, task, 'inProgress', toList),
+              onDeleteTask: (task) =>
+                  deleteTask(context, uid!, task, 'inProgress'),
+              onEditTask: (task, newTask) =>
+                  editTask(context, uid!, task, newTask, 'inProgress'),
+            ),
+            const Divider(),
+            Text('Completed', style: themeStyle),
+            TaskListWidget(
+              tasks: userData.doneList,
+              listName: 'done',
+              onMoveTask: (task, toList) =>
+                  moveTask(context, uid!, task, 'done', toList),
+              onDeleteTask: (task) => deleteTask(context, uid!, task, 'done'),
+              onEditTask: (task, newTask) =>
+                  editTask(context, uid!, task, newTask, 'done'),
+            ),
+          ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Open dialog to add new task to a selected list
-          _addTaskDialog(context, uid!);
-        },
-        child: const Icon(Icons.add),
       ),
     );
   }
