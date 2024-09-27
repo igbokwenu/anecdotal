@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:anecdotal/providers/button_state_providers.dart';
+import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
@@ -27,6 +28,7 @@ class AccountPage extends ConsumerWidget {
     final userData = ref.watch(anecdotalUserDataProvider(uid));
     final AuthService authService = AuthService();
     final chatInputState = ref.watch(chatInputProvider);
+    final publicData = ref.watch(publicDataProvider).value;
 
     Future<void> handleAudioStop(String path) async {
       ref.read(chatInputProvider.notifier).setIsProcessingAudio(true);
@@ -34,9 +36,11 @@ class AccountPage extends ConsumerWidget {
 
       try {
         final response = await GeminiService.analyzeAudioForSignup(
-            audios: [File(path)],
-            prompt:
-                "Extract user's first name, last name and symptoms. When extracting symptoms, strictly list as many symptoms from the provided list that specifically aligns with any symptoms the user stated. If the user did not share any symptoms, do not return any item from the list. Provided list: $allCirsSymptom");
+          audios: [File(path)],
+          prompt:
+              "Extract user's first name, last name and symptoms. When extracting symptoms, strictly list as many symptoms from the provided list that specifically aligns with any symptoms the user stated. If the user did not share any symptoms, do not return any item from the list. Provided list: $allCirsSymptom",
+          apiKey: publicData!.zodiac,
+        );
 
         if (response != null) {
           final firstName = response['firstName'] ?? '';

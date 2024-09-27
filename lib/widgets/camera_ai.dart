@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:anecdotal/providers/iap_provider.dart';
+import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
@@ -41,6 +42,7 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
     final iapStatus = ref.watch(iapProvider);
     ref.read(iapProvider.notifier).checkAndSetIAPStatus();
+      final publicData = ref.watch(publicDataProvider).value;
 
     Future<void> analyzeCapturedImage() async {
       if (_capturedImage != null) {
@@ -51,6 +53,9 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
         final response = await GeminiService.analyzeImages(
           images: [_capturedImage!],
           prompt: widget.prompt,
+          
+        apiKey: publicData!.zodiac,
+     
         );
         widget.onResponse(response);
         widget.onComplete();

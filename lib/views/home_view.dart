@@ -110,6 +110,9 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
       try {
         final response = await GeminiService.analyzeAudioForHome(
           audios: [File(path)],
+          
+        apiKey: publicData!.zodiac,
+     
           prompt: sendChatPrompt(
               prompt: userData!.symptomsList.isEmpty
                   ? null
@@ -154,6 +157,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
         message: sendChatPrompt(
             prompt:
                 "$message Here are symptoms the user says they are having: ${userData!.symptomsList}. And some details on their medical history: ${userData.medicalHistoryList}"),
+        apiKey: publicData!.zodiac,
       );
 
       if (response != null) {

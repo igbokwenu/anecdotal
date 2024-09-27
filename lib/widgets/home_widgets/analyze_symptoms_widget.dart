@@ -1,5 +1,6 @@
 import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/iap_provider.dart';
+import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/database_service.dart';
@@ -27,6 +28,7 @@ class FirstWidgetSymptomChecker extends ConsumerWidget {
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
     final iapStatus = ref.watch(iapProvider);
     ref.read(iapProvider.notifier).checkAndSetIAPStatus();
+    final publicData = ref.watch(publicDataProvider).value;
 
     Future<void> handleSend(
       BuildContext context,
@@ -44,6 +46,7 @@ class FirstWidgetSymptomChecker extends ConsumerWidget {
               : "${userData.medicalHistoryList}",
           externalReport: forDoctor,
         ),
+        apiKey: publicData!.zodiac,
       );
 
       if (response != null) {
@@ -59,7 +62,8 @@ class FirstWidgetSymptomChecker extends ConsumerWidget {
               followUpSearchTerms:
                   response['suggestions']?.cast<String>() ?? [],
               citations: response['citations']?.cast<String>() ?? [],
-              title: 'Symptom Analysis', reportType: userSymptomReportPdfUrls,
+              title: 'Symptom Analysis',
+              reportType: userSymptomReportPdfUrls,
             ),
           ),
         );
@@ -128,7 +132,8 @@ class FirstWidgetSymptomChecker extends ConsumerWidget {
                     userData.aiGeneralTextUsageCount >= freeLimit &&
                             !iapStatus.isPro
                         ? MyReusableFunctions.showPremiumDialog(
-                            context: context, )
+                            context: context,
+                          )
                         : await handleSend(context);
                   },
                   label: const Text("Generate A Report For Your Doctor"),

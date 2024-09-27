@@ -1,5 +1,6 @@
 import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/iap_provider.dart';
+import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
@@ -85,6 +86,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
     final iapStatus = ref.watch(iapProvider);
     ref.read(iapProvider.notifier).checkAndSetIAPStatus();
+      final publicData = ref.watch(publicDataProvider).value;
 
     Future<void> analyzeImages() async {
       if (_selectedFiles.isEmpty) return;
@@ -100,6 +102,8 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
         final response = await GeminiService.analyzeImages(
           images: _selectedFiles,
           prompt: widget.prompt,
+        apiKey: publicData!.zodiac,
+     
         );
 
         widget.onResponse(response);
@@ -127,6 +131,8 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
           ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
           final response = await GeminiService.analyzeImages(
             images: _selectedFiles,
+        apiKey: publicData!.zodiac,
+     
             prompt: widget.isLabTest
                 ? sendLabAnalysisPrompt(
                     symptoms: userData!.symptomsList.isEmpty

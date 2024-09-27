@@ -3,7 +3,6 @@ const String geminiFlashModel = 'gemini-1.5-flash';
 const String geminiProModel = 'gemini-1.5-pro';
 const String gpt4OModel = "gpt-4o";
 const String gpt4OMiniModel = "gpt-4o-mini";
-const geminiApiKey = 'AIzaSyDbtCqs_Hl5deDeG5tLU_lE0XmTVoHUNkA';
 const String chatGPTPremiumApiKey =
     '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';
 

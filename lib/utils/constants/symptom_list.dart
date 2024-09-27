@@ -145,8 +145,7 @@ List<String> additionalCirsSymptoms = [
 ];
 
 List<String> toDoSuggestions = [
-  "Rule out Chronic Inflammatory Response Syndrome (CIRS) if experiencing chronic symptoms",
-  "Use Anecdotal AI to explore your symptoms(if any) and check for potential misdiagnoses.",
+  "Rule out Mycotoxins if experiencing chronic symptoms - Using Anecdotal AI Symptom Checker",
   "Investigate home or surroundings for environmental toxins using Anecdotal AI",
   "Connect with others in the Anecdotal AI community",
   "Learn more about CIRS in the What is CIRS section of the app",

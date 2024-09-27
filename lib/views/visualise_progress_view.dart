@@ -1,5 +1,6 @@
 import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/iap_provider.dart';
+import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
@@ -156,6 +157,7 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
     final buttonLoadingState = ref.watch(chatInputProvider);
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+      final publicData = ref.watch(publicDataProvider).value;
     const int minimumEntries = 10;
     final iapStatus = ref.watch(iapProvider);
     const String sectionTitle = 'Visualize Your Journey';
@@ -197,7 +199,9 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
         message: sendHistoryAnalysisPrompt(
           healingJourneyMap:
               formatHealingJourneyData(userData!.healingJourneyMap),
-        ),
+        ), 
+        apiKey: publicData!.zodiac,
+     
       );
 
       if (response != null) {
