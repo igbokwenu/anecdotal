@@ -278,8 +278,8 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                   builder: (context) => OnboardingScreen(),
                                 ));
                           },
-                          child:
-                              Text("Test Button ${publicData?.closedOthers}"),
+                          child: Text(
+                              "Test Button ${publicData?.aiFreeUsageLimit}"),
                         ),
                       mySpacing(spacing: 3),
                       SingleChildScrollView(
