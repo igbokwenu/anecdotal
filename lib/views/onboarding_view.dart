@@ -87,10 +87,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 Text(
                   "A soothing space to find answers, heal, and connect with others who truly understand 🤍.",
                   textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelLarge!
-                      .copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      backgroundColor: Colors.black26),
                 ),
                 const SizedBox(height: 50),
                 ElevatedButton(
