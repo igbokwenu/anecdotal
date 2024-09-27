@@ -42,7 +42,7 @@ String interpretLabResultSectionSummary =
     "Understand your test results with confidence! This section offers clear explanations and expert insights to help you understand your lab results, empowering you to take informed action towards your recovery. This could be lab reports from testing your home from toxins etc. We will do our best to tell which lab results might be tied to the symptoms you are experiencing.  \n\nPlease note that this is not a replacement or substitute for professional medical interpretation of the report.";
 
 class AppRoutes {
-  static const String authWrapper = '/';
+  static const String authWrapper = '/authWrapper';
   static const String signUp = '/sign_up';
   static const String passwordRecovery = '/password_recovery';
   // static const String home = '/home';
@@ -51,6 +51,7 @@ class AppRoutes {
   static const String terms = '/terms';
   static const String account = '/account';
   static const String download = '/download';
+  static const String onboardingWrapper = '/';
 }
 
 const String logoAssetImageUrlCircular = "assets/images/logo_circular.png";

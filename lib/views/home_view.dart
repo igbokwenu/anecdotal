@@ -1,8 +1,10 @@
+import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/about_view.dart';
 import 'package:anecdotal/views/community_chat/community_chat_utils.dart';
+import 'package:anecdotal/views/onboarding_view.dart';
 import 'package:anecdotal/views/to_do_view.dart';
 import 'package:anecdotal/views/view_widgets.dart/home_card_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
@@ -99,6 +101,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final databaseService = DatabaseService(uid: uid!);
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+    final publicData = ref.watch(publicDataProvider).value;
     // final squareSize = MediaQuery.of(context).size.width / 2.1 - 16;
 
     Future<void> handleAudioStop(String path) async {
@@ -266,16 +269,18 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // TextButton(
-                      //   onPressed: () {
-                      //     Navigator.push(
-                      //         context,
-                      //         MaterialPageRoute(
-                      //           builder: (context) => ToDoScreen(),
-                      //         ));
-                      //   },
-                      //   child: const Text("Throw Test Exception"),
-                      // ),
+                      if (kDebugMode)
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => OnboardingScreen(),
+                                ));
+                          },
+                          child:
+                              Text("Test Button ${publicData?.closedOthers}"),
+                        ),
                       mySpacing(spacing: 3),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -450,7 +455,6 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                           ],
                         ),
                       ),
-
                       const SizedBox(height: 180),
                     ],
                   ),

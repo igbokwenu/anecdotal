@@ -59,45 +59,46 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const MyCircularImage(imageUrl: logoAssetImageUrlNoTagLine),
-              mySpacing(spacing: 20),
-              Text(
-                'Enter your email address to receive a password reset link.',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const MyCircularImage(imageUrl: logoAssetImageUrlNoTagLine),
+                mySpacing(spacing: 20),
+                Text(
+                  'Enter your email address to receive a password reset link.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-                validator: (value) {
-                  if (value!.isEmpty || !value.contains('@')) {
-                    return 'Please enter a valid email address';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: _resetPassword,
-                child: const Text('Reset Password'),
-              ),
-
-               mySpacing(),
-              const Align(
-                alignment: Alignment.bottomCenter,
-                child: PrivacyAndTermsButton(
-                  showAbout: true,
+                const SizedBox(height: 16.0),
+                TextFormField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty || !value.contains('@')) {
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-            ],
+                const SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: _resetPassword,
+                  child: const Text('Reset Password'),
+                ),
+                mySpacing(),
+                const Align(
+                  alignment: Alignment.bottomCenter,
+                  child: PrivacyAndTermsButton(
+                    showAbout: true,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

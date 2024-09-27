@@ -94,10 +94,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const MyCircularImage(
-                  imageUrl: anecdotalMascotAssetUrl,
-                  hasBorder: false,
-                ),
+                // const MyCircularImage(
+                //   imageUrl: anecdotalMascotAssetUrl,
+                //   hasBorder: false,
+                // ),
                 mySpacing(spacing: 20),
                 if (authService.isUserAnonymous())
                   Text(
