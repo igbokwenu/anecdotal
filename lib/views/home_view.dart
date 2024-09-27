@@ -1,5 +1,6 @@
 import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
+import 'package:anecdotal/services/chatgpt_ai_service.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/about_view.dart';
@@ -110,9 +111,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
       try {
         final response = await GeminiService.analyzeAudioForHome(
           audios: [File(path)],
-          
-        apiKey: publicData!.zodiac,
-     
+          apiKey: publicData!.zodiac,
           prompt: sendChatPrompt(
               prompt: userData!.symptomsList.isEmpty
                   ? null
@@ -152,12 +151,44 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
       File(path).delete();
     }
 
+    // Future<void> handleSend(BuildContext context, String message) async {
+    //   final response = await GeminiService.sendTextPrompt(
+    //     message: sendChatPrompt(
+    //         prompt:
+    //             "$message Here are symptoms the user says they are having: ${userData!.symptomsList}. And some details on their medical history: ${userData.medicalHistoryList}"),
+    //     apiKey: publicData!.zodiac,
+    //   );
+
+    //   if (response != null) {
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => ReportView(
+    //           summaryContent: response['summary'] ?? 'No summary available.',
+    //           keyInsights: response['insights']?.cast<String>() ?? [],
+    //           recommendations:
+    //               response['recommendations']?.cast<String>() ?? [],
+    //           followUpSearchTerms:
+    //               response['suggestions']?.cast<String>() ?? [],
+    //           citations: response['citations']?.cast<String>() ?? [],
+    //           reportType: userGeneralReportPdfUrls,
+    //         ),
+    //       ),
+    //     );
+    //   } else {
+    //     _showMessageDialog(context, "No response received.");
+    //     print("No response received.");
+    //   }
+    // }
+
     Future<void> handleSend(BuildContext context, String message) async {
-      final response = await GeminiService.sendTextPrompt(
-        message: sendChatPrompt(
+      Map<String, dynamic>? response;
+
+      response = await ChatGPTService.getChatGPTResponse(
+        prompt: sendChatPrompt(
             prompt:
                 "$message Here are symptoms the user says they are having: ${userData!.symptomsList}. And some details on their medical history: ${userData.medicalHistoryList}"),
-        apiKey: publicData!.zodiac,
+        apiKey: publicData!.closedOthers,
       );
 
       if (response != null) {
@@ -165,13 +196,13 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
           context,
           MaterialPageRoute(
             builder: (context) => ReportView(
-              summaryContent: response['summary'] ?? 'No summary available.',
-              keyInsights: response['insights']?.cast<String>() ?? [],
+              summaryContent: response?['summary'] ?? 'No summary available.',
+              keyInsights: response?['insights']?.cast<String>() ?? [],
               recommendations:
-                  response['recommendations']?.cast<String>() ?? [],
+                  response?['recommendations']?.cast<String>() ?? [],
               followUpSearchTerms:
-                  response['suggestions']?.cast<String>() ?? [],
-              citations: response['citations']?.cast<String>() ?? [],
+                  response?['suggestions']?.cast<String>() ?? [],
+              citations: response?['citations']?.cast<String>() ?? [],
               reportType: userGeneralReportPdfUrls,
             ),
           ),

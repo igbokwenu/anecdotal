@@ -1,6 +1,6 @@
 String sendChatPrompt({String? prompt}) {
   return """
-  You are helping people get answers regarding, mold illness, also known as Chronic inflammatory response syndrome (CIRS), bio-toxin illness etc. 
+  You are helping people get answers regarding chronic illness, this includes Fibromyalgia, CFS, Chronic inflammatory response syndrome (CIRS), bio-toxin illness etc. 
   
   In your response you are using JSON mode to respond to a patients query.
 
