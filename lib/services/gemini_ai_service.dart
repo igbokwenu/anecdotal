@@ -5,8 +5,6 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'dart:convert';
 
 class GeminiService {
-  final String apiKey;
-  GeminiService({required this.apiKey});
 
   static Future<Map<String, dynamic>?> sendTextPrompt({
     required String message,
