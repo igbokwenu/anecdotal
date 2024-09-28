@@ -117,7 +117,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 child: MyAppBarTitleWithAI(
                   title: "Welcome To Anecdotal AI",
                   size: 20,
-                ), 
+                ),
               ),
             ),
             body: Padding(
@@ -195,7 +195,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       ),
                       isButtonLoading
                           ? const Padding(
-                              padding: EdgeInsets.only(bottom: 203.0),
+                              padding:
+                                  EdgeInsets.only(top: 101.5, bottom: 101.5),
                               child: MySpinKitWaveSpinner(),
                             )
                           : Column(
