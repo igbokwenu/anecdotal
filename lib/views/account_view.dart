@@ -120,43 +120,46 @@ class AccountPage extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Center(
-                      child: CachedCircleAvatar(
-                    imageUrl: user.profilePicUrl ?? '',
-                    radius: 80,
-                    fallbackUrl: anecdotalMascot2Url,
-                  )),
+                    child: CachedCircleAvatar(
+                      imageUrl: user.profilePicUrl ?? '',
+                      radius: 80,
+                      fallbackUrl: anecdotalMascot2Url,
+                    ),
+                  ),
                   const SizedBox(height: 6),
 
-                  if (chatInputState.isListeningToAudio)
-                    const MyAnimatedText(
-                        text:
-                            "Introduce yourself and tell us about your health history andy symptoms you are experiencing (if any). \nPress stop when you are done speaking"),
-                  if (!chatInputState.isListeningToAudio)
-                    if (!chatInputState.isProcessingAudio)
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.auto_awesome),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          MyAnimatedText(
-                              text: "Click mic to use our AI account set-up"),
-                        ],
-                      ),
-                  chatInputState.isProcessingAudio
-                      ? const MySpinKitWaveSpinner()
-                      : Recorder(
-                          onStop: handleAudioStop,
-                          onStart: () {
-                            ref
-                                .read(chatInputProvider.notifier)
-                                .setIsListeningToAudio(true);
-                          },
+                  if (user.lastName!.isEmpty || user.symptomsList.isEmpty) ...[
+                    if (chatInputState.isListeningToAudio)
+                      const MyAnimatedText(
+                          text:
+                              "Introduce yourself and tell us about your health history andy symptoms you are experiencing (if any). \nPress stop when you are done speaking"),
+                    if (!chatInputState.isListeningToAudio)
+                      if (!chatInputState.isProcessingAudio)
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.auto_awesome),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            MyAnimatedText(
+                                text: "Click mic to use our AI account set-up"),
+                          ],
                         ),
+                    chatInputState.isProcessingAudio
+                        ? const MySpinKitWaveSpinner()
+                        : Recorder(
+                            onStop: handleAudioStop,
+                            onStart: () {
+                              ref
+                                  .read(chatInputProvider.notifier)
+                                  .setIsListeningToAudio(true);
+                            },
+                          ),
+                  ],
 
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 100),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 100),
                     child: Divider(),
                   ),
                   Text(

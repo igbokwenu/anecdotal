@@ -115,7 +115,6 @@ const String userTimeStamp = 'timeStamp';
 const String userShareJourneyPublicly = 'shareJourneyPublicly';
 const String usersMessagingToken = 'messagingToken';
 
-const int freeLimit = 5;
 
 const homeImageSymptomChecker = 'assets/images/sick_lady_1280_640.jpg';
 const homeImageSymptomCheckerSquare = 'assets/images/feeling_sick.jpeg';

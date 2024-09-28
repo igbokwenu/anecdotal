@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/iap_provider.dart';
+import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
@@ -57,6 +58,7 @@ class ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final databaseService = DatabaseService(uid: uid!);
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+    final publicData = ref.watch(publicDataProvider).value;
     final iapStatus = ref.watch(iapProvider);
     ref.read(iapProvider.notifier).checkAndSetIAPStatus();
 
@@ -110,7 +112,7 @@ class ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
                     color: Theme.of(context).colorScheme.secondary),
             onPressed: chatInputState.isComposing && !chatInputState.isSending
                 ? () async {
-                    userData!.aiGeneralTextUsageCount >= freeLimit &&
+                    userData!.aiGeneralTextUsageCount >= publicData!.aiFreeUsageLimit &&
                             !iapStatus.isPro
                         ? MyReusableFunctions.showPremiumDialog(
                             context: context,)

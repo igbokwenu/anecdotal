@@ -111,7 +111,7 @@ class ProgressTrackerAppState extends ConsumerState<ProgressTracker> {
               child: const Text('View Progress Timeline'),
               onPressed: () {
                 Navigator.of(context).pop();
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const VisualizeProgress(),
                 ));
               },

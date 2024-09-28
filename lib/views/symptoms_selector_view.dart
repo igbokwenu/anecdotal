@@ -204,7 +204,7 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
                   selectedSymptoms.isEmpty && userData.symptomsList.isEmpty
                       ? null
                       : () async {
-                          userData.aiGeneralTextUsageCount >= freeLimit &&
+                          userData.aiGeneralTextUsageCount >= publicData!.aiFreeUsageLimit &&
                                   !iapStatus.isPro
                               ? MyReusableFunctions.showPremiumDialog(
                                   context: context,

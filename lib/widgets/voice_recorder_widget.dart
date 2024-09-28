@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:anecdotal/providers/iap_provider.dart';
+import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
@@ -86,6 +87,7 @@ class _RecorderState extends ConsumerState<Recorder> {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final databaseService = DatabaseService(uid: uid!);
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+    final publicData = ref.watch(publicDataProvider).value;
     final iapStatus = ref.watch(iapProvider);
     ref.read(iapProvider.notifier).checkAndSetIAPStatus();
 
@@ -94,7 +96,7 @@ class _RecorderState extends ConsumerState<Recorder> {
         await databaseService.incrementUsageCount(
             uid, userAiGeneralMediaUsageCount);
         await databaseService.incrementUsageCount(uid, userAiMediaUsageCount);
-        userData!.aiGeneralMediaUsageCount >= freeLimit && !iapStatus.isPro
+        userData!.aiGeneralMediaUsageCount >= publicData!.aiFreeUsageLimit && !iapStatus.isPro
             ? MyReusableFunctions.showPremiumDialog(
                 context: context,)
             : _toggleListening();

@@ -76,7 +76,7 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
               zoom: _zoom,
             ),
             onMediaCaptureEvent: (event) async {
-              if (userData!.aiGeneralMediaUsageCount >= freeLimit &&
+              if (userData!.aiGeneralMediaUsageCount >= publicData!.aiFreeUsageLimit &&
                   !iapStatus.isPro) {
                 MyReusableFunctions.showPremiumDialog(
                     context: context, );

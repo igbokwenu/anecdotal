@@ -37,7 +37,22 @@ class FirstWidgetProgressTracker extends ConsumerWidget {
                 ? MyReusableFunctions.showCustomDialog(
                     context: context,
                     message:
-                        'You have not yet recorded any progress. Click the "Record Your Journey" button and record your progress to visualize them over time.')
+                        'You have not yet recorded any progress. Click the "Record Your Journey" button and record your progress to visualize them over time.',
+                    actions: [
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              slideLeftTransitionPageBuilder(
+                                const ProgressTracker(),
+                              ),
+                            );
+                          },
+                          label: const Text("Record Progress"),
+                          icon: const Icon(Icons.edit_note),
+                        ),
+                      ])
                 : Navigator.push(
                     context,
                     slideLeftTransitionPageBuilder(

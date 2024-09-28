@@ -232,7 +232,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
           onPressed: _selectedFiles.isEmpty || _isAnalyzing
               ? null
               : () async {
-                  userData!.aiGeneralMediaUsageCount >= freeLimit &&
+                  userData!.aiGeneralMediaUsageCount >= publicData!.aiFreeUsageLimit &&
                           !iapStatus.isPro
                       ? MyReusableFunctions.showPremiumDialog(
                           context: context,

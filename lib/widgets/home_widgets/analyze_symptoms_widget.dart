@@ -129,7 +129,7 @@ class FirstWidgetSymptomChecker extends ConsumerWidget {
               ? const MySpinKitWaveSpinner()
               : ElevatedButton.icon(
                   onPressed: () async {
-                    userData.aiGeneralTextUsageCount >= freeLimit &&
+                    userData.aiGeneralTextUsageCount >= publicData!.aiFreeUsageLimit &&
                             !iapStatus.isPro
                         ? MyReusableFunctions.showPremiumDialog(
                             context: context,

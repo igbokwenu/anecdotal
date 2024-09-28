@@ -1,4 +1,5 @@
 import 'package:anecdotal/providers/iap_provider.dart';
+import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
@@ -26,27 +27,25 @@ class CustomDrawer extends ConsumerWidget {
     ref.read(iapProvider.notifier).checkAndSetIAPStatus();
     final authService = AuthService();
     final user = FirebaseAuth.instance.currentUser;
+    final userData = ref.watch(anecdotalUserDataProvider(user!.uid)).value;
+
     return SafeArea(
       child: ListTileTheme(
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Container(
-              width: 128.0,
-              height: 128.0,
-              margin: const EdgeInsets.only(
-                top: 24.0,
-                bottom: 64.0,
-              ),
-              clipBehavior: Clip.antiAlias,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: Image.asset(
-                logoAssetImageUrlCircular,
-                fit: BoxFit.cover,
-              ),
-            ),
+            mySpacing(),
+            userData == null
+                ? const MySpinKitWaveSpinner()
+                : MyCircularImage(
+                    imageUrl: userData!.lastName!.isNotEmpty
+                        ? userData.profilePicUrl!
+                        : logoAssetImageUrlCircular,
+                    size: 118,
+                    isAsset: userData.lastName!.isNotEmpty ? false : true,
+                    hasBorder: userData.lastName!.isEmpty ? false : true,
+                  ),
+            mySpacing(),
             ListTile(
               onTap: () {
                 Navigator.push(
