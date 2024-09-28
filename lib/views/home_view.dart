@@ -4,8 +4,8 @@ import 'package:anecdotal/services/chatgpt_ai_service.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/about_view.dart';
+import 'package:anecdotal/views/citations_view.dart';
 import 'package:anecdotal/views/community_chat/community_chat_utils.dart';
-import 'package:anecdotal/views/onboarding_view.dart';
 import 'package:anecdotal/views/to_do_view.dart';
 import 'package:anecdotal/views/video_references.dart';
 import 'package:anecdotal/views/view_widgets.dart/home_card_view.dart';
@@ -309,10 +309,11 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                         TextButton(
                           onPressed: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => YouTubePlayerScreen(),
-                                ));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CitationLinks(),
+                              ),
+                            );
                           },
                           child: Text(
                               "Test Button ${publicData?.aiFreeUsageLimit}"),
@@ -471,6 +472,23 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
+                            FadeInUp(
+                              child: ImageContainer(
+                                imagePath: homeImageVideoResource,
+                                title: 'Video Resources',
+                                subtitle: 'Helpful videos on chronic illness.',
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const YouTubePlayerScreen(),
+                                    ),
+                                  );
+                                },
+                                isSquare: true,
+                              ),
+                            ),
                             FadeInUp(
                               child: ImageContainer(
                                 imagePath: homeImageAboutUs,

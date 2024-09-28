@@ -10,7 +10,7 @@ class ConfirmInformationView extends StatelessWidget {
   final String country;
   final String state;
 
-  ConfirmInformationView({
+  const ConfirmInformationView({super.key, 
     required this.firstName,
     required this.lastName,
     required this.symptoms,
@@ -20,14 +20,14 @@ class ConfirmInformationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _firstNameController = TextEditingController(text: firstName);
-    final _lastNameController = TextEditingController(text: lastName);
-    final _countryController = TextEditingController(text: country);
-    final _stateController = TextEditingController(text: state);
+    final firstNameController = TextEditingController(text: firstName);
+    final lastNameController = TextEditingController(text: lastName);
+    final countryController = TextEditingController(text: country);
+    final stateController = TextEditingController(text: state);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Confirm Information'),
+        title: const Text('Confirm Information'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -36,29 +36,29 @@ class ConfirmInformationView extends StatelessWidget {
           children: [
             // First Name and Last Name
             _buildTextField(
-              _firstNameController,
+              firstNameController,
               'First Name',
               Icons.person,
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             _buildTextField(
-              _lastNameController,
+              lastNameController,
               'Last Name',
               Icons.person_outline,
             ),
 
             // Country and State
-            SizedBox(height: 20),
-            _buildTextField(_countryController, 'Country', Icons.flag),
-            SizedBox(height: 10),
+            const SizedBox(height: 20),
+            _buildTextField(countryController, 'Country', Icons.flag),
+            const SizedBox(height: 10),
             _buildTextField(
-              _stateController,
+              stateController,
               'State',
               Icons.location_city,
             ),
 
             // Button to edit symptoms
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.push(
@@ -68,14 +68,14 @@ class ConfirmInformationView extends StatelessWidget {
                   ),
                 );
               },
-              icon: Icon(Icons.edit),
-              label: Text('Edit/Analyze Symptoms'),
+              icon: const Icon(Icons.edit),
+              label: const Text('Edit/Analyze Symptoms'),
             ),
 
             // Display symptoms in a list format
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text('Symptoms', style: Theme.of(context).textTheme.titleLarge),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
@@ -83,14 +83,14 @@ class ConfirmInformationView extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: Text(symptoms[index]),
-                    leading: Icon(Icons.check_circle_outline),
+                    leading: const Icon(Icons.check_circle_outline),
                   );
                 },
               ),
             ),
 
             // Confirm & Save Button
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 onPressed: () async {
@@ -101,16 +101,16 @@ class ConfirmInformationView extends StatelessWidget {
                         .collection('users')
                         .doc(uid)
                         .update({
-                      'firstName': _firstNameController.text,
-                      'lastName': _lastNameController.text,
+                      'firstName': firstNameController.text,
+                      'lastName': lastNameController.text,
                       'symptoms': symptoms,
-                      'country': _countryController.text,
-                      'state': _stateController.text,
+                      'country': countryController.text,
+                      'state': stateController.text,
                     });
                   }
                   Navigator.pop(context);
                 },
-                child: Text('Confirm & Save'),
+                child: const Text('Confirm & Save'),
               ),
             ),
           ],

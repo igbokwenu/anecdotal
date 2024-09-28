@@ -1,13 +1,13 @@
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
-import 'package:anecdotal/utils/constants/writeups.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
+import 'package:anecdotal/views/citations_view.dart';
+import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Video {
@@ -109,7 +109,7 @@ class YouTubePlayerScreenState extends ConsumerState<YouTubePlayerScreen> {
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
     final databaseService = DatabaseService(uid: uid!);
 
-    void _playVideo(Video video) {
+    void playVideo(Video video) {
       setState(() {
         _controller = YoutubePlayerController.fromVideoId(
           videoId: video.videoId,
@@ -137,7 +137,9 @@ class YouTubePlayerScreenState extends ConsumerState<YouTubePlayerScreen> {
     });
 
     return Scaffold(
-      appBar: AppBar(title: const Center(child: Text('Video Resources'))),
+      appBar: AppBar(
+          title: const Center(
+              child: MyAppBarTitleWithAI(title: 'Video Resources'))),
       body: Column(
         children: [
           if (_controller != null)
@@ -155,12 +157,18 @@ class YouTubePlayerScreenState extends ConsumerState<YouTubePlayerScreen> {
                 final video = sortedVideos[index];
                 return VideoCard(
                   video: video,
-                  onPlay: _playVideo,
+                  onPlay: playVideo,
                   isWatched: userData!.watchedVideoUrls.contains(video.videoId),
                 );
               },
             ),
           ),
+          ElevatedButton.icon(onPressed: (){ Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CitationLinks(),
+                              ),
+                            );}, label: const Text('Citations'), icon: const Icon(Icons.link),)
         ],
       ),
     );
@@ -174,11 +182,11 @@ class VideoCard extends ConsumerWidget {
   final bool isWatched;
 
   const VideoCard({
-    Key? key,
+    super.key,
     required this.video,
     required this.onPlay,
     required this.isWatched,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

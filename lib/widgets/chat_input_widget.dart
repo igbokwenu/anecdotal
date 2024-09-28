@@ -4,7 +4,6 @@ import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/database_service.dart';
-import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';

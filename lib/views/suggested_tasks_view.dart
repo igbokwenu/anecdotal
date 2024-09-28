@@ -4,8 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SuggestedTasksScreen extends StatefulWidget {
   final String userId; // pass in userId to fetch specific user's data
-  const SuggestedTasksScreen({Key? key, required this.userId})
-      : super(key: key);
+  const SuggestedTasksScreen({super.key, required this.userId});
 
   @override
   _SuggestedTasksScreenState createState() => _SuggestedTasksScreenState();

@@ -268,7 +268,7 @@ Future<void> editTask(
     await userDocRef.update({listName: taskList});
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Task updated successfully')),
+      const SnackBar(content: Text('Task updated successfully')),
     );
   } catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(
