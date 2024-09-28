@@ -221,7 +221,8 @@ class MySpinKitWaveSpinner extends StatelessWidget {
 
 class MyAnimatedText extends StatelessWidget {
   final String text;
-  const MyAnimatedText({super.key, required this.text});
+  final double? size;
+  const MyAnimatedText({super.key, required this.text, this.size});
 
   @override
   Widget build(BuildContext context) {
@@ -249,7 +250,7 @@ class MyAnimatedText extends StatelessWidget {
         ColorizeAnimatedText(
           text,
           textAlign: TextAlign.center,
-          textStyle: colorizeTextStyle,
+          textStyle: colorizeTextStyle.copyWith(fontSize: size),
           colors: colorizeColors,
         ),
       ],

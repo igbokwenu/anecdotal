@@ -4,7 +4,7 @@ import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 
 class DeleteAccountPage extends StatefulWidget {
-  const DeleteAccountPage({Key? key}) : super(key: key);
+  const DeleteAccountPage({super.key});
 
   @override
   _DeleteAccountPageState createState() => _DeleteAccountPageState();
@@ -58,10 +58,10 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
               size: 80,
             ),
             SizedBox(height: 16),
-            Text(
-              'Deleting account...',
-              style: TextStyle(fontSize: 18),
-            ),
+            MyAnimatedText(text: 'Deleting account...'),
+         
+              
+            
           ],
         ),
       ),

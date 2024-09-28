@@ -273,7 +273,8 @@ class _ReportViewState extends ConsumerState<ReportView> {
       );
 
       if (!kIsWeb) {
-        if (userData.aiGeneralTextUsageCount >= publicData!.aiFreeUsageLimit) {
+        if (userData.aiGeneralTextUsageCount >= publicData!.aiFreeUsageLimit &&
+            !iapStatus.isPro) {
           MyReusableFunctions.showPremiumDialog(
               context: context, message: premiumSpeechPDFAccess);
         } else {

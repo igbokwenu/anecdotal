@@ -16,6 +16,8 @@ Under suggestions come up with related search terms that the user can input in a
 
 $showCitation
 
+$misDiagnosisText
+
    ${prompt == null ? "" : "User question: $prompt"}
   
   """;
@@ -40,6 +42,8 @@ Under suggestions come up with related search terms that the user can input in a
 
 $showCitation
 
+$misDiagnosisText
+
    User question: I am worried mold might be growing in my house and making me sick. i want you to analyze the images attached and let me know if it looks like mold, water damage or a condition that could contribute to mold illness or if its an environmental hazard or factor that could make me sick. Tell me why you reached your conclusions based on what you see in the images.
 
    ${prompt ?? ""}
@@ -52,23 +56,6 @@ $showCitation
 
 const String aboutYou =
     "Introduce yourself and tell us a bit about you, including the symptoms you've been experiencing. You can mention anything that's been bothering you, and we'll do our best to hopefully point you in the right direction.";
-
-const String aiPrompt = """
-You are a helpful assistant tasked with extracting specific information from the following user's speech. Please provide the output in JSON format with the following fields. :
-
-{
-  "firstName": "User's first name.",
-  "lastName": "User's last name.",
-  "gender": "Determine the user's gender based on the voice.",
-  "knownSymptoms": ["List of known symptoms matching the predetermined list."],
-  "unknownSymptoms": ["List of symptoms not matching the predetermined list."],
-  "country": "User's country if mentioned.",
-  "state": "User's state, province, or region if mentioned.",
-  "recommendations": ["List of recommended actions from the predetermined list."]
-}
-
-Ensure that the JSON is properly formatted and only includes the specified fields
-""";
 
 String sendSymptomAnalysisPrompt(
     {String? symptoms, String? history, String? externalReport}) {
@@ -119,6 +106,8 @@ Under recommendations give helpful recommendations ${externalReport == null ? " 
 Under suggestions come up with related search terms that the user can input in a search engine to get more information about their prompt.
 
 $showCitation
+
+$misDiagnosisText
    
   
   """;
@@ -127,7 +116,7 @@ $showCitation
 String sendLabAnalysisPrompt(
     {String? symptoms, String? history, String? externalReport}) {
   return """
-  You are a medical research assistant helping provide a preliminary report on the results of a lab test provided in an image attached to this prompt. The lab test results you will be analyzing is centered around trying to diagnose Chronic inflammatory response syndrome (CIRS), also known as mold illness or bio-toxin illness. 
+  You are a medical research assistant helping provide a preliminary report on the results of a lab test provided in an image attached to this prompt. The lab test results you will be analyzing is centered around trying to diagnose mycotoxin or bio-toxin related illness like CIRS. 
 
 If the image provided is not a lab test result, Make sure you point it out and request the image of a lab result to help in your analysis.
 
@@ -166,6 +155,8 @@ Under recommendations give helpful recommendations ${externalReport == null ? " 
 
 Under suggestions come up with related search terms that the user can input in a search engine to get more information about their prompt.
 $showCitation
+
+$misDiagnosisText
    
   
   """;
@@ -239,7 +230,7 @@ const String forLandlord =
 const String forEmployer =
     "Prepare your response for an employer, from an employee, detailing why and how mold growth/water damage (if detected in the image provided) in the office building might be making the staff sick and causing symptoms reported (if available). And why they should prioritize remediating their office space to improve the employers working condition. Just in case, also define what CIRS is and how it differs significantly from mold allergy/an allergic reaction to mold in simple terms the employer can understand";
 
-const String showCitation =
+const String showCitationOld =
     "Under citations list at least 4 urls from these medical articles depending on which one is most relevant to response you gave: $citation1 $citation2 $citation3 $citation4 $citation5 $citation6 $citation7";
 
 const String citation1 =
@@ -255,14 +246,13 @@ const String citation6 =
 const String citation7 =
     "https://www.vc4hw.com/chronic-inflammatory-response-syndrome-cirs.html";
 
-const String listOfConditions = """
+const String misDiagnosisText = """
 Note that bio-toxin and mycotoxin exposure which cause Chronic inflammatory response syndrome (CIRS) 
 have symptoms that overlap with symptoms of:
 
 Fibromyalgia, 
 Chronic Fatigue Syndrome (CFS),  
 Irritable Bowel Syndrome
-bio-toxin or mycotoxin related illnesses 
 Multiple Sclerosis
 Multiple Chemical Sensitivity (MCS)
 Anxiety
@@ -271,9 +261,75 @@ Hypochondriasis
 Postural orthostatic tachycardia syndrome (POTS)
 Carpal tunnel syndrome (CTS)
 Chronic pain syndrome
+“Atypical” MS, Parkinson’s Disease, Alzheimer’s Disease
+“Atypical” rheumatological condition
 
-So it is often a good idea to try and rule out CIRS as the root cause if you have been diagnosed with any of these conditions
+So it is often a good idea to try and rule out the bio-toxin or mycotoxin related illnesses known as CIRS as the root cause if diagnosed with any of these conditions or exhibits their symptoms.
 """;
+
+String showCitation = """"
+Under citations list urls from relevant articles.  Below you will find articles and their titles - from reputable health organizations on biotoxins, mycotoxins and CIRS. Depending on your response you gave extract the urls of articles you think are relevant to your response you gave:
+
+Differential effects of exposure to toxic or nontoxic mold spores on brain inflammation and Morris water maze performance:
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10460635/
+
+Analysis of mold and mycotoxins in naturally infested indoor building materials:
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9356937/
+
+A Review of the Diagnosis and Treatment of Ochratoxin A Inhalational Exposure Associated with Human Illness and Kidney Disease including Focal Segmental Glomerulosclerosis:
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3255309/
+
+HLA gene variations and mycotoxin toxicity: Four case reports:
+https://pubmed.ncbi.nlm.nih.gov/38198040/
+
+Mycotoxins:
+https://www.who.int/news-room/fact-sheets/detail/mycotoxins
+
+A Review of the Mechanism of Injury and Treatment Approaches for Illness Resulting from Exposure to Water-Damaged Buildings, Mold, and Mycotoxins:
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3654247/
+
+Mold inhalation causes innate immune activation, neural, cognitive and emotional dysfunction:
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7231651/
+
+Chronic Inflammatory Response Syndrome (CIRS):
+https://www.medicinenet.com/chronic_inflammatory_response_syndrome_cirs/article.htm
+
+https://www.aph.gov.au/Parliamentary_Business/Committees/House/Health_Aged_Care_and_Sport/BiotoxinIllnesses/Report/section?id=committees%2Freportrep%2F024194%2F26442
+
+What Is Chronic Inflammatory Response Syndrome (CIRS) and How Is It Diagnosed. 13 Clusters Symptoms:
+https://aspenmedcenter.com/what-is-chronic-inflammatory-response-syndrome/
+
+Understanding Mycotoxin-induced Illness: Part 1:
+https://pubmed.ncbi.nlm.nih.gov/36069791/
+
+Ochratoxin A: General Overview and Actual Molecular Status:
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3153212/
+
+Reference Papers:
+https://www.cirsx.com/reference-papers
+
+
+""";
+
+const String treatmentProtocol = """"
+
+
+
+""";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Abnormal lab testing:
 // Failed Vision Contrast Study (VCS)
 // Presence of HLA-DR

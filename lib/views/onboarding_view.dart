@@ -89,7 +89,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       ),
                       mySpacing(),
                       Text(
-                        "A soothing space to find answers, heal, and connect with others who truly understand 🤍.",
+                        "A soothing space to find answers, heal, and connect with others who truly understand 🤍",
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             fontWeight: FontWeight.bold,
