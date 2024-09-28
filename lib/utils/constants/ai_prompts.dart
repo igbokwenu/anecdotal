@@ -18,6 +18,8 @@ $showCitation
 
 $misDiagnosisText
 
+$treatmentProtocol
+
    ${prompt == null ? "" : "User question: $prompt"}
   
   """;
@@ -44,7 +46,10 @@ $showCitation
 
 $misDiagnosisText
 
-   User question: I am worried mold might be growing in my house and making me sick. i want you to analyze the images attached and let me know if it looks like mold, water damage or a condition that could contribute to mold illness or if its an environmental hazard or factor that could make me sick. Tell me why you reached your conclusions based on what you see in the images.
+$treatmentProtocol
+
+
+   User question: I am worried toxins in my house might be making me sick. i want you to analyze the images attached and let me know if it looks like mold, water damage or a condition that could contribute to mold illness or if its an environmental hazard or factor that could make me sick. Tell me why you reached your conclusions based on what you see in the images.
 
    ${prompt ?? ""}
 
@@ -108,6 +113,8 @@ Under suggestions come up with related search terms that the user can input in a
 $showCitation
 
 $misDiagnosisText
+
+$treatmentProtocol
    
   
   """;
@@ -157,6 +164,8 @@ Under suggestions come up with related search terms that the user can input in a
 $showCitation
 
 $misDiagnosisText
+
+$treatmentProtocol
    
   
   """;
@@ -164,20 +173,20 @@ $misDiagnosisText
 
 String sendHistoryAnalysisPrompt({String? healingJourneyMap}) {
   return """
-  You are a data analyst helping someone analyze their data. The data you will be receiving is an array with multiple maps inside as items in the array, each map has the following parameters:
-  A timestamp showing the date and time the user recorded the activity
-  A percentage with a number showing how the user is feeling at the time of the recording. The number ranges from 1-100 with 1 meaning the user does not feel good and 100 meaning that the user feels excellent.
-  An inProgressList that shows activities the user working on or implementing in their to do list.
-  A doneList showing the activities the user has completed from their to do list.
-  A notes section showing notes the user took for the entry.
-
-  You are speaking directly to the user with the data.
-
-  I want you to analyze the data provided in the map and look for insights, patterns, and find things note wordy from the data. Activities that made the user feel good or feel bad etc.
-
-  If the maps in the array are less than 50, encourage the user to use the Anecdotal app more often to give you a better data set that you can use to provide valuable insights.
+  You are a data analyst helping me analyze my data. In your response, I want you to speak to me in first person and casually like a friend who wants to help.
   
-  In your response you are using JSON mode to respond to the users data.
+  The data you will be receiving is:
+  A timestamp showing the date and time I recorded the activity
+  A percentage with a number showing how i was feeling at the time of the recording. The number ranges from 1-100 with 1 meaning I did not feel good and 100 meaning that i am feeling excellent.
+  An inProgressList that shows activities i am working on or implementing in my to do list.
+  A doneList showing the activities I completed from my to do list.
+  A notes section showing notes the I took when writing the entry.
+
+  I want you to analyze the data provided in my data and look for insights, patterns, and find things note wordy from the data. Activities that made me feel good or feel bad etc.
+
+  If the data I provided is too small, encourage me to use the Anecdotal AI app more often to give you a better data set that you can use to provide valuable insights.
+  
+  In your response you are using JSON mode to respond to the my request.
 
   Under summary give a detailed feedback that details every helpful information you gathered.
 
@@ -187,7 +196,7 @@ String sendHistoryAnalysisPrompt({String? healingJourneyMap}) {
 
   Under suggestions come up with related search terms that the user can input in a search engine to get more helpful information based on the response you gave.
 
-  Under citations do not provide any citations
+  Under citations do not have to provide any citations but can provide any you think might help me based on the data you analyzed.
 
   Here is the users data $healingJourneyMap
 
@@ -313,11 +322,83 @@ https://www.cirsx.com/reference-papers
 
 const String treatmentProtocol = """"
 
+Here is a list of the 12 step treatment protocol for treating mycotoxin and biotoxin related illnesses by Dr. Shoemaker in case someone asks for help with treatment protocols.
+
+
+1. Remove Exposure
+   - Goal: Eliminate contact with inflammagens (mold, biotoxins).
+   - Action: Conduct environmental testing (ERMI/HERTSMI) to assess indoor microbial growth. Maintain ERMI < 2.
+
+2. Use Binders (Cholestyramine or Welchol)
+   - Goal: Remove circulating biotoxins.
+   - Action: Take binders 4 times daily on an empty stomach to sequester biotoxins and reduce reabsorption from bile.
+
+3. Eradicate MARCoNS (Multiple Antibiotic-Resistant Coagulase-Negative Staphylococci)
+   - Goal: Eliminate biofilm-dwelling staphylococci.
+   - Action: Use BEG nasal spray for MARCoNS eradication. Retest after 4 weeks to confirm.
+
+4. Correct Anti-Gliadin Antibodies
+   - Goal: Reduce inflammation caused by gluten intolerance.
+   - Action: Implement a 100% gluten-free diet for at least 3 months, and retest anti-gliadin antibodies to confirm improvement.
+
+5. Optimize Androgen Levels
+   - Goal: Support endocrine function.
+   - Action: Test and correct levels of DHEA, testosterone, and estradiol. Monitor frequently and avoid exogenous testosterone.
+
+6. Correct ADH/Osmolality
+   - Goal: Restore proper hydration and electrolyte balance.
+   - Action: Administer desmopressin for low ADH and monitor osmolality, sodium, and body weight regularly.
+
+7. Normalize MMP-9
+   - Goal: Reduce inflammation caused by excess matrix metalloproteinase 9 (MMP-9).
+   - Action: Follow a low amylose diet and take high-dose fish oil (EPA 2.4 g, DHA 1.8 g daily).
+
+8. Correct Low VEGF (Vascular Endothelial Growth Factor)
+   - Goal: Improve tissue oxygenation and capillary function.
+   - Action: Continue low amylose diet and high-dose fish oil to raise VEGF.
+
+9. Lower Elevated C3a
+   - Goal: Decrease complement-driven inflammation.
+   - Action: Use high-dose statins in cases of elevated C3a, especially when Lyme disease is a concern.
+
+10. Reduce High C4a
+   - Goal: Address systemic inflammation and improve oxygen delivery.
+   - Action: Consider VIP nasal spray or erythropoietin to reduce C4a and improve energy production.
+
+11. Control Elevated TGF-B1 (Transforming Growth Factor Beta 1)
+   - Goal: Rebalance immune regulation.
+   - Action: Treat with Losartan or VIP nasal spray to lower TGF-B1 and reduce fibrosis and immune dysregulation.
+
+12. Administer VIP (Vasoactive Intestinal Peptide)
+   - Goal: Restore normal neuro-immune regulation and correct remaining inflammatory markers.
+   - Action: Begin VIP nasal spray once previous steps are completed, ensuring no further biotoxin exposure and MARCoNS eradication.
+
+Each step of the protocol builds upon the previous one, and skipping steps can result in ineffective treatment. Regular monitoring of biomarkers like C4a, MMP-9, TGF-B1, and VCS is crucial for tracking treatment progress.
+
+$cheapTreatmentAlternatives
 
 
 """;
 
+const String cheapTreatmentAlternatives = """
+For those who might be struggling financially and cannot afford a doctor here are anecdotal accounts from people who were able to recover without spending too much money. You can share information from here with anyone who might be struggling telling them that these is an anecdotal experience:
 
+Account One:
+So I have/had black mold toxicity. I didn’t go to a shoemaker functional doctor, but I did a couple of things on the list of recommendations. 
+I can tell you that I was able to “cure” the mold toxicity in less than 2 months. 
+Now I also have Lymes, leaky gut, and Mast Cell Activation Syndrome. 
+Even still I’m pretty much cured from all of them. 
+First thing I did was quit my job because that’s where the black mold was. 
+Then I started a healing gut diet (only organic meat and about 5 organic vegetables) I had my doctor prescribe me Cholestyramine and took that 2-3xs/ day for 5 weeks. 
+That took care of a lot of my symptoms. 
+I also did infrared sauna and went to chiropractor weekly to detox and jump start my immune system again. 
+At the same time I bought XClear nasal spray to kill any Marcons and took that 1-2xs daily. 
+I have gone from 25+ symptoms down to about 2 symptoms. 
+I didn’t waste time or money on any of the recommended tests. 
+I’ve had general bloodwork and hormone levels checked (ordered by regular dr and paid by insurance) and everything is normal. 
+I did do the VCS online test (\$15) once in the beginning and again after 2 months and showed black mold before I started and showed none after I did everything I did. 
+So in other words no I didn’t waste my time or money with the “special” rip you off \$600/hr shoemaker doctors. But I will tell you the gut healing diet along with detoxing and that medication was absolutely key to my healing.
+""";
 
 
 

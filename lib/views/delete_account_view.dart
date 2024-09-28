@@ -58,10 +58,10 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
               size: 80,
             ),
             SizedBox(height: 16),
-            MyAnimatedText(text: 'Deleting account...'),
-         
-              
-            
+            MyAnimatedText(
+              text: 'Deleting account...',
+              size: 25,
+            ),
           ],
         ),
       ),

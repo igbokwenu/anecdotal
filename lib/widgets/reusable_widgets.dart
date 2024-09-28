@@ -250,7 +250,7 @@ class MyAnimatedText extends StatelessWidget {
         ColorizeAnimatedText(
           text,
           textAlign: TextAlign.center,
-          textStyle: colorizeTextStyle.copyWith(fontSize: size),
+          textStyle: size == null ? colorizeTextStyle: colorizeTextStyle.copyWith(fontSize: size),
           colors: colorizeColors,
         ),
       ],

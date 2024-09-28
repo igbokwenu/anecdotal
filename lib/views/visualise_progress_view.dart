@@ -3,6 +3,7 @@ import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
+import 'package:anecdotal/services/chatgpt_ai_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/utils/constants/ai_prompts.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
@@ -157,7 +158,7 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
     final buttonLoadingState = ref.watch(chatInputProvider);
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
-      final publicData = ref.watch(publicDataProvider).value;
+    final publicData = ref.watch(publicDataProvider).value;
     const int minimumEntries = 10;
     final iapStatus = ref.watch(iapProvider);
     const String sectionTitle = 'Visualize Your Journey';
@@ -195,13 +196,12 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
       MyReusableFunctions.showProcessingToast();
       ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
 
-      final response = await GeminiService.sendTextPrompt(
-        message: sendHistoryAnalysisPrompt(
+      final response = await ChatGPTService.getChatGPTResponse(
+        prompt: sendHistoryAnalysisPrompt(
           healingJourneyMap:
               formatHealingJourneyData(userData!.healingJourneyMap),
-        ), 
-        apiKey: publicData!.zodiac,
-     
+        ),
+        apiKey: publicData!.closedOthers,
       );
 
       if (response != null) {
@@ -218,7 +218,8 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
                   response['suggestions']?.cast<String>() ?? [],
               citations: response['citations']?.cast<String>() ?? [],
               title: "Journey Report",
-              enableManualCitations: false, reportType: userGeneralReportPdfUrls,
+              enableManualCitations: false,
+              reportType: userGeneralReportPdfUrls,
             ),
           ),
         );
