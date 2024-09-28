@@ -38,7 +38,7 @@ class CustomDrawer extends ConsumerWidget {
             userData == null
                 ? const MySpinKitWaveSpinner()
                 : MyCircularImage(
-                    imageUrl: userData!.lastName!.isNotEmpty
+                    imageUrl: userData.lastName!.isNotEmpty
                         ? userData.profilePicUrl!
                         : logoAssetImageUrlCircular,
                     size: 118,

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:anecdotal/providers/iap_provider.dart';
+import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/constants/writeups.dart';
@@ -126,6 +127,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
     Future<void> saveAndSharePDF(BuildContext context, bool share) async {
       final uid = FirebaseAuth.instance.currentUser?.uid;
       final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
+      final publicData = ref.watch(publicDataProvider).value;
       final pdf = pw.Document();
       final subject = userData!.lastName!.isEmpty
           ? "Subject Anonymous"
@@ -271,7 +273,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
       );
 
       if (!kIsWeb) {
-        if (!iapStatus.isPro) {
+        if (userData.aiGeneralTextUsageCount >= publicData!.aiFreeUsageLimit) {
           MyReusableFunctions.showPremiumDialog(
               context: context, message: premiumSpeechPDFAccess);
         } else {
