@@ -2,6 +2,7 @@ import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
+import 'package:anecdotal/services/chatgpt_ai_service.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/utils/constants/ai_prompts.dart';
@@ -86,7 +87,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
     final iapStatus = ref.watch(iapProvider);
     ref.read(iapProvider.notifier).checkAndSetIAPStatus();
-      final publicData = ref.watch(publicDataProvider).value;
+    final publicData = ref.watch(publicDataProvider).value;
 
     Future<void> analyzeImages() async {
       if (_selectedFiles.isEmpty) return;
@@ -99,11 +100,11 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
         await databaseService.incrementUsageCount(
             uid, userAiGeneralMediaUsageCount);
         await databaseService.incrementUsageCount(uid, userAiMediaUsageCount);
-        final response = await GeminiService.analyzeImages(
+        final response = await ChatGPTService.analyzeImages(
           images: _selectedFiles,
           prompt: widget.prompt,
-        apiKey: publicData!.zodiac,
-     
+          apiKey: publicData!.closedOthers,
+          // preferredModel: gpt4OMiniModel,
         );
 
         widget.onResponse(response);
@@ -131,8 +132,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
           ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
           final response = await GeminiService.analyzeImages(
             images: _selectedFiles,
-        apiKey: publicData!.zodiac,
-     
+            apiKey: publicData!.zodiac,
             prompt: widget.isLabTest
                 ? sendLabAnalysisPrompt(
                     symptoms: userData!.symptomsList.isEmpty
@@ -232,7 +232,8 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
           onPressed: _selectedFiles.isEmpty || _isAnalyzing
               ? null
               : () async {
-                  userData!.aiGeneralMediaUsageCount >= publicData!.aiFreeUsageLimit &&
+                  userData!.aiGeneralMediaUsageCount >=
+                              publicData!.aiFreeUsageLimit &&
                           !iapStatus.isPro
                       ? MyReusableFunctions.showPremiumDialog(
                           context: context,

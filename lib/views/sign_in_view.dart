@@ -117,7 +117,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 child: MyAppBarTitleWithAI(
                   title: "Welcome To Anecdotal AI",
                   size: 20,
-                ),
+                ), 
               ),
             ),
             body: Padding(

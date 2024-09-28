@@ -36,7 +36,7 @@ class CustomDrawer extends ConsumerWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             mySpacing(),
-            userData == null
+            userData == null || userData.profilePicUrl == null
                 ? const MySpinKitWaveSpinner()
                 : MyCircularImage(
                     imageUrl: userData.profilePicUrl!.isEmpty

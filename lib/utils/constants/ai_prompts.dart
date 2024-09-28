@@ -255,6 +255,25 @@ const String citation6 =
 const String citation7 =
     "https://www.vc4hw.com/chronic-inflammatory-response-syndrome-cirs.html";
 
+const String listOfConditions = """
+Note that bio-toxin and mycotoxin exposure which cause Chronic inflammatory response syndrome (CIRS) 
+have symptoms that overlap with symptoms of:
+
+Fibromyalgia, 
+Chronic Fatigue Syndrome (CFS),  
+Irritable Bowel Syndrome
+bio-toxin or mycotoxin related illnesses 
+Multiple Sclerosis
+Multiple Chemical Sensitivity (MCS)
+Anxiety
+Depression
+Hypochondriasis
+Postural orthostatic tachycardia syndrome (POTS)
+Carpal tunnel syndrome (CTS)
+Chronic pain syndrome
+
+So it is often a good idea to try and rule out CIRS as the root cause if you have been diagnosed with any of these conditions
+""";
 // Abnormal lab testing:
 // Failed Vision Contrast Study (VCS)
 // Presence of HLA-DR
