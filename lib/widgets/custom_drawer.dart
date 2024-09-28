@@ -6,6 +6,7 @@ import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/account_view.dart';
 import 'package:anecdotal/views/chat/rooms.dart';
 import 'package:anecdotal/views/community_chat/community_chat_utils.dart';
+import 'package:anecdotal/views/delete_account_view.dart';
 import 'package:anecdotal/views/to_do_view.dart';
 import 'package:anecdotal/views/view_reports_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
@@ -38,12 +39,12 @@ class CustomDrawer extends ConsumerWidget {
             userData == null
                 ? const MySpinKitWaveSpinner()
                 : MyCircularImage(
-                    imageUrl: userData.lastName!.isNotEmpty
-                        ? userData.profilePicUrl!
-                        : logoAssetImageUrlCircular,
+                    imageUrl: userData.profilePicUrl!.isEmpty
+                        ? logoAssetImageUrlCircular
+                        : userData.profilePicUrl!,
                     size: 118,
-                    isAsset: userData.lastName!.isNotEmpty ? false : true,
-                    hasBorder: userData.lastName!.isEmpty ? false : true,
+                    isAsset: userData.profilePicUrl!.isEmpty ? true : false,
+                    hasBorder: userData.profilePicUrl!.isEmpty ? false : true,
                   ),
             mySpacing(),
             ListTile(
@@ -145,10 +146,13 @@ class CustomDrawer extends ConsumerWidget {
                             ElevatedButton(
                               onPressed: () async {
                                 Navigator.pop(context);
-                                await authService.deleteUser();
-                                await authService.signOut();
-                                Navigator.pushReplacementNamed(
-                                    context, AppRoutes.authWrapper);
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const DeleteAccountPage()),
+                                  (Route<dynamic> route) => false,
+                                );
                               },
                               child: const Text("Sign Out"),
                             ),

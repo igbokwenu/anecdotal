@@ -114,7 +114,11 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         : Scaffold(
             appBar: AppBar(
               title: const Center(
-                  child: MyAppBarTitleWithAI(title: "Welcome To Anecdotal AI")),
+                child: MyAppBarTitleWithAI(
+                  title: "Welcome To Anecdotal AI",
+                  size: 20,
+                ),
+              ),
             ),
             body: Padding(
               padding: const EdgeInsets.all(16.0),

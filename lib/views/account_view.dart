@@ -5,9 +5,11 @@ import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
+import 'package:anecdotal/utils/constants/ai_prompts.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/utils/constants/methods.dart';
 import 'package:anecdotal/utils/constants/symptom_list.dart';
+import 'package:anecdotal/views/delete_account_view.dart';
 import 'package:anecdotal/views/edit_account_view.dart';
 import 'package:anecdotal/views/confirm_info_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
@@ -37,8 +39,7 @@ class AccountPage extends ConsumerWidget {
       try {
         final response = await GeminiService.analyzeAudioForSignup(
           audios: [File(path)],
-          prompt:
-              "Extract user's first name, last name and symptoms. When extracting symptoms, strictly list as many symptoms from the provided list that specifically aligns with any symptoms the user stated. If the user did not share any symptoms, do not return any item from the list. Provided list: $allCirsSymptom",
+          prompt: accountSetupPrompt,
           apiKey: publicData!.zodiac,
         );
 
@@ -328,10 +329,12 @@ class AccountPage extends ConsumerWidget {
             ),
             TextButton(
               onPressed: () async {
-                await authService.deleteUser();
-                await authService.signOut();
-                Navigator.of(context).pop();
-                Navigator.pushReplacementNamed(context, AppRoutes.authWrapper);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const DeleteAccountPage()),
+                  (Route<dynamic> route) => false,
+                );
               },
               style: TextButton.styleFrom(
                 foregroundColor: Colors.red, // Button color

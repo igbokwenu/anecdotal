@@ -299,9 +299,14 @@ class MyAnimatedText2 extends StatelessWidget {
 
 class MyAppBarTitleWithAI extends StatelessWidget {
   final String title;
-  final isCentered;
-  const MyAppBarTitleWithAI(
-      {super.key, required this.title, this.isCentered = false});
+  final bool isCentered;
+  final double size;
+  const MyAppBarTitleWithAI({
+    super.key,
+    required this.title,
+    this.isCentered = false,
+    this.size = 22,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -315,10 +320,10 @@ class MyAppBarTitleWithAI extends StatelessWidget {
         const SizedBox(width: 10),
         Text(
           title,
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge!
-              .copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: size,
+              ),
         ),
       ],
     );

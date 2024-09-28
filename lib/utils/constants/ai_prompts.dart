@@ -1,3 +1,5 @@
+import 'package:anecdotal/utils/constants/symptom_list.dart';
+
 String sendChatPrompt({String? prompt}) {
   return """
   You are helping people get answers regarding chronic illness, this includes Fibromyalgia, CFS, Chronic inflammatory response syndrome (CIRS), bio-toxin illness etc. 
@@ -200,6 +202,35 @@ String sendHistoryAnalysisPrompt({String? healingJourneyMap}) {
 
   """;
 }
+
+String accountSetupPrompt1 = """
+"Extract user's first name, last name and symptoms. 
+**Only list the symptoms** from the provided list (**$allCirsSymptom** ) 
+that the user mentioned that matches or corresponds with symptoms in the provided list with **high confidence**. 
+If no symptoms are detected with high confidence, return the message 'No symptoms detected'."
+
+""";
+
+String accountSetupPrompt = """
+You are a medical assistant listening to a patient and extracting some basic details from them.
+Extract the patient's first name and patient name from the audio input. 
+For symptoms, follow these strict guidelines:\n\n
+1. Listen carefully to the audio and identify any symptoms mentioned by the patient.\n
+2. Compare the mentioned symptoms ONLY to the following list: Symptoms List: $allCirsSymptom\n
+3. Return ONLY the symptoms from the list that match what the patient mentioned.\n
+4. If the patient did not mention any symptoms that matches symptoms in the Symptoms List, or did not say anything coherent, return an empty list for symptoms.\n\n
+
+Output format:\n{\n
+
+  "firstName": "extracted first name or empty string if not found",\n  
+  "lastName": "extracted last name or empty string if not found",\n  
+  "symptoms": ["symptom1", "symptom2", ...] // ONLY include symptoms from  that were explicitly mentioned or corresponds with symptoms in the provided Symptoms List, or [] if none were mentioned\n}\n\n
+  
+  IMPORTANT: Do not infer or assume any symptoms. 
+  Only include symptoms in the output from the provided Symptoms List if they were explicitly stated by the patient or matches/corresponds with symptoms in the provided Symptoms List:. 
+  If no matching symptoms were mentioned, the returned symptoms list must be empty.
+
+""";
 
 const String forDoctor =
     "Prepare your response like you are preparing a response for a doctor or medical practitioner, detailing the patients symptoms and potential exposure history if available and why you reached your conclusions. Encourage the doctor to investigate along the lines of your conclusions especially if the patient is complaining of debilitating symptoms. Remind the doctor that most common and routine blood work usually cannot detect CIRS and a patient who has a good blood work might be suffering from CIRS. Just in case, also define what CIRS is and how it differs significantly from mold allergy/an allergic reaction to mold";
