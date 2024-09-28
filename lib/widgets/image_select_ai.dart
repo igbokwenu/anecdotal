@@ -130,9 +130,9 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
         } else {
           MyReusableFunctions.showProcessingToast();
           ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
-          final response = await GeminiService.analyzeImages(
+          final response = await ChatGPTService.analyzeImages(
             images: _selectedFiles,
-            apiKey: publicData!.zodiac,
+            apiKey: publicData!.closedOthers,
             prompt: widget.isLabTest
                 ? sendLabAnalysisPrompt(
                     symptoms: userData!.symptomsList.isEmpty

@@ -468,7 +468,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
                 if (!kIsWeb)
                   _isSaving
                       ? const MySpinKitWaveSpinner(
-                          size: 25,
+                          size: 35,
                         )
                       : _isSaved
                           ? myEmptySizedBox()

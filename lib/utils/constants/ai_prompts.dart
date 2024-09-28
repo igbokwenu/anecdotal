@@ -27,6 +27,7 @@ $treatmentProtocol
 
 String sendHouseImageAnalysisPrompt({String? prompt, String? externalReport}) {
   return """
+${externalReport == null ? "" : "Who you are preparing this report for: $externalReport"}
   You are a medical research assistant helping people get answers regarding, mold illness, also known as Chronic inflammatory response syndrome (CIRS), bio-toxin illness etc based on images they provide that shows growth of potential mold or toxins in their environment. 
   
 If the image provided is not related to analyzing a place for water damage, mold growth or presence of potential toxins, Make sure you point it out and request the image of a place which can be of a space in a home, workplace, school etc to help in your analysis.
@@ -49,11 +50,11 @@ $misDiagnosisText
 $treatmentProtocol
 
 
-   User question: I am worried toxins in my house might be making me sick. i want you to analyze the images attached and let me know if it looks like mold, water damage or a condition that could contribute to mold illness or if its an environmental hazard or factor that could make me sick. Tell me why you reached your conclusions based on what you see in the images.
+   User question: I am worried toxins in my environment might be making me sick. i want you to analyze the images attached and let me know if it looks like there are toxins or environmental hazard or factor that could make me sick. Tell me why you reached your conclusions based on what you see in the images.
 
    ${prompt ?? ""}
 
-   ${externalReport == null ? "" : "Who you are preparing this report for: $externalReport"}
+   
 
   
   """;
