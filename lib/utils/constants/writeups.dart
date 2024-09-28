@@ -33,3 +33,22 @@ const String premiumSpeechAnalyzeHistory =
 
 const String freeAiUsageExceeded =
     "You have exceeded your free limit and need a premium subscription to proceed";
+
+const String misDiagnosisList = """"
+Fibromyalgia, 
+Chronic Fatigue Syndrome (CFS), 
+Irritable Bowel Syndrome, 
+Multiple Sclerosis, 
+Multiple Chemical Sensitivity (MCS), 
+Anxiety, 
+Depression, 
+Hypochondriasis, 
+Postural orthostatic tachycardia syndrome (POTS), 
+Carpal tunnel syndrome (CTS), 
+Chronic pain syndrome, 
+MS, 
+Parkinson’s Disease, 
+Alzheimer’s Disease, 
+Rheumatological conditions
+
+""";

@@ -7,6 +7,7 @@ import 'package:anecdotal/views/about_view.dart';
 import 'package:anecdotal/views/community_chat/community_chat_utils.dart';
 import 'package:anecdotal/views/onboarding_view.dart';
 import 'package:anecdotal/views/to_do_view.dart';
+import 'package:anecdotal/views/video_references.dart';
 import 'package:anecdotal/views/view_widgets.dart/home_card_view.dart';
 import 'package:anecdotal/widgets/custom_drawer.dart';
 import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
@@ -310,7 +311,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => OnboardingScreen(),
+                                  builder: (context) => YouTubePlayerScreen(),
                                 ));
                           },
                           child: Text(

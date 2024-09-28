@@ -33,6 +33,7 @@ class AnecdotalUserData {
   final List<String> labReportPdfUrls;
   final List<String> symptomReportPdfUrls;
   final List<String> medicalHistoryList;
+  final List<String> watchedVideoUrls;
   final int aiMediaUsageCount;
   final int aiTextUsageCount;
   final int aiGeneralMediaUsageCount;
@@ -72,6 +73,7 @@ class AnecdotalUserData {
     this.labReportPdfUrls = const [],
     this.symptomReportPdfUrls = const [],
     this.medicalHistoryList = const [],
+    this.watchedVideoUrls = const [],
     this.aiMediaUsageCount = 0,
     this.aiTextUsageCount = 0,
     this.aiGeneralMediaUsageCount = 0,
@@ -118,6 +120,8 @@ class AnecdotalUserData {
           List<String>.from(data?[userSymptomReportPdfUrls] ?? []),
       medicalHistoryList:
           List<String>.from(data?[userMedicalHistoryList] ?? []),
+            watchedVideoUrls:
+          List<String>.from(data?[userWatchedVideoUrls] ?? []),
       aiMediaUsageCount: data?[userAiMediaUsageCount] ?? 0,
       aiTextUsageCount: data?[userAiTextUsageCount] ?? 0,
       aiGeneralMediaUsageCount: data?[userAiGeneralMediaUsageCount] ?? 0,
