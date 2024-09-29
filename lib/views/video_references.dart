@@ -24,14 +24,14 @@ class Video {
   });
 }
 
-class YouTubePlayerScreen extends ConsumerStatefulWidget {
-  const YouTubePlayerScreen({super.key});
+class VideoResourceView extends ConsumerStatefulWidget {
+  const VideoResourceView({super.key});
 
   @override
-  YouTubePlayerScreenState createState() => YouTubePlayerScreenState();
+  VideoResourceViewState createState() => VideoResourceViewState();
 }
 
-class YouTubePlayerScreenState extends ConsumerState<YouTubePlayerScreen> {
+class VideoResourceViewState extends ConsumerState<VideoResourceView> {
   final List<Video> videos = [
     Video(
       videoId: '_7Nj1JOp2ik',
@@ -111,11 +111,16 @@ class YouTubePlayerScreenState extends ConsumerState<YouTubePlayerScreen> {
 
     void playVideo(Video video) {
       setState(() {
-        _controller = YoutubePlayerController.fromVideoId(
-          videoId: video.videoId,
-          autoPlay: true,
-          params: const YoutubePlayerParams(showFullscreenButton: true),
-        );
+        if (_controller == null) {
+          _controller = YoutubePlayerController.fromVideoId(
+            videoId: video.videoId,
+            autoPlay: true,
+            params: const YoutubePlayerParams(showFullscreenButton: false),
+          );
+        } else {
+          _controller!.loadVideoById(videoId: video.videoId);
+        }
+
         if (!userData!.watchedVideoUrls.contains(video.videoId)) {
           databaseService.updateAnyUserData(
             fieldName: userWatchedVideoUrls,
@@ -163,12 +168,19 @@ class YouTubePlayerScreenState extends ConsumerState<YouTubePlayerScreen> {
               },
             ),
           ),
-          ElevatedButton.icon(onPressed: (){ Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CitationLinks(),
-                              ),
-                            );}, label: const Text('Citations'), icon: const Icon(Icons.link),)
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CitationLinks(),
+                ),
+              );
+            },
+            label: const Text('Citations'),
+            icon: const Icon(Icons.link),
+          ),
+          mySpacing(spacing: 18)
         ],
       ),
     );

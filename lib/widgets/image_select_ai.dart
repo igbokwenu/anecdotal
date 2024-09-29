@@ -123,7 +123,8 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
       String forWho,
     ) async {
       if (!kIsWeb) {
-        if (!iapStatus.isPro) {
+        if (userData!.aiGeneralTextUsageCount >= publicData!.aiFreeUsageLimit &&
+            !iapStatus.isPro) {
           MyReusableFunctions.showPremiumDialog(
               context: context, message: premiumSpeechAnalyzeButton);
         } else {
@@ -131,10 +132,10 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
           ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
           final response = await ChatGPTService.analyzeImages(
             images: _selectedFiles,
-            apiKey: publicData!.closedOthers,
+            apiKey: publicData.closedOthers,
             prompt: widget.isLabTest
                 ? sendLabAnalysisPrompt(
-                    symptoms: userData!.symptomsList.isEmpty
+                    symptoms: userData.symptomsList.isEmpty
                         ? null
                         : "${userData.symptomsList}",
                     history: userData.medicalHistoryList.isEmpty

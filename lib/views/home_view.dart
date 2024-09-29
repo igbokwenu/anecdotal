@@ -305,19 +305,19 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      if (kDebugMode)
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CitationLinks(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                              "Test Button ${publicData?.aiFreeUsageLimit}"),
-                        ),
+                      // if (kDebugMode)
+                      //   TextButton(
+                      //     onPressed: () {
+                      //       Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //           builder: (context) => CitationLinks(),
+                      //         ),
+                      //       );
+                      //     },
+                      //     child: Text(
+                      //         "Test Button ${publicData?.aiFreeUsageLimit}"),
+                      //   ),
                       mySpacing(spacing: 3),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -365,8 +365,26 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                           children: [
                             FadeInLeft(
                               child: ImageContainer(
+                                imagePath: homeImageVideoResource,
+                                title: 'Video Resources',
+                                subtitle:
+                                    'Helpful resources on chronic illness.',
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const VideoResourceView(),
+                                    ),
+                                  );
+                                },
+                                isSquare: true,
+                              ),
+                            ),
+                            FadeInRight(
+                              child: ImageContainer(
                                 imagePath: homeImageTrackProgress,
-                                title: 'Track Progress',
+                                title: 'Document Journey',
                                 subtitle:
                                     'Find patterns in your healing journey.',
                                 onTap: () {
@@ -385,7 +403,14 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                 isSquare: true,
                               ),
                             ),
-                            FadeInRight(
+                          ],
+                        ),
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            FadeInUp(
                               child: ImageContainer(
                                 imagePath: homeImageToDo,
                                 title: 'Healing Tasks',
@@ -400,42 +425,6 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                   );
                                 },
                                 isSquare: true,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            FadeInUp(
-                              child: ImageContainer(
-                                imagePath: homeImageInterpretLab,
-                                title: 'Interpret Lab',
-                                subtitle: 'Understand your lab results.',
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => InfoView(
-                                              title:
-                                                  interpretLabResultSectionHeader,
-                                              sectionSummary:
-                                                  interpretLabResultSectionSummary,
-                                              firstWidget: kIsWeb
-                                                  ? const Text(
-                                                      "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    )
-                                                  : const FirstWidgetInterpretLab(),
-                                            )),
-                                  );
-                                },
-                                isSquare: true,
-                                // width: squareSize,
-                                // height: squareSize,
                               ),
                             ),
                             FadeInUp(
@@ -474,16 +463,26 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                           children: [
                             FadeInUp(
                               child: ImageContainer(
-                                imagePath: homeImageVideoResource,
-                                title: 'Video Resources',
-                                subtitle: 'Helpful videos on chronic illness.',
+                                imagePath: homeImageInterpretLab,
+                                title: 'Interpret Lab',
+                                subtitle: 'Understand your lab results.',
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          const YouTubePlayerScreen(),
-                                    ),
+                                        builder: (context) => InfoView(
+                                              title:
+                                                  interpretLabResultSectionHeader,
+                                              sectionSummary:
+                                                  interpretLabResultSectionSummary,
+                                              firstWidget: kIsWeb
+                                                  ? const Text(
+                                                      "Image capture and upload not currently supported on web. Please use the Anecdotal mobile app.",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    )
+                                                  : const FirstWidgetInterpretLab(),
+                                            )),
                                   );
                                 },
                                 isSquare: true,
