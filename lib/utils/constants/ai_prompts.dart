@@ -274,7 +274,7 @@ Chronic pain syndrome
 “Atypical” MS, Parkinson’s Disease, Alzheimer’s Disease
 “Atypical” rheumatological condition
 
-So it is often a good idea to try and rule out the bio-toxin or mycotoxin related illnesses known as CIRS as the root cause if diagnosed with any of these conditions or exhibits their symptoms.
+So it is often a good idea to try and rule out the bio-toxin or mycotoxin related illnesses known as CIRS as the root cause if diagnosed with any of these conditions or exhibits their symptoms. Especially if they have experienced Visualized mold, musty smell, prior known leak, lyme/tick bite/travel/rash, brown recluse spider bite, started with eating fish (ciguatoxin), started after exposure to certain bodies of water (pfiesteria), etc. - anytime in the past.
 Also, the family and friends of people who deal with these chronic conditions often do not believe they are really sick. Encourage them connect with others who understand in the community chat section of this app (Anecdotal AI)or share the app that has a video and citation section to help inform their loved ones about the realness of their condition. 
 """;
 

@@ -54,6 +54,13 @@ class VideoResourceViewState extends ConsumerState<VideoResourceView> {
       isRecommended: true,
     ),
     Video(
+      videoId: 'kcili1K9lmQ',
+      title: 'Chronic Illness Pandemic In The US?',
+      description:
+          "Dhru Purohit sits down with attorney Kristina Baehr to talk about her family's personal experience with environmental mycotoxins and their journey to seek justice for the emotional, medical, and financial damages they suffered due to the resulting chronic illness.",
+      isRecommended: true,
+    ),
+    Video(
       videoId: 'LGG7om1hHcU',
       title: 'An Interview With Dr. Scott McMahon & Dr. Ritchie Shoemaker',
       description:
@@ -91,6 +98,26 @@ class VideoResourceViewState extends ConsumerState<VideoResourceView> {
       title: 'Story Time With The Spanish Guitar Hub',
       description:
           'The Spanish Guitar Hub shares the story of her journey with biotoxin illness.',
+      isRecommended: true,
+    ),
+    Video(
+      videoId: 'PmCNRWWmZiA',
+      title: 'In The News: The Bear Family',
+      description:
+          'A story of how biotoxin illness affects people in the news.',
+      isRecommended: true,
+    ),
+    Video(
+      videoId: 'ZqwKoh1jCTc',
+      title: 'In The News: A Military Family Speaks Up',
+      description:
+          'A story of how biotoxin illness affects people in the news.',
+    ),
+    Video(
+      videoId: '9G-T0bNLUss',
+      title: 'Natural Remedies by Dr. John Axe ',
+      description:
+          'For those dealing with mold induced biotoxin illness who (for financial or whatever reason) are not yet able to see a healthcare practitioner, here are some home remedies you can try out - by Dr. Josh Axe.',
       isRecommended: true,
     ),
   ];

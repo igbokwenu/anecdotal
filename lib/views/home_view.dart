@@ -350,6 +350,9 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                 title: 'Community Chat',
                                 subtitle: 'Connect with others who understand.',
                                 onTap: () {
+                                  MyReusableFunctions.showCustomToast(
+                                      description:
+                                          "Unlocking the chat room for you. Please wait...");
                                   CommunityChatUtils.navigateToCommunityChat(
                                       context);
                                 },
