@@ -4,7 +4,6 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import 'dart:convert';
 
 class GeminiService {
-
   static Future<Map<String, dynamic>?> sendTextPrompt({
     required String message,
     String? preferredModel,
@@ -163,8 +162,6 @@ class GeminiService {
     }
   }
 
-
- 
   static String _getMimeType(String filePath) {
     String extension = filePath.split('.').last.toLowerCase();
     switch (extension) {

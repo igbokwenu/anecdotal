@@ -9,7 +9,7 @@ class ChatGPTService {
     required String prompt,
     String? imageUrl,
     String? imagePath,
-    String? model,
+    String? preferredModel,
     required String apiKey,
   }) async {
     const apiUrl = 'https://api.openai.com/v1/chat/completions';
@@ -60,7 +60,7 @@ class ChatGPTService {
     }
 
     final requestBody = {
-      'model': model ?? gpt4OModel,
+      'model': preferredModel ?? gpt4OModel,
       'messages': messages,
       'max_tokens': 1000,
       'temperature': 0.7,

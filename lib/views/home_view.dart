@@ -113,6 +113,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
         final response = await GeminiService.analyzeAudioForHome(
           audios: [File(path)],
           apiKey: publicData!.zodiac,
+          preferredModel: publicData.geminiModel,
           prompt: sendChatPrompt(
               prompt: userData!.symptomsList.isEmpty
                   ? null
@@ -190,6 +191,8 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
             prompt:
                 "$message Here are symptoms the user says they are having: ${userData!.symptomsList}. And some details on their medical history: ${userData.medicalHistoryList}"),
         apiKey: publicData!.closedOthers,
+        preferredModel: publicData.gptModel,
+        
       );
 
       if (response != null) {
@@ -387,7 +390,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                             FadeInRight(
                               child: ImageContainer(
                                 imagePath: homeImageTrackProgress,
-                                title: 'Document Journey',
+                                title: 'Visualize Your Journey',
                                 subtitle:
                                     'Find patterns in your healing journey.',
                                 onTap: () {

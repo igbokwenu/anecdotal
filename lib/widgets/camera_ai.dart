@@ -55,6 +55,7 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
           prompt: widget.prompt,
           
         apiKey: publicData!.zodiac,
+        preferredModel: publicData.geminiModel,
      
         );
         widget.onResponse(response);

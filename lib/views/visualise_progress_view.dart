@@ -201,6 +201,7 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
               formatHealingJourneyData(userData!.healingJourneyMap),
         ),
         apiKey: publicData!.closedOthers,
+        preferredModel: publicData.gptModel,
       );
 
       if (response != null) {

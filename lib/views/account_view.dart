@@ -41,6 +41,7 @@ class AccountPage extends ConsumerWidget {
           audios: [File(path)],
           prompt: accountSetupPrompt,
           apiKey: publicData!.zodiac,
+          preferredModel: publicData.geminiModel
         );
 
         if (response != null) {

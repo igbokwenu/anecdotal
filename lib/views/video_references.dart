@@ -5,6 +5,7 @@ import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/citations_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -246,8 +247,8 @@ class VideoCard extends ConsumerWidget {
                 fit: BoxFit.cover,
               ),
               IconButton(
-                icon:
-                    const Icon(Icons.play_arrow, size: 50, color: Colors.white),
+                icon: Icon(CupertinoIcons.play_circle_fill,
+                    size: 50, color: Colors.teal[500]),
                 onPressed: () => onPlay(video),
               ),
             ],

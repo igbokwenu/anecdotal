@@ -103,7 +103,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
           images: _selectedFiles,
           prompt: widget.prompt,
           apiKey: publicData!.closedOthers,
-          // preferredModel: gpt4OMiniModel,
+          preferredModel: publicData.gptModel,
         );
 
         widget.onResponse(response);
@@ -133,6 +133,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
           final response = await ChatGPTService.analyzeImages(
             images: _selectedFiles,
             apiKey: publicData.closedOthers,
+            preferredModel: publicData.gptModel,
             prompt: widget.isLabTest
                 ? sendLabAnalysisPrompt(
                     symptoms: userData.symptomsList.isEmpty

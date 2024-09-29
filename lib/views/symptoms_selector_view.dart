@@ -87,6 +87,7 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
                 ? null
                 : "${userData.medicalHistoryList}"), apiKey:
          publicData!.zodiac,
+         preferredModel: publicData.geminiModel,
      
       );
 

@@ -7,6 +7,8 @@ class PublicData {
   final String closedPersonal;
   final String generalRoom;
   final String zodiac;
+  final String gptModel;
+  final String geminiModel;
 
   PublicData({
     this.aiFreeUsageLimit = 0,
@@ -17,6 +19,8 @@ class PublicData {
     this.closedPersonal = '',
     this.generalRoom = '',
     this.zodiac = '',
+    this.gptModel = '',
+    this.geminiModel = '',
   });
 
   factory PublicData.fromMap(Map<String, dynamic>? data) {
@@ -29,6 +33,8 @@ class PublicData {
       closedPersonal: data?['closedPersonal'] ?? '',
       generalRoom: data?['generalRoom'] ?? '',
       zodiac: data?['zodiac'] ?? '',
+      gptModel: data?['gptModel'] ?? '',
+      geminiModel: data?['geminiModel'] ?? '',
     );
   }
 }

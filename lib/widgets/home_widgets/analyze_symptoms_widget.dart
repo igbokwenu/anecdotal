@@ -47,6 +47,7 @@ class FirstWidgetSymptomChecker extends ConsumerWidget {
           externalReport: forDoctor,
         ),
         apiKey: publicData!.zodiac,
+        preferredModel: publicData.geminiModel,
       );
 
       if (response != null) {
