@@ -1,4 +1,3 @@
-# anecdotal
+### Anecdotal AI
 
-A platform where patients come together to share solutions to symptoms under the radar of conventional modern medicine.
-
+Rethinking healthcare: from profit-driven to patient-centric. Anecdotal AI closes the gap in literacy, diagnosis, and management of chronic illnesses for people of color and underserved communities.
