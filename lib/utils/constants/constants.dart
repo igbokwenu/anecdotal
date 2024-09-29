@@ -115,7 +115,6 @@ const String userTimeStamp = 'timeStamp';
 const String userShareJourneyPublicly = 'shareJourneyPublicly';
 const String usersMessagingToken = 'messagingToken';
 
-
 const homeImageSymptomChecker = 'assets/images/sick_lady_1280_640.jpg';
 const homeImageSymptomCheckerSquare = 'assets/images/feeling_sick.jpeg';
 const homeImageSymptomCheckerBlackWoman = 'assets/images/sick_black_woman.jpeg';
@@ -141,3 +140,9 @@ const anecdotalMascot2Url =
 const String communityRoomId = 'd6dFUDSPtW4bucnUIhkx';
 
 const anecdotalMascotAssetUrl = 'assets/images/anecdotal_mascot.jpeg';
+
+const String demoVideoAfroTech =
+    'https://firebasestorage.googleapis.com/v0/b/anecdotalhq.appspot.com/o/general%2Fvideos%2FAnecdotal_AI_Demo_Afro_Tech.mp4?alt=media&token=8a0b9cc0-1af7-4bd8-a1e2-fe59ba36ae9f';
+
+const String demoVideoGeneral =
+    'https://firebasestorage.googleapis.com/v0/b/anecdotalhq.appspot.com/o/general%2Fvideos%2Fanecdotal_ai_demo%20.mp4?alt=media&token=8efda42e-ba51-4dab-af1c-977742086b84';

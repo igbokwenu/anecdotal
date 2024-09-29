@@ -275,6 +275,7 @@ Chronic pain syndrome
 “Atypical” rheumatological condition
 
 So it is often a good idea to try and rule out the bio-toxin or mycotoxin related illnesses known as CIRS as the root cause if diagnosed with any of these conditions or exhibits their symptoms.
+Also, the family and friends of people who deal with these chronic conditions often do not believe they are really sick. Encourage them connect with others who understand in the community chat section of this app (Anecdotal AI)or share the app that has a video and citation section to help inform their loved ones about the realness of their condition. 
 """;
 
 String showCitation = """"
@@ -323,7 +324,8 @@ https://www.cirsx.com/reference-papers
 
 const String treatmentProtocol = """"
 
-Here is a list of the 12 step treatment protocol for treating mycotoxin and biotoxin related illnesses by Dr. Shoemaker in case someone asks for help with treatment protocols.
+Here is a list of the 12 step treatment protocol for treating mycotoxin and biotoxin related illnesses by Dr. Shoemaker in case someone asks for help with treatment protocols. 
+Note that exposure to mycotoxins in childhood or exposure that happened many years ago can cause debilitating effects into adulthood if the mycotoxins recirculating in the body are not removed using an effective binding agent.
 
 
 1. Remove Exposure
@@ -382,7 +384,7 @@ $cheapTreatmentAlternatives
 """;
 
 const String cheapTreatmentAlternatives = """
-For those who might be struggling financially and cannot afford a doctor here are anecdotal accounts from people who were able to recover without spending too much money. You can share information from here with anyone who might be struggling telling them that these is an anecdotal experience:
+For those who might be struggling financially and cannot afford a doctor here are anecdotal accounts from people who were able to recover without spending too much money. They only followed step 1-3 of the shoemaker protocol and made a remarkable recovery. And for step 3 they used a nasal rinse like xclear that is a solution of non iodized salt, sodium bicarbonate and xylitol.  You can share information from here with anyone who might be struggling telling them that these is an anecdotal experience:
 
 Account One:
 So I have/had black mold toxicity. I didn’t go to a shoemaker functional doctor, but I did a couple of things on the list of recommendations. 
