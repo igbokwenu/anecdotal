@@ -121,6 +121,7 @@ const homeImageSymptomCheckerBlackWoman = 'assets/images/sick_black_woman.jpeg';
 const homeImageInvestigateHome = 'assets/images/investigate_home.jpeg';
 const homeImageInterpretLab = 'assets/images/lab_result.jpg';
 const homeImageTrackProgress = 'assets/images/generate_report_lady.jpeg';
+const homeImageVisualizeProgress = 'assets/images/visualize_healing.jpeg';
 const homeImageAboutUs = 'assets/images/black_woman_doctor.jpeg';
 const homeImageCommunity = 'assets/images/community.jpeg';
 const homeImageToDo = 'assets/images/todo_list.jpeg';

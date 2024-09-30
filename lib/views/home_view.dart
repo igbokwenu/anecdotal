@@ -395,7 +395,7 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                             ),
                             FadeInRight(
                               child: ImageContainer(
-                                imagePath: homeImageTrackProgress,
+                                imagePath: homeImageVisualizeProgress,
                                 title: 'Visualize Your Journey',
                                 subtitle:
                                     'Find patterns in your healing journey.',
