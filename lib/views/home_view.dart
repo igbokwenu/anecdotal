@@ -1,3 +1,4 @@
+import 'package:anecdotal/providers/in_app_review_provider.dart';
 import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/chatgpt_ai_service.dart';
@@ -192,7 +193,6 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                 "$message Here are symptoms the user says they are having: ${userData!.symptomsList}. And some details on their medical history: ${userData.medicalHistoryList}"),
         apiKey: publicData!.closedOthers,
         preferredModel: publicData.gptModel,
-        
       );
 
       if (response != null) {
@@ -353,6 +353,9 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                 title: 'Community Chat',
                                 subtitle: 'Connect with others who understand.',
                                 onTap: () {
+                                  ref
+                                      .read(eventCountProvider.notifier)
+                                      .incrementEventCount();
                                   MyReusableFunctions.showCustomToast(
                                       description:
                                           "Unlocking the chat room for you. Please wait...");
@@ -376,6 +379,9 @@ class _AnecdotalAppHomeState extends ConsumerState<AnecdotalAppHome> {
                                 subtitle:
                                     'Helpful resources on chronic illness.',
                                 onTap: () {
+                                  ref
+                                      .read(eventCountProvider.notifier)
+                                      .incrementEventCount();
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

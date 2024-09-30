@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:anecdotal/providers/iap_provider.dart';
+import 'package:anecdotal/providers/in_app_review_provider.dart';
 import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
@@ -52,6 +53,15 @@ class ReportView extends ConsumerStatefulWidget {
 class _ReportViewState extends ConsumerState<ReportView> {
   bool _isSaved = false;
   bool _isSaving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(eventCountProvider.notifier).incrementEventCount();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

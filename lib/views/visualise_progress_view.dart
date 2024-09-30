@@ -1,5 +1,6 @@
 import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/iap_provider.dart';
+import 'package:anecdotal/providers/in_app_review_provider.dart';
 import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/animated_navigator.dart';
@@ -35,6 +36,9 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
     super.initState();
     _scrollController.addListener(_onScroll);
     _loadMoreEntries();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(eventCountProvider.notifier).incrementEventCount();
+    });
   }
 
   @override

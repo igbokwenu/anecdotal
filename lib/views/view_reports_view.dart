@@ -1,4 +1,5 @@
 import 'package:anecdotal/utils/constants/constants.dart';
+import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,7 +19,7 @@ class ViewReports extends StatelessWidget {
       length: 4,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('My Reports'),
+          title: const MyAppBarTitleWithAI(title: 'My Reports'),
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Symptom'),

@@ -1,4 +1,5 @@
 import 'package:anecdotal/providers/iap_provider.dart';
+import 'package:anecdotal/providers/in_app_review_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
 import 'package:anecdotal/services/auth_service.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
@@ -104,6 +105,7 @@ class CustomDrawer extends ConsumerWidget {
             ),
             ListTile(
               onTap: () {
+                ref.read(eventCountProvider.notifier).incrementEventCount();
                 Navigator.push(
                   context,
                   MaterialPageRoute(
