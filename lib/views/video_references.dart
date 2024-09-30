@@ -35,19 +35,6 @@ class VideoResourceView extends ConsumerStatefulWidget {
 class VideoResourceViewState extends ConsumerState<VideoResourceView> {
   final List<Video> videos = [
     Video(
-      videoId: '_7Nj1JOp2ik',
-      title: 'A Crash Course On Mycotoxins',
-      description:
-          'Dr. Jin W. Sung gives a crash course on mycotoxins and how they cause debilitating symptoms.',
-      isRecommended: true,
-    ),
-    Video(
-      videoId: 'OEDp36gGEiA',
-      title: 'No One Believes You Are Sick?',
-      description:
-          'Dr. Cameron Jones talks about how mycotoxins cause debilitating symptoms.',
-    ),
-    Video(
       videoId: '9P7_W4IZspk',
       title: 'Were You Misdiagnosed?',
       description:
@@ -62,10 +49,37 @@ class VideoResourceViewState extends ConsumerState<VideoResourceView> {
       isRecommended: true,
     ),
     Video(
+      videoId: '_7Nj1JOp2ik',
+      title: 'A Crash Course On Mycotoxins',
+      description:
+          'Dr. Jin W. Sung gives a crash course on mycotoxins and how they cause debilitating symptoms.',
+      isRecommended: true,
+    ),
+    Video(
+      videoId: 'jRj8b2YaGjM',
+      title: 'Story Time With Olivia Farabaugh',
+      description:
+          'Olivia Farabaugh shares the story of her journey with biotoxin illness and delayed diagnosis.',
+      isRecommended: true,
+    ),
+    Video(
+      videoId: 'OEDp36gGEiA',
+      title: 'No One Believes You Are Sick?',
+      description:
+          'Dr. Cameron Jones talks about how mycotoxins cause debilitating symptoms.',
+    ),
+    Video(
       videoId: 'LGG7om1hHcU',
       title: 'An Interview With Dr. Scott McMahon & Dr. Ritchie Shoemaker',
       description:
           'Dr. Scott McMahon & Dr. Ritchie Shoemaker sit for an interview with Dr. Jordan Peterson on how biotoxin illness is a major health "epidemic".',
+      isRecommended: true,
+    ),
+    Video(
+      videoId: 'vgAOwhu2nUE',
+      title: 'Story Time With The Spanish Guitar Hub',
+      description:
+          'The Spanish Guitar Hub shares the story of her journey with biotoxin illness.',
       isRecommended: true,
     ),
     Video(
@@ -85,20 +99,6 @@ class VideoResourceViewState extends ConsumerState<VideoResourceView> {
       title: 'How Mycotoxins Affect the Brain',
       description:
           'Biotoxin illnesses causes multiple neurological and psychiatric symptoms that are often misdiagnosed.',
-      isRecommended: true,
-    ),
-    Video(
-      videoId: 'jRj8b2YaGjM',
-      title: 'Story Time With Olivia Farabaugh',
-      description:
-          'Olivia Farabaugh shares the story of her journey with biotoxin illness.',
-      isRecommended: true,
-    ),
-    Video(
-      videoId: 'vgAOwhu2nUE',
-      title: 'Story Time With The Spanish Guitar Hub',
-      description:
-          'The Spanish Guitar Hub shares the story of her journey with biotoxin illness.',
       isRecommended: true,
     ),
     Video(

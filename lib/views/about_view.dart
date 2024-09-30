@@ -21,7 +21,7 @@ class AboutPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Center(
-                child: Text(
+                child: SelectableText(
                   'Patient Inspired Health Solution 🤍',
                   style: TextStyle(
                     fontSize: 18,
@@ -36,7 +36,7 @@ class AboutPage extends StatelessWidget {
                   onPressed: () {
                     MyReusableFunctions.launchMail();
                   },
-                  label: const Text("Send Us A Mail"),
+                  label: const SelectableText("Send Us A Mail"),
                   icon: const Icon(Icons.mail),
                 ),
               ),
@@ -105,7 +105,7 @@ class AboutPage extends StatelessWidget {
                 Icons.favorite,
               ),
               const Center(
-                child: Text(
+                child: SelectableText(
                   'Anecdotal: A better path to healing.',
                   style: TextStyle(
                     fontSize: 16,
@@ -121,7 +121,7 @@ class AboutPage extends StatelessWidget {
                   onPressed: () {
                     MyReusableFunctions.launchMail();
                   },
-                  label: const Text("Send Us A Mail"),
+                  label: const SelectableText("Send Us A Mail"),
                   icon: const Icon(Icons.mail),
                 ),
               ),
@@ -183,12 +183,12 @@ class AboutPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                SelectableText(
                   title,
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                Text(
+                SelectableText(
                   description,
                   style: const TextStyle(fontSize: 14),
                 ),

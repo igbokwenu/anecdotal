@@ -34,7 +34,7 @@ class AuthService {
   // Sign in with email and password
   Future<UserCredential?> signInWithEmailAndPassword(
       String email, String password) async {
-    MyReusableFunctions.showProcessingToast();
+    // MyReusableFunctions.showProcessingToast();
     try {
       UserCredential userCredential =
           await _firebaseAuth.signInWithEmailAndPassword(
@@ -121,7 +121,7 @@ class AuthService {
 
   // Sign in anonymously
   Future<UserCredential?> signInAnonymously() async {
-    MyReusableFunctions.showProcessingToast();
+    // MyReusableFunctions.showProcessingToast();
     try {
       UserCredential userCredential = await _firebaseAuth.signInAnonymously();
 
@@ -204,7 +204,7 @@ class AuthService {
 
   // Delete user and their corresponding document
   Future<void> deleteUser() async {
-    MyReusableFunctions.showProcessingToast();
+    // MyReusableFunctions.showProcessingToast();
     try {
       // Get the currently signed-in user
       User? user = _firebaseAuth.currentUser;
@@ -235,7 +235,7 @@ class AuthService {
         await user.delete();
 
         MyReusableFunctions.showCustomToast(
-          description: "Your account and user data was deleted successfully",
+          description: "Your account and data was deleted successfully",
           type: ToastificationType.success,
         );
       } else {

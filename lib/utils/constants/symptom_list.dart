@@ -145,13 +145,14 @@ List<String> additionalCirsSymptoms = [
 ];
 
 List<String> toDoSuggestions = [
-  "Rule out Mycotoxins if experiencing chronic symptoms - Using Anecdotal AI Symptom Checker",
-  "Investigate home or surroundings for environmental toxins using Anecdotal AI",
+  "Rule out Mycotoxins if experiencing chronic symptoms - Using Anecdotal AI's Symptom Checker",
+  "Investigate home or surroundings for environmental toxins - using Anecdotal AI's Investigate feature",
   "Connect with others in the Anecdotal AI community",
-  "Learn more about CIRS in the What is CIRS section of the app",
+  "Learn more about Mycotoxins and how they can negatively affect your health in the Video Resources section of the app",
   "Adopt a low-inflammatory diet.",
   "Practice stress management (e.g., meditation, sleep cycle stability etc).",
-  "Relocate from space that has no environmental toxins.",
+  "Relocate from space that has environmental toxins.",
+  "Remediate space that has environmental toxins.",
 ];
 
 List<String> cirsToDoTasks = [

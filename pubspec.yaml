@@ -63,6 +63,8 @@ dependencies:
   youtube_explode_dart: ^2.2.2
   youtube_player_iframe: ^5.2.0
   any_link_preview: ^3.0.2
+  speech_to_text: ^7.0.0
+  in_app_review: ^2.0.9
 
 
 dev_dependencies:
