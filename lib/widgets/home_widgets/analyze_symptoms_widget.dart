@@ -95,7 +95,7 @@ class FirstWidgetSymptomChecker extends ConsumerWidget {
           ),
         ),
         mySpacing(spacing: 12),
-        if (userData.symptomsList.isNotEmpty) ...[
+        if (userData.medicalHistoryList.isNotEmpty) ...[
           ElevatedButton.icon(
             onPressed: () {
               Navigator.push(

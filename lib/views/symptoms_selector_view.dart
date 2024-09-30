@@ -2,6 +2,7 @@ import 'package:anecdotal/providers/button_state_providers.dart';
 import 'package:anecdotal/providers/iap_provider.dart';
 import 'package:anecdotal/providers/public_data_provider.dart';
 import 'package:anecdotal/providers/user_data_provider.dart';
+import 'package:anecdotal/services/chatgpt_ai_service.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/services/gemini_ai_service.dart';
 import 'package:anecdotal/utils/constants/ai_prompts.dart';
@@ -31,7 +32,7 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     final databaseService = DatabaseService(uid: uid!);
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
-      final publicData = ref.watch(publicDataProvider).value;
+    final publicData = ref.watch(publicDataProvider).value;
     List<String> alreadySelectedSymptoms = userData!.symptomsList;
     final iapStatus = ref.watch(iapProvider);
     ref.read(iapProvider.notifier).checkAndSetIAPStatus();
@@ -80,15 +81,14 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
           [...alreadySelectedSymptoms, ...formattedSelectedSymptoms].toList();
 
       // Send allSelectedSymptoms to GeminiService
-      final response = await GeminiService.sendTextPrompt(
-        message: sendSymptomAnalysisPrompt(
+      final response = await ChatGPTService.getChatGPTResponse(
+        prompt: sendSymptomAnalysisPrompt(
             symptoms: "$allSelectedSymptoms",
             history: userData.medicalHistoryList.isEmpty
                 ? null
-                : "${userData.medicalHistoryList}"), apiKey:
-         publicData!.zodiac,
-         preferredModel: publicData.geminiModel,
-     
+                : "${userData.medicalHistoryList}"),
+        apiKey: publicData!.closedOthers,
+        preferredModel: publicData.gptModel,
       );
 
       // Update Firestore with allSelectedSymptoms
@@ -110,7 +110,8 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
               followUpSearchTerms:
                   response['suggestions']?.cast<String>() ?? [],
               citations: response['citations']?.cast<String>() ?? [],
-              title: 'Symptom Analysis', reportType: userSymptomReportPdfUrls,
+              title: 'Symptom Analysis',
+              reportType: userSymptomReportPdfUrls,
             ),
           ),
         );
@@ -205,7 +206,8 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
                   selectedSymptoms.isEmpty && userData.symptomsList.isEmpty
                       ? null
                       : () async {
-                          userData.aiGeneralTextUsageCount >= publicData!.aiFreeUsageLimit &&
+                          userData.aiGeneralTextUsageCount >=
+                                      publicData!.aiFreeUsageLimit &&
                                   !iapStatus.isPro
                               ? MyReusableFunctions.showPremiumDialog(
                                   context: context,

@@ -1,9 +1,11 @@
+import 'package:anecdotal/providers/in_app_review_provider.dart';
 import 'package:anecdotal/utils/constants/constants.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path/path.dart' as path;
@@ -42,14 +44,23 @@ class ViewReports extends StatelessWidget {
   }
 }
 
-class ReportList extends StatelessWidget {
+class ReportList extends ConsumerWidget {
   final String reportType;
 
   const ReportList({super.key, required this.reportType});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
+    void viewReport(BuildContext context, String url) {
+      ref.read(eventCountProvider.notifier).incrementEventCount();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PDFViewerPage(url: url),
+        ),
+      );
+    }
 
     return StreamBuilder<DocumentSnapshot>(
       stream:
@@ -81,13 +92,13 @@ class ReportList extends StatelessWidget {
             return ListTile(
               title: Text('Report ${index + 1}'),
               subtitle: Text(fileName),
-              onTap: () => _viewReport(context, url),
+              onTap: () => viewReport(context, url),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   IconButton(
                     icon: const Icon(Icons.remove_red_eye),
-                    onPressed: () => _viewReport(context, url),
+                    onPressed: () => viewReport(context, url),
                   ),
                   IconButton(
                     icon: const Icon(Icons.file_download),
@@ -111,15 +122,6 @@ class ReportList extends StatelessWidget {
     final uri = Uri.parse(url);
     final cleanUrl = uri.pathSegments.isNotEmpty ? uri.pathSegments.last : url;
     return path.basename(Uri.decodeFull(cleanUrl));
-  }
-
-  void _viewReport(BuildContext context, String url) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PDFViewerPage(url: url),
-      ),
-    );
   }
 
   void _downloadReport(String url) async {

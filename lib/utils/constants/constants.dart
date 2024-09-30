@@ -7,7 +7,7 @@ const String gpt4OMiniModel = "gpt-4o-mini";
 //Home Section
 String symptomSectionHeader = "Analyze Your Symptoms";
 String symptomSectionSummary =
-    "Discover if your symptoms might be related to a chronic condition like CIRS or bio-toxins. Simply answer a few questions and select the symptoms that apply to you - and we will provide some insights. \n\nStart by clicking the button below and telling us a bit about yourself.";
+    "Discover if your symptoms might be related to mycotoxins or bio-toxins. Simply answer a few questions and select the symptoms that apply to you - and we will provide some insights. \n\nStart by clicking the button below and telling us a bit about yourself.";
 
 String progressTrackerSectionHeader = "Track Your Progress";
 String progressTrackerSectionSummary =

@@ -38,11 +38,10 @@ class AccountPage extends ConsumerWidget {
 
       try {
         final response = await GeminiService.analyzeAudioForSignup(
-          audios: [File(path)],
-          prompt: accountSetupPrompt,
-          apiKey: publicData!.zodiac,
-          preferredModel: publicData.geminiModel
-        );
+            audios: [File(path)],
+            prompt: accountSetupPrompt(),
+            apiKey: publicData!.zodiac,
+            preferredModel: publicData.geminiModel);
 
         if (response != null) {
           final firstName = response['firstName'] ?? '';
@@ -67,7 +66,7 @@ class AccountPage extends ConsumerWidget {
             await userDoc.set({
               'firstName': firstName,
               'lastName': lastName,
-              'symptoms': FieldValue.arrayUnion(filteredSymptoms),
+              'symptoms': FieldValue.arrayUnion(symptoms),
             }, SetOptions(merge: true));
           }
 
@@ -81,8 +80,8 @@ class AccountPage extends ConsumerWidget {
                     : userData.value!.firstName!,
                 lastName:
                     lastName.isNotEmpty ? lastName : userData.value!.lastName!,
-                symptoms: filteredSymptoms.isNotEmpty
-                    ? filteredSymptoms
+                symptoms: symptoms.isNotEmpty
+                    ? symptoms
                     : userData.value!.symptomsList,
                 country: userData.value!.country!,
                 state: userData.value!.state!,

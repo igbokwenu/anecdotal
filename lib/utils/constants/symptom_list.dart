@@ -1,7 +1,7 @@
 List<String> exposureHistory = [
   "Have you ever seen visible mold or mildew in your home, workplace, or school?",
-  "Have you noticed a musty or mildewy smell in your environment?",
-  "Have you experienced a known water leak or flood in your home, workplace, or school?",
+  "Have you ever noticed a musty or mildewy smell in your environment?",
+  "Have you ever experienced a known water leak or flood in your home, workplace, or school?",
   "Have you been bitten by a tick or exposed to Lyme disease?",
   "Have you traveled to an area known for Lyme disease or tick-borne illnesses?",
   "Have you experienced a rash or lesion after a tick bite?",

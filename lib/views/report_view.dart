@@ -377,6 +377,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
           }
         }
       }
+      ref.read(eventCountProvider.notifier).incrementEventCount();
     }
 
     return Scaffold(

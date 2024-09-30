@@ -1,4 +1,7 @@
+import 'package:anecdotal/utils/constants/constants.dart';
+import 'package:anecdotal/views/info_view.dart';
 import 'package:anecdotal/views/view_symptoms_view.dart';
+import 'package:anecdotal/widgets/home_widgets/analyze_symptoms_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +13,8 @@ class ConfirmInformationView extends StatelessWidget {
   final String country;
   final String state;
 
-  const ConfirmInformationView({super.key, 
+  const ConfirmInformationView({
+    super.key,
     required this.firstName,
     required this.lastName,
     required this.symptoms,
@@ -64,7 +68,11 @@ class ConfirmInformationView extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const SymptomsDisplay(),
+                    builder: (context) => InfoView(
+                      title: symptomSectionHeader,
+                      sectionSummary: symptomSectionSummary,
+                      firstWidget: const FirstWidgetSymptomChecker(),
+                    ),
                   ),
                 );
               },
