@@ -138,6 +138,9 @@ class _TaskListWidgetState extends State<TaskListWidget> {
           content: TextField(
             onChanged: (value) => newTaskName = value,
             controller: TextEditingController(text: task),
+            onTapOutside: (event) {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
           ),
           actions: [
             TextButton(
@@ -177,10 +180,11 @@ Future<void> moveTask(BuildContext context, String uid, String task,
     toList: toTasks,
   });
 
-if(isCompact) {  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text('Moved to $toList')),
-  );}
-
+  if (isCompact) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Moved to $toList')),
+    );
+  }
 }
 
 Future<void> deleteTask(
@@ -298,6 +302,9 @@ void addTaskDialog(BuildContext context, String uid) {
                     });
                   },
                   decoration: const InputDecoration(labelText: 'Task Name'),
+                  onTapOutside: (event) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
                 ),
                 DropdownButton<String>(
                   value: selectedList,

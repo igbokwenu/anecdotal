@@ -138,6 +138,9 @@ class ConfirmInformationView extends StatelessWidget {
         ),
         prefixIcon: Icon(icon),
       ),
+      onTapOutside: (event) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
     );
   }
 }

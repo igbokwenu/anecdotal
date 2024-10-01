@@ -142,6 +142,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       // ),
                       mySpacing(spacing: 20),
                       TextFormField(
+                        onTapOutside: (event) {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        },
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
@@ -160,6 +163,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       ),
                       const SizedBox(height: 16.0),
                       TextFormField(
+                        onTapOutside: (event) {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        },
                         controller: _passwordController,
                         obscureText: _obscurePassword,
                         decoration: InputDecoration(

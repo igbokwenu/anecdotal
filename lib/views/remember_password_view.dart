@@ -72,6 +72,9 @@ class _PasswordRecoveryScreenState extends State<PasswordRecoveryScreen> {
                 ),
                 const SizedBox(height: 16.0),
                 TextFormField(
+                  onTapOutside: (event) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(

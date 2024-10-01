@@ -165,6 +165,9 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
                           ),
                     const SizedBox(height: 20),
                     TextFormField(
+                      onTapOutside: (event) {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
                       controller: _firstNameController,
                       decoration: InputDecoration(
                         labelText: 'First Name',
@@ -182,6 +185,9 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
+                      onTapOutside: (event) {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
                       controller: _lastNameController,
                       decoration: InputDecoration(
                         labelText: 'Last Name',
@@ -199,6 +205,9 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
+                      onTapOutside: (event) {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
                       controller: _countryController,
                       decoration: InputDecoration(
                         labelText: 'Country',
@@ -210,6 +219,9 @@ class _UserProfileEditScreenState extends ConsumerState<UserProfileEditScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
+                      onTapOutside: (event) {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
                       controller: _stateController,
                       decoration: InputDecoration(
                         labelText: 'Location',

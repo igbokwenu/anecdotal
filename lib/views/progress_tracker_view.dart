@@ -283,6 +283,9 @@ class ProgressTrackerAppState extends ConsumerState<ProgressTracker> {
                         'Enter any notable details about your health journey.',
                     border: OutlineInputBorder(),
                   ),
+                   onTapOutside: (event) {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
                 ),
                 const SizedBox(height: 10),
                 Row(

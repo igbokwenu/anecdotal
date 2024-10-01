@@ -56,6 +56,9 @@ class _SuggestedTasksScreenState extends State<SuggestedTasksScreen> {
           content: TextField(
             controller: controller,
             decoration: const InputDecoration(labelText: 'Task'),
+             onTapOutside: (event) {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
           ),
           actions: [
             TextButton(

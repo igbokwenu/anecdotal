@@ -84,6 +84,9 @@ class ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
                     .read(chatInputProvider.notifier)
                     .setIsComposing(text.isNotEmpty);
               },
+              onTapOutside: (event) {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
               onSubmitted:
                   chatInputState.isComposing && !chatInputState.isSending
                       ? _handleSubmitted
@@ -111,10 +114,12 @@ class ChatInputWidgetState extends ConsumerState<ChatInputWidget> {
                     color: Theme.of(context).colorScheme.secondary),
             onPressed: chatInputState.isComposing && !chatInputState.isSending
                 ? () async {
-                    userData!.aiGeneralTextUsageCount >= publicData!.aiFreeUsageLimit &&
+                    userData!.aiGeneralTextUsageCount >=
+                                publicData!.aiFreeUsageLimit &&
                             !iapStatus.isPro
                         ? MyReusableFunctions.showPremiumDialog(
-                            context: context,)
+                            context: context,
+                          )
                         : _handleSubmitted(_controller.text);
                   }
                 : null,
