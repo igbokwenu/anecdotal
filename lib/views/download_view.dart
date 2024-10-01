@@ -164,7 +164,7 @@ class DownloadPage extends StatelessWidget {
                   ? 'assets/images/play_store_onlight.png'
                   : 'assets/images/play_store_ondark.png',
               onTap: () =>
-                  MyReusableFunctions.launchCustomUrl(content['playStoreUrl']!),
+                  MyReusableFunctions.launchCustomUrl(url: content['playStoreUrl']!),
             ),
             const SizedBox(width: 20),
             _DownloadButton(
@@ -172,7 +172,7 @@ class DownloadPage extends StatelessWidget {
                   ? 'assets/images/app_store_onlight.png'
                   : 'assets/images/app_store_ondark.png',
               onTap: () =>
-                  MyReusableFunctions.launchCustomUrl(content['appStoreUrl']!),
+                  MyReusableFunctions.launchCustomUrl(url: content['appStoreUrl']!),
             ),
           ],
         ),

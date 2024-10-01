@@ -196,7 +196,6 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
     Future<void> handleSend(
       BuildContext context,
     ) async {
-      MyReusableFunctions.showProcessingToast();
       ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
 
       final response = await ChatGPTService.getChatGPTResponse(
@@ -279,7 +278,9 @@ class _VisualizeProgressState extends ConsumerState<VisualizeProgress> {
                                   icon: const Icon(Icons.edit_note),
                                 ),
                               ])
-                        : !iapStatus.isPro
+                        : userData.aiGeneralTextUsageCount >=
+                                    publicData!.aiFreeUsageLimit &&
+                                !iapStatus.isPro
                             ? MyReusableFunctions.showPremiumDialog(
                                 context: context)
                             : handleSend(context);

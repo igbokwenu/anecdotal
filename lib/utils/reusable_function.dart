@@ -9,6 +9,20 @@ import 'package:toastification/toastification.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MyReusableFunctions {
+  static bool dateChecker({DateTime? targetDate}) {
+    // Default date (October 15, 2024)
+    //Modify targetDate like so: targetDate: DateTime(2024, 10, 01)
+    final DateTime defaultTargetDate = DateTime(2024, 10, 15);
+    final currentDate = DateTime.now();
+
+    final DateTime checkDate = targetDate ?? defaultTargetDate;
+
+    // Compare the current date and target date (ignoring time)
+    return currentDate.year == checkDate.year &&
+        currentDate.month == checkDate.month &&
+        currentDate.day == checkDate.day;
+  }
+
   static Future<void> launchMail({String? address}) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     String encodeQueryParameters(Map<String, String> params) {
@@ -45,9 +59,11 @@ class MyReusableFunctions {
     }
   }
 
-  static Future<void> launchCustomUrl(String url) async {
+  static Future<void> launchCustomUrl(
+      {required String url, LaunchMode? launchMode}) async {
     final Uri uri = Uri.parse(url);
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+    if (!await launchUrl(uri,
+        mode: launchMode ?? LaunchMode.externalApplication)) {
       throw Exception('Could not launch $url');
     }
   }
@@ -216,30 +232,48 @@ class MyReusableFunctions {
       ),
     );
   }
- 
 
-static String generateRandomUsername() {
-  // List of name prefixes
-final List<String> namePrefixes = [
-  "Shadow", "Mystery", "Wanderer", "Specter", "Phantom", "Echo", 
-  "Nomad", "Ghost", "Cipher", "Drifter", "Nebula", "Whisper", 
-  "Rogue", "Unknown", "Enigma", "Veil", "Chimera", 
-  "Orbit", "Silent", "Anon", "Guest", "Mysterious", 
-  "Incog", "Whispr", "Lurker", "Mystic"
-];
+  static String generateRandomUsername() {
+    // List of name prefixes
+    final List<String> namePrefixes = [
+      "Shadow",
+      "Mystery",
+      "Wanderer",
+      "Specter",
+      "Phantom",
+      "Echo",
+      "Nomad",
+      "Ghost",
+      "Cipher",
+      "Drifter",
+      "Nebula",
+      "Whisper",
+      "Rogue",
+      "Unknown",
+      "Enigma",
+      "Veil",
+      "Chimera",
+      "Orbit",
+      "Silent",
+      "Anon",
+      "Guest",
+      "Mysterious",
+      "Incog",
+      "Whispr",
+      "Lurker",
+      "Mystic"
+    ];
 
+    // Create a random number generator
+    final Random random = Random();
 
-  // Create a random number generator
-  final Random random = Random();
+    // Get a random name prefix from the list
+    String randomPrefix = namePrefixes[random.nextInt(namePrefixes.length)];
 
-  // Get a random name prefix from the list
-  String randomPrefix = namePrefixes[random.nextInt(namePrefixes.length)];
+    // Generate a random 5-digit number
+    String randomNumber = (random.nextInt(90000) + 10000).toString();
 
-  // Generate a random 5-digit number
-  String randomNumber = (random.nextInt(90000) + 10000).toString();
-
-  // Combine the prefix with the random number
-  return '$randomPrefix-$randomNumber';
-}
-
+    // Combine the prefix with the random number
+    return '$randomPrefix-$randomNumber';
+  }
 }

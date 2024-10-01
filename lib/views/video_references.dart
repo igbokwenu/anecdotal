@@ -68,13 +68,14 @@ class VideoResourceViewState extends ConsumerState<VideoResourceView> {
       description:
           'Dr. Cameron Jones talks about how mycotoxins cause debilitating symptoms.',
     ),
-    // Video(
-    //   videoId: 'LGG7om1hHcU',
-    //   title: 'An Interview With Dr. Scott McMahon & Dr. Ritchie Shoemaker',
-    //   description:
-    //       'Dr. Scott McMahon & Dr. Ritchie Shoemaker sit for an interview with Dr. Jordan Peterson on how biotoxin illness is a major health "epidemic".',
-    //   isRecommended: true,
-    // ),
+    if (MyReusableFunctions.dateChecker())
+      Video(
+        videoId: 'LGG7om1hHcU',
+        title: 'An Interview With Dr. Scott McMahon & Dr. Ritchie Shoemaker',
+        description:
+            'Dr. Scott McMahon & Dr. Ritchie Shoemaker sit for an interview with Dr. Jordan Peterson on how biotoxin illness is a major health "epidemic".',
+        isRecommended: true,
+      ),
     Video(
       videoId: 'vgAOwhu2nUE',
       title: 'Story Time With The Spanish Guitar Hub',
@@ -272,7 +273,8 @@ class VideoCard extends ConsumerWidget {
                       label: const Text('Watch on YouTube'),
                       onPressed: () {
                         MyReusableFunctions.launchCustomUrl(
-                            'https://www.youtube.com/watch?v=${video.videoId}');
+                            url:
+                                'https://www.youtube.com/watch?v=${video.videoId}');
                       },
                     ),
                     if (video.isRecommended ||

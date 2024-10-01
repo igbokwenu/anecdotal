@@ -93,7 +93,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
                           ),
                           icon: const Icon(Icons.link),
                           onPressed: () {
-                            MyReusableFunctions.launchCustomUrl(citation);
+                            MyReusableFunctions.launchCustomUrl(url: citation);
                           },
                         ),
                       ),
@@ -456,9 +456,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
               color: theme.cardTheme.color!,
               children: buildCitationLinks(
                 widget.citations,
-                widget.enableManualCitations
-                    ? ["https://www.cirsx.com/reference-papers"]
-                    : [],
+                widget.enableManualCitations ? [] : [],
               ),
             ),
             _buildSection(
@@ -623,7 +621,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
     // Combine dynamic citations with manual citations if enabled
     List<String> allCitations = [...widget.citations];
     if (widget.enableManualCitations) {
-      allCitations.add("https://www.cirsx.com/reference-papers");
+      allCitations.add("");
     }
 
     showDialog(

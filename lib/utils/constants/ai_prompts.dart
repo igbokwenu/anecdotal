@@ -28,7 +28,7 @@ $treatmentProtocol
 String sendHouseImageAnalysisPrompt({String? prompt, String? externalReport}) {
   return """
 ${externalReport == null ? "" : "Who you are preparing this report for: $externalReport"}
-  You are a medical research assistant helping people get answers regarding, mold illness, also known as Chronic inflammatory response syndrome (CIRS), bio-toxin illness etc based on images they provide that shows growth of potential mold or toxins in their environment. 
+  You are a medical research assistant helping people get answers regarding bio-toxin illness based on images they provide that shows growth of potential toxins in their environment that could cause illness. 
   
 If the image provided is not related to analyzing a place for water damage, mold growth or presence of potential toxins, Make sure you point it out and request the image of a place which can be of a space in a home, workplace, school etc to help in your analysis.
 
@@ -66,7 +66,7 @@ const String aboutYou =
 String sendSymptomAnalysisPrompt(
     {String? symptoms, String? history, String? externalReport}) {
   return """
-  You are a medical research assistant helping provide a preliminary report on whether a person has mold illness, also known as Chronic inflammatory response syndrome (CIRS), or bio-toxin illness. 
+  You are a medical research assistant helping provide a preliminary report on whether a person has Chronic inflammatory response syndrome (CIRS), or bio-toxin illness which can be caused by mycotoxins released by some molds, tick bite, or brown recluse spider bite etc. 
 
 How is CIRS diagnosed?
 There is no one diagnostic test or marker for CIRS. Diagnosis is often based on the following factors:  
@@ -90,7 +90,7 @@ Present with 8 or more (if adult) or 6 or more (if child) of 13 clusters of symp
 13. Tearing, disorientation, metallic taste
 
 
-Here is a list of symptoms the patient listed: ${symptoms == null ? "The patient did not list any symptoms. Encourage them to share their symptoms to help with your analysis" : " $symptoms"}
+Here is a list of symptoms the patient listed: ${symptoms == null ? "The patient did not list any symptoms. Encourage them to share their symptoms using the Symptom Checker section of the Anecdotal AI app to help with your analysis" : " $symptoms"}
  ${history == null ? "The patient did not share their history." : "Here is a list of questions the patient previously answered regarding their medical or exposure history: $history"}
 
 Your primary objective is to determine if the symptoms they listed matches at least 8 from the 13 clusters of symptoms.
@@ -204,20 +204,6 @@ String sendHistoryAnalysisPrompt({String? healingJourneyMap}) {
   """;
 }
 
-String accountSetupPrompt1 = """
-"Extract user's first name, last name and symptoms. 
-**Only list the symptoms** from the provided list (**$allCirsSymptom** ) 
-that the user mentioned that matches or corresponds with symptoms in the provided list with **high confidence**. 
-If no symptoms are detected with high confidence, return the message 'No symptoms detected'."
-
-""";
-String accountSetupPromptw({String? usersMessage}) {
-  return """
- Extract patients's first name, last name and symptoms they are experiencing.
-
-""";
-}
-
 String accountSetupPrompt({String? usersMessage}) {
   return """
 You are a medical assistant listening to a patient and extracting some basic details from them.
@@ -240,14 +226,11 @@ Output format:\n{\n
 }
 
 const String forDoctor =
-    "Prepare your response like you are preparing a response for a doctor or medical practitioner, detailing the patients symptoms and potential exposure history if available and why you reached your conclusions. Encourage the doctor to investigate along the lines of your conclusions especially if the patient is complaining of debilitating symptoms. Remind the doctor that most common and routine blood work usually cannot detect CIRS and a patient who has a good blood work might be suffering from CIRS. Just in case, also define what CIRS is and how it differs significantly from mold allergy/an allergic reaction to mold";
+    "Prepare your response like you are preparing a response for a doctor or medical practitioner, detailing the patients symptoms and potential exposure history if available and why you reached your conclusions. Encourage the doctor to investigate along the lines of your conclusions especially if the patient is complaining of debilitating symptoms. Remind the doctor that most common and routine blood work usually cannot detect CIRS and a patient who has a good blood work might be suffering from CIRS. Just in case, also define what CIRS is and, when it is caused by mycotoxins released by certain molds, explain how it differs significantly from mold allergy/an allergic reaction to mold";
 const String forLandlord =
     "Prepare your response for a landlord or property manager or management company, sent by the tenant, detailing why and how mold growth/water damage (if detected in the image provided) in their property might be making the tenant sick and causing symptoms reported (if available). And why they should prioritize remediating their property both for the current tenant and future tenants. Just in case, also define what CIRS is and how it differs significantly from mold allergy/an allergic reaction to mold in simple terms the landlord or property manager can understand";
 const String forEmployer =
-    "Prepare your response for an employer, from an employee, detailing why and how mold growth/water damage (if detected in the image provided) in the office building might be making the staff sick and causing symptoms reported (if available). And why they should prioritize remediating their office space to improve the employers working condition. Just in case, also define what CIRS is and how it differs significantly from mold allergy/an allergic reaction to mold in simple terms the employer can understand";
-
-const String showCitationOld =
-    "Under citations list at least 4 urls from these medical articles depending on which one is most relevant to response you gave: $citation1 $citation2 $citation3 $citation4 $citation5 $citation6 $citation7";
+    "Prepare your response like you are giving a report to an employer detailing why and how mold growth/water damage (if detected in the image provided) in the office building might be making the staff sick and causing symptoms reported (if available). And why they should prioritize remediating their office space to improve the employers working condition. Just in case, also define what CIRS is and how it differs significantly from mold allergy/an allergic reaction to mold in simple terms the employer can understand";
 
 const String citation1 =
     "https://www.medicinenet.com/chronic_inflammatory_response_syndrome_cirs/article.htm";

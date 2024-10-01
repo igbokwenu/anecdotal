@@ -66,7 +66,7 @@ class SymptomsSelectionPageState extends ConsumerState<SymptomsSelectionPage> {
       final uid = FirebaseAuth.instance.currentUser?.uid;
       final databaseService = DatabaseService(uid: uid!);
 
-      MyReusableFunctions.showProcessingToast();
+     
       ref.read(chatInputProvider.notifier).setIsAnalyzing(true);
       await databaseService.incrementUsageCount(
           uid, userAiGeneralTextUsageCount);

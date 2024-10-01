@@ -123,7 +123,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
       String forWho,
     ) async {
       if (!kIsWeb) {
-        if (userData!.aiGeneralTextUsageCount >= publicData!.aiFreeUsageLimit &&
+        if (userData!.aiGeneralMediaUsageCount >= publicData!.aiFreeUsageLimit &&
             !iapStatus.isPro) {
           MyReusableFunctions.showPremiumDialog(
               context: context, message: premiumSpeechAnalyzeButton);
