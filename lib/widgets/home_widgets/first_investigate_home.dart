@@ -9,6 +9,7 @@ import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 class FirstWidgetInvestigateHome extends ConsumerWidget {
   const FirstWidgetInvestigateHome({super.key});
 
@@ -26,21 +27,25 @@ class FirstWidgetInvestigateHome extends ConsumerWidget {
               slideLeftTransitionPageBuilder(
                 CameraWidget(
                   prompt: sendHouseImageAnalysisPrompt(
-                    prompt: userData!.symptomsList.isEmpty
-                      ? null
-                      : "Here are symptoms the user previously reported experiencing : ${userData.symptomsList}. And some details from their previously shared medical/exposure history: ${userData.medicalHistoryList}"
-                  ),
+                      prompt: userData!.symptomsList.isEmpty
+                          ? null
+                          : "Here are symptoms the user previously reported experiencing : ${userData.symptomsList}. And some details from their previously shared medical/exposure history: ${userData.medicalHistoryList}"),
                   onResponse: (result, images) {
                     if (result != null) {
                       Navigator.pushReplacement(
                         context,
                         slideLeftTransitionPageBuilder(
                           ReportView(
-                            summaryContent: result['summary'] ?? 'No summary available.',
-                            keyInsights: result['insights']?.cast<String>() ?? [],
-                            recommendations: result['recommendations']?.cast<String>() ?? [],
-                            followUpSearchTerms: result['suggestions']?.cast<String>() ?? [],
-                            citations: result['citations']?.cast<String>() ?? [],
+                            summaryContent:
+                                result['summary'] ?? 'No summary available.',
+                            keyInsights:
+                                result['insights']?.cast<String>() ?? [],
+                            recommendations:
+                                result['recommendations']?.cast<String>() ?? [],
+                            followUpSearchTerms:
+                                result['suggestions']?.cast<String>() ?? [],
+                            citations:
+                                result['citations']?.cast<String>() ?? [],
                             reportType: userHomeReportPdfUrls,
                             selectedImages: images,
                           ),
@@ -65,8 +70,8 @@ class FirstWidgetInvestigateHome extends ConsumerWidget {
         AIImageSelectWidget(
           prompt: sendHouseImageAnalysisPrompt(
             prompt: userData!.symptomsList.isEmpty
-              ? null
-              : "Here are symptoms the user previously reported experiencing : ${userData.symptomsList}. And some details from their previously shared medical/exposure history: ${userData.medicalHistoryList}",
+                ? null
+                : "Here are symptoms the user previously reported experiencing : ${userData.symptomsList}. And some details from their previously shared medical/exposure history: ${userData.medicalHistoryList}",
           ),
           maxImages: 4,
           onResponse: (result, selectedImages) {
@@ -75,10 +80,13 @@ class FirstWidgetInvestigateHome extends ConsumerWidget {
                 context,
                 slideLeftTransitionPageBuilder(
                   ReportView(
-                    summaryContent: result['summary'] ?? 'No summary available.',
+                    summaryContent:
+                        result['summary'] ?? 'No summary available.',
                     keyInsights: result['insights']?.cast<String>() ?? [],
-                    recommendations: result['recommendations']?.cast<String>() ?? [],
-                    followUpSearchTerms: result['suggestions']?.cast<String>() ?? [],
+                    recommendations:
+                        result['recommendations']?.cast<String>() ?? [],
+                    followUpSearchTerms:
+                        result['suggestions']?.cast<String>() ?? [],
                     citations: result['citations']?.cast<String>() ?? [],
                     reportType: userHomeReportPdfUrls,
                     selectedImages: selectedImages,

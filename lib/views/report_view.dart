@@ -32,7 +32,7 @@ class ReportView extends ConsumerStatefulWidget {
   final String? name;
   final bool enableManualCitations;
   final String reportType;
-   final List<File>? selectedImages;
+  final List<File>? selectedImages;
 
   const ReportView({
     super.key,
@@ -44,7 +44,8 @@ class ReportView extends ConsumerStatefulWidget {
     required this.reportType,
     this.title,
     this.name,
-    this.enableManualCitations = true, this.selectedImages,
+    this.enableManualCitations = true,
+    this.selectedImages,
   });
 
   @override
@@ -136,6 +137,9 @@ class _ReportViewState extends ConsumerState<ReportView> {
     }
 
     Future<void> saveAndSharePDF(BuildContext context, bool share) async {
+      setState(() {
+        _isSaving = true;
+      });
       final uid = FirebaseAuth.instance.currentUser?.uid;
       final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
       final publicData = ref.watch(publicDataProvider).value;
@@ -267,16 +271,16 @@ class _ReportViewState extends ConsumerState<ReportView> {
               ),
             ),
             ...widget.followUpSearchTerms.map((term) => pw.Bullet(text: term)),
-
-               if (widget.selectedImages != null && widget.selectedImages!.isNotEmpty)
-            pw.Header(level: 1, text: 'Analyzed Media'),
-          if (widget.selectedImages != null)
-            ...widget.selectedImages!.map((file) {
-              final image = pw.MemoryImage(file.readAsBytesSync());
-              return pw.Center(
-                child: pw.Image(image, height: 200),
-              );
-            }).toList(),
+            if (widget.selectedImages != null &&
+                widget.selectedImages!.isNotEmpty)
+              pw.Header(level: 1, text: 'Analyzed Media'),
+            if (widget.selectedImages != null)
+              ...widget.selectedImages!.map((file) {
+                final image = pw.MemoryImage(file.readAsBytesSync());
+                return pw.Center(
+                  child: pw.Image(image, height: 200),
+                );
+              }).toList(),
           ],
         ),
       );
@@ -464,13 +468,13 @@ class _ReportViewState extends ConsumerState<ReportView> {
               color: theme.cardTheme.color!,
               children: buildSearchTerms(widget.followUpSearchTerms),
             ),
-             if (widget.selectedImages != null && widget.selectedImages!.isNotEmpty)
-              _buildSection(
-                title: 'Analyzed Images',
-                icon: Icons.image,
-                color: theme.cardTheme.color!,
-                children: widget.selectedImages!.map((file) => Image.file(file, height: 200)).toList(),
-              ),
+            //  if (widget.selectedImages != null && widget.selectedImages!.isNotEmpty)
+            //   _buildSection(
+            //     title: 'Analyzed Images',
+            //     icon: Icons.image,
+            //     color: theme.cardTheme.color!,
+            //     children: widget.selectedImages!.map((file) => Image.file(file, height: 200)).toList(),
+            //   ),
             mySpacing(spacing: 80),
           ],
         ),

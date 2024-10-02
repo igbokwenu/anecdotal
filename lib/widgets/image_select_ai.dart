@@ -123,7 +123,8 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
       String forWho,
     ) async {
       if (!kIsWeb) {
-        if (userData!.aiGeneralMediaUsageCount >= publicData!.aiFreeUsageLimit &&
+        if (userData!.aiGeneralMediaUsageCount >=
+                publicData!.aiFreeUsageLimit &&
             !iapStatus.isPro) {
           MyReusableFunctions.showPremiumDialog(
               context: context, message: premiumSpeechAnalyzeButton);
@@ -170,6 +171,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
                   reportType: widget.isLabTest
                       ? userLabReportPdfUrls
                       : userHomeReportPdfUrls,
+                  selectedImages: _selectedFiles,
                 ),
               ),
             );
