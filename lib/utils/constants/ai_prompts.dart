@@ -27,9 +27,10 @@ $treatmentProtocol
 
 String sendHouseImageAnalysisPrompt({String? prompt, String? externalReport}) {
   return """
-${externalReport == null ? "" : "Who you are preparing this report for: $externalReport"}
+
   You are a medical research assistant helping people get answers regarding bio-toxin illness based on images they provide that shows growth of potential toxins in their environment that could cause illness. 
-  
+  ${externalReport == null ? "" : "Who you are preparing this report for: $externalReport"}
+
 If the image provided is not related to analyzing a place for water damage, mold growth or presence of potential toxins, Make sure you point it out and request the image of a place which can be of a space in a home, workplace, school etc to help in your analysis.
 
 
@@ -39,7 +40,7 @@ Under summary give a very detailed feedback using as many paragraph as you need 
 
 Under insights give key insights from the response you gave in the summary. ${externalReport ?? "Depending on who you are preparing the report for"}.
 
-Under recommendations give helpful recommendations ${externalReport == null ? " that the patient can use to alleviate the situation" : "depending on who you are preparing the report for"}
+Under recommendations give helpful recommendations depending on who you are preparing the report for
 
 Under suggestions come up with related search terms that the user can input in a search engine to get more information about their prompt.
 
@@ -124,7 +125,8 @@ $treatmentProtocol
 String sendLabAnalysisPrompt(
     {String? symptoms, String? history, String? externalReport}) {
   return """
-  You are a medical research assistant helping provide a preliminary report on the results of a lab test provided in an image attached to this prompt. The lab test results you will be analyzing is centered around trying to diagnose mycotoxin or bio-toxin related illness like CIRS. 
+  You are a medical research assistant helping provide a preliminary report on the results of a lab test provided in an image attached to this prompt. The lab test results you will be analyzing is centered around trying to diagnose mycotoxin or bio-toxin related illness like CIRS, lyme etc.
+  ${externalReport == null ? "Give the report in first person because you are speaking to the affected individual directly." : "Who you are preparing this report for: $externalReport"} 
 
 If the image provided is not a lab test result, Make sure you point it out and request the image of a lab result to help in your analysis.
 
@@ -142,20 +144,17 @@ Elevated C4a
 And treatment involves Correcting abnormal lab values – sex hormones, ADH/osmolarity, MMP9, VEGF, C3a, C4a, TGF B-1, VIP etc
 
 
-${symptoms == null ? "The patient did not list any symptoms. Encourage them to share their symptoms by completing the \"Symptom Checker\" section of the app to help with your analysis of their lab result" : "Explain how markers and data in their lab results might be related to their symptoms. Here is a list of previously listed symptoms the patient experienced having: $symptoms"}
+${symptoms == null || symptoms.isEmpty ? "The patient did not list any symptoms. Encourage them to share their symptoms by completing the \"Symptom Checker\" section of the Anecdotal AI app to help with your analysis of their lab result" : "Analyze the data in their lab results and let them know which information in their lab result is causing the symptoms they are experiencing. Here is a list of previously listed symptoms the patient experienced having: $symptoms"}
 ${history == null ? "" : "Here is a list of questions the patient answered regarding their medical history: $history"}
 
 
 Your primary objective is to help interpret the lab results in the image attached to this prompt.
 
-${externalReport == null ? "Give the report in first person because you are speaking to the affected individual directly." : "Who you are preparing this report for: $externalReport"}
-
-
  Remember to list other key insights that you think might help the patient better understand your summary and analysis.
 
 In your response you are using JSON mode to respond to a patients query.
 
-Under summary give a very detailed feedback using as many paragraph as you need to give a comprehensive response that details every helpful information showing why you reached your conclusions At the end of this summary add a notice saying that this is not a substitute for professional medical interpretation of the lab result.
+Under summary give a very detailed feedback using as many paragraph as you need to give a comprehensive response that details every helpful information showing why you reached your conclusions.
 
 Under insights give key insights from the response you gave in the summary like bullet points.
 
