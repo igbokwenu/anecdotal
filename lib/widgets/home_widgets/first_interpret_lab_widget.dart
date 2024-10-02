@@ -33,7 +33,7 @@ class FirstWidgetInterpretLab extends ConsumerWidget {
                       history: userData.medicalHistoryList.isEmpty
                           ? null
                           : "${userData.medicalHistoryList}"),
-                  onResponse: (result) {
+                  onResponse: (result, images) {
                     if (result != null) {
                       Navigator.pushReplacement(
                         context,
@@ -48,7 +48,9 @@ class FirstWidgetInterpretLab extends ConsumerWidget {
                             followUpSearchTerms:
                                 result['suggestions']?.cast<String>() ?? [],
                             citations:
-                                result['citations']?.cast<String>() ?? [], reportType: userLabReportPdfUrls,
+                                result['citations']?.cast<String>() ?? [],
+                            reportType: userLabReportPdfUrls,
+                            selectedImages: images,
                           ),
                         ),
                       );
@@ -83,7 +85,7 @@ class FirstWidgetInterpretLab extends ConsumerWidget {
           selectButtonText: 'Select Result',
           analyzeButtonText: 'Analyze Result',
           maxImages: 4,
-          onResponse: (result) {
+          onResponse: (result, selectedImages) {
             if (result != null) {
               Navigator.push(
                 context,
@@ -96,7 +98,9 @@ class FirstWidgetInterpretLab extends ConsumerWidget {
                         result['recommendations']?.cast<String>() ?? [],
                     followUpSearchTerms:
                         result['suggestions']?.cast<String>() ?? [],
-                    citations: result['citations']?.cast<String>() ?? [], reportType: userLabReportPdfUrls,
+                    citations: result['citations']?.cast<String>() ?? [],
+                    reportType: userLabReportPdfUrls,
+                    selectedImages: selectedImages,
                   ),
                 ),
               );

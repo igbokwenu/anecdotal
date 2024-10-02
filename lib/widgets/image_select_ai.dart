@@ -21,7 +21,7 @@ import 'dart:io';
 class AIImageSelectWidget extends ConsumerStatefulWidget {
   final String prompt;
 
-  final Function(Map<String, dynamic>?) onResponse;
+  final Function(Map<String, dynamic>?, List<File>) onResponse;
   final bool allowFileSelect;
   final int maxImages;
   final String? selectButtonText;
@@ -106,10 +106,10 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
           preferredModel: publicData.gptModel,
         );
 
-        widget.onResponse(response);
+        widget.onResponse(response, _selectedFiles);
       } catch (e) {
         print('Error analyzing images: $e');
-        widget.onResponse(null);
+        widget.onResponse(null, []);
       } finally {
         setState(() {
           _isAnalyzing = false;

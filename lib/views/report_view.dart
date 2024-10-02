@@ -32,6 +32,7 @@ class ReportView extends ConsumerStatefulWidget {
   final String? name;
   final bool enableManualCitations;
   final String reportType;
+   final List<File>? selectedImages;
 
   const ReportView({
     super.key,
@@ -43,7 +44,7 @@ class ReportView extends ConsumerStatefulWidget {
     required this.reportType,
     this.title,
     this.name,
-    this.enableManualCitations = true,
+    this.enableManualCitations = true, this.selectedImages,
   });
 
   @override
@@ -194,18 +195,6 @@ class _ReportViewState extends ConsumerState<ReportView> {
               ),
             ),
             pw.SizedBox(height: 10),
-            // pw.Center(
-            //   child: pw.Text(
-            //     'A Personalized Health Analysis Platform',
-            //     textAlign: pw.TextAlign.center,
-            //     style: pw.TextStyle(
-            //       color: PdfColors.teal,
-            //       fontWeight: pw.FontWeight.bold,
-            //       fontSize: 25,
-            //     ),
-            //   ),
-            // ),
-            // pw.SizedBox(height: 10),
             pw.UrlLink(
               child: pw.Text(
                 'Website: www.anecdotalhq.web.app',
@@ -278,6 +267,16 @@ class _ReportViewState extends ConsumerState<ReportView> {
               ),
             ),
             ...widget.followUpSearchTerms.map((term) => pw.Bullet(text: term)),
+
+               if (widget.selectedImages != null && widget.selectedImages!.isNotEmpty)
+            pw.Header(level: 1, text: 'Analyzed Media'),
+          if (widget.selectedImages != null)
+            ...widget.selectedImages!.map((file) {
+              final image = pw.MemoryImage(file.readAsBytesSync());
+              return pw.Center(
+                child: pw.Image(image, height: 200),
+              );
+            }).toList(),
           ],
         ),
       );
@@ -465,6 +464,13 @@ class _ReportViewState extends ConsumerState<ReportView> {
               color: theme.cardTheme.color!,
               children: buildSearchTerms(widget.followUpSearchTerms),
             ),
+             if (widget.selectedImages != null && widget.selectedImages!.isNotEmpty)
+              _buildSection(
+                title: 'Analyzed Images',
+                icon: Icons.image,
+                color: theme.cardTheme.color!,
+                children: widget.selectedImages!.map((file) => Image.file(file, height: 200)).toList(),
+              ),
             mySpacing(spacing: 80),
           ],
         ),

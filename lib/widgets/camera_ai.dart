@@ -15,7 +15,7 @@ import 'package:path_provider/path_provider.dart';
 
 class CameraWidget extends ConsumerStatefulWidget {
   final String prompt;
-  final Function(Map<String, dynamic>?) onResponse;
+  final Function(Map<String, dynamic>?, List<File>) onResponse;
   final VoidCallback onComplete;
 
   const CameraWidget({
@@ -42,7 +42,7 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
     final iapStatus = ref.watch(iapProvider);
     ref.read(iapProvider.notifier).checkAndSetIAPStatus();
-      final publicData = ref.watch(publicDataProvider).value;
+    final publicData = ref.watch(publicDataProvider).value;
 
     Future<void> analyzeCapturedImage() async {
       if (_capturedImage != null) {
@@ -53,12 +53,10 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
         final response = await GeminiService.analyzeImages(
           images: [_capturedImage!],
           prompt: widget.prompt,
-          
-        apiKey: publicData!.zodiac,
-        preferredModel: publicData.geminiModel,
-     
+          apiKey: publicData!.zodiac,
+          preferredModel: publicData.geminiModel,
         );
-        widget.onResponse(response);
+        widget.onResponse(response, [_capturedImage!]);
         widget.onComplete();
         setState(() {
           _isLoading = false;
@@ -79,8 +77,7 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
             onMediaCaptureEvent: (event) async {
               if (userData!.aiGeneralMediaUsageCount >= publicData!.aiFreeUsageLimit &&
                   !iapStatus.isPro) {
-                MyReusableFunctions.showPremiumDialog(
-                    context: context, );
+                MyReusableFunctions.showPremiumDialog(context: context);
               } else {
                 if (event.isPicture &&
                     event.status == MediaCaptureStatus.success) {
@@ -112,12 +109,8 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
                 state: state,
                 onMediaTap: null,
                 captureButton: _isLoading
-                    ? const MySpinKitWaveSpinner(
-                        size: 80,
-                      )
-                    : AwesomeCaptureButton(
-                        state: state,
-                      ),
+                    ? const MySpinKitWaveSpinner(size: 80)
+                    : AwesomeCaptureButton(state: state),
               );
             },
           ),
@@ -127,10 +120,7 @@ class _CameraWidgetState extends ConsumerState<CameraWidget> {
             child: Column(
               children: [
                 IconButton(
-                  icon: const Icon(
-                    Icons.highlight_off,
-                    size: 30,
-                  ),
+                  icon: const Icon(Icons.highlight_off, size: 30),
                   onPressed: () {
                     Navigator.pop(context);
                   },
