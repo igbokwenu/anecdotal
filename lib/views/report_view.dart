@@ -280,7 +280,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
                 return pw.Center(
                   child: pw.Image(image, height: 200),
                 );
-              }).toList(),
+              }),
           ],
         ),
       );

@@ -1,5 +1,4 @@
 import 'package:anecdotal/utils/constants/constants.dart';
-import 'package:anecdotal/views/download_view.dart';
 import 'package:anecdotal/widgets/reusable_widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

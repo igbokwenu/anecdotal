@@ -1,4 +1,3 @@
-import 'package:anecdotal/utils/constants/symptom_list.dart';
 
 String sendChatPrompt({String? prompt}) {
   return """

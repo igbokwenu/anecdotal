@@ -5,7 +5,6 @@ import 'package:anecdotal/services/chatgpt_ai_service.dart';
 import 'package:anecdotal/services/database_service.dart';
 import 'package:anecdotal/utils/reusable_function.dart';
 import 'package:anecdotal/views/about_view.dart';
-import 'package:anecdotal/views/citations_view.dart';
 import 'package:anecdotal/views/community_chat/community_chat_utils.dart';
 import 'package:anecdotal/views/to_do_view.dart';
 import 'package:anecdotal/views/video_references.dart';

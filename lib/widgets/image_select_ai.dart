@@ -146,7 +146,7 @@ class _AIImageSelectWidgetState extends ConsumerState<AIImageSelectWidget> {
                     externalReport: forWho,
                   )
                 : sendHouseImageAnalysisPrompt(
-                    prompt: userData!.symptomsList.isEmpty
+                    prompt: userData.symptomsList.isEmpty
                         ? null
                         : "Here is a previously disclosed list of symptoms experienced: ${userData.symptomsList}. And previously disclosed health history: ${userData.medicalHistoryList}",
                     externalReport: forWho,
