@@ -1,4 +1,3 @@
-
 String sendChatPrompt({String? prompt}) {
   return """
   You are helping people get answers regarding chronic illness, this includes Fibromyalgia, CFS, Chronic inflammatory response syndrome (CIRS), bio-toxin illness etc. 
@@ -91,13 +90,12 @@ Present with 8 or more (if adult) or 6 or more (if child) of 13 clusters of symp
 
 
 Here is a list of symptoms the patient listed: ${symptoms == null ? "The patient did not list any symptoms. Encourage them to share their symptoms using the Symptom Checker section of the Anecdotal AI app to help with your analysis" : " $symptoms"}
- ${history == null ? "The patient did not share their history." : "Here is a list of questions the patient previously answered regarding their medical or exposure history: $history"}
+ ${history == null || history.isEmpty ? "The patient did not share their history. Encourage them to share their history in the Symptom Checker section of the Anecdotal AI app to help you give a better analysis." : "Here is a list of questions the patient previously answered regarding their medical or exposure history: $history"}
 
 Your primary objective is to determine if the symptoms they listed matches at least 8 from the 13 clusters of symptoms.
-Under insights, the first bullet point is how many of the symptoms the patient listed, matches at least the 8 symptom clusters percentage wise, like if all the symptoms listed by the patient matches at least 8, thats a 100% match.
+Under insights, the first bullet point is how many of the symptoms the patient listed, matches at least the 8 symptom clusters percentage wise. For example if all the symptoms listed by the patient matches at least 8 symptoms from the 13 clusters of symptoms, thats a 100% match.
  ${externalReport ?? "Give the report in first person because you are speaking to the affected individual directly."}
 
- Also, under insights, if the patient did not share their medical history encourage them to do so to better help you give a better analysis.
  As the last item on insights, point out the key 8 symptoms shared my the patient that matches one of the 13 clusters.
  Remember to list other key insights that you think might help the patient better understand your summary and analysis.
 
@@ -245,7 +243,7 @@ const String citation7 =
 
 const String misDiagnosisText = """
 Note that bio-toxin and mycotoxin exposure which cause Chronic inflammatory response syndrome (CIRS) 
-have symptoms that overlap with symptoms of:
+have symptoms that overlap with symptoms of the conditions listed below and are are often misdiagnosed as:
 
 Fibromyalgia, 
 Chronic Fatigue Syndrome (CFS),  
@@ -258,10 +256,10 @@ Hypochondriasis
 Postural orthostatic tachycardia syndrome (POTS)
 Carpal tunnel syndrome (CTS)
 Chronic pain syndrome
-“Atypical” MS, Parkinson’s Disease, Alzheimer’s Disease
+“Atypical” Parkinson’s Disease, Alzheimer’s Disease
 “Atypical” rheumatological condition
 
-So it is often a good idea to try and rule out the bio-toxin or mycotoxin related illnesses known as CIRS as the root cause if diagnosed with any of these conditions or exhibits their symptoms. Especially if they have experienced Visualized mold, musty smell, prior known leak, lyme/tick bite/travel/rash, brown recluse spider bite, started with eating fish (ciguatoxin), started after exposure to certain bodies of water (pfiesteria), etc. - anytime in the past.
+So it is often a good idea to try and rule out the bio-toxin or mycotoxin related illnesses known as CIRS as the root cause when diagnosed with any of the conditions listed above. Especially if they have experienced, musty smell, seen visual mold in their space, prior known leak, lyme/tick bite/travel/rash, brown recluse spider bite, started with eating fish (ciguatoxin), started after exposure to certain bodies of water (pfiesteria), etc. - anytime in the past.
 Also, the family and friends of people who deal with these chronic conditions often do not believe they are really sick. Encourage them connect with others who understand in the community chat section of this app (Anecdotal AI)or share the app that has a video and citation section to help inform their loved ones about the realness of their condition. 
 """;
 
@@ -398,30 +396,3 @@ So in other words no I didn’t waste my time or money with the “special” ri
 
 
 
-
-
-
-// Abnormal lab testing:
-// Failed Vision Contrast Study (VCS)
-// Presence of HLA-DR
-// Elevated MMP-9
-// ACTH/Cortisol Imbalance
-// ADH/Osmolarity Imbalance
-// Low MSH
-// Elevated C4a
-// Experience symptomatic and lab value improvement with therapy.
-
-// How do you treat CIRS?
-// Treatment is individualized for each patient. It frequently includes:
-
-// Elimination of further biotoxin exposure
-// Resetting nervous system
-// Setting foundations of health
-// Choosing the right binder(s)
-// Opening detox and lymphatic pathways
-// Healing the gut
-// Healing the sinuses including MARCONs
-// Calming mast cell activation syndrome (if needed)
-// Prescribing antifungals medications and herbs
-// Correcting abnormal lab values – sex hormones, ADH/osmolarity, MMP9, VEGF, C3a, C4a, TGF B-1, VIP
-// Addressing tickborne infections (if needed)

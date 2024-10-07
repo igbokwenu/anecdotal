@@ -54,7 +54,7 @@ class AboutPage extends StatelessWidget {
                 Icons.flag,
               ),
               _buildSection(
-                'The Story Behind Anecdotal AI',
+                'Story Behind Anecdotal AI',
                 "Anecdotal AI was born out of personal experience and a deep understanding of the challenges of chronic illness (CIRS). As a survivor and thriver, I drew upon my own journey to design an app that tackles the complexities and uncertainties of these conditions head-on. Having navigated the struggles and frustrations of navigating health challenges firsthand, I created Anecdotal AI as the tool I wished I had during my darkest days of uncertainty. This app is a labor of love, driven by a passion to support and empower others on their paths to recovery and wellness.",
                 Icons.person,
               ),

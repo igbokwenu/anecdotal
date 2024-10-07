@@ -23,7 +23,27 @@ class SymptomsDisplay extends ConsumerWidget {
       body: userData.when(
         data: (data) {
           if (data == null || data.symptomsList.isEmpty) {
-            return const Center(child: Text('No symptoms recorded.'));
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Center(
+                  child: Text('No symptoms recorded.'),
+                ),
+                mySpacing(spacing: 30),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      slideLeftTransitionPageBuilder(
+                        const SymptomsSelectionPage(),
+                      ),
+                    );
+                  },
+                  label: const Text('Add/Analyze Symptom'),
+                  icon: const Icon(Icons.add),
+                ),
+              ],
+            );
           }
 
           return Column(
