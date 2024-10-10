@@ -17,16 +17,15 @@ class ExposureHistoryScreen extends ConsumerStatefulWidget {
 }
 
 class _ExposureHistoryScreenState extends ConsumerState<ExposureHistoryScreen> {
-  // List to store the user's answers
-  final List<Map<String, String>> userResponses = [];
-
+  final List<Map<String, dynamic>> userResponses = [];
   int currentQuestionIndex = 0;
+  List<String> selectedConditions = [];
 
-  // Reset the questionnaire
   void _resetQuiz() {
     setState(() {
       currentQuestionIndex = 0;
       userResponses.clear();
+      selectedConditions.clear();
     });
   }
 
@@ -36,7 +35,6 @@ class _ExposureHistoryScreenState extends ConsumerState<ExposureHistoryScreen> {
     final databaseService = DatabaseService(uid: uid!);
     final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
 
-    // Show the results dialog with all responses
     void showResultsDialog() {
       showDialog(
         context: context,
@@ -44,7 +42,7 @@ class _ExposureHistoryScreenState extends ConsumerState<ExposureHistoryScreen> {
           return AlertDialog(
             title: const Text('Your Answers'),
             content: SizedBox(
-              height: 300, // Limit the height for scrolling
+              height: 300,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -67,7 +65,6 @@ class _ExposureHistoryScreenState extends ConsumerState<ExposureHistoryScreen> {
               ),
               TextButton(
                 onPressed: () async {
-                  // Convert userResponses to a list of strings with the format "Question Answer"
                   List<String> formattedResponses = userResponses
                       .map((response) =>
                           "${response['question']} ${response['answer']}")
@@ -91,8 +88,7 @@ class _ExposureHistoryScreenState extends ConsumerState<ExposureHistoryScreen> {
       );
     }
 
-    // Function to handle user's answer and move to next question
-    void handleAnswer(String answer) {
+    void handleAnswer(dynamic answer) {
       String currentQuestion = exposureHistory[currentQuestionIndex];
       userResponses.add({'question': currentQuestion, 'answer': answer});
 
@@ -106,17 +102,43 @@ class _ExposureHistoryScreenState extends ConsumerState<ExposureHistoryScreen> {
       }
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const MyAppBarTitleWithAI(
-          title: "Exposure History",
-        ),
-        backgroundColor: Colors.teal,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+    Widget buildQuestion() {
+      if (currentQuestionIndex == exposureHistory.length - 1) {
+        return Column(
+          children: [
+            Text(
+              "Select any conditions you have been diagnosed with:",
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            ...potentialMisdiagnosisList.map((condition) {
+              return CheckboxListTile(
+                title: Text(condition),
+                value: selectedConditions.contains(condition),
+                onChanged: (bool? value) {
+                  setState(() {
+                    if (value == true) {
+                      selectedConditions.add(condition);
+                    } else {
+                      selectedConditions.remove(condition);
+                    }
+                  });
+                },
+              );
+            }).toList(),
+            ElevatedButton(
+              onPressed: () {
+                handleAnswer(selectedConditions.isEmpty
+                    ? "None"
+                    : selectedConditions.join(", "));
+              },
+              child: const Text('Submit'),
+            ),
+          ],
+        );
+      } else {
+        return Column(
           children: [
             Text(
               exposureHistory[currentQuestionIndex],
@@ -130,7 +152,8 @@ class _ExposureHistoryScreenState extends ConsumerState<ExposureHistoryScreen> {
                 ElevatedButton(
                   onPressed: () => handleAnswer('Yes'),
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 16),
                     backgroundColor: Colors.green,
                   ),
                   child: const Text(
@@ -141,7 +164,8 @@ class _ExposureHistoryScreenState extends ConsumerState<ExposureHistoryScreen> {
                 ElevatedButton(
                   onPressed: () => handleAnswer('No'),
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 16),
                     backgroundColor: Colors.red,
                   ),
                   child: const Text(
@@ -151,12 +175,34 @@ class _ExposureHistoryScreenState extends ConsumerState<ExposureHistoryScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
-            Text(
-              'Question ${currentQuestionIndex + 1} of ${exposureHistory.length}',
-              style: const TextStyle(fontSize: 16),
-            ),
           ],
+        );
+      }
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const MyAppBarTitleWithAI(
+          title: "Exposure History",
+        ),
+        backgroundColor: Colors.teal,
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                buildQuestion(),
+                const SizedBox(height: 20),
+                Text(
+                  'Question ${currentQuestionIndex + 1} of ${exposureHistory.length}',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

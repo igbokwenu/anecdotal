@@ -10,7 +10,7 @@ List<String> exposureHistory = [
   "Have you been bitten by a brown recluse spider?",
   "Did your symptoms start after eating fish, especially tropical fish?",
   "Did your symptoms start after exposure to certain bodies of water, such as a lake or river?",
-  "Have you been diagnosed with any of the following: \n\n ${potentialMisdiagnosisList.join(", ")}"
+  "Select any conditions you have been diagnosed with:",
 ];
 
 List<String> potentialMisdiagnosisList = [
@@ -27,7 +27,8 @@ List<String> potentialMisdiagnosisList = [
   "Chronic pain syndrome",
   "Parkinson's Disease",
   "Alzheimer's Disease",
-  "Rheumatological condition"
+  "Rheumatological condition",
+  "None"
 ];
 
 List<String> allCirsSymptom = [

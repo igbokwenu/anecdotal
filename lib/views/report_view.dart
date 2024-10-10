@@ -137,9 +137,12 @@ class _ReportViewState extends ConsumerState<ReportView> {
     }
 
     Future<void> saveAndSharePDF(BuildContext context, bool share) async {
-      setState(() {
-        _isSaving = true;
-      });
+      if (!share) {
+        setState(() {
+          _isSaving = true;
+        });
+      }
+
       final uid = FirebaseAuth.instance.currentUser?.uid;
       final userData = ref.watch(anecdotalUserDataProvider(uid)).value;
       final publicData = ref.watch(publicDataProvider).value;
@@ -310,9 +313,12 @@ class _ReportViewState extends ConsumerState<ReportView> {
                     box.size, // Required for iPad
               );
             } else {
-              setState(() {
-                _isSaving = true;
-              });
+              if (!share) {
+                setState(() {
+                  _isSaving = true;
+                });
+              }
+
               // Upload to Firebase Storage
               final storageRef = FirebaseStorage.instance
                   .ref()
@@ -360,20 +366,26 @@ class _ReportViewState extends ConsumerState<ReportView> {
                 },
               );
             }
-
-            setState(() {
-              _isSaving = false;
-            });
-            setState(() {
-              _isSaved = true;
-            });
+            if (!share) {
+              setState(() {
+                _isSaving = false;
+              });
+            }
+            if (!share) {
+              setState(() {
+                _isSaved = true;
+              });
+            }
           } catch (e) {
-            setState(() {
-              _isSaving = false;
-            });
-            setState(() {
-              _isSaved = true;
-            });
+            if (!share) {
+              setState(() {
+                _isSaving = false;
+              });
+              setState(() {
+                _isSaved = true;
+              });
+            }
+
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Error processing PDF: $e')),
             );
@@ -487,7 +499,7 @@ class _ReportViewState extends ConsumerState<ReportView> {
                 if (!kIsWeb)
                   _isSaving
                       ? const MySpinKitWaveSpinner(
-                          size: 35,
+                          size: 38,
                         )
                       : _isSaved
                           ? myEmptySizedBox()
